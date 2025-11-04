@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <div class="logo">
+    <img src="/assets/logo.png" alt="Therapify Logo" />
+    <span>Therapify</span>
+  </div>
+
+  <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+
+  <ul [class.active]="menuOpen" class="nav-links">
+    <li><a href="#">Buscar Terapeutas</a></li>
+    <li><a href="#">Cómo Funciona</a></li>
+    <li><a href="#">Sobre Nosotros</a></li>
+    <li><button class="login-btn">Acceso/Login</button></li>
+  </ul>
+</nav>
