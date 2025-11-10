@@ -1,0 +1,121 @@
+<div class="container">
+  <!-- Panel Izquierdo -->
+  <div class="left-panel">
+    <div class="logo">
+      <img src="/assets/logo.png" alt="Therapify" class="logo-img" />
+      <h2 class="title">Crea tu cuenta</h2>
+      <p class="subtitle">
+        Completa los siguientes pasos para unirte a nuestra comunidad.
+      </p>
+    </div>
+
+    <!-- Paso 1 -->
+    <form *ngIf="step === 1" class="form">
+      <label for="firstName">Nombre</label>
+      <input
+        id="firstName"
+        type="text"
+        formControlName="firstName"
+        placeholder="Ej. Alicia"
+      />
+
+      <label for="lastName">Apellido</label>
+      <input
+        id="lastName"
+        type="text"
+        formControlName="lastName"
+        placeholder="Ej. Vikand"
+      />
+
+      <label for="email">Correo Electrónico</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="ejemplo@correo.com"
+      />
+
+      <button type="button" class="btn" (click)="nextStep()">
+        Continuar →
+      </button>
+    </form>
+
+    <!-- Paso 2 -->
+    <form *ngIf="step === 2" class="form">
+      <label for="companyName">Nombre de la Empresa</label>
+      <input
+        id="companyName"
+        type="text"
+        formControlName="companyName"
+        placeholder="Ej. Global Bank"
+      />
+
+      <label>Tipo de usuario</label>
+      <div class="options">
+        <button
+          type="button"
+          [class.active]="userType === 'Paciente'"
+          (click)="selectUserType('Paciente')"
+        >
+          Paciente
+        </button>
+        <button
+          type="button"
+          [class.active]="userType === 'Doctor'"
+          (click)="selectUserType('Doctor')"
+        >
+          Doctor
+        </button>
+        <button
+          type="button"
+          [class.active]="userType === 'Administrador'"
+          (click)="selectUserType('Administrador')"
+        >
+          Administrador
+        </button>
+      </div>
+
+      <button type="button" class="btn" (click)="nextStep()">
+        Continuar →
+      </button>
+    </form>
+
+    <!-- Paso 3 -->
+    <form *ngIf="step === 3" class="form">
+      <label for="password">Crea una Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="********"
+      />
+
+      <label for="confirmPassword">Confirma tu Contraseña</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="********"
+      />
+
+      <button type="submit" class="btn">Registrarse</button>
+    </form>
+
+    <!-- Indicador de Progreso -->
+    <div class="progress">
+      <span [class.active]="step === 1"></span>
+      <span [class.active]="step === 2"></span>
+      <span [class.active]="step === 3"></span>
+    </div>
+  </div>
+
+  <!-- Panel Derecho -->
+  <div class="right-panel">
+    <img src="/assets/illustration.png" alt="Bienestar" class="illustration" />
+    <h3>Tu Viaje hacia el Bienestar Comienza Aquí</h3>
+    <p>
+      En Therapify, te conectamos con psicoterapeutas certificados en un entorno
+      seguro y diseñado para tu crecimiento personal.
+    </p>
+  </div>
+</div>
