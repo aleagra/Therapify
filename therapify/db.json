@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "firstName": "Alicia",
+      "lastName": "Vikand",
+      "email": "admin@therapify.com",
+      "companyName": "Therapify",
+      "password": "Admin1234",
+      "confirmPassword": "Admin1234",
+      "userType": "administrador"
+    },
+    {
+      "id": "4c45",
+      "firstName": "alejandro",
+      "lastName": "aaa",
+      "email": "da1sdad2as3das@gmail.com",
+      "password": "alejandro",
+      "confirmPassword": "alejandro",
+      "userType": "doctor"
+    },
+    {
+      "id": "b974",
+      "firstName": "dasdas",
+      "lastName": "dasdas",
+      "email": "da1sdad2as3das@gmail.com",
+      "password": "alejandro",
+      "confirmPassword": "alejandro",
+      "userType": "administrador"
+    }
+  ]
+}
