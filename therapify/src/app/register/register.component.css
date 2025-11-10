@@ -5,7 +5,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* Panel Izquierdo */
 .left-panel {
   flex: 1;
   background-color: #fff;
@@ -66,7 +65,6 @@ input:focus {
   background-color: #1d4ed8;
 }
 
-/* Opciones (tipo de usuario) */
 .options {
   display: flex;
   gap: 1rem;
@@ -88,8 +86,11 @@ input:focus {
   color: #fff;
   border-color: #2563eb;
 }
+.actions {
+  display: flex;
+  gap: 10px;
+}
 
-/* Indicador de progreso */
 .progress {
   display: flex;
   justify-content: center;
@@ -109,7 +110,6 @@ input:focus {
   background-color: #2563eb;
 }
 
-/* Panel Derecho */
 .right-panel {
   flex: 1;
   background-color: #f9fafb;
@@ -141,7 +141,6 @@ input:focus {
   font-size: 0.9rem;
 }
 
-/* ---------- RESPONSIVE ---------- */
 @media (min-width: 768px) {
   .container {
     padding: 0;
