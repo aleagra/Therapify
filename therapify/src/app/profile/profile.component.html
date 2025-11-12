@@ -1,0 +1,67 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <h2>Profile Information</h2>
+    <p>View and edit your personal details below</p>
+  </div>
+
+  <form class="profile-form">
+    <!-- First & Last Name -->
+    <div class="form-group double">
+      <div class="input-field">
+        <label for="firstName">First name</label>
+        <input id="firstName" type="text" value="John" />
+      </div>
+      <div class="input-field">
+        <label for="lastName">Last name</label>
+        <input id="lastName" type="text" value="Doe" />
+      </div>
+    </div>
+
+    <!-- Password & Repeat Password -->
+    <div class="form-group double">
+      <div class="input-field">
+        <label for="password">New password</label>
+        <input id="password" type="password" placeholder="Enter new password" />
+      </div>
+      <div class="input-field">
+        <label for="repeatPassword">Repeat password</label>
+        <input
+          id="repeatPassword"
+          type="password"
+          placeholder="Repeat password"
+        />
+      </div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <div class="input-field full">
+        <label for="address">Address</label>
+        <input id="address" type="text" value="123 Main Street" />
+      </div>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group gender-group">
+      <label>Gender</label>
+      <div class="gender-options">
+        <label
+          ><input type="radio" name="gender" value="male" checked /> Male</label
+        >
+        <label
+          ><input type="radio" name="gender" value="female" /> Female</label
+        >
+        <label
+          ><input type="radio" name="gender" value="non-binary" />
+          Non-binary</label
+        >
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-buttons">
+      <button type="button" class="btn-secondary">Cancel</button>
+      <button type="submit" class="btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>
