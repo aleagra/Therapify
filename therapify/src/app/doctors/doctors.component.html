@@ -1,0 +1,5 @@
+<div class="doctores-container">
+  @for (doctor of doctors(); track doctor.id) {
+  <app-doctor-card [doctor]="doctor"></app-doctor-card>
+  }
+</div>

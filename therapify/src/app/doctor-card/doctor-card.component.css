@@ -1,0 +1,95 @@
+.doctor-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+  width: 100%;
+  max-width: 320px;
+  box-sizing: border-box;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+}
+
+.doctor-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.info h3 {
+  font-size: 1.1rem;
+  color: #20252f;
+  margin-bottom: 0.4rem;
+  word-wrap: break-word;
+}
+
+.dias {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+}
+
+.schedule {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.chip {
+  display: inline-block;
+  background: #e5edff;
+  color: #2a47b5;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: default;
+  transition: ease-in-out 0.2s ease, color 0.2s ease;
+}
+
+.chip:hover {
+  background: #2a47b5;
+  color: #ffffff;
+}
+
+.descripcion {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* === Ajustes responsive === */
+@media (max-width: 480px) {
+  .doctor-card {
+    padding: 1rem;
+    margin: auto;
+    max-width: 80%;
+  }
+
+  .doctor-card img {
+    border-radius: 10px;
+  }
+
+  .info h3 {
+    font-size: 1rem;
+  }
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .descripcion {
+    font-size: 0.85rem;
+  }
+}

@@ -95,9 +95,14 @@ export class UserService {
     );
   }
 
-  // Actualizar datos del usuario guardado localmente
   updateLocalUser(user: User): void {
     localStorage.setItem(this.localKey, JSON.stringify(user));
     console.log('Usuario actualizado en localStorage:', user);
+  }
+
+  getDoctores(): Observable<any[]> {
+    return this.http
+      .get<any[]>(this.apiUrl)
+      .pipe(map((users) => users.filter((user) => user.userType === 'doctor')));
   }
 }
