@@ -1,67 +1,110 @@
-<div class="profile-container">
-  <div class="profile-header">
-    <h2>Profile Information</h2>
-    <p>View and edit your personal details below</p>
+<div class="profile-container" *ngIf="user as currentUser">
+  <div class="profile-grid">
+    <!-- 🧍‍♂️ FORMULARIO PRINCIPAL -->
+    <form
+      class="profile-form"
+      (ngSubmit)="onSubmitProfile()"
+      [formGroup]="form"
+    >
+      <div class="profile-header">
+        <h2>Profile Information</h2>
+        <p>View and edit your personal details below</p>
+      </div>
+
+      <div class="form-group double">
+        <div class="input-field">
+          <label for="firstName">First name</label>
+          <input id="firstName" type="text" formControlName="firstName" />
+        </div>
+        <div class="input-field">
+          <label for="lastName">Last name</label>
+          <input id="lastName" type="text" formControlName="lastName" />
+        </div>
+      </div>
+
+      <div class="form-group double">
+        <div class="input-field">
+          <label for="password">New password</label>
+          <input id="password" type="password" formControlName="password" />
+        </div>
+        <div class="input-field">
+          <label for="repeatPassword">Repeat password</label>
+          <input
+            id="repeatPassword"
+            type="password"
+            formControlName="repeatPassword"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-field full">
+          <label for="address">Address</label>
+          <input id="address" type="text" formControlName="address" />
+        </div>
+      </div>
+
+      <div class="form-group gender-group">
+        <label>Gender</label>
+        <div class="gender-options">
+          <label
+            ><input type="radio" value="male" formControlName="gender" />
+            Male</label
+          >
+          <label
+            ><input type="radio" value="female" formControlName="gender" />
+            Female</label
+          >
+          <label
+            ><input type="radio" value="non-binary" formControlName="gender" />
+            Non-binary</label
+          >
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-secondary" (click)="cancel()">
+          Cancel
+        </button>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </div>
+    </form>
   </div>
+  <!-- 👨‍⚕️ FORMULARIO DEL MÉDICO -->
+  <div class="profile-grid">
+    <form
+      *ngIf="currentUser.userType === 'doctor'"
+      class="medical-form"
+      (ngSubmit)="onSubmitMedical()"
+      [formGroup]="form"
+    >
+      <div class="profile-header">
+        <h3>Medical Schedule</h3>
+        <p>Select your available days and provide a short description</p>
+      </div>
+      <div class="days-group">
+        <label *ngFor="let day of weekDays">
+          <input type="checkbox" [formControlName]="day.control" />
+          {{ day.label }}
+        </label>
+      </div>
 
-  <form class="profile-form">
-    <!-- First & Last Name -->
-    <div class="form-group double">
-      <div class="input-field">
-        <label for="firstName">First name</label>
-        <input id="firstName" type="text" value="John" />
-      </div>
-      <div class="input-field">
-        <label for="lastName">Last name</label>
-        <input id="lastName" type="text" value="Doe" />
-      </div>
-    </div>
-
-    <!-- Password & Repeat Password -->
-    <div class="form-group double">
-      <div class="input-field">
-        <label for="password">New password</label>
-        <input id="password" type="password" placeholder="Enter new password" />
-      </div>
-      <div class="input-field">
-        <label for="repeatPassword">Repeat password</label>
-        <input
-          id="repeatPassword"
-          type="password"
-          placeholder="Repeat password"
-        />
-      </div>
-    </div>
-
-    <!-- Address -->
-    <div class="form-group">
       <div class="input-field full">
-        <label for="address">Address</label>
-        <input id="address" type="text" value="123 Main Street" />
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          rows="9"
+          placeholder="Describe your specialties or work hours..."
+          formControlName="description"
+        ></textarea>
       </div>
-    </div>
 
-    <!-- Gender -->
-    <div class="form-group gender-group">
-      <label>Gender</label>
-      <div class="gender-options">
-        <label
-          ><input type="radio" name="gender" value="male" checked /> Male</label
-        >
-        <label
-          ><input type="radio" name="gender" value="female" /> Female</label
-        >
-        <label
-          ><input type="radio" name="gender" value="non-binary" />
-          Non-binary</label
-        >
+      <div class="action-buttons">
+        <button type="button" class="btn-secondary" (click)="cancel()">
+          Cancel
+        </button>
+        <button type="submit" class="btn-primary">Save Changes</button>
       </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="action-buttons">
-      <button type="button" class="btn-secondary">Cancel</button>
-      <button type="submit" class="btn-primary">Save Changes</button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>

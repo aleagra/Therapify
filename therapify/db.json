@@ -2,13 +2,15 @@
   "users": [
     {
       "id": "1",
-      "firstName": "Alicia",
+      "firstName": "Aliciaa",
       "lastName": "Vikand",
       "email": "admin@therapify.com",
       "companyName": "Therapify",
-      "password": "Admin1234",
+      "password": "alejandro",
       "confirmPassword": "Admin1234",
-      "userType": "administrador"
+      "userType": "administrador",
+      "address": "Italia 3763",
+      "gender": "female"
     },
     {
       "id": "4c45",
@@ -17,7 +19,15 @@
       "email": "da1sdad2as3das@gmail.com",
       "password": "alejandro",
       "confirmPassword": "alejandro",
-      "userType": "doctor"
+      "userType": "doctor",
+      "schedule": {
+        "monday": true,
+        "tuesday": true,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true
+      },
+      "description": "hola"
     },
     {
       "id": "b974",
@@ -27,6 +37,15 @@
       "password": "alejandro",
       "confirmPassword": "alejandro",
       "userType": "administrador"
+    },
+    {
+      "id": "1a00",
+      "firstName": "juan",
+      "lastName": "fdsadsa",
+      "email": "admin@therapify.coma",
+      "password": "alejandro",
+      "confirmPassword": "alejandro",
+      "userType": "paciente"
     }
   ]
 }
