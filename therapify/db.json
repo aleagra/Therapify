@@ -55,7 +55,6 @@
       "password": "mariana123",
       "confirmPassword": "mariana123",
       "userType": "doctor",
-
       "schedule": {
         "monday": true,
         "tuesday": true,
@@ -63,14 +62,35 @@
         "thursday": true,
         "friday": true
       },
-
       "availability": {
-        "monday": ["10:00", "11:00", "12:00", "14:00", "15:00"],
-        "tuesday": ["09:00", "10:00", "11:00", "13:00", "14:00"],
-        "thursday": ["08:00", "09:00", "10:00", "11:00", "15:00"],
-        "friday": ["09:00", "10:00", "11:00", "12:00"]
+        "monday": [
+          "10:00",
+          "11:00",
+          "12:00",
+          "14:00",
+          "15:00"
+        ],
+        "tuesday": [
+          "09:00",
+          "10:00",
+          "11:00",
+          "13:00",
+          "14:00"
+        ],
+        "thursday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "15:00"
+        ],
+        "friday": [
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00"
+        ]
       },
-
       "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes."
     },
     {
@@ -227,5 +247,51 @@
       "description": "Psicólogo especializado en terapia de grupo y desarrollo de habilidades sociales."
     }
   ],
-  "appointments": []
+  "appointments": [
+    {
+      "id": "67e0",
+      "patientId": "4c45",
+      "date": "2025-11-14",
+      "startTime": "10:00",
+      "endTime": "14:00",
+      "status": "pending",
+      "createdAt": "2025-11-13T23:12:18.504Z"
+    },
+    {
+      "id": "b05b",
+      "patientId": "4c45",
+      "date": "2025-11-13",
+      "startTime": "09:00",
+      "endTime": "13:00",
+      "status": "pending",
+      "createdAt": "2025-11-13T23:16:58.942Z"
+    },
+    {
+      "id": "cdc5",
+      "patientId": "4c45",
+      "date": "2025-11-13",
+      "startTime": "10:00",
+      "endTime": "14:00",
+      "status": "pending",
+      "createdAt": "2025-11-13T23:17:07.630Z"
+    },
+    {
+      "id": "6e32",
+      "patientId": "4c45",
+      "date": "2025-11-13",
+      "startTime": "15:00",
+      "endTime": "19:00",
+      "status": "pending",
+      "createdAt": "2025-11-13T23:19:57.104Z"
+    },
+    {
+      "id": "c706",
+      "patientId": "4c45",
+      "date": "2025-11-13",
+      "startTime": "08:00",
+      "endTime": "12:00",
+      "status": "pending",
+      "createdAt": "2025-11-13T23:21:52.679Z"
+    }
+  ]
 }

@@ -1,12 +1,17 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
-  FormBuilder,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
+import {
+  ReactiveFormsModule,
   FormGroup,
   Validators,
-  ReactiveFormsModule,
+  FormBuilder,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -16,6 +21,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+
+import { AppointmentService } from '../services/appointments.service';
+import { UserService } from '../services/user.service';
+import { Appointment } from '../../types/appointments';
 
 @Component({
   selector: 'app-calendar',
@@ -39,21 +48,24 @@ import { MatInputModule } from '@angular/material/input';
 export class CalendarComponent implements OnChanges {
   @Input() schedule: { [dia: string]: boolean } | undefined;
   @Input() availability: { [dia: string]: string[] } | undefined;
+  @Input() doctorId!: string;
+
+  fb = inject(FormBuilder);
+  userService = inject(UserService);
+  appointmentsService = inject(AppointmentService);
+
+  userLogged = this.userService.getLoggedUser();
 
   diasHabilitados: number[] = [];
   horariosDisponibles: string[] = [];
+  horariosOcupados: string[] = [];
 
-  minDate: Date;
-  citaForm: FormGroup;
+  minDate: Date = new Date();
 
-  constructor(private fb: FormBuilder) {
-    this.citaForm = this.fb.group({
-      fecha: [null, Validators.required],
-      hora: ['', Validators.required],
-    });
-
-    this.minDate = new Date();
-  }
+  citaForm: FormGroup = this.fb.group({
+    fecha: [null, Validators.required],
+    hora: ['', Validators.required],
+  });
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['schedule'] && this.schedule) {
@@ -61,7 +73,7 @@ export class CalendarComponent implements OnChanges {
     }
   }
 
-  private mapearDiasHabilitados(): void {
+  private mapearDiasHabilitados() {
     if (!this.schedule) {
       this.diasHabilitados = [];
       return;
@@ -78,26 +90,18 @@ export class CalendarComponent implements OnChanges {
     };
 
     this.diasHabilitados = Object.keys(this.schedule)
-      .filter((dia) => this.schedule?.[dia])
-      .map((dia) => mapaDias[dia.toLowerCase()]);
-
-    console.log('Días habilitados:', this.diasHabilitados);
+      .filter((d) => this.schedule?.[d])
+      .map((d) => mapaDias[d]);
   }
 
   filtroDeDias = (d: Date | null): boolean => {
     if (!d) return false;
-    if (!this.schedule) return true;
-    if (!this.diasHabilitados || this.diasHabilitados.length === 0) return true;
-
-    const day = d.getDay();
-    return this.diasHabilitados.includes(day);
+    if (this.diasHabilitados.length === 0) return true;
+    return this.diasHabilitados.includes(d.getDay());
   };
 
   onFechaSeleccionada(fecha: Date | null): void {
-    if (!fecha || !this.availability) {
-      this.horariosDisponibles = [];
-      return;
-    }
+    if (!fecha || !this.availability) return;
 
     const dias = [
       'sunday',
@@ -110,16 +114,54 @@ export class CalendarComponent implements OnChanges {
     ];
 
     const diaString = dias[fecha.getDay()];
+    const fechaISO = fecha.toISOString().split('T')[0];
 
-    this.horariosDisponibles = this.availability[diaString] || [];
-    this.citaForm.get('hora')?.setValue('');
+    this.horariosDisponibles = [...(this.availability[diaString] || [])];
+
+    this.appointmentsService
+      .getAppointmentsByDoctorAndDate(this.doctorId, fechaISO)
+      .subscribe((appointments) => {
+        this.horariosOcupados = appointments.map((a) => a.startTime);
+
+        this.horariosDisponibles = this.horariosDisponibles.filter(
+          (h) => !this.horariosOcupados.includes(h)
+        );
+
+        this.citaForm.get('hora')?.setValue('');
+      });
   }
 
-  confirmarReserva(): void {
-    if (this.citaForm.valid) {
-      console.log('Formulario Enviado:', this.citaForm.value);
-    } else {
-      console.log('Formulario inválido. Por favor complete todos los campos.');
-    }
+  calcularFin(hora: string): string {
+    const [h, m] = hora.split(':').map(Number);
+    const date = new Date();
+    date.setHours(h + 1, m);
+    return date.toISOString().substring(11, 16);
+  }
+
+  reservaConfirmada = false;
+
+  confirmarReserva() {
+    if (this.citaForm.invalid || !this.userLogged) return;
+
+    const fecha = this.citaForm.get('fecha')!.value;
+    const hora = this.citaForm.get('hora')!.value;
+
+    const appointment: Omit<Appointment, 'id'> = {
+      doctorId: this.doctorId,
+      patientId: this.userLogged.id,
+      date: fecha.toISOString().split('T')[0],
+      startTime: hora,
+      endTime: this.calcularFin(hora),
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
+
+    this.appointmentsService.createAppointment(appointment).subscribe(() => {
+      console.log('Turno creado!');
+      this.reservaConfirmada = true;
+
+      // 🔒 Bloquear el formulario para evitar cambios
+      this.citaForm.disable();
+    });
   }
 }
