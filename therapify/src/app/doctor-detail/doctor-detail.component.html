@@ -1,0 +1,20 @@
+<div class="doctor-detail" *ngIf="doctor$ | async as doctor">
+  <div class="header">
+    <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
+    <p class="specialty"></p>
+  </div>
+
+  <div class="description">
+    <p>{{ doctor.description }}</p>
+  </div>
+
+  <div class="schedule">
+    <h3>Atiende:</h3>
+    <div class="chips">
+      @for (dia of doctor.schedule | keyvalue; track dia.key) { @if (dia.value)
+      {
+      <span class="chip">{{ dia.key | titlecase }}</span>
+      } }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,124 @@
+.doctor-detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background-color: #f7f8fc;
+}
+
+.doctor-detail-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: row;
+  max-width: 900px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.doctor-detail-card:hover {
+  transform: translateY(-3px);
+}
+
+.doctor-photo {
+  width: 50%;
+  object-fit: cover;
+  background: #eaeaea;
+}
+
+.doctor-info {
+  padding: 2rem;
+  flex: 1;
+}
+
+.doctor-name {
+  font-size: 1.8rem;
+  color: #20252f;
+  margin-bottom: 0.3rem;
+}
+
+.specialty {
+  color: #2a47b5;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.chips {
+  display: flex;
+  gap: 1rem;
+}
+
+.schedule {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.chip {
+  display: inline-block;
+  background: #e5edff;
+  color: #2a47b5;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.chip:hover {
+  background: #2a47b5;
+  color: white;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.reserve-btn {
+  background-color: #2a47b5;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.reserve-btn:hover {
+  background-color: #1e3290;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .doctor-detail-card {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .doctor-photo {
+    width: 100%;
+    height: 280px;
+  }
+
+  .doctor-info {
+    padding: 1.5rem;
+  }
+
+  .doctor-name {
+    font-size: 1.5rem;
+  }
+}
