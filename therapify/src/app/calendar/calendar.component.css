@@ -1,0 +1,294 @@
+/* --- ESTILOS GLOBALES BASE (desde styles.css) --- */
+/* Asegúrate de que tu styles.css tenga:
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Inter:wght@400;500&display=swap');
+body { font-family: 'Inter', sans-serif; color: #2C3E50; }
+h1, h2, h3, .mat-card-title { font-family: 'Poppins', sans-serif; }
+*/
+
+/* --- CONTENEDOR PRINCIPAL DEL COMPONENTE --- */
+.agendar-outer-wrapper {
+  background-color: #f8f8f8; /* Fondo suave fuera de la tarjeta principal */
+  min-height: calc(
+    100vh - 64px
+  ); /* Altura mínima (ej: 100vh - altura del header) */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinea arriba en vertical */
+  padding: 2rem 0;
+}
+
+.agendar-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem; /* Aumentamos el espacio entre columnas */
+  padding: 2.5rem;
+  background-color: #fff; /* Fondo blanco para la tarjeta principal */
+  border-radius: 20px; /* Bordes muy redondeados */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  max-width: 900px; /* Ancho máximo según la imagen */
+  width: 95%; /* Responsive */
+  margin: auto;
+}
+
+/* --- ESTILOS DE TIPOGRAFÍA GENERALES EN EL COMPONENTE --- */
+.title-primary {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.title-secondary {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* --- COLUMNAS (LAYOUT) --- */
+.selector-columna {
+  flex: 1.5; /* Más ancho para el calendario */
+  min-width: 320px;
+  max-width: 500px;
+}
+
+.resumen-columna {
+  flex: 1; /* Columna de resumen más estrecha */
+  min-width: 280px;
+  align-self: flex-start;
+}
+
+/* --- CALENDARIO (SOBREESCRITURAS CON ::ng-deep) --- */
+/* Ocultamos el input asociado para que solo se vea el datepicker */
+.custom-datepicker .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+.custom-datepicker .mat-mdc-form-field-flex {
+  display: none;
+}
+
+/* Estilo general del calendario */
+:host ::ng-deep .mat-calendar {
+  width: 100%;
+  border-radius: 12px; /* Bordes redondeados para el calendario */
+  font-family: "Inter", sans-serif;
+  box-shadow: none; /* Quitamos la sombra por defecto */
+}
+
+/* Cabecera del calendario (Mes y Año) */
+:host ::ng-deep .mat-calendar-header {
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+:host ::ng-deep .mat-calendar-content {
+  padding: 0 0.5rem 0.5rem 0.5rem; /* Ajustamos padding del contenido */
+}
+
+/* Botones de navegación (mes anterior/siguiente) */
+:host ::ng-deep .mat-calendar-arrow {
+  color: #0077b6; /* Color primario */
+}
+:host ::ng-deep .mat-calendar-period-button {
+  font-weight: 600; /* Mes y Año en negrita */
+  color: #2c3e50;
+}
+
+/* Días de la semana (Sun, Mon, etc.) */
+:host ::ng-deep .mat-calendar-table-header th {
+  padding: 0.5rem 0;
+  color: #6c757d; /* Gris más suave */
+  font-size: 0.85rem;
+}
+
+/* Celdas de días del calendario */
+:host ::ng-deep .mat-calendar-body-cell-content {
+  width: 36px; /* Tamaño del círculo de día */
+  height: 36px;
+  line-height: 36px;
+  border-radius: 50%; /* Hacemos los días circulares */
+  color: #2c3e50;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+/* Días activos (con contenido) */
+:host
+  ::ng-deep
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+  background-color: #e0f2f7; /* Hover suave */
+}
+
+/* Día seleccionado */
+:host ::ng-deep .mat-calendar-body-selected {
+  background-color: #0077b6 !important; /* Azul Therapify */
+  color: #fff !important;
+}
+
+/* Día de hoy (sin seleccionar) */
+:host ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #0077b6; /* Borde azul para hoy */
+  border-width: 1px;
+}
+/* Días deshabilitados */
+:host ::ng-deep .mat-calendar-body-disabled {
+  color: #ccc !important;
+}
+
+/* --- HORARIOS (BUTTON TOGGLE) --- */
+.horario-selector {
+  margin-top: 2rem;
+}
+
+.horario-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.horarios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas como en la imagen */
+  gap: 0.75rem;
+  width: 100%; /* Asegura que la grilla ocupe el espacio */
+}
+
+/* Estilo de los botones de toggle */
+:host ::ng-deep .mat-button-toggle-button {
+  border: 1px solid #add8e6; /* Borde azul claro */
+  background-color: #fff;
+  color: #0077b6; /* Texto azul */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 0.75rem 0; /* Padding interno */
+  min-width: unset; /* Quitar ancho mínimo por defecto */
+  height: auto;
+  line-height: normal;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .mat-button-toggle-button:hover {
+  background-color: #e0f2f7; /* Hover suave */
+}
+
+/* Estilo para el botón de hora seleccionado */
+:host ::ng-deep .mat-button-toggle-checked {
+  background-color: #0077b6 !important; /* Azul Therapify */
+  color: #fff !important;
+  border-color: #0077b6 !important;
+  box-shadow: 0 2px 8px rgba(0, 119, 182, 0.3); /* Sombra para destacar */
+}
+
+/* --- RESUMEN DE LA CITA --- */
+.terapeuta-info-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8fcfd; /* Fondo muy claro para la tarjeta del terapeuta */
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0f2f7; /* Borde sutil */
+}
+
+.terapeuta-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0077b6; /* Borde del avatar */
+}
+
+.terapeuta-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.terapeuta-title {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.cita-details-card {
+  background-color: #f8fcfd;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0f2f7;
+}
+
+.cita-details-card p {
+  margin: 0.75rem 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+.cita-details-card p strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.detalle-cita {
+  background-color: wheat;
+}
+
+/* Botón de Confirmar */
+.confirmar-button {
+  background-color: #0077b6 !important; /* Azul Therapify */
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 1rem 1.5rem !important;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+}
+
+/* Nota de Confidencialidad */
+.nota-confidencialidad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+.nota-confidencialidad .lock-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #6c757d;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .agendar-container {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  .selector-columna,
+  .resumen-columna {
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
+  }
+  .horarios-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(120px, 1fr)
+    ); /* Más flexible en móvil */
+  }
+}

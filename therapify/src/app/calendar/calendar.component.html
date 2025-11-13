@@ -1,0 +1,99 @@
+<div
+  class="agendar-container"
+  [formGroup]="citaForm"
+  (ngSubmit)="confirmarReserva()"
+>
+  <div class="selector-columna">
+    <h2>Agendar Sesión</h2>
+    <p>Selecciona una fecha y una hora disponible para tu sesión.</p>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha de la Cita</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="fecha"
+        [min]="minDate"
+        [matDatepickerFilter]="filtroDeFinesDeSemana"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="citaForm.get('fecha')?.hasError('required')">
+        Debes seleccionar una fecha.
+      </mat-error>
+    </mat-form-field>
+
+    <div class="horario-selector">
+      <label class="horario-label">Horarios Disponibles (Hora Local)</label>
+
+      <mat-button-toggle-group
+        class="horarios-grid"
+        aria-label="Seleccionar Horario"
+        formControlName="hora"
+      >
+        <mat-button-toggle
+          *ngFor="let hora of horariosDeEjemplo"
+          [value]="hora"
+        >
+          {{ hora }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-error
+        *ngIf="
+          citaForm.get('hora')?.touched &&
+          citaForm.get('hora')?.hasError('required')
+        "
+        class="mat-error-standalone"
+      >
+        Debes seleccionar una hora.
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="resumen-columna">
+    <mat-card class="detalle-cita" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Resumen de la Reserva</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="detalle-cita">
+        <div class="detalle-cita">
+          <p>
+            Fecha:
+            <strong>{{
+              (citaForm.get("fecha")?.value
+                | date : "mediumDate" : "" : "es") || "[Selecciona fecha]"
+            }}</strong>
+          </p>
+          <p>
+            Hora:
+            <strong>{{
+              citaForm.get("hora")?.value || "[Selecciona hora]"
+            }}</strong>
+          </p>
+          <p>Modalidad: <strong>Videollamada</strong></p>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="costo-total">
+          <p>Costo Total:</p>
+          <p class="precio"><strong>$75 USD</strong></p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          class="full-width"
+          type="submit"
+          [disabled]="citaForm.invalid"
+        >
+          Confirmar Reserva
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
