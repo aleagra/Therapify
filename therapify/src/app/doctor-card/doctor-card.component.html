@@ -1,0 +1,15 @@
+<div class="doctor-card" (click)="onClick()">
+  <div class="info">
+    <h3>{{ doctor().firstName }} {{ doctor().lastName }}</h3>
+    <p class="dias">Atiende:</p>
+
+    <div class="schedule">
+      @for (dia of doctor().schedule | keyvalue; track dia.key) { @if
+      (dia.value) {
+      <span class="chip">{{ dia.key | titlecase }}</span>
+      } }
+    </div>
+
+    <p class="descripcion">{{ doctor().description }}</p>
+  </div>
+</div>

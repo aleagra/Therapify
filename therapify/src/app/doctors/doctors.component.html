@@ -1,0 +1,9 @@
+<h1>Psicologos disponibles</h1>
+<div class="doctores-container">
+  @for (doctor of doctors(); track doctor.id) {
+  <app-doctor-card
+    [doctor]="doctor"
+    (navigate)="goToDetail($event)"
+  ></app-doctor-card>
+  }
+</div>

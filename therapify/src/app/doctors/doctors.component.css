@@ -1,0 +1,65 @@
+.doctores-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+h1 {
+  padding: 0 2rem;
+  font-size: 2.5rem;
+  text-align: left;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: #20252f;
+  font-weight: 600;
+}
+
+/* 🧩 Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+  .doctores-container {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    padding: 0 1.5rem;
+  }
+}
+
+/* 📱 Celulares medianos (entre 481px y 768px) */
+@media (max-width: 768px) {
+  .doctores-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    text-align: center;
+    padding: 0 1rem;
+  }
+}
+
+/* 📲 Celulares pequeños (≤480px) */
+@media (max-width: 480px) {
+  .doctores-container {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .doctor-card {
+    max-width: 100% !important;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0 0.75rem;
+  }
+}
