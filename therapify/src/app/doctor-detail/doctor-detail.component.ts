@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AsyncPipe, NgIf, KeyValuePipe, TitleCasePipe } from '@angular/common';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 @Component({
   selector: 'app-doctor-detail',
   standalone: true,
-  imports: [AsyncPipe, NgIf, KeyValuePipe, TitleCasePipe],
+  imports: [AsyncPipe, NgIf, KeyValuePipe, TitleCasePipe, CalendarComponent],
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css'],
 })

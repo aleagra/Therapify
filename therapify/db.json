@@ -55,6 +55,7 @@
       "password": "mariana123",
       "confirmPassword": "mariana123",
       "userType": "doctor",
+
       "schedule": {
         "monday": true,
         "tuesday": true,
@@ -62,6 +63,14 @@
         "thursday": true,
         "friday": true
       },
+
+      "availability": {
+        "monday": ["10:00", "11:00", "12:00", "14:00", "15:00"],
+        "tuesday": ["09:00", "10:00", "11:00", "13:00", "14:00"],
+        "thursday": ["08:00", "09:00", "10:00", "11:00", "15:00"],
+        "friday": ["09:00", "10:00", "11:00", "12:00"]
+      },
+
       "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes."
     },
     {
@@ -217,5 +226,6 @@
       },
       "description": "Psicólogo especializado en terapia de grupo y desarrollo de habilidades sociales."
     }
-  ]
+  ],
+  "appointments": []
 }

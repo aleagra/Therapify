@@ -6,9 +6,11 @@ export interface User {
   companyName?: string;
   password: string;
   confirmPassword: string;
-  userType: String;
+  userType: string;
   gender?: string;
   address?: string;
+
+  // Días que atiende
   schedule?: {
     monday: boolean;
     tuesday: boolean;
@@ -16,5 +18,15 @@ export interface User {
     thursday: boolean;
     friday: boolean;
   };
+
+  // NUEVO — Horas disponibles por día (formato "HH:mm")
+  availability?: {
+    monday?: string[];
+    tuesday?: string[];
+    wednesday?: string[];
+    thursday?: string[];
+    friday?: string[];
+  };
+
   description?: string;
 }
