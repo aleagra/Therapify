@@ -12,8 +12,34 @@ export class UserService {
   apiUrl = 'http://localhost:3000/users';
   localKey = 'userLogged';
 
-  // Crear usuario
   postUser(user: Omit<User, 'id'>): Observable<User> {
+    // Si el usuario es doctor, seteamos schedule y availability
+    if (user.userType === 'doctor') {
+      // Seteamos todos los días en true
+      user.schedule = {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+      };
+
+      // Generamos la disponibilidad de 08 a 17
+      const hours: string[] = [];
+      for (let h = 8; h <= 17; h++) {
+        const hourStr = h.toString().padStart(2, '0') + ':00';
+        hours.push(hourStr);
+      }
+
+      user.availability = {
+        monday: [...hours],
+        tuesday: [...hours],
+        wednesday: [...hours],
+        thursday: [...hours],
+        friday: [...hours],
+      };
+    }
+
     return this.http.post<User>(this.apiUrl, user).pipe(
       catchError((err) => {
         console.error('Error al crear el usuario:', err);
