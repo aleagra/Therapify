@@ -12,7 +12,6 @@ export class UserService {
   apiUrl = 'http://localhost:3000/users';
   localKey = 'userLogged';
 
-  // Signal para estado de login reactivo
   isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
 
   postUser(user: Omit<User, 'id'>): Observable<User> {
@@ -73,7 +72,7 @@ export class UserService {
           const user = users[0];
           console.log('Usuario logueado:', user);
           localStorage.setItem(this.localKey, JSON.stringify(user));
-          this.isLoggedSignal.set(true); // actualizar signal
+          this.isLoggedSignal.set(true);
           return user;
         } else {
           console.warn('Credenciales inválidas');
@@ -95,7 +94,7 @@ export class UserService {
   logout(): void {
     localStorage.removeItem(this.localKey);
     console.log('Sesión cerrada');
-    this.isLoggedSignal.set(false); // actualizar signal
+    this.isLoggedSignal.set(false);
   }
 
   isLoggedIn(): boolean {

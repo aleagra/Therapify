@@ -4,7 +4,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
   width: 100%;
   max-width: 320px;
   box-sizing: border-box;
@@ -70,12 +70,12 @@
 }
 .btn-reviews {
   display: inline-block;
-  background: #2a47b5; /* color principal similar al chip hover */
-  color: #ffffff; /* texto blanco */
+  background: #2a47b5;
+  color: #ffffff;
   font-weight: 600;
   font-size: 0.9rem;
   padding: 0.6rem 1.2rem;
-  border-radius: 12px; /* redondeado, similar al card */
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -84,11 +84,10 @@
 }
 
 .btn-reviews:hover {
-  background: #1f358f; /* un azul más oscuro al pasar el mouse */
+  background: #1f358f;
   transform: translateY(-2px);
 }
 
-/* === Ajustes responsive === */
 @media (max-width: 480px) {
   .doctor-card {
     padding: 1rem;

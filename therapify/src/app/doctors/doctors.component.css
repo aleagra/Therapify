@@ -16,8 +16,6 @@ h1 {
   color: #20252f;
   font-weight: 600;
 }
-
-/* --- Buscador --- */
 .search-input {
   display: block;
   width: calc(100% - 4rem);
@@ -26,7 +24,7 @@ h1 {
   border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .search-input:focus {
@@ -35,7 +33,6 @@ h1 {
   box-shadow: 0 0 0 2px rgba(42, 71, 181, 0.2);
 }
 
-/* --- Contenedor de filtros --- */
 .day-filter-container {
   padding: 0 2rem 1rem 2rem;
   margin-bottom: 1rem;
@@ -48,7 +45,6 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
-/* --- Botones de días --- */
 .day-filters {
   display: flex;
   gap: 0.5rem;
@@ -72,7 +68,6 @@ h1 {
   color: #fff;
 }
 
-/* --- Tablets y pantallas medianas --- */
 @media (max-width: 1024px) {
   .doctores-container {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -89,7 +84,6 @@ h1 {
   }
 }
 
-/* 📱 Celulares medianos */
 @media (max-width: 768px) {
   .doctores-container {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -112,7 +106,6 @@ h1 {
   }
 }
 
-/* 📲 Celulares pequeños */
 @media (max-width: 480px) {
   .doctores-container {
     grid-template-columns: 1fr;

@@ -18,7 +18,6 @@ export class DoctorCardComponent {
     this.navigate.emit(this.doctor().id);
   }
   goToReviews(doctorId: string) {
-    // Navega al componente de reseñas pasando el doctorId
     this.router.navigate(['/reviews', doctorId]);
   }
 }

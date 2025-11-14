@@ -6,17 +6,16 @@
   box-sizing: border-box;
 }
 
-/* Cada sección como tarjeta con sombra */
 .review-form-section,
 .review-list-section {
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* sombra más pronunciada por fila */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   padding: 2rem;
   width: 100%;
 
   box-sizing: border-box;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .form {
@@ -25,11 +24,10 @@
   gap: 1rem;
 }
 
-/* Títulos en azul y con la misma fuente que doctores */
 h3 {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  color: #2a47b5; /* mismo azul que chips y botones */
+  color: #2a47b5;
   margin-bottom: 1.5rem;
 }
 .form-actions {
@@ -42,7 +40,6 @@ h3 {
   display: block;
 }
 
-/* Inputs y textarea */
 .form-group input,
 .form-group textarea {
   width: 100%;
@@ -62,7 +59,6 @@ h3 {
   outline: none;
 }
 
-/* Botones */
 .form-actions button[type="submit"] {
   background-color: #2a47b5;
   color: #fff;
@@ -71,7 +67,7 @@ h3 {
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .form-actions button[type="submit"]:hover {
@@ -79,21 +75,20 @@ h3 {
 }
 
 .button-secondary {
-  background-color: #2a47b5; /* mismo azul */
+  background-color: #2a47b5;
   border-radius: 20px;
   border: none;
   color: #fff;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .button-secondary:hover {
   background-color: #1f357f;
 }
 
-/* Tarjetas de reseña */
 .review-card {
   border: 2px solid #2a47b5;
   border-radius: 12px;
@@ -104,7 +99,6 @@ h3 {
   gap: 1rem;
 }
 
-/* Header de la reseña: valoracion a la izquierda, acciones a la derecha */
 .review-header {
   display: flex;
   justify-content: space-between;
@@ -112,7 +106,6 @@ h3 {
   flex-wrap: wrap;
 }
 
-/* Valoracion en azul */
 .review-stars {
   font-weight: 600;
   color: #2a47b5;
@@ -120,7 +113,6 @@ h3 {
   font-family: "Poppins", sans-serif;
 }
 
-/* Botones de acciones */
 .review-actions {
   display: flex;
   gap: 0.5rem;
@@ -136,7 +128,7 @@ h3 {
   border-radius: 20px;
   border: 1px solid currentColor;
   padding: 0.75rem 1rem;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 .button-delete {
   color: white;
@@ -147,7 +139,6 @@ h3 {
   background-color: #31c21e;
 }
 
-/* Comentario con texto más grande */
 .review-comment {
   font-size: 1rem;
   line-height: 1.6;
@@ -155,14 +146,12 @@ h3 {
   margin: 0;
 }
 
-/* Mensaje vacío */
 .empty-state {
   color: #6c757d;
   padding: 2rem 0;
   font-style: italic;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .reviews-grid-container {
     grid-template-columns: 1fr;

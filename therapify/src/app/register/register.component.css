@@ -103,7 +103,7 @@ input:focus {
   height: 10px;
   background-color: #d1d5db;
   border-radius: 50%;
-  transition: 0.3s;
+  transition: all 0.3s;
 }
 
 .progress span.active {

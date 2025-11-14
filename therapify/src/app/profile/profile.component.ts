@@ -86,7 +86,6 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    // Traemos el usuario completo desde la base de datos
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
         if (!res) {
@@ -94,7 +93,6 @@ export class ProfileComponent implements OnInit {
           return;
         }
 
-        // Aseguramos que todos los campos obligatorios tengan valor
         this.user = {
           id: res.id ?? '',
           email: res.email ?? '',
@@ -110,8 +108,6 @@ export class ProfileComponent implements OnInit {
           schedule: res.schedule ?? undefined,
           availability: res.availability ?? undefined,
         };
-
-        // Patch profile (después de que user esté definido)
         this.formProfile.patchValue({
           firstName: this.user.firstName,
           lastName: this.user.lastName,
@@ -119,12 +115,9 @@ export class ProfileComponent implements OnInit {
           gender: this.user.gender,
         });
 
-        // Patch schedule solo si es doctor
         if (this.user.userType === 'doctor') {
           this.patchScheduleForm();
         }
-
-        // Suscripción para toggle de días
         this.weekDays.forEach((day) => {
           this.formSchedule
             .get(day.control)
@@ -154,7 +147,6 @@ export class ProfileComponent implements OnInit {
       const key = day.control;
       const isScheduled = this.user.schedule?.[key] ?? true;
 
-      // Si no hay disponibilidad o tiene menos de 2 elementos, usar valores por defecto
       const dayAvailability = this.user.availability?.[key];
       const start = dayAvailability?.[0] ?? '08:00';
       const end = dayAvailability?.[dayAvailability.length - 1] ?? '17:00';
@@ -266,7 +258,7 @@ export class ProfileComponent implements OnInit {
         this.loading = false;
         alert('Horario médico actualizado correctamente ✅');
         this.user = res;
-        this.patchScheduleForm(); // refresca inputs con los datos guardados
+        this.patchScheduleForm();
       },
       error: (err) => {
         this.loading = false;

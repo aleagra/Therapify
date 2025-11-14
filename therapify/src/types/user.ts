@@ -9,8 +9,6 @@ export interface User {
   userType: string;
   gender?: string;
   address?: string;
-
-  // Días que atiende
   schedule?: {
     monday: boolean;
     tuesday: boolean;
@@ -18,8 +16,6 @@ export interface User {
     thursday: boolean;
     friday: boolean;
   };
-
-  // NUEVO — Horas disponibles por día (formato "HH:mm")
   availability?: {
     monday?: string[];
     tuesday?: string[];
@@ -27,6 +23,5 @@ export interface User {
     thursday?: string[];
     friday?: string[];
   };
-
   description?: string;
 }

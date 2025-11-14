@@ -27,7 +27,6 @@ export class TurnosComponent implements OnInit {
     this.userService.getUsers().subscribe((users) => {
       this.todosLosUsuarios.set(users || []);
 
-      // Actualizar vencidos → luego cargar turnos
       this.actualizarTurnosVencidos();
     });
   }
@@ -76,14 +75,10 @@ export class TurnosComponent implements OnInit {
       });
   }
 
-  // -------------------------------------------------
-  // MARCAR TURNOS VENCIDOS (SIN FILTRAR POR USUARIO)
-  // -------------------------------------------------
   private actualizarTurnosVencidos(): void {
     this.appointmentService.getAppointments().subscribe((appointments) => {
       const ahora = new Date();
 
-      // SOLO vence si la fecha + endTime está en el pasado
       const vencidos = (appointments || []).filter((ap) => {
         const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
         return fechaCompleta < ahora && ap.status !== 'completed';

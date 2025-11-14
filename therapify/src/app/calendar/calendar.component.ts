@@ -134,8 +134,8 @@ export class CalendarComponent implements OnChanges {
   calcularFin(hora: string): string {
     const [h, m] = hora.split(':').map(Number);
     const endDate = new Date();
-    endDate.setHours(h, m); // Hora de inicio
-    endDate.setHours(endDate.getHours() + 1); // +1 hora
+    endDate.setHours(h, m);
+    endDate.setHours(endDate.getHours() + 1);
     const hh = endDate.getHours().toString().padStart(2, '0');
     const mm = endDate.getMinutes().toString().padStart(2, '0');
     return `${hh}:${mm}`;
@@ -144,11 +144,8 @@ export class CalendarComponent implements OnChanges {
 
   confirmarReserva() {
     if (this.citaForm.invalid || !this.userLogged || !this.doctorId) return;
-
     const fechaRaw = this.citaForm.get('fecha')!.value;
     const hora = this.citaForm.get('hora')!.value;
-
-    // Convertir fecha según el tipo de valor
     const fecha = fechaRaw instanceof Date ? fechaRaw : new Date(fechaRaw);
 
     const appointment: Omit<Appointment, 'id'> = {

@@ -5,7 +5,6 @@
   font-family: "Inter", sans-serif;
 }
 
-/* ====== PANEL IZQUIERDO ====== */
 .left-panel {
   flex: 1;
   background-color: #fff;
@@ -46,7 +45,6 @@
   margin-bottom: 1rem;
 }
 
-/* ====== FORMULARIO ====== */
 .form {
   padding: 1rem 2rem;
   display: flex;
@@ -97,7 +95,7 @@ input:focus {
   font-weight: 600;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .register {
@@ -116,7 +114,6 @@ input:focus {
   text-decoration: underline;
 }
 
-/* ====== PANEL DERECHO ====== */
 .right-panel {
   flex: 1;
   background-color: #f9fafb;
@@ -148,7 +145,6 @@ input:focus {
   font-size: 0.9rem;
 }
 
-/* ====== RESPONSIVE ====== */
 @media (min-width: 768px) {
   .container {
     padding: 0;

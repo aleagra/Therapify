@@ -20,7 +20,7 @@ import { User } from '../../types/user';
 export class ReviewsComponent implements OnInit {
   @Input() doctorId!: string;
   reviews: Reviews[] = [];
-  users: User[] = []; // lista de todos los usuarios
+  users: User[] = [];
 
   isEditing = false;
   reviewToEditId: string | null = null;
@@ -45,8 +45,6 @@ export class ReviewsComponent implements OnInit {
       }
       this.doctorId = idFromRoute;
     }
-
-    // Traemos todos los usuarios para mostrar el nombre completo
     this.userService.getUsers().subscribe((data) => {
       this.users = data;
     });

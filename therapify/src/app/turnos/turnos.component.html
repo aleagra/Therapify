@@ -1,7 +1,5 @@
 <div class="appointments-container">
-  <!-- MIS TURNOS -->
   <h3>Mis Turnos</h3>
-
   @if (misTurnos().length === 0) {
   <div class="empty-state">No tenés turnos reservados.</div>
   } @for (ap of misTurnos(); track ap.id) {
@@ -39,7 +37,6 @@
       </span>
     </div>
 
-    <!-- BOTÓN CONFIRMAR SOLO SI ES DOCTOR Y EL TURNO ESTÁ PENDIENTE -->
     @if (userLogged?.userType === 'doctor' && ap.status === 'pending') {
     <button (click)="confirmarTurno(ap.id)" class="button-confirm">
       Confirmar turno

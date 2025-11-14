@@ -10,10 +10,8 @@ import { Appointment } from '../../types/appointments';
 export class AppointmentService {
   http = inject(HttpClient);
 
-  // Ruta BASE correcta
   apiUrl = 'http://localhost:3000/appointments';
 
-  // === CREAR TURNO ===
   createAppointment(ap: Omit<Appointment, 'id'>) {
     return this.http.post<Appointment>(this.apiUrl, ap).pipe(
       catchError((err) => {
@@ -23,7 +21,6 @@ export class AppointmentService {
     );
   }
 
-  // === OBTENER TODOS LOS TURNOS ===
   getAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(this.apiUrl).pipe(
       catchError((err) => {
@@ -33,7 +30,6 @@ export class AppointmentService {
     );
   }
 
-  // === OBTENER TURNO POR ID ===
   getAppointmentById(id: string): Observable<Appointment | null> {
     return this.http.get<Appointment>(`${this.apiUrl}/${id}`).pipe(
       catchError((err) => {
@@ -43,7 +39,6 @@ export class AppointmentService {
     );
   }
 
-  // === OBTENER TURNOS POR DOCTOR ===
   getAppointmentsByDoctor(doctorId: string): Observable<Appointment[]> {
     return this.http
       .get<Appointment[]>(`${this.apiUrl}?doctorId=${doctorId}`)
@@ -55,7 +50,6 @@ export class AppointmentService {
       );
   }
 
-  // === OBTENER TURNOS POR PACIENTE ===
   getAppointmentsByPatient(patientId: string): Observable<Appointment[]> {
     return this.http
       .get<Appointment[]>(`${this.apiUrl}?patientId=${patientId}`)
@@ -67,7 +61,6 @@ export class AppointmentService {
       );
   }
 
-  // === ACTUALIZAR TURNO (GENÉRICO) ===
   updateAppointment(
     id: string,
     appointment: Partial<Appointment>
@@ -82,7 +75,6 @@ export class AppointmentService {
       );
   }
 
-  // === ELIMINAR UN TURNO ===
   deleteAppointment(id: string): Observable<boolean> {
     return this.http.delete(`${this.apiUrl}/${id}`).pipe(
       map(() => true),
@@ -93,14 +85,12 @@ export class AppointmentService {
     );
   }
 
-  // === OBTENER TURNOS POR DOCTOR + FECHA ===
   getAppointmentsByDoctorAndDate(doctorId: string, date: string) {
     return this.http.get<Appointment[]>(
       `${this.apiUrl}?doctorId=${doctorId}&date=${date}`
     );
   }
 
-  // === CAMBIAR ESTADO DEL TURNO (CONFIRMAR/CANCELAR) ===
   updateAppointmentStatus(id: string, status: string) {
     return this.http
       .patch<Appointment>(`${this.apiUrl}/${id}`, { status })

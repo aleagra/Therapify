@@ -1,6 +1,4 @@
 <h1>Psicologos disponibles</h1>
-
-<!-- Buscador -->
 <input
   type="text"
   placeholder="Buscar por nombre, apellido o especialidad..."
@@ -8,7 +6,6 @@
   class="search-input"
 />
 
-<!-- Filtros por día -->
 <div class="day-filter-container">
   <h2>Filtrar por día:</h2>
   <div class="day-filters">
@@ -23,7 +20,6 @@
   </div>
 </div>
 
-<!-- Lista de doctores -->
 <div class="doctores-container">
   @for (doctor of filteredDoctors(); track doctor.id) {
   <app-doctor-card
