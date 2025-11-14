@@ -1,0 +1,42 @@
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  width: 100%;
+}
+
+.header {
+  grid-row: 1;
+}
+
+.main-content {
+  grid-row: 2;
+  padding: 3rem 5rem;
+}
+
+.footer {
+  grid-row: 3;
+}
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+  }
+}

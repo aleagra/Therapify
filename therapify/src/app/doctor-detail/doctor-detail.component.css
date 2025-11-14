@@ -1,0 +1,97 @@
+.doctor-detail {
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.horarios-section {
+  margin-bottom: 2rem;
+}
+
+.horarios-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+  color: #20252f;
+}
+
+.session-info {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.horarios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.horarios-dia {
+  padding: 1rem;
+  border-radius: 12px;
+  background: #f6f7fb;
+  border-left: 5px solid #2a47b5;
+}
+
+.dia-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2a47b5;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  background: #e5edff;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2a47b5;
+}
+
+.hora-chip {
+  background: #dff5e3;
+  color: #2f8f4e;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .doctor-detail {
+    padding: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .dia-titulo {
+    font-size: 1rem;
+  }
+
+  .chip {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}

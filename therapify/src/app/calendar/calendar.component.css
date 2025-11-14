@@ -1,0 +1,138 @@
+.agendar-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+}
+
+.selector-columna {
+  flex: 1.4;
+  min-width: 320px;
+}
+
+.resumen-columna {
+  flex: 1;
+  min-width: 260px;
+}
+
+.selector-columna h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+mat-form-field.full-width {
+  width: 100%;
+}
+
+:host ::ng-deep .mat-mdc-form-field-flex {
+  border-radius: 12px;
+}
+
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+  padding: 0.4rem 0.8rem !important;
+}
+
+.horario-selector {
+  margin-top: 1.8rem;
+}
+
+.horario-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #2a47b5;
+}
+
+.horarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.7rem;
+}
+
+:host ::ng-deep .mat-button-toggle-button {
+  border: 1px solid #d8e3ff;
+  border-radius: 12px !important;
+  padding: 0.6rem 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #2a47b5;
+  background: #f4f7ff;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .mat-button-toggle-button:hover {
+  background: #e5edff;
+}
+
+:host ::ng-deep .mat-button-toggle-checked {
+  background: #2a47b5 !important;
+  color: #fff !important;
+  border-color: #2a47b5 !important;
+  box-shadow: 0 3px 10px rgba(42, 71, 181, 0.3);
+}
+
+.detalle-cita {
+  background: #f8f9ff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+mat-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #2a47b5;
+  font-weight: 600;
+}
+
+mat-card-content p {
+  margin: 0.7rem 0;
+  color: #333;
+}
+
+.costo-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.precio {
+  color: #2a47b5;
+  font-size: 1.2rem;
+}
+
+.confirmar-btn {
+  width: 100%;
+  background: #2a47b5 !important;
+  color: #fff !important;
+  padding: 0.9rem 1.2rem !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+}
+
+.confirmar-btn:hover {
+  background: #20368f !important;
+}
+
+.confirmar-btn.confirmado {
+  background: #4caf50 !important;
+}
+
+@media (max-width: 768px) {
+  .agendar-container {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .horarios-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}

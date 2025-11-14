@@ -1,0 +1,386 @@
+.profile-container {
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.profile-grid {
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.profile-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-header p {
+  color: #6b7280;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.double {
+  justify-content: space-between;
+}
+
+.input-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.input-field input,
+.input-field textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-field input:focus,
+.input-field textarea:focus {
+  border-color: #3086ff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(48, 134, 255, 0.2);
+}
+
+.full {
+  flex: 1 1 100%;
+}
+
+.gender-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gender-options {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.gender-options label {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background: #3086ff;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #256ad7;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.medical-form {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.medical-form h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #20252f;
+  margin-bottom: 0.5rem;
+}
+
+.medical-form p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.days-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.days-group label {
+  font-size: 1rem;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.hours-group {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.day-hours {
+  background: #f9fafb;
+  padding: 1rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  display: none;
+}
+
+.day-hours.active {
+  display: block;
+}
+
+.day-hours h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: #1f2937;
+}
+
+.hours-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.input-hour {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-hour label {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.input-hour input {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: "Poppins";
+}
+
+.hours-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.hours-container span {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.day-row:hover {
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.day-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #374151;
+  cursor: pointer;
+  flex: 0 0 150px;
+}
+
+.day-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3086ff;
+  cursor: pointer;
+}
+
+.hour-input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100px;
+  transition: all 0.2s ease;
+}
+
+.hour-input:focus {
+  border-color: #3086ff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(48, 134, 255, 0.2);
+}
+
+@media (max-width: 1024px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+
+  .medical-form {
+    margin-top: 2rem;
+  }
+
+  .profile-header h2,
+  .medical-form h3 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .double {
+    flex-direction: column;
+  }
+
+  .gender-options {
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .profile-header h2,
+  .medical-form h3 {
+    font-size: 1.5rem;
+  }
+
+  .day-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .day-checkbox {
+    flex: none;
+  }
+
+  .hours-container {
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .hour-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    width: 100%;
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 15px;
+  }
+
+  .profile-grid {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .profile-header h2,
+  .medical-form h3 {
+    font-size: 1.3rem;
+  }
+
+  .input-field input,
+  .input-field textarea,
+  .hour-input {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .form-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .hours-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hours-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .day-row {
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+  }
+}
