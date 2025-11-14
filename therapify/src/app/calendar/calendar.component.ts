@@ -133,18 +133,23 @@ export class CalendarComponent implements OnChanges {
 
   calcularFin(hora: string): string {
     const [h, m] = hora.split(':').map(Number);
-    const date = new Date();
-    date.setHours(h + 1, m);
-    return date.toISOString().substring(11, 16);
+    const endDate = new Date();
+    endDate.setHours(h, m); // Hora de inicio
+    endDate.setHours(endDate.getHours() + 1); // +1 hora
+    const hh = endDate.getHours().toString().padStart(2, '0');
+    const mm = endDate.getMinutes().toString().padStart(2, '0');
+    return `${hh}:${mm}`;
   }
-
   reservaConfirmada = false;
 
   confirmarReserva() {
-    if (this.citaForm.invalid || !this.userLogged) return;
+    if (this.citaForm.invalid || !this.userLogged || !this.doctorId) return;
 
-    const fecha = this.citaForm.get('fecha')!.value;
+    const fechaRaw = this.citaForm.get('fecha')!.value;
     const hora = this.citaForm.get('hora')!.value;
+
+    // Convertir fecha según el tipo de valor
+    const fecha = fechaRaw instanceof Date ? fechaRaw : new Date(fechaRaw);
 
     const appointment: Omit<Appointment, 'id'> = {
       doctorId: this.doctorId,
@@ -159,8 +164,6 @@ export class CalendarComponent implements OnChanges {
     this.appointmentsService.createAppointment(appointment).subscribe(() => {
       console.log('Turno creado!');
       this.reservaConfirmada = true;
-
-      // 🔒 Bloquear el formulario para evitar cambios
       this.citaForm.disable();
     });
   }

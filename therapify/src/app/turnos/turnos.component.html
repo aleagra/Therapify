@@ -1,0 +1,54 @@
+<div class="appointments-container">
+  <!-- MIS TURNOS -->
+  <h3>Mis Turnos</h3>
+
+  @if (misTurnos().length === 0) {
+  <div class="empty-state">No tenés turnos reservados.</div>
+  } @for (ap of misTurnos(); track ap.id) {
+  <div class="appointment-card">
+    <div><strong>Con:</strong> {{ getNombreCompleto(ap.doctorId) }}</div>
+
+    <div>
+      <strong>Fecha/Hora:</strong>
+      {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+    </div>
+
+    <div>
+      <strong>Estado:</strong>
+      <span class="status" [ngClass]="ap.status">
+        {{ ap.status }}
+      </span>
+    </div>
+  </div>
+  } @if (misPacientes().length > 0) {
+  <h3>Mis Pacientes</h3>
+
+  @for (ap of misPacientes(); track ap.id) {
+  <div class="appointment-card">
+    <div><strong>Paciente:</strong> {{ getNombreCompleto(ap.patientId) }}</div>
+
+    <div>
+      <strong>Fecha/Hora:</strong>
+      {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+    </div>
+
+    <div>
+      <strong>Estado:</strong>
+      <span class="status" [ngClass]="ap.status">
+        {{ ap.status }}
+      </span>
+    </div>
+
+    <!-- BOTÓN CONFIRMAR SOLO SI ES DOCTOR Y EL TURNO ESTÁ PENDIENTE -->
+    @if (userLogged?.userType === 'doctor' && ap.status === 'pending') {
+    <button (click)="confirmarTurno(ap.id)" class="button-confirm">
+      Confirmar turno
+    </button>
+    }
+
+    <button (click)="deleteAppointment(ap.id)" class="button-delete">
+      Eliminar
+    </button>
+  </div>
+  } }
+</div>

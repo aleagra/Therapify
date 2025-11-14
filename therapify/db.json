@@ -122,58 +122,34 @@
   ],
   "appointments": [
     {
-      "id": "67e0",
-      "patientId": "4c45",
-      "date": "2025-11-14",
+      "id": "0dc1",
+      "doctorId": "4c45",
+      "patientId": "1",
+      "date": "2025-11-19",
       "startTime": "10:00",
-      "endTime": "14:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:12:18.504Z"
+      "endTime": "11:00",
+      "status": "confirmed",
+      "createdAt": "2025-11-14T15:34:19.359Z"
     },
     {
-      "id": "b05b",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "09:00",
-      "endTime": "13:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:16:58.942Z"
-    },
-    {
-      "id": "cdc5",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "10:00",
-      "endTime": "14:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:17:07.630Z"
-    },
-    {
-      "id": "6e32",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "15:00",
-      "endTime": "19:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:19:57.104Z"
-    },
-    {
-      "id": "c706",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "08:00",
+      "id": "9ba4",
+      "doctorId": "5d12",
+      "patientId": "1",
+      "date": "2025-11-19",
+      "startTime": "11:00",
       "endTime": "12:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:21:52.679Z"
+      "status": "confirmed",
+      "createdAt": "2025-11-14T15:39:39.797Z"
     },
     {
-      "id": "7c15",
-      "patientId": "4c45",
-      "date": "2025-11-20",
+      "id": "0dc2",
+      "doctorId": "4c45",
+      "patientId": "1",
+      "date": "2025-10-10",
       "startTime": "10:00",
-      "endTime": "14:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:37:35.522Z"
+      "endTime": "11:00",
+      "status": "completed",
+      "createdAt": "2025-10-01T10:00:00.000Z"
     }
   ]
 }
