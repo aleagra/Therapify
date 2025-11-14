@@ -38,7 +38,11 @@
       </a>
     </li>
     <li>
-      <button class="login-btn" (click)="handleLoginLogout()">
+      <button
+        class="login-btn"
+        [class.logout-btn]="userService.isLoggedSignal()"
+        (click)="handleLoginLogout()"
+      >
         {{ userService.isLoggedSignal() ? "Cerrar Sesión" : "Acceso/Login" }}
       </button>
     </li>
