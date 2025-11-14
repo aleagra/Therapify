@@ -1,4 +1,5 @@
-<div class="reviews-container">
+<div class="reviews-grid-container">
+  <!-- Columna izquierda: formulario -->
   <div class="review-form-section">
     @if (!isEditing) {
     <h3>Deja tu reseña</h3>
@@ -6,7 +7,7 @@
     <h3>Editando tu reseña</h3>
     }
 
-    <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()">
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="form">
       <div class="form-group">
         <label for="value">Valoración (1 a 5 estrellas):</label>
         <input
@@ -16,7 +17,6 @@
           min="1"
           max="5"
         />
-
         @if (reviewForm.get('value')?.touched &&
         reviewForm.get('value')?.hasError('required')) {
         <div class="error-message">La valoración es obligatoria.</div>
@@ -30,9 +30,7 @@
           formControlName="comment"
           rows="4"
           placeholder="Escribe tu opinión aquí..."
-        >
-        </textarea>
-
+        ></textarea>
         @if (reviewForm.get('comment')?.touched &&
         reviewForm.get('comment')?.hasError('required')) {
         <div class="error-message">El comentario es obligatorio.</div>
@@ -48,7 +46,6 @@
         <button type="submit" [disabled]="reviewForm.invalid">
           {{ isEditing ? "Actualizar Reseña" : "Publicar Reseña" }}
         </button>
-
         @if (isEditing) {
         <button type="button" (click)="resetForm()" class="button-secondary">
           Cancelar Edición
@@ -58,8 +55,7 @@
     </form>
   </div>
 
-  <hr />
-
+  <!-- Columna derecha: lista de reseñas -->
   <div class="review-list-section">
     <h3>Reseñas del Doctor</h3>
 
@@ -70,8 +66,10 @@
     } @for (review of reviews; track review.id) {
     <div class="review-card">
       <div class="review-header">
-        <div class="review-stars">Valoración: {{ review.value }} / 5</div>
-
+        <div class="review-info">
+          <span class="review-stars">Valoración: {{ review.value }} / 5</span>
+          <span class="review-user">- {{ getUserName(review.patientId) }}</span>
+        </div>
         @if (review.patientId === userLogged?.id) {
         <div class="review-actions">
           <button (click)="selectReviewToEdit(review)" class="button-edit">
@@ -83,7 +81,6 @@
         </div>
         }
       </div>
-
       <p class="review-comment">{{ review.comment }}</p>
     </div>
     }

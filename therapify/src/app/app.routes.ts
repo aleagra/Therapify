@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { DoctorsComponent } from './doctors/doctors.component';
 import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
 import { TurnosComponent } from './turnos/turnos.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -22,6 +23,11 @@ export const routes: Routes = [
   {
     path: 'doctor/:id',
     component: DoctorDetailComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'reviews/:id',
+    component: ReviewsComponent,
     canActivate: [authGuard],
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },

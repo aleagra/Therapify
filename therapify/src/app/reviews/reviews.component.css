@@ -1,194 +1,172 @@
-/* --- Contenedor Principal --- */
-.reviews-container {
-  /* Usamos el mismo estilo de contenedor que la página "Agendar Turno" 
-    para mantener la consistencia.
-  */
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  font-family: 'Inter', sans-serif;
-  color: #2C3E50; /* Color de texto principal */
+.reviews-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  justify-items: start;
+  box-sizing: border-box;
 }
 
+/* Cada sección como tarjeta con sombra */
+.review-form-section,
+.review-list-section {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* sombra más pronunciada por fila */
+  padding: 2rem;
+  width: 100%;
+
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Títulos en azul y con la misma fuente que doctores */
 h3 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
-  color: #2C3E50;
-  margin-top: 0;
+  color: #2a47b5; /* mismo azul que chips y botones */
   margin-bottom: 1.5rem;
 }
-
-hr {
-  border: none;
-  height: 1px;
-  background-color: #f0f0f0; /* Separador sutil */
-  margin: 2.5rem 0;
+.form-actions {
+  display: flex;
+  gap: 1rem;
 }
-
-/* --- Estilos del Formulario de Reseñas --- */
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
 .form-group label {
-  display: block;
   font-weight: 500;
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  display: block;
 }
 
-/* Estilo para Inputs y Textarea */
-.form-group input[type="number"],
+/* Inputs y textarea */
+.form-group input,
 .form-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
+  border-radius: 12px;
   border: 1px solid #ccc;
-  border-radius: 8px; /* Bordes redondeados consistentes */
-  font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  box-sizing: border-box; /* Previene desbordamiento */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-/* Foco en el input */
-.form-group input[type="number"]:focus,
+.form-group input:focus,
 .form-group textarea:focus {
+  border-color: #2a47b5;
+  box-shadow: 0 0 0 2px rgba(42, 71, 181, 0.2);
   outline: none;
-  border-color: #0077B6; /* Color primario al enfocar */
-  box-shadow: 0 0 0 2px #e0f2f7; /* Halo azul claro */
 }
 
-/* Mensajes de Error */
-.error-message {
-  color: #d9534f; /* Rojo para errores */
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-/* --- Botones del Formulario --- */
-.form-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-/* Botón de Enviar (Primario) */
+/* Botones */
 .form-actions button[type="submit"] {
-  background-color: #0077B6; /* Azul Therapify */
+  background-color: #2a47b5;
   color: #fff;
   border: none;
+  border-radius: 20px;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
   transition: background-color 0.2s ease;
 }
 
 .form-actions button[type="submit"]:hover {
-  background-color: #005f8f; /* Azul más oscuro en hover */
+  background-color: #1f357f;
 }
 
-.form-actions button[type="submit"]:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Botón de Cancelar (Secundario) */
-.form-actions .button-secondary {
-  background-color: #f0f0f0; /* Gris claro */
-  color: #333;
-  border: 1px solid #ddd;
+.button-secondary {
+  background-color: #2a47b5; /* mismo azul */
+  border-radius: 20px;
+  border: none;
+  color: #fff;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
   transition: background-color 0.2s ease;
 }
 
-.form-actions .button-secondary:hover {
-  background-color: #e0e0e0;
+.button-secondary:hover {
+  background-color: #1f357f;
 }
 
+/* Tarjetas de reseña */
+.review-card {
+  border: 2px solid #2a47b5;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-/* --- Listado de Reseñas --- */
+/* Header de la reseña: valoracion a la izquierda, acciones a la derecha */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Valoracion en azul */
+.review-stars {
+  font-weight: 600;
+  color: #2a47b5;
+  font-size: 1.1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Botones de acciones */
+.review-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.review-user {
+  font-weight: 500;
+  color: #20252f;
+}
+
+.review-actions button {
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 20px;
+  border: 1px solid currentColor;
+  padding: 0.75rem 1rem;
+  transition: 0.2s ease;
+}
+.button-delete {
+  color: white;
+  background-color: #e53935;
+}
+.button-edit {
+  color: white;
+  background-color: #31c21e;
+}
+
+/* Comentario con texto más grande */
+.review-comment {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #20252f;
+  margin: 0;
+}
+
+/* Mensaje vacío */
 .empty-state {
-  text-align: center;
   color: #6c757d;
   padding: 2rem 0;
   font-style: italic;
 }
 
-.review-card {
-  /* Usamos el mismo estilo de tarjeta de "Agendar Turno" 
-    para las reseñas individuales.
-  */
-  background-color: #f8fcfd; /* Fondo azul muy claro */
-  border: 1px solid #e0f2f7; /* Borde azul claro */
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  flex-wrap: wrap; /* Para responsiveness */
-  gap: 0.5rem;
-}
-
-.review-stars {
-  font-weight: 600;
-  color: #2C3E50;
-  font-size: 1.1rem;
-  font-family: 'Poppins', sans-serif;
-}
-
-.review-comment {
-  color: #333;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Botones de Acción (Editar/Eliminar) */
-.review-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.button-edit,
-.button-delete {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.85rem;
-  padding: 0.25rem;
-  transition: opacity 0.2s ease;
-}
-
-.button-edit {
-  color: #0077B6; /* Azul Therapify */
-}
-
-.button-delete {
-  color: #d9534f; /* Rojo */
-}
-
-.button-edit:hover,
-.button-delete:hover {
-  opacity: 0.7;
+/* Responsive */
+@media (max-width: 768px) {
+  .reviews-grid-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
 }

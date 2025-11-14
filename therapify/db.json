@@ -164,25 +164,12 @@
   ],
   "reviews": [
     {
-      "id": "67e0",
-      "patientId": "4c45",
-      "date": "2025-11-14",
-      "comment": "Es muy copado el especialista.",
-      "value": "1.5"
-    },
-    {
-      "id": "temp-1763130739312",
-      "date": "2025-11-14T14:32:19.312Z",
-      "patientId": "4c45",
-      "value": 5,
-      "comment": "hola como estas"
-    },
-    {
-      "id": "temp-1763130890305",
-      "date": "2025-11-14T14:34:54.283Z",
-      "patientId": "4c45",
+      "id": "5cd0",
+      "patientId": "1",
+      "drId": "5d12",
       "value": 4,
-      "comment": "asdasdasdasdasdasaa"
+      "comment": "muy buen doctor",
+      "date": "2025-11-14T19:42:11.741Z"
     }
   ]
 }

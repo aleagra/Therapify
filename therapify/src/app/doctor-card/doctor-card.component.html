@@ -11,5 +11,10 @@
     </div>
 
     <p class="descripcion">{{ doctor().description }}</p>
+
+    <!-- Botón para ver reseñas -->
+    <button (click)="goToReviews(doctor().id)" class="btn-reviews">
+      Ver reseñas
+    </button>
   </div>
 </div>
