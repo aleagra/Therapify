@@ -1,0 +1,194 @@
+/* --- Contenedor Principal --- */
+.reviews-container {
+  /* Usamos el mismo estilo de contenedor que la página "Agendar Turno" 
+    para mantener la consistencia.
+  */
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+  color: #2C3E50; /* Color de texto principal */
+}
+
+h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #2C3E50;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #f0f0f0; /* Separador sutil */
+  margin: 2.5rem 0;
+}
+
+/* --- Estilos del Formulario de Reseñas --- */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Estilo para Inputs y Textarea */
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Bordes redondeados consistentes */
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box; /* Previene desbordamiento */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Foco en el input */
+.form-group input[type="number"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0077B6; /* Color primario al enfocar */
+  box-shadow: 0 0 0 2px #e0f2f7; /* Halo azul claro */
+}
+
+/* Mensajes de Error */
+.error-message {
+  color: #d9534f; /* Rojo para errores */
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Botones del Formulario --- */
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Botón de Enviar (Primario) */
+.form-actions button[type="submit"] {
+  background-color: #0077B6; /* Azul Therapify */
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.form-actions button[type="submit"]:hover {
+  background-color: #005f8f; /* Azul más oscuro en hover */
+}
+
+.form-actions button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Botón de Cancelar (Secundario) */
+.form-actions .button-secondary {
+  background-color: #f0f0f0; /* Gris claro */
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.form-actions .button-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+
+/* --- Listado de Reseñas --- */
+.empty-state {
+  text-align: center;
+  color: #6c757d;
+  padding: 2rem 0;
+  font-style: italic;
+}
+
+.review-card {
+  /* Usamos el mismo estilo de tarjeta de "Agendar Turno" 
+    para las reseñas individuales.
+  */
+  background-color: #f8fcfd; /* Fondo azul muy claro */
+  border: 1px solid #e0f2f7; /* Borde azul claro */
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap; /* Para responsiveness */
+  gap: 0.5rem;
+}
+
+.review-stars {
+  font-weight: 600;
+  color: #2C3E50;
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.review-comment {
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Botones de Acción (Editar/Eliminar) */
+.review-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.button-edit,
+.button-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.25rem;
+  transition: opacity 0.2s ease;
+}
+
+.button-edit {
+  color: #0077B6; /* Azul Therapify */
+}
+
+.button-delete {
+  color: #d9534f; /* Rojo */
+}
+
+.button-edit:hover,
+.button-delete:hover {
+  opacity: 0.7;
+}
