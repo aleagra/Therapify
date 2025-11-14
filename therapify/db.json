@@ -2,15 +2,15 @@
   "users": [
     {
       "id": "1",
-      "firstName": "Aliciaa",
-      "lastName": "Vikand",
       "email": "admin@therapify.com",
-      "companyName": "Therapify",
+      "userType": "administrador",
       "password": "alejandro",
       "confirmPassword": "Admin1234",
-      "userType": "administrador",
+      "firstName": "Aliciaaa",
+      "lastName": "Vikand",
       "address": "Italia 3763",
-      "gender": "female"
+      "gender": "female",
+      "description": ""
     },
     {
       "id": "4c45",
