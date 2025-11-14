@@ -5,6 +5,7 @@
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 3fr 150px;
   gap: 1.5rem;
+  row-gap: 0;
   padding: 6rem;
   background: #f9fafc;
   font-family: "Inter", sans-serif;
@@ -22,6 +23,10 @@
 
 .card::after {
   content: "";
+  text-align: left; 
+  font-size: 3rem;
+  padding: 1rem;
+  font-weight: 700;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -41,7 +46,8 @@
 
 .card-container {
   padding: 3rem 0.5rem;
-  width: fit-content;
+  width: 50%;
+ 
   position: absolute;
   right: 0;
   z-index: 1;
@@ -64,19 +70,25 @@
 }
 
 .btn-primary {
-  background: #5865f2;
-  color: white;
+  background: linear-gradient(to right, #0077B6, #00C4B4); 
+  color: white; /* Texto blanco para contraste */
   border: none;
   font-size: 1rem;
-  padding: 1rem 1.5rem;
-  border-radius: 15px;
+  padding: 1rem 2rem; /* Más padding para un look más robusto */
+  border-radius: 12px; /* Bordes redondeados consistentes con las cards */
   font-weight: 600;
   cursor: pointer;
-  transition: ease 0.3s;
+  transition: all 0.3s ease; /* Transición suave para hover */
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sutil sombra para profundidad */
+  text-decoration: none; /* Asegura que no haya subrayado si es un <a> */
+  display: inline-block;
 }
 
 .btn-primary:hover {
-  background: #4752c4;
+  /* Cambia la dirección del degradado o ajusta los colores */
+  background: linear-gradient(to right, #00C4B4, #0077B6); 
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3); /* Sombra ligeramente más intensa */
+  transform: translateY(-2px); /* Pequeño levantamiento al pasar el mouse */
 }
 
 /* Lado derecho */
@@ -99,29 +111,41 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+.green{
+  background-color: #d4eee8;
+}
+
+
 .side-card h4 {
   margin-bottom: 0.5rem;
   font-size: 1.6rem;
 }
 .side-card p {
-  margin: 0;
   color: #555;
+  font-size: 1.2rem;
   max-width: 600px;
+  padding: 0.5rem;
 }
 
 .btn-secondary {
-  width: fit-content;
-  background: #5865f2;
-  color: white;
+  background: linear-gradient(to right,  #00C4B4,#0077B6); 
+  color: white; /* Texto blanco para contraste */
   border: none;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
+  font-size: 1rem;
+  padding: 1rem 2rem; /* Más padding para un look más robusto */
+  border-radius: 12px; /* Bordes redondeados consistentes con las cards */
+  font-weight: 300;
   cursor: pointer;
-  transition: ease-in-out 0.3s;
+  transition: all 0.3s ease; /* Transición suave para hover */
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sutil sombra para profundidad */
+  text-decoration: none; /* Asegura que no haya subrayado si es un <a> */
+  display: inline-block;
 }
 
 .btn-secondary:hover {
-  background: #4752c4;
+   background: linear-gradient(to right,#0077B6, #00C4B4); 
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3); /* Sombra ligeramente más intensa */
+  transform: translateY(-2px); /* Pequeño levantamiento al pasar el mouse */
 }
 
 .review-card {
@@ -153,43 +177,75 @@
 
 /* Card inferior */
 .bottom-card {
+  
   grid-column: span 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 20px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  height: auto;
 }
 .info {
-  display: flex;
+  z-index: 5;
+  position: relative;
+  top: 75%;
+  right: 1%;
   width: 100%;
   height: 100%;
-  justify-items: center;
+  justify-items: flex-start;
   align-items: center;
+  flex-direction: column;
   gap: 2rem;
+}
+.info p{
+  font-size: 1.5rem;
+  width: 45%;
+}
+.iconHome{
+
+  width: 200px;
+  height: 120px;
+
+  /* Asegura que la imagen se vea bien sin distorsionarse */
+  object-fit: contain; 
+
+  /* Espacio entre el ícono y el título/texto de abajo */
+  margin-bottom: 0.75rem;
 }
 
 .info h3 {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .stats {
   display: flex;
   gap: 2rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  align-self: center;
+  align-content: center;
 }
-
+.elementStats{
+  display: flex;
+  flex-direction: row;
+}
+.stats div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 .stats div h2 {
-  margin: 0;
+  
   font-size: 3rem;
   color: #1a1a1a;
 }
 
 .stats div p {
-  margin: 0;
+  margin: 2%;
   max-width: 300px;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #555;
 }
 
