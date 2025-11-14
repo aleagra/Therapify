@@ -1,28 +1,32 @@
-import { Component, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterModule,
+} from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
   menuOpen = false;
-  isLogged = signal(false);
-
-  constructor(private router: Router) {
-    const user = localStorage.getItem('userLogged');
-    this.isLogged.set(!!user);
-  }
+  userService = inject(UserService);
+  router = inject(Router);
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
-  goToProfile() {
-    if (this.isLogged()) {
-      this.router.navigate(['/profile']);
+  handleLoginLogout() {
+    if (this.userService.isLoggedSignal()) {
+      this.userService.logout();
+      this.router.navigate(['/login']);
     } else {
       this.router.navigate(['/login']);
     }

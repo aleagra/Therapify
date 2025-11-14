@@ -13,13 +13,17 @@ export const routes: Routes = [
   { path: 'home', component: NavbarComponent, canActivate: [authGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'register', component: RegisterComponent },
-  { path: 'doctors', component: DoctorsComponent },
+  { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
   {
     path: 'appointments',
     component: TurnosComponent,
     canActivate: [authGuard],
   },
-  { path: 'doctor/:id', component: DoctorDetailComponent },
+  {
+    path: 'doctor/:id',
+    component: DoctorDetailComponent,
+    canActivate: [authGuard],
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 ];
