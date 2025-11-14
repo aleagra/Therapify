@@ -293,5 +293,12 @@
       "status": "pending",
       "createdAt": "2025-11-13T23:21:52.679Z"
     }
-  ]
+  ], "reviews": [
+    {
+      "id": "67e0",
+      "patientId": "4c45",
+      "date": "2025-11-14",
+      "comment":"Es muy copado el especialista.",
+      "value":"1.5"
+    }]
 }
