@@ -7,13 +7,43 @@
   <button class="menu-toggle" (click)="toggleMenu()">☰</button>
 
   <ul [class.active]="menuOpen" class="nav-links">
-    <li><a routerLink="doctors">Buscar Terapeutas</a></li>
-    <li><a href="#">Mis turnos</a></li>
-    <li><a href="#">Sobre Nosotros</a></li>
-
     <li>
-      <button class="login-btn" (click)="goToProfile()">
-        {{ isLogged() ? "Mi Perfil" : "Acceso/Login" }}
+      <a
+        routerLink="doctors"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Buscar Terapeutas
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="appointments"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Mis turnos
+      </a>
+    </li>
+    <li>
+      <a href="#" class="inactive-link">Sobre Nosotros</a>
+    </li>
+    <li>
+      <a
+        routerLink="profile"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Mi Perfil
+      </a>
+    </li>
+    <li>
+      <button
+        class="login-btn"
+        [class.logout-btn]="userService.isLoggedSignal()"
+        (click)="handleLoginLogout()"
+      >
+        {{ userService.isLoggedSignal() ? "Cerrar Sesión" : "Acceso/Login" }}
       </button>
     </li>
   </ul>

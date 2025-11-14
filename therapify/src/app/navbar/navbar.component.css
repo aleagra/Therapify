@@ -35,27 +35,45 @@
 .nav-links a {
   text-decoration: none;
   color: #333;
-  font-weight: 400;
+  font-weight: 600;
   transition: color 0.2s ease-in-out;
 }
 
-.nav-links a:hover {
-  color: #5b6eff;
+.nav-links a:hover,
+.nav-links a.active-link {
+  color: #2a47b5; /* azul */
 }
 
-/* --- Botón de login --- */
-.login-btn {
+/* --- Botón login / logout dinámico --- */
+.login-btn,
+.logout-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #5b6eff;
   border-radius: 20px;
   background: none;
-  color: #5b6eff;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Login azul */
+.login-btn {
+  border: 1px solid #2a47b5;
+  color: #2a47b5;
 }
 
 .login-btn:hover {
-  background-color: #5b6eff;
+  background-color: #2a47b5;
+  color: #fff;
+}
+
+/* Logout rojo */
+.logout-btn {
+  border: 1px solid #e53e3e;
+  color: #e53e3e;
+}
+
+.logout-btn:hover {
+  background-color: #e53e3e;
   color: #fff;
 }
 
@@ -99,6 +117,7 @@
     opacity: 1;
   }
 }
+
 @media (min-width: 1440px) {
   .navbar {
     padding: 1rem 7rem;

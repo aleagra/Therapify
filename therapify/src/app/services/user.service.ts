@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -12,8 +12,33 @@ export class UserService {
   apiUrl = 'http://localhost:3000/users';
   localKey = 'userLogged';
 
-  // Crear usuario
+  // Signal para estado de login reactivo
+  isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
+
   postUser(user: Omit<User, 'id'>): Observable<User> {
+    if (user.userType === 'doctor') {
+      user.schedule = {
+        monday: true,
+        tuesday: true,
+        wednesday: true,
+        thursday: true,
+        friday: true,
+      };
+
+      const hours: string[] = [];
+      for (let h = 8; h <= 17; h++) {
+        hours.push(h.toString().padStart(2, '0') + ':00');
+      }
+
+      user.availability = {
+        monday: [...hours],
+        tuesday: [...hours],
+        wednesday: [...hours],
+        thursday: [...hours],
+        friday: [...hours],
+      };
+    }
+
     return this.http.post<User>(this.apiUrl, user).pipe(
       catchError((err) => {
         console.error('Error al crear el usuario:', err);
@@ -22,7 +47,6 @@ export class UserService {
     );
   }
 
-  // Obtener todos los usuarios
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl).pipe(
       catchError((err) => {
@@ -32,7 +56,6 @@ export class UserService {
     );
   }
 
-  // Obtener un usuario por ID
   getUserById(id: string): Observable<User | null> {
     return this.http.get<User>(`${this.apiUrl}/${id}`).pipe(
       catchError((err) => {
@@ -42,7 +65,6 @@ export class UserService {
     );
   }
 
-  // Login
   login(email: string, password: string): Observable<User | null> {
     const url = `${this.apiUrl}?email=${email}&password=${password}`;
     return this.http.get<User[]>(url).pipe(
@@ -51,6 +73,7 @@ export class UserService {
           const user = users[0];
           console.log('Usuario logueado:', user);
           localStorage.setItem(this.localKey, JSON.stringify(user));
+          this.isLoggedSignal.set(true); // actualizar signal
           return user;
         } else {
           console.warn('Credenciales inválidas');
@@ -64,24 +87,21 @@ export class UserService {
     );
   }
 
-  // Obtener usuario logueado del localStorage
   getLoggedUser(): User | null {
     const data = localStorage.getItem(this.localKey);
     return data ? JSON.parse(data) : null;
   }
 
-  // Cerrar sesión
   logout(): void {
     localStorage.removeItem(this.localKey);
     console.log('Sesión cerrada');
+    this.isLoggedSignal.set(false); // actualizar signal
   }
 
-  // Verificar si hay sesión activa
   isLoggedIn(): boolean {
     return localStorage.getItem(this.localKey) !== null;
   }
 
-  // Actualizar usuario
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${user.id}`, user).pipe(
       map((updatedUser) => {

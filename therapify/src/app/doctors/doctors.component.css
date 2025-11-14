@@ -1,8 +1,8 @@
 .doctores-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, 350px);
   gap: 1.5rem;
-  justify-items: center;
+  justify-items: start;
   padding: 2rem;
   box-sizing: border-box;
 }
@@ -17,7 +17,62 @@ h1 {
   font-weight: 600;
 }
 
-/* 🧩 Tablets y pantallas medianas */
+/* --- Buscador --- */
+.search-input {
+  display: block;
+  width: calc(100% - 4rem);
+  margin: 0 2rem 1rem 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #2a47b5;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(42, 71, 181, 0.2);
+}
+
+/* --- Contenedor de filtros --- */
+.day-filter-container {
+  padding: 0 2rem 1rem 2rem;
+  margin-bottom: 1rem;
+}
+
+.day-filter-container h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #20252f;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Botones de días --- */
+.day-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.day-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #2a47b5;
+  border-radius: 20px;
+  background: none;
+  color: #2a47b5;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.day-btn.active-day,
+.day-btn:hover {
+  background-color: #2a47b5;
+  color: #fff;
+}
+
+/* --- Tablets y pantallas medianas --- */
 @media (max-width: 1024px) {
   .doctores-container {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -28,9 +83,13 @@ h1 {
     font-size: 2rem;
     padding: 0 1.5rem;
   }
+
+  .day-filter-container {
+    padding: 0 1.5rem 1rem 1.5rem;
+  }
 }
 
-/* 📱 Celulares medianos (entre 481px y 768px) */
+/* 📱 Celulares medianos */
 @media (max-width: 768px) {
   .doctores-container {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -43,9 +102,17 @@ h1 {
     text-align: center;
     padding: 0 1rem;
   }
+
+  .day-filter-container h2 {
+    text-align: center;
+  }
+
+  .day-filters {
+    justify-content: center;
+  }
 }
 
-/* 📲 Celulares pequeños (≤480px) */
+/* 📲 Celulares pequeños */
 @media (max-width: 480px) {
   .doctores-container {
     grid-template-columns: 1fr;
@@ -61,5 +128,13 @@ h1 {
     font-size: 1.5rem;
     text-align: center;
     padding: 0 0.75rem;
+  }
+
+  .day-filter-container h2 {
+    font-size: 1rem;
+  }
+
+  .day-filters {
+    justify-content: center;
   }
 }

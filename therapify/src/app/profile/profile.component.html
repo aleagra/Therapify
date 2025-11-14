@@ -1,10 +1,10 @@
-<div class="profile-container" *ngIf="user as currentUser">
+<div class="profile-container">
+  <!-- PERFIL -->
   <div class="profile-grid">
-    <!-- 🧍‍♂️ FORMULARIO PRINCIPAL -->
     <form
       class="profile-form"
+      [formGroup]="formProfile"
       (ngSubmit)="onSubmitProfile()"
-      [formGroup]="form"
     >
       <div class="profile-header">
         <h2>Profile Information</h2>
@@ -14,11 +14,21 @@
       <div class="form-group double">
         <div class="input-field">
           <label for="firstName">First name</label>
-          <input id="firstName" type="text" formControlName="firstName" />
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            required
+          />
         </div>
         <div class="input-field">
           <label for="lastName">Last name</label>
-          <input id="lastName" type="text" formControlName="lastName" />
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            required
+          />
         </div>
       </div>
 
@@ -40,7 +50,7 @@
       <div class="form-group">
         <div class="input-field full">
           <label for="address">Address</label>
-          <input id="address" type="text" formControlName="address" />
+          <input id="address" type="text" formControlName="address" required />
         </div>
       </div>
 
@@ -70,23 +80,43 @@
       </div>
     </form>
   </div>
-  <!-- 👨‍⚕️ FORMULARIO DEL MÉDICO -->
-  <div class="profile-grid">
+
+  <!-- HORARIOS MÉDICOS -->
+  <div *ngIf="user.userType === 'doctor'" class="profile-grid">
     <form
-      *ngIf="currentUser.userType === 'doctor'"
       class="medical-form"
+      [formGroup]="formSchedule"
       (ngSubmit)="onSubmitMedical()"
-      [formGroup]="form"
     >
       <div class="profile-header">
         <h3>Medical Schedule</h3>
         <p>Select your available days and provide a short description</p>
       </div>
+
       <div class="days-group">
-        <label *ngFor="let day of weekDays">
-          <input type="checkbox" [formControlName]="day.control" />
-          {{ day.label }}
-        </label>
+        <div class="day-row" *ngFor="let day of weekDays">
+          <label class="day-checkbox">
+            <input type="checkbox" [formControlName]="day.control" />
+            {{ day.label }}
+          </label>
+
+          <div
+            class="hours-container"
+            *ngIf="formSchedule.get(day.control)?.value"
+          >
+            <input
+              type="time"
+              [formControlName]="day.control + 'Start'"
+              class="hour-input"
+            />
+            <span>to</span>
+            <input
+              type="time"
+              [formControlName]="day.control + 'End'"
+              class="hour-input"
+            />
+          </div>
+        </div>
       </div>
 
       <div class="input-field full">
@@ -94,7 +124,7 @@
         <textarea
           id="description"
           rows="9"
-          placeholder="Describe your specialties or work hours..."
+          placeholder="Describe your specialties..."
           formControlName="description"
         ></textarea>
       </div>

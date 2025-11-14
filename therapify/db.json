@@ -14,33 +14,25 @@
     },
     {
       "id": "4c45",
-      "email": "da1sdad2as3das@gmail.com",
+      "email": "alejandro.doctor1@gmail.com",
       "userType": "doctor",
       "password": "alejandro",
       "confirmPassword": "alejandro",
-      "firstName": "alejandro",
-      "lastName": "aaa",
+      "firstName": "Alejandro",
+      "lastName": "Perez",
       "address": "",
       "gender": "",
-      "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes.fgdf",
+      "description": "Psicólogo clínico especializado en terapia cognitivo-conductual para adolescentes y adultos jóvenes.aaa",
       "schedule": {
         "monday": true,
         "tuesday": true,
         "wednesday": true,
         "thursday": true,
-        "friday": false
+        "friday": true
       },
       "availability": {
         "monday": [
-          "08:00",
-          "09:00",
-          "10:00",
-          "11:00",
-          "12:00",
-          "13:00",
-          "14:00",
-          "15:00",
-          "16:00"
+          "10:00"
         ],
         "tuesday": [
           "08:00",
@@ -50,8 +42,7 @@
           "12:00",
           "13:00",
           "14:00",
-          "15:00",
-          "16:00"
+          "15:00"
         ],
         "wednesday": [
           "08:00",
@@ -62,7 +53,11 @@
           "13:00",
           "14:00",
           "15:00",
-          "16:00"
+          "16:00",
+          "17:00",
+          "18:00",
+          "19:00",
+          "20:00"
         ],
         "thursday": [
           "08:00",
@@ -70,277 +65,101 @@
           "10:00",
           "11:00",
           "12:00",
-          "13:00",
-          "14:00",
-          "15:00",
-          "16:00"
-        ],
-        "friday": []
-      }
-    },
-    {
-      "id": "b974",
-      "firstName": "dasdas",
-      "lastName": "dasdas",
-      "email": "da1sdad2as3das@gmail.com",
-      "password": "alejandro",
-      "confirmPassword": "alejandro",
-      "userType": "administrador"
-    },
-    {
-      "id": "1a00",
-      "firstName": "juan",
-      "lastName": "fdsadsa",
-      "email": "admin@therapify.coma",
-      "password": "alejandro",
-      "confirmPassword": "alejandro",
-      "userType": "paciente"
-    },
-    {
-      "id": "d001",
-      "firstName": "Mariana",
-      "lastName": "Suárez",
-      "email": "mariana.suarez@mindcare.com",
-      "password": "mariana123",
-      "confirmPassword": "mariana123",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": false,
-        "thursday": true,
-        "friday": true
-      },
-      "availability": {
-        "monday": [
-          "10:00",
-          "11:00",
-          "12:00",
-          "14:00",
-          "15:00"
-        ],
-        "tuesday": [
-          "09:00",
-          "10:00",
-          "11:00",
           "13:00",
           "14:00"
         ],
-        "thursday": [
+        "friday": [
           "08:00",
           "09:00",
           "10:00",
           "11:00",
-          "15:00"
+          "12:00",
+          "13:00",
+          "14:00"
+        ]
+      }
+    },
+    {
+      "id": "5d12",
+      "firstName": "Laura",
+      "lastName": "Gomez",
+      "email": "laura.doctor2@gmail.com",
+      "password": "alejandro",
+      "confirmPassword": "alejandro",
+      "userType": "doctor",
+      "schedule": {
+        "monday": true,
+        "tuesday": false,
+        "wednesday": true,
+        "thursday": true,
+        "friday": true
+      },
+      "description": "Terapeuta ocupacional enfocada en desarrollo infantil y bienestar emocional.",
+      "availability": {
+        "monday": [
+          "09:00",
+          "10:00",
+          "11:00"
+        ],
+        "tuesday": [],
+        "wednesday": [
+          "09:00",
+          "10:00",
+          "11:00"
+        ],
+        "thursday": [
+          "09:00",
+          "10:00",
+          "11:00"
         ],
         "friday": [
           "09:00",
           "10:00",
-          "11:00",
-          "12:00"
+          "11:00"
         ]
-      },
-      "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes."
-    },
-    {
-      "id": "d002",
-      "firstName": "Julián",
-      "lastName": "Fernández",
-      "email": "julian.fernandez@equilibrio.com",
-      "password": "julianmed",
-      "confirmPassword": "julianmed",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": false,
-        "wednesday": true,
-        "thursday": true,
-        "friday": true
-      },
-      "description": "Psicólogo con enfoque en terapia de pareja y manejo de conflictos emocionales."
-    },
-    {
-      "id": "d003",
-      "firstName": "Lucía",
-      "lastName": "Ramírez",
-      "email": "lucia.ramirez@psicovida.com",
-      "password": "lucia2024",
-      "confirmPassword": "lucia2024",
-      "userType": "doctor",
-      "schedule": {
-        "monday": false,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": true,
-        "friday": false
-      },
-      "description": "Psicóloga infantil con experiencia en trastornos del aprendizaje y desarrollo emocional."
-    },
-    {
-      "id": "d004",
-      "firstName": "Santiago",
-      "lastName": "López",
-      "email": "santiago.lopez@psicoar.com",
-      "password": "santiago2025",
-      "confirmPassword": "santiago2025",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": false,
-        "friday": true
-      },
-      "description": "Psicólogo especializado en trastornos de ansiedad y técnicas de relajación mindfulness."
-    },
-    {
-      "id": "d005",
-      "firstName": "Carolina",
-      "lastName": "Martínez",
-      "email": "carolina.martinez@terapiaintegral.com",
-      "password": "caromartinez",
-      "confirmPassword": "caromartinez",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": true,
-        "friday": false
-      },
-      "description": "Psicóloga con enfoque humanista, centrada en el crecimiento personal y la autoestima."
-    },
-    {
-      "id": "d006",
-      "firstName": "Federico",
-      "lastName": "Gómez",
-      "email": "federico.gomez@equilibramental.com",
-      "password": "fede1234",
-      "confirmPassword": "fede1234",
-      "userType": "doctor",
-      "schedule": {
-        "monday": false,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": true,
-        "friday": true
-      },
-      "description": "Psicólogo clínico especializado en terapia cognitiva y tratamiento de la depresión."
-    },
-    {
-      "id": "d007",
-      "firstName": "Valentina",
-      "lastName": "Herrera",
-      "email": "valentina.herrera@menteplena.com",
-      "password": "valen2025",
-      "confirmPassword": "valen2025",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": false,
-        "thursday": true,
-        "friday": true
-      },
-      "description": "Psicóloga especializada en acompañamiento emocional y manejo del estrés laboral."
-    },
-    {
-      "id": "d008",
-      "firstName": "Nicolás",
-      "lastName": "Pereyra",
-      "email": "nicolas.pereyra@psicoayuda.com",
-      "password": "nico321",
-      "confirmPassword": "nico321",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": false,
-        "wednesday": true,
-        "thursday": true,
-        "friday": true
-      },
-      "description": "Psicólogo orientado en el acompañamiento a adultos mayores y procesos de duelo."
-    },
-    {
-      "id": "d009",
-      "firstName": "Camila",
-      "lastName": "Rossi",
-      "email": "camila.rossi@saludemocional.com",
-      "password": "camilaR1",
-      "confirmPassword": "camilaR1",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": false,
-        "friday": false
-      },
-      "description": "Psicóloga clínica con orientación en terapias breves y acompañamiento en crisis personales."
-    },
-    {
-      "id": "d010",
-      "firstName": "Tomás",
-      "lastName": "Delgado",
-      "email": "tomas.delgado@psicoarmonia.com",
-      "password": "tomas2024",
-      "confirmPassword": "tomas2024",
-      "userType": "doctor",
-      "schedule": {
-        "monday": true,
-        "tuesday": true,
-        "wednesday": true,
-        "thursday": true,
-        "friday": true
-      },
-      "description": "Psicólogo especializado en terapia de grupo y desarrollo de habilidades sociales."
+      }
     }
   ],
   "appointments": [
     {
-      "id": "67e0",
-      "patientId": "4c45",
-      "date": "2025-11-14",
+      "id": "0dc1",
+      "doctorId": "4c45",
+      "patientId": "1",
+      "date": "2025-11-19",
       "startTime": "10:00",
-      "endTime": "14:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:12:18.504Z"
+      "endTime": "11:00",
+      "status": "confirmed",
+      "createdAt": "2025-11-14T15:34:19.359Z"
     },
     {
-      "id": "b05b",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "09:00",
-      "endTime": "13:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:16:58.942Z"
+      "id": "9ba4",
+      "doctorId": "5d12",
+      "patientId": "1",
+      "date": "2025-11-19",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "status": "confirmed",
+      "createdAt": "2025-11-14T15:39:39.797Z"
     },
     {
-      "id": "cdc5",
-      "patientId": "4c45",
-      "date": "2025-11-13",
+      "id": "0dc2",
+      "doctorId": "4c45",
+      "patientId": "1",
+      "date": "2025-10-10",
       "startTime": "10:00",
-      "endTime": "14:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:17:07.630Z"
+      "endTime": "11:00",
+      "status": "completed",
+      "createdAt": "2025-10-01T10:00:00.000Z"
     },
     {
-      "id": "6e32",
+      "id": "8dd0",
+      "doctorId": "4c45",
       "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "15:00",
-      "endTime": "19:00",
-      "status": "pending",
-      "createdAt": "2025-11-13T23:19:57.104Z"
-    },
-    {
-      "id": "c706",
-      "patientId": "4c45",
-      "date": "2025-11-13",
-      "startTime": "08:00",
+      "date": "2025-11-19",
+      "startTime": "11:00",
       "endTime": "12:00",
       "status": "pending",
-      "createdAt": "2025-11-13T23:21:52.679Z"
+      "createdAt": "2025-11-14T17:07:32.705Z"
     }
   ],
   "reviews": [

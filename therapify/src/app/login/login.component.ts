@@ -44,7 +44,6 @@ export class LoginComponent {
     this.userService.login(email, password).subscribe((user) => {
       this.loading = false;
       if (user) {
-        alert(`Bienvenido, ${user.lastName || user.firstName}!`);
         this.router.navigate(['/home']);
       } else {
         alert('Email o contraseña incorrectos');

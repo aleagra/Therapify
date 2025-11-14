@@ -9,9 +9,11 @@ import { Appointment } from '../../types/appointments';
 })
 export class AppointmentService {
   http = inject(HttpClient);
+
+  // Ruta BASE correcta
   apiUrl = 'http://localhost:3000/appointments';
 
-  // Crear turno
+  // === CREAR TURNO ===
   createAppointment(ap: Omit<Appointment, 'id'>) {
     return this.http.post<Appointment>(this.apiUrl, ap).pipe(
       catchError((err) => {
@@ -21,7 +23,7 @@ export class AppointmentService {
     );
   }
 
-  // Obtener todos los turnos
+  // === OBTENER TODOS LOS TURNOS ===
   getAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(this.apiUrl).pipe(
       catchError((err) => {
@@ -31,7 +33,7 @@ export class AppointmentService {
     );
   }
 
-  // Obtener un turno por ID
+  // === OBTENER TURNO POR ID ===
   getAppointmentById(id: string): Observable<Appointment | null> {
     return this.http.get<Appointment>(`${this.apiUrl}/${id}`).pipe(
       catchError((err) => {
@@ -41,7 +43,7 @@ export class AppointmentService {
     );
   }
 
-  // Obtener turnos por médico
+  // === OBTENER TURNOS POR DOCTOR ===
   getAppointmentsByDoctor(doctorId: string): Observable<Appointment[]> {
     return this.http
       .get<Appointment[]>(`${this.apiUrl}?doctorId=${doctorId}`)
@@ -53,7 +55,7 @@ export class AppointmentService {
       );
   }
 
-  // Obtener turnos por paciente
+  // === OBTENER TURNOS POR PACIENTE ===
   getAppointmentsByPatient(patientId: string): Observable<Appointment[]> {
     return this.http
       .get<Appointment[]>(`${this.apiUrl}?patientId=${patientId}`)
@@ -65,7 +67,7 @@ export class AppointmentService {
       );
   }
 
-  // Actualizar un turno
+  // === ACTUALIZAR TURNO (GENÉRICO) ===
   updateAppointment(
     id: string,
     appointment: Partial<Appointment>
@@ -80,20 +82,33 @@ export class AppointmentService {
       );
   }
 
-  // Eliminar turno
+  // === ELIMINAR UN TURNO ===
   deleteAppointment(id: string): Observable<boolean> {
     return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      map(() => true),
       catchError((err) => {
         console.error('Error al eliminar turno:', err);
         return of(false);
-      }),
-      // Convertir respuesta en boolean
-      map(() => true)
+      })
     );
   }
+
+  // === OBTENER TURNOS POR DOCTOR + FECHA ===
   getAppointmentsByDoctorAndDate(doctorId: string, date: string) {
     return this.http.get<Appointment[]>(
       `${this.apiUrl}?doctorId=${doctorId}&date=${date}`
     );
+  }
+
+  // === CAMBIAR ESTADO DEL TURNO (CONFIRMAR/CANCELAR) ===
+  updateAppointmentStatus(id: string, status: string) {
+    return this.http
+      .patch<Appointment>(`${this.apiUrl}/${id}`, { status })
+      .pipe(
+        catchError((err) => {
+          console.error('Error al actualizar estado del turno:', err);
+          return of(null);
+        })
+      );
   }
 }

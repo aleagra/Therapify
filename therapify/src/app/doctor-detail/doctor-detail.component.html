@@ -15,7 +15,8 @@
     </p>
 
     <div class="horarios-list">
-      @for (entry of doctor.availability | keyvalue; track entry.key) {
+      @for (entry of doctor.availability | keyvalue; track entry.key) { @if
+      (entry.value && entry.value.length > 0) {
       <div class="horarios-dia">
         <span class="dia-titulo">{{ entry.key | titlecase }}</span>
 
@@ -25,14 +26,14 @@
           }
         </div>
       </div>
-      }
+      } }
     </div>
   </div>
 
   <!-- Calendario -->
   <app-calendar
-    [schedule]="doctor.schedule ?? {}"
-    [availability]="doctor.availability ?? {}"
-  >
-  </app-calendar>
+    [schedule]="doctor.schedule"
+    [availability]="doctor.availability"
+    [doctorId]="doctor.id"
+  ></app-calendar>
 </div>
