@@ -1,5 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { Reviews } from '../../types/reviews';
@@ -8,12 +13,12 @@ import { Reviews } from '../../types/reviews';
   selector: 'app-reviews',
   imports: [ReactiveFormsModule],
   templateUrl: './reviews.component.html',
-  styleUrl: './reviews.component.css'
+  styleUrls: ['./reviews.component.css'], // <-- Corregido
 })
-export class ReviewsComponent   {
+export class ReviewsComponent implements OnInit {
   @Input() doctorId!: string;
 
-  reviews: Reviews[] = []; // <-- Usamos el tipo 'Review'
+  reviews: Reviews[] = [];
 
   // --- Propiedades para Edición ---
   isEditing: boolean = false;
@@ -25,93 +30,118 @@ export class ReviewsComponent   {
   reviewsService = inject(ReviewsService);
 
   // --- Datos del Usuario ---
-  // Asumimos que getLoggedUser() devuelve un objeto con { id: string, ... }
-  userLogged = this.userService.getLoggedUser(); 
+  userLogged = this.userService.getLoggedUser();
 
   // --- Formulario de Reseña ---
   reviewForm: FormGroup = this.fb.group({
-    // 7. Nombres de control deben coincidir con la lógica
     comment: [null, [Validators.required, Validators.minLength(8)]],
-    value: [1, Validators.required] // Renombrado de 'valoration' a 'value'
+    value: [1, Validators.required],
   });
 
-  // --- 8. ngOnInit se ejecuta cuando el componente se inicia ---
   ngOnInit(): void {
-    // Solo cargamos reseñas si el doctorId (Input) ha sido recibido
     if (this.doctorId) {
       this.loadReviews();
     }
   }
 
   loadReviews(): void {
-    this.reviewsService.getReviewsByDoctor(this.doctorId)
-      .subscribe(data => {
-        this.reviews = data;
-      });
+    this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe((data) => {
+      this.reviews = data;
+    });
   }
 
-  // --- 9. Método de Envío (Combinado: Alta y Modificación) ---
   onSubmitReview(): void {
+    if (!this.userLogged) {
+      alert('Debes iniciar sesión para dejar una reseña.');
+      return;
+    }
+
     if (this.reviewForm.invalid) {
       this.reviewForm.markAllAsTouched();
       return;
     }
 
-    // Si estamos editando, llamamos a la lógica de Modificación
+    const now = new Date().toISOString();
+
     if (this.isEditing && this.reviewToEditId) {
+      // --- Edición ---
       const updatedData: Reviews = {
         id: this.reviewToEditId,
-        patientId: this.userLogged.id, // ID del usuario logueado
+        date: now, // actualizamos timestamp
+        patientId: this.userLogged.id,
         drId: this.doctorId,
         value: this.reviewForm.value.value,
-        comment: this.reviewForm.value.comment
+        comment: this.reviewForm.value.comment,
       };
-      
-      this.reviewsService.updateReview(this.reviewToEditId, updatedData).subscribe(updatedReview => {
-       
-        const index = this.reviews.find(r => r.id === updatedReview.id);
-        if (index !== -1) {
-          this.reviews[index] = updatedReview;
-        }
-        this.resetForm();
-      });
 
+      this.reviewsService
+        .updateReview(this.reviewToEditId, updatedData)
+        .subscribe((updatedReview) => {
+          if (!updatedReview) {
+            alert('Error al actualizar la reseña.');
+            return;
+          }
+
+          const index = this.reviews.findIndex(
+            (r) => r.id === updatedReview.id
+          );
+          if (index !== -1) this.reviews[index] = updatedReview;
+          this.resetForm();
+        });
     } else {
-      // --- Lógica de Creación (Alta) ---
+      // --- Creación ---
       const reviewData: Reviews = {
-        patientId: this.userLogged.id, // Usamos el id del usuario logueado q no esta
+        id: 'temp-' + Date.now(), // id temporal único
+        date: now,
+        patientId: this.userLogged.id,
         drId: this.doctorId,
-        value: this.reviewForm.value.value, 
-        comment: this.reviewForm.value.comment 
+        value: this.reviewForm.value.value,
+        comment: this.reviewForm.value.comment,
       };
 
-      this.reviewsService.createReview(reviewData).subscribe(newReview => {
-        this.reviews.push(newReview);
+      this.reviewsService.createReview(reviewData).subscribe((newReview) => {
+        if (!newReview) {
+          alert('Error al crear la reseña.');
+          return;
+        }
+
+        // Reemplaza temporal por id real del backend
+        const index = this.reviews.findIndex((r) => r.id === reviewData.id);
+        if (index !== -1) this.reviews[index] = newReview;
+        else this.reviews.push(newReview);
+
         this.resetForm();
       });
     }
   }
 
-
   deleteReview(reviewId: string): void {
-  
-    const reviewToDelete = this.reviews.find(r => r.id === reviewId);
-
-   
-    if (reviewToDelete?.patientId !== this.userLogged.id) {
-      alert("Error: No puedes borrar reseñas de otros usuarios.");
+    if (!this.userLogged) {
+      alert('Debes iniciar sesión para eliminar una reseña.');
       return;
     }
 
+    const reviewToDelete = this.reviews.find((r) => r.id === reviewId);
+    if (!reviewToDelete) return;
+
+    if (reviewToDelete.patientId !== this.userLogged.id) {
+      alert('Error: No puedes borrar reseñas de otros usuarios.');
+      return;
+    }
 
     this.reviewsService.deleteReview(reviewId).subscribe(() => {
-      this.reviews = this.reviews.filter(review => review.id !== reviewId);
+      this.reviews = this.reviews.filter((r) => r.id !== reviewId);
     });
   }
 
   selectReviewToEdit(review: Reviews): void {
+    if (!this.userLogged) {
+      alert('Debes iniciar sesión para editar una reseña.');
+      return;
+    }
+
     if (review.patientId !== this.userLogged.id) {
-      alert("Error: No puedes editar reseñas de otros usuarios.");
+      alert('Error: No puedes editar reseñas de otros usuarios.');
       return;
     }
 
@@ -120,17 +150,14 @@ export class ReviewsComponent   {
 
     this.reviewForm.patchValue({
       value: review.value,
-      comment: review.comment
+      comment: review.comment,
     });
   }
 
-
   resetForm(): void {
     this.reviewForm.reset();
-    this.reviewForm.controls['value'].setValue(1); // Resetea las estrellas a 1
+    this.reviewForm.controls['value'].setValue(1);
     this.isEditing = false;
     this.reviewToEditId = null;
   }
-
-
 }

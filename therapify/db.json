@@ -14,12 +14,15 @@
     },
     {
       "id": "4c45",
-      "firstName": "alejandro",
-      "lastName": "aaa",
       "email": "da1sdad2as3das@gmail.com",
+      "userType": "doctor",
       "password": "alejandro",
       "confirmPassword": "alejandro",
-      "userType": "doctor",
+      "firstName": "alejandro",
+      "lastName": "aaa",
+      "address": "",
+      "gender": "",
+      "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes.fgdf",
       "schedule": {
         "monday": true,
         "tuesday": true,
@@ -27,7 +30,53 @@
         "thursday": true,
         "friday": false
       },
-      "description": "Psicóloga clínica especializada en terapia cognitivo-conductual para adolescentes y adultos jóvenes."
+      "availability": {
+        "monday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "tuesday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "wednesday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "thursday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00",
+          "13:00",
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "friday": []
+      }
     },
     {
       "id": "b974",
@@ -293,12 +342,28 @@
       "status": "pending",
       "createdAt": "2025-11-13T23:21:52.679Z"
     }
-  ], "reviews": [
+  ],
+  "reviews": [
     {
       "id": "67e0",
       "patientId": "4c45",
       "date": "2025-11-14",
-      "comment":"Es muy copado el especialista.",
-      "value":"1.5"
-    }]
+      "comment": "Es muy copado el especialista.",
+      "value": "1.5"
+    },
+    {
+      "id": "temp-1763130739312",
+      "date": "2025-11-14T14:32:19.312Z",
+      "patientId": "4c45",
+      "value": 5,
+      "comment": "hola como estas"
+    },
+    {
+      "id": "temp-1763130890305",
+      "date": "2025-11-14T14:34:54.283Z",
+      "patientId": "4c45",
+      "value": 4,
+      "comment": "asdasdasdasdasdasaa"
+    }
+  ]
 }
