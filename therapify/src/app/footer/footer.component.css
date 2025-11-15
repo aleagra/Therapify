@@ -48,8 +48,11 @@
 .footer-members p {
   margin: 0;
   font-size: 0.9rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-weight: 600;
-  color: #2a47b5;
 }
 
 .footer-repo {
@@ -66,15 +69,19 @@
 }
 
 .footer-repo a {
-  color: #2a47b5;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
   font-weight: 600;
   text-decoration: none;
   font-size: 0.9rem;
-  transition: color 0.3s ease;
+  transition: filter 0.3s ease;
 }
 
 .footer-repo a:hover {
-  color: #1f3ff5;
+  filter: brightness(1.2);
 }
 
 @media (max-width: 768px) {

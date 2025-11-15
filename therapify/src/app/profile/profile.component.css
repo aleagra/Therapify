@@ -22,6 +22,14 @@
   margin-bottom: 0.5rem;
 }
 
+/* Compatibilidad por si usás gradients en títulos */
+.profile-header h2,
+.medical-form h3 {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+}
+
 .profile-header p {
   color: #6b7280;
 }
@@ -62,6 +70,9 @@
   font-size: 1rem;
   transition: all 0.2s ease;
   font-family: "Poppins", sans-serif;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .input-field input:focus,
@@ -110,6 +121,9 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .btn-primary:hover {
@@ -125,6 +139,9 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .btn-secondary:hover {
@@ -136,6 +153,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .medical-form h3 {
@@ -179,6 +200,10 @@
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   display: none;
+
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .day-hours.active {
@@ -214,6 +239,10 @@
   border-radius: 10px;
   font-size: 1rem;
   font-family: "Poppins";
+
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
 }
 
 .hours-container {
@@ -265,6 +294,10 @@
   border-radius: 8px;
   font-size: 1rem;
   width: 100px;
+
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
   transition: all 0.2s ease;
 }
 
@@ -274,6 +307,7 @@
   box-shadow: 0 0 0 3px rgba(48, 134, 255, 0.2);
 }
 
+/* RESPONSIVE 1024 */
 @media (max-width: 1024px) {
   .profile-container {
     grid-template-columns: 1fr;
@@ -289,6 +323,7 @@
   }
 }
 
+/* RESPONSIVE 768 */
 @media (max-width: 768px) {
   .double {
     flex-direction: column;
@@ -332,6 +367,7 @@
   }
 }
 
+/* RESPONSIVE 480 */
 @media (max-width: 480px) {
   .profile-container {
     width: 100%;

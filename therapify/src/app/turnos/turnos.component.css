@@ -10,10 +10,15 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
+/* TÍTULO — AHORA CON TU GRADIENTE */
 .appointments-container h3 {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #2a47b5;
+
+  background: var(--primary-gradient);
+  background-clip: text; /* estándar */
+  -webkit-background-clip: text; /* compatibilidad */
+  color: transparent;
 }
 
 .empty-state {
@@ -45,11 +50,17 @@
   color: #333;
 }
 
+/* STRONG — GRADIENTE */
 .appointment-card strong {
-  color: #2a47b5;
+  background: var(--primary-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
-/* === BOTON ELIMINAR === */
+/* === BOTÓN ELIMINAR === */
 .button-delete {
   align-self: flex-start;
   margin-top: 0.5rem;
@@ -67,6 +78,8 @@
 .button-delete:hover {
   background: #b71c1c;
 }
+
+/* === BOTÓN CONFIRMAR (AZUL) === */
 .button-confirm {
   align-self: flex-start;
   margin-top: 0.5rem;
@@ -85,6 +98,7 @@
   background: #1c3293;
 }
 
+/* === ESTADOS === */
 .status {
   margin-left: 5px;
   padding: 4px;
@@ -93,6 +107,7 @@
   font-weight: 600;
   text-transform: uppercase;
 }
+
 .status.completed {
   background: #d1ecf1;
   color: #0c5460;
@@ -118,6 +133,7 @@
   border: 1px solid #f5a4a4;
 }
 
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
   .appointments-container {
     padding: 1.2rem;
@@ -126,6 +142,7 @@
 
   .appointments-container h3 {
     font-size: 1.4rem;
+    text-align: center;
   }
 
   .appointment-card {
@@ -140,12 +157,6 @@
     padding: 0.45rem 0.8rem;
     font-size: 0.85rem;
   }
-}
-
-.appointment-card strong {
-  color: #1f3bb3;
-  font-weight: 600;
-  font-size: 1rem;
 }
 
 .appointment-card .info-text {

@@ -159,7 +159,7 @@
   z-index: 5;
   position: relative;
   top: 74%;
-  left: 10%;
+  left: 2%;
   width: fit-content;
   justify-items: flex-start;
   align-items: center;
@@ -169,7 +169,7 @@
 
 .info p {
   font-size: 1.5rem;
-  width: 45%;
+  width: 60%;
 }
 
 .iconHome {
@@ -231,7 +231,7 @@
     width: 70%;
   }
   .info {
-    top: 77%;
+    top: 80%;
   }
   .bottom-card {
     display: none;

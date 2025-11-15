@@ -16,6 +16,7 @@ h1 {
   color: #20252f;
   font-weight: 600;
 }
+
 .search-input {
   display: block;
   width: calc(100% - 4rem);
@@ -28,9 +29,10 @@ h1 {
 }
 
 .search-input:focus {
-  border-color: #2a47b5;
+  /* REEMPLAZADO */
+  border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(0, 119, 182, 0.2);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(42, 71, 181, 0.2);
 }
 
 .day-filter-container {
@@ -53,10 +55,16 @@ h1 {
 
 .day-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #2a47b5;
+
+  /* REEMPLAZADO — Border con gradiente */
+  border: 1px solid transparent;
+  background-image: linear-gradient(#fff, #fff),
+    linear-gradient(to right, #0077b6, #00c4b4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  color: #0077b6;
   border-radius: 20px;
-  background: none;
-  color: #2a47b5;
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 600;
@@ -64,7 +72,8 @@ h1 {
 
 .day-btn.active-day,
 .day-btn:hover {
-  background-color: #2a47b5;
+  /* REEMPLAZADO */
+  background-image: linear-gradient(to right, #0077b6, #00c4b4);
   color: #fff;
 }
 

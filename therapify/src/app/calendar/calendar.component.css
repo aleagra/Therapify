@@ -40,11 +40,14 @@ mat-form-field.full-width {
   margin-top: 1.8rem;
 }
 
+/* LABEL USANDO GRADIENTE */
 .horario-label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.8rem;
-  color: #2a47b5;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .horarios-grid {
@@ -53,28 +56,34 @@ mat-form-field.full-width {
   gap: 0.7rem;
 }
 
+/* BOTONES DE HORARIO */
 :host ::ng-deep .mat-button-toggle-button {
-  border: 1px solid #d8e3ff;
+  border: 1px solid transparent;
   border-radius: 12px !important;
   padding: 0.6rem 0;
   font-weight: 500;
   font-size: 0.95rem;
-  color: #2a47b5;
-  background: #f4f7ff;
+
+  background-image: linear-gradient(#fff, #fff), var(--primary-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  color: #0077b6;
   transition: all 0.2s ease;
 }
 
 :host ::ng-deep .mat-button-toggle-button:hover {
-  background: #e5edff;
+  background-image: linear-gradient(#f0faff, #f0faff), var(--primary-gradient);
 }
 
 :host ::ng-deep .mat-button-toggle-checked {
-  background: #2a47b5 !important;
+  background: var(--primary-gradient) !important;
   color: #fff !important;
-  border-color: #2a47b5 !important;
-  box-shadow: 0 3px 10px rgba(42, 71, 181, 0.3);
+  border-color: transparent !important;
+  box-shadow: 0 3px 10px rgba(0, 180, 180, 0.3);
 }
 
+/* CARD RESUMEN */
 .detalle-cita {
   background: #f8f9ff;
   border-radius: 16px;
@@ -83,11 +92,15 @@ mat-form-field.full-width {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
+/* TITULO DEL CARD CON GRADIENTE */
 mat-card-title {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  color: #2a47b5;
   font-weight: 600;
+
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 mat-card-content p {
@@ -95,20 +108,18 @@ mat-card-content p {
   color: #333;
 }
 
-.costo-total {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
+/* PRECIO CON GRADIENTE */
 .precio {
-  color: #2a47b5;
   font-size: 1.2rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* BOTÓN CONFIRMAR CON GRADIENTE */
 .confirmar-btn {
   width: 100%;
-  background: #2a47b5 !important;
+  background: var(--primary-gradient) !important;
   color: #fff !important;
   padding: 0.9rem 1.2rem !important;
   border-radius: 12px !important;
@@ -119,7 +130,7 @@ mat-card-content p {
 }
 
 .confirmar-btn:hover {
-  background: #20368f !important;
+  opacity: 0.85;
 }
 
 .confirmar-btn.confirmado {

@@ -158,8 +158,18 @@
       "date": "2025-11-19",
       "startTime": "11:00",
       "endTime": "12:00",
-      "status": "pending",
+      "status": "confirmed",
       "createdAt": "2025-11-14T17:07:32.705Z"
+    },
+    {
+      "id": "c7ca",
+      "doctorId": "5d12",
+      "patientId": "1",
+      "date": "2025-11-14",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "status": "completed",
+      "createdAt": "2025-11-14T22:52:55.739Z"
     }
   ],
   "reviews": [
@@ -170,6 +180,14 @@
       "value": 4,
       "comment": "muy buen doctor",
       "date": "2025-11-14T19:42:11.741Z"
+    },
+    {
+      "id": "8872",
+      "patientId": "4c45",
+      "drId": "5d12",
+      "value": 3,
+      "comment": "sdadasdasdasdasdasdasd",
+      "date": "2025-11-14T23:14:01.674Z"
     }
   ]
 }
