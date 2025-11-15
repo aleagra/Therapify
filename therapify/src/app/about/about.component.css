@@ -29,7 +29,7 @@
   margin-bottom: 1.5rem;
 }
 
-.mission span {
+ span {
   color:  linear-gradient(to right, #00C4B4, #0077B6);
   background: linear-gradient(to right, #0077B6, #00C4B4);
   -webkit-background-clip: text; /* Para navegadores basados en Webkit (Chrome, Safari) */
@@ -261,4 +261,188 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
     width: 140px;
     padding: 1rem;
   }
+}
+/* --- Contenedor Principal de la Sección "Equipo" --- */
+.team-section {
+  display: flex; /* 1. Crea las dos columnas */
+  align-items: center; /* 2. Centra las columnas verticalmente */
+  flex-wrap: wrap; /* 3. Permite que se apilen en pantallas pequeñas */
+  gap: 3rem; /* Espacio entre la columna de texto y las fotos */
+  width: 90%;
+  justify-content: center ;
+  
+  /* Padding consistente con el resto de tu diseño */
+  padding: 4rem 7rem; 
+  
+  /* Fondo blanco y bordes redondeados (como en la imagen) */
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin: 4rem auto; /* Espacio vertical para separarlo de otras secciones */
+  
+  /* Sombra que hemos usado en otras tarjetas */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Columna Izquierda (Texto) --- */
+.team-description {
+  flex: 1 1 300px; /* Crece (1), Base (1), Tamaño base (300px) */
+  min-width: 300px;
+}
+
+.team-description h3 {
+  /* Ya deberías tener este estilo global, pero por si acaso: */
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #20252f;
+  margin-bottom: 1.5rem;
+}
+
+.team-description p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.7;
+  max-width: 500px; /* Evita que el texto sea demasiado ancho */
+}
+
+/* --- Columna Derecha (Miembros) --- */
+.team-members {
+  flex: 2; /* Le da más espacio a las fotos */
+  display: flex;
+  justify-content: space-around; /* Distribuye las 3 fotos */
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* --- Tarjeta Individual de Miembro --- */
+.team-member-card {
+  text-align: center;
+  flex: 0 1 150px; /* No crece, Base (1), Tamaño base (150px) */
+}
+
+.team-member-card img {
+  width: 120px; /* Tamaño de la foto */
+  height: 120px;
+  border-radius: 50%; /* 1. Las hace circulares */
+  object-fit: cover; /* 2. Evita que la imagen se estire */
+  
+  /* 3. Borde con el degradado de tu marca */
+  border: 3px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+              linear-gradient(to right, #00C4B4, #0077B6) border-box;
+  
+  margin-bottom: 1rem;
+}
+
+.team-member-card h4 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #20252f;
+  margin: 0;
+}
+
+/* Opcional: Estilo para el título/puesto */
+.team-member-card .member-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+.impact {
+  /* --- 1. Estilo de Tarjeta Flotante --- */
+  width: 90%; /* Ocupa el 85% del ancho */
+  margin: 4rem auto; /* Centrada horizontalmente, con margen vertical */
+  background-color: #f8fcfd; /* Nuestro fondo azulado sutil */
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombra fuerte */
+  padding: 3rem;
+  box-sizing: border-box;
+
+  /* --- 2. Contenido Centrado --- */
+  text-align: center;
+}
+
+/* --- Título H3 (Nuestro Impacto) --- */
+.impact h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #20252f;
+  margin: 0 0 1.5rem 0; /* Limpia margen superior */
+}
+
+/* --- El degradado para la palabra "Impacto" --- */
+.impact h3 span {
+  /* Aplica el degradado como fondo */
+  background: linear-gradient(to right, #02689e, #00C4B4);
+  
+  /* Recorta el fondo solo al área del texto */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Hace el texto transparente */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* --- Párrafo de Descripción --- */
+.impact p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  color: #555;
+  line-height: 1.7;
+  max-width: 750px; /* Evita que el texto sea demasiado ancho */
+  margin: 0 auto; /* Centra el párrafo */
+}
+
+/* --- Contenedor de Estadísticas --- */
+.impact-stats {
+  display: flex;
+  justify-content: center; /* Centra los dos bloques */
+  gap: 4rem; /* Espacio entre los números */
+  margin: 3rem 0; /* Espacio vertical */
+  flex-wrap: wrap; /* Para responsiveness */
+}
+
+/* --- Números (500+, 10,000+) --- */
+.impact-stats h4 {
+  font-size: 3rem; /* Números grandes */
+  font-weight: 700;
+  color: #00b0b6; /* Color azul principal para destacar */
+  margin: 0 0 0.5rem 0; /* Espacio debajo del número */
+}
+
+/* --- Etiquetas (Terapeutas Verificados...) --- */
+.impact-stats p {
+  font-size: 2.5rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.5; /* Asegura buen espaciado si el texto tiene 2 líneas */
+}
+
+/* --- Botón CTA Final --- */
+.impact .btn-primary {
+background: linear-gradient(to right, #0077B6, #00C4B4); 
+  color: white; /* Texto blanco */
+  border: none;
+  font-size: 1rem;
+  padding: 1rem 2rem; 
+  border-radius: 12px; /* Bordes redondeados */
+  font-weight: 100;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sombra */
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1.5rem;
+}
+.btn-primary:hover {
+  /* Cambia la dirección del degradado */
+  background: linear-gradient(to right, #00C4B4, #0077B6); 
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3);
+  transform: translateY(-20px); /* Efecto de levantamiento */
 }
