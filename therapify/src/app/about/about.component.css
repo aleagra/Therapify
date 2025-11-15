@@ -11,9 +11,9 @@
 .mission {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 2.5rem;
+  gap: 1rem;
   background-color: #e9eef2;
   padding: 5rem 7rem;
 }
@@ -23,26 +23,28 @@
 }
 
 .mission h2 {
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #20252f;
   margin-bottom: 1.5rem;
 }
 
 .mission span {
-  color: #3086ff;
+  color:  linear-gradient(to right, #00C4B4, #0077B6);
+  background: linear-gradient(to right, #0077B6, #00C4B4);
+  -webkit-background-clip: text; /* Para navegadores basados en Webkit (Chrome, Safari) */
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Para navegadores basados en Webkit */
+  color: transparent;
 }
 
 .mission p {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   max-width: 650px;
   color: #4a4a4a;
 }
 
-.mission .image img {
-  width: 100%;
-  max-width: 400px;
-}
+
 
 /* Historia */
 .history {
@@ -52,26 +54,67 @@
 .history h3,
 .values h3,
 .impact h3 {
-  font-size: 2rem;
+  font-size: 2.4rem;
   margin-bottom: 2rem;
   color: #20252f;
   font-weight: 600;
 }
 
+
+.heroImgAbout { /* Este es el tag <img> */
+  width: 100%; /* Haz que la imagen sea responsive */
+  max-width: 500px; /* Un tope para que no crezca demasiado */
+  height: auto; /* Mantiene la proporción */
+  border-radius: 20px; /* Bordes redondeados */
+}
+.heroImgAbout img{
+  overflow: hidden; 
+  position: relative;
+  z-index: -1; 
+  /* Puede ser útil para centrarla si el contenedor es más grande */
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  
+  /* Ajusta estos valores según dónde quieras la ilustración */
+  width: 1200px; /* Que ocupe todo el ancho disponible */
+    margin: 3rem auto; /* Centrar y darle espacio vertical */
+  
+  /* Opcional: un fondo sutil o un borde si quieres que la imagen parezca una "tarjeta" */
+  /* background-color: #f8fcfd;
+     border-radius: 20px;
+     padding: 2rem;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); */
+}
 .history-grid {
-  display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  display: grid;
+  gap: 15rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
 }
 
 .history-card {
-  background: #f3f5fa;
-  border-radius: 18px;
-  padding: 2rem;
-  flex: 1 1 320px;
+ background: linear-gradient(to bottom right, #ffffff, #abd6db); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #e0f2f7; /* Un borde sutil para definir la tarjeta */
+  border-radius: 18px; /* Bordes redondeados */
+  padding: 2rem 2.5rem;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
+.history-card h5{
+  font-size: 1.5rem;
   text-align: center;
-  font-size: 1rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+.history-card p{
+
+  text-align: center;
+}
+.history-card img {
+  width: 200px; /* Tamaño del ícono */
+  height: 200px;
+  margin-bottom: 1.5rem; /* Espacio debajo del ícono */
 }
 
 .btn-secondary {
