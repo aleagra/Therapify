@@ -1,0 +1,197 @@
+/* ====== CONTENEDOR GENERAL ====== */
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
+
+/* ====== PANEL IZQUIERDO ====== */
+.left-panel {
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-img {
+  margin-bottom: 1rem;
+  width: 80px;
+  height: auto;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* ====== FORMULARIOS ====== */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+input {
+  padding: 1.2rem 0.8rem;
+  border: 1px solid #d8d7d7;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  border: 2px solid #00c4b4;
+}
+
+/* ====== BOTONES ====== */
+.btn {
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  color: white;
+  border: none;
+  font-size: 1rem;
+  padding: 1.3rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2);
+  display: inline-block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-position: -100% 0;
+}
+
+/* ====== CONTROLES DE PASOS ====== */
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.options button {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.options button.active {
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  color: white;
+  border-color: transparent;
+}
+
+/* ====== PANEL DERECHO ====== */
+.right-panel {
+  flex: 1;
+  background-color: #f9fafb;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.illustration {
+  width: 100%;
+  border-radius: 40px;
+  margin-bottom: 2rem;
+}
+
+.right-panel h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.right-panel p {
+  max-width: 500px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (min-width: 768px) {
+  .container {
+    padding: 0;
+    flex-direction: row;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 50%;
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .right-panel {
+    order: -1;
+  }
+
+  .illustration {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 0 7rem;
+  }
+  .left-panel {
+    padding: 2rem 3rem;
+  }
+}
+@media (min-width: 1440px) {
+  .form {
+    padding: 2rem 5rem;
+  }
+}

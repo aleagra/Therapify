@@ -1,0 +1,224 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
+
+/* ====== PANEL IZQUIERDO ====== */
+.left-panel {
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.left-panel h1 {
+  font-size: 2rem;
+  text-align: right;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  background-size: 200% auto; /* Duplica el tamaño del fondo del degradado */
+  transition: background-position 0.3s ease-out;
+
+  /* 2. Recorta el fondo para que solo cubra el texto */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* 3. Hace el texto transparente para que se vea el fondo */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.left-panel h1 :hover {
+  /* Mueve el fondo del degradado, creando un efecto de "movimiento" o "brillo" */
+  background-position: -100% 0;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-img {
+  margin-bottom: 1rem;
+  width: 80px;
+  height: auto;
+}
+
+.logo-text {
+  font-weight: 600;
+  color: #3b3b3b;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* ====== FORMULARIO ====== */
+.form {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+input {
+  padding: 1.2rem 0.8rem;
+  border: 1px solid #d8d7d7;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: border 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  border: 2px solid #00c4b4;
+}
+
+.forgot {
+  text-align: right;
+}
+
+.forgot a {
+  font-size: 1rem;
+  color: #0077b6;
+  text-decoration: none;
+}
+
+.forgot a:hover {
+  text-decoration: underline;
+  color: #00c4b4;
+}
+
+.btn {
+  /* Fondo con degradado lineal de azul a verde/cian */
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  color: white; /* Texto blanco */
+  border: none;
+  font-size: 1rem;
+  padding: 1.3rem 2rem;
+  border-radius: 12px; /* Bordes redondeados */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sombra */
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn :hover {
+  color: linear-gradient(to right, #0077b6, #00c4b4);
+  background-color: white; /* Texto blanco */
+}
+
+.register {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.register a {
+  color: #00c4b4;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register a:hover {
+  text-decoration: underline;
+  color: #0077b6;
+}
+
+/* ====== PANEL DERECHO ====== */
+.right-panel {
+  flex: 1;
+  background-color: #f9fafb;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.illustration {
+  width: 100%;
+  height: auto;
+  border-radius: 40px;
+}
+
+.right-panel h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+
+  /* 2. Recorta el fondo para que solo cubra el texto */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* 3. Hace el texto transparente para que se vea el fondo */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.right-panel p {
+  max-width: 550px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (min-width: 768px) {
+  .container {
+    padding: 0;
+    flex-direction: row;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 50%;
+    padding: 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .right-panel {
+    order: -1;
+  }
+
+  .illustration {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 7rem;
+  }
+  .left-panel {
+    padding: 2rem 3rem;
+  }
+}
+@media (min-width: 1440px) {
+  .form {
+    padding: 2rem 5rem;
+  }
+}
