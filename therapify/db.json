@@ -31,11 +31,28 @@
         "friday": true
       },
       "availability": {
-        "monday": ["08:00", "09:00", "10:00", "11:00"],
-        "tuesday": ["09:00", "10:00", "11:00"],
+        "monday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00"
+        ],
+        "tuesday": [
+          "09:00",
+          "10:00",
+          "11:00"
+        ],
         "wednesday": [],
-        "thursday": ["14:00", "15:00", "16:00"],
-        "friday": ["10:00", "11:00", "12:00"]
+        "thursday": [
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "friday": [
+          "10:00",
+          "11:00",
+          "12:00"
+        ]
       }
     },
     {
@@ -57,10 +74,23 @@
         "friday": false
       },
       "availability": {
-        "monday": ["15:00", "16:00", "17:00"],
+        "monday": [
+          "15:00",
+          "16:00",
+          "17:00"
+        ],
         "tuesday": [],
-        "wednesday": ["08:00", "09:00", "10:00"],
-        "thursday": ["09:00", "10:00", "11:00", "12:00"],
+        "wednesday": [
+          "08:00",
+          "09:00",
+          "10:00"
+        ],
+        "thursday": [
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00"
+        ],
         "friday": []
       }
     },
@@ -83,11 +113,30 @@
         "friday": true
       },
       "availability": {
-        "monday": ["08:00", "09:00", "10:00"],
-        "tuesday": ["14:00", "15:00", "16:00"],
-        "wednesday": ["09:00", "10:00", "11:00", "12:00"],
-        "thursday": ["08:00", "09:00"],
-        "friday": ["10:00", "11:00"]
+        "monday": [
+          "08:00",
+          "09:00",
+          "10:00"
+        ],
+        "tuesday": [
+          "14:00",
+          "15:00",
+          "16:00"
+        ],
+        "wednesday": [
+          "09:00",
+          "10:00",
+          "11:00",
+          "12:00"
+        ],
+        "thursday": [
+          "08:00",
+          "09:00"
+        ],
+        "friday": [
+          "10:00",
+          "11:00"
+        ]
       }
     },
     {
@@ -110,10 +159,22 @@
       },
       "availability": {
         "monday": [],
-        "tuesday": ["08:00", "09:00", "10:00", "11:00"],
-        "wednesday": ["12:00", "13:00", "14:00"],
+        "tuesday": [
+          "08:00",
+          "09:00",
+          "10:00",
+          "11:00"
+        ],
+        "wednesday": [
+          "12:00",
+          "13:00",
+          "14:00"
+        ],
         "thursday": [],
-        "friday": ["09:00", "10:00"]
+        "friday": [
+          "09:00",
+          "10:00"
+        ]
       }
     },
     {
@@ -130,16 +191,27 @@
       "schedule": {
         "monday": true,
         "tuesday": true,
-        "wednesday": false,
-        "thursday": false,
+        "wednesday": true,
+        "thursday": true,
         "friday": true
       },
       "availability": {
-        "monday": ["10:00", "11:00", "12:00"],
-        "tuesday": ["14:00", "15:00"],
+        "monday": [
+          "10:00",
+          "11:00",
+          "12:00"
+        ],
+        "tuesday": [
+          "14:00",
+          "15:00"
+        ],
         "wednesday": [],
         "thursday": [],
-        "friday": ["09:00", "10:00", "11:00"]
+        "friday": [
+          "09:00",
+          "10:00",
+          "11:00"
+        ]
       }
     },
     {
@@ -185,17 +257,6 @@
       "lastName": "Paredes",
       "address": "",
       "gender": "female"
-    },
-    {
-      "id": "u005",
-      "email": "usuario5@gmail.com",
-      "userType": "cliente",
-      "password": "user123",
-      "confirmPassword": "user123",
-      "firstName": "Luciano",
-      "lastName": "Mendez",
-      "address": "",
-      "gender": "male"
     }
   ],
   "appointments": [
@@ -260,26 +321,6 @@
       "createdAt": "2024-11-20T11:20:00.000Z"
     },
     {
-      "id": "a006",
-      "doctorId": "d003",
-      "patientId": "u005",
-      "date": "2025-02-10",
-      "startTime": "14:00",
-      "endTime": "15:00",
-      "status": "completed",
-      "createdAt": "2025-01-25T09:50:00.000Z"
-    },
-    {
-      "id": "a007",
-      "doctorId": "d004",
-      "patientId": "u005",
-      "date": "2024-09-12",
-      "startTime": "08:00",
-      "endTime": "09:00",
-      "status": "completed",
-      "createdAt": "2024-09-01T10:10:00.000Z"
-    },
-    {
       "id": "a008",
       "doctorId": "d004",
       "patientId": "u003",
@@ -308,16 +349,6 @@
       "endTime": "10:00",
       "status": "completed",
       "createdAt": "2025-03-10T11:00:00.000Z"
-    },
-    {
-      "id": "a011",
-      "doctorId": "d001",
-      "patientId": "u005",
-      "date": "2025-05-02",
-      "startTime": "11:00",
-      "endTime": "12:00",
-      "status": "completed",
-      "createdAt": "2025-04-25T12:12:00.000Z"
     },
     {
       "id": "a012",
@@ -400,25 +431,27 @@
       "createdAt": "2025-02-01T11:00:00.000Z"
     },
     {
-      "id": "a020",
-      "doctorId": "d005",
-      "patientId": "u005",
-      "date": "2024-11-30",
-      "startTime": "11:00",
-      "endTime": "12:00",
-      "status": "completed",
-      "createdAt": "2024-11-15T10:00:00.000Z"
+      "id": "7c88",
+      "doctorId": "d002",
+      "patientId": "d004",
+      "date": "2025-11-19",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "status": "pending",
+      "createdAt": "2025-11-16T18:37:40.958Z"
+    },
+    {
+      "id": "7629",
+      "doctorId": "d002",
+      "patientId": "d004",
+      "date": "2025-11-17",
+      "startTime": "17:00",
+      "endTime": "18:00",
+      "status": "pending",
+      "createdAt": "2025-11-16T18:43:13.829Z"
     }
   ],
   "reviews": [
-    {
-      "id": "r001",
-      "patientId": "u004",
-      "drId": "d002",
-      "value": 4,
-      "comment": "Muy buena atención y puntualidad.",
-      "date": "2025-11-16T17:10:12.436Z"
-    },
     {
       "id": "r002",
       "patientId": "u002",
@@ -444,28 +477,12 @@
       "date": "2025-10-29T09:12:33.991Z"
     },
     {
-      "id": "r005",
-      "patientId": "u005",
-      "drId": "d001",
-      "value": 4,
-      "comment": "Atención clara y amable.",
-      "date": "2025-11-18T13:48:54.535Z"
-    },
-    {
       "id": "r006",
       "patientId": "u002",
       "drId": "d003",
       "value": 2,
       "comment": "No me sentí del todo cómodo en esta sesión.",
       "date": "2025-11-11T10:32:19.732Z"
-    },
-    {
-      "id": "r007",
-      "patientId": "u005",
-      "drId": "d002",
-      "value": 5,
-      "comment": "Increíble, realmente sabe escuchar.",
-      "date": "2025-11-12T15:14:07.654Z"
     },
     {
       "id": "r008",
@@ -522,14 +539,6 @@
       "value": 3,
       "comment": "Correcto, pero esperaba más profundidad.",
       "date": "2025-11-15T09:55:42.321Z"
-    },
-    {
-      "id": "r015",
-      "patientId": "u005",
-      "drId": "d003",
-      "value": 5,
-      "comment": "Excelente profesional, muy humano.",
-      "date": "2025-11-18T14:59:12.731Z"
     }
   ]
 }

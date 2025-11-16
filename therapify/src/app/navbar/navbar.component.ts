@@ -6,11 +6,12 @@ import {
   RouterModule,
 } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterModule],
+  imports: [RouterLink, RouterLinkActive, RouterModule, NgIf],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })

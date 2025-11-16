@@ -110,12 +110,19 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(reviewId: string): void {
-    if (!this.userLogged)
+    if (!this.userLogged) {
       return alert('Debes iniciar sesión para eliminar una reseña.');
+    }
+
     const reviewToDelete = this.reviews.find((r) => r.id === reviewId);
     if (!reviewToDelete) return;
-    if (reviewToDelete.patientId !== this.userLogged.id)
+
+    const isAdmin = this.userLogged.userType === 'administrador';
+    const isOwner = reviewToDelete.patientId === this.userLogged.id;
+
+    if (!isOwner && !isAdmin) {
       return alert('No puedes borrar reseñas de otros usuarios.');
+    }
 
     this.reviewsService.deleteReview(reviewId).subscribe(() => {
       this.reviews = this.reviews.filter((r) => r.id !== reviewId);

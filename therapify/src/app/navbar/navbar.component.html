@@ -33,6 +33,15 @@
         >Sobre Nosotros</a
       >
     </li>
+    <li *ngIf="userService.getLoggedUser()?.userType === 'administrador'">
+      <a
+        routerLink="users"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Usuarios
+      </a>
+    </li>
     <li>
       <a
         routerLink="profile"

@@ -37,6 +37,12 @@ export class TurnosComponent implements OnInit {
     this.appointmentService.getAppointments().subscribe((all) => {
       const appointments = all || [];
 
+      if (this.userLogged!.userType === 'administrador') {
+        this.misTurnos.set(appointments);
+        this.misPacientes.set(appointments);
+        return;
+      }
+
       this.misTurnos.set(
         appointments.filter((a) => a.patientId === this.userLogged!.id)
       );

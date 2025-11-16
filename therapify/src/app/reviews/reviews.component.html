@@ -67,11 +67,15 @@
           <span class="review-stars">Valoración: {{ review.value }} / 5</span>
           <span class="review-user">- {{ getUserName(review.patientId) }}</span>
         </div>
-        @if (review.patientId === userLogged?.id) {
+        @if (review.patientId === userLogged?.id || userLogged?.userType ===
+        'administrador') {
         <div class="review-actions">
+          @if (review.patientId === userLogged?.id) {
           <button (click)="selectReviewToEdit(review)" class="button-edit">
             Editar
           </button>
+          }
+
           <button (click)="deleteReview(review.id)" class="button-delete">
             Eliminar
           </button>

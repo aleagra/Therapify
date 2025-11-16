@@ -124,4 +124,7 @@ export class UserService {
       .get<any[]>(this.apiUrl)
       .pipe(map((users) => users.filter((user) => user.userType === 'doctor')));
   }
+  deleteUser(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

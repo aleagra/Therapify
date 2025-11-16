@@ -1,5 +1,37 @@
 <div class="appointments-container">
+  <!-- ADMINISTRADOR -->
+  @if (userLogged?.userType === 'administrador') {
+  <h3>Todos los Turnos</h3>
+
+  @if (misTurnos().length === 0) {
+  <div class="empty-state">No hay turnos registrados.</div>
+  } @for (ap of misTurnos(); track ap.id) {
+  <div class="appointment-card">
+    <div><strong>Paciente:</strong> {{ getNombreCompleto(ap.patientId) }}</div>
+    <div><strong>Doctor:</strong> {{ getNombreCompleto(ap.doctorId) }}</div>
+
+    <div>
+      <strong>Fecha/Hora:</strong>
+      {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+    </div>
+
+    <div>
+      <strong>Estado:</strong>
+      <span class="status" [ngClass]="ap.status">
+        {{ ap.status }}
+      </span>
+    </div>
+
+    <button (click)="deleteAppointment(ap.id)" class="button-delete">
+      Eliminar
+    </button>
+  </div>
+  } }
+
+  <!-- PACIENTE → solo si NO es admin -->
+  @if (userLogged?.userType !== 'administrador') {
   <h3>Mis Turnos</h3>
+
   @if (misTurnos().length === 0) {
   <div class="empty-state">No tenés turnos reservados.</div>
   } @for (ap of misTurnos(); track ap.id) {
@@ -18,7 +50,10 @@
       </span>
     </div>
   </div>
-  } @if (misPacientes().length > 0) {
+  } }
+
+  <!-- DOCTOR → solo si NO es admin -->
+  @if (userLogged?.userType !== 'administrador' && misPacientes().length > 0) {
   <h3>Mis Pacientes</h3>
 
   @for (ap of misPacientes(); track ap.id) {

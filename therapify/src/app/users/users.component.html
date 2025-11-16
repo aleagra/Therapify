@@ -1,0 +1,25 @@
+<h1>Usuarios del Sistema</h1>
+
+<div class="users-container">
+  @for (u of filteredUsers; track u.id) {
+  <div class="user-card">
+    <div class="user-header">
+      <h3>{{ u.firstName }} {{ u.lastName }}</h3>
+
+      <span
+        class="type-badge"
+        [class.doctor]="u.userType === 'doctor'"
+        [class.admin]="u.userType === 'admin'"
+        [class.patient]="u.userType === 'patient'"
+      >
+        {{ u.userType }}
+      </span>
+    </div>
+    <p class="user-id">ID: {{ u.id }}</p>
+    <p class="email">{{ u.email }}</p>
+    <button class="delete-btn" (click)="deleteUser(u.id)">
+      Eliminar Usuario
+    </button>
+  </div>
+  }
+</div>

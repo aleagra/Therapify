@@ -9,6 +9,8 @@ import { TurnosComponent } from './turnos/turnos.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { UsersComponent } from './users/users.component';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +36,11 @@ export const routes: Routes = [
   {
     path: 'about-us',
     component: AboutComponent,
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [adminGuard],
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
