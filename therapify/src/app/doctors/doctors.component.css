@@ -1,8 +1,10 @@
 .doctores-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 350px);
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 1.5rem;
-  justify-items: start;
+  row-gap: 3rem;
+  width: 100%;
+  justify-items: center;
   padding: 2rem;
   box-sizing: border-box;
 }
@@ -10,7 +12,7 @@
 h1 {
   padding: 0 2rem;
   font-size: 2.5rem;
-  text-align: left;
+  text-align: center;
   line-height: 1.2;
   margin-bottom: 1rem;
   color: #20252f;
@@ -19,6 +21,7 @@ h1 {
 
 .search-input {
   display: block;
+  text-align: center;
   width: calc(100% - 4rem);
   margin: 0 2rem 1rem 2rem;
   padding: 0.5rem 1rem;
@@ -45,9 +48,11 @@ h1 {
   font-weight: 600;
   color: #20252f;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .day-filters {
+  justify-content: center;
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
