@@ -7,7 +7,7 @@ import { CalendarComponent } from '../calendar/calendar.component';
 @Component({
   selector: 'app-doctor-detail',
   standalone: true,
-  imports: [AsyncPipe, NgIf, KeyValuePipe, TitleCasePipe, CalendarComponent],
+  imports: [AsyncPipe, KeyValuePipe, TitleCasePipe, CalendarComponent],
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css'],
 })

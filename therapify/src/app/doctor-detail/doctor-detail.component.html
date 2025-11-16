@@ -1,37 +1,67 @@
-<div class="doctor-detail" *ngIf="doctor$ | async as doctor">
-  <div class="header">
-    <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
-  </div>
+@if (doctor$ | async; as doctor) {
 
-  <div class="description">
-    <p>{{ doctor.description }}</p>
-  </div>
+  <div class="specialist-profile-container">
 
-  <div class="horarios-section">
-    <h3>Horarios Disponibles</h3>
-    <p class="session-info">
-      Las sesiones tienen una duración de <strong>1 hora</strong>.
-    </p>
+    <div class="specialist-info-column">
 
-    <div class="horarios-list">
-      @for (entry of doctor.availability | keyvalue; track entry.key) { @if
-      (entry.value && entry.value.length > 0) {
-      <div class="horarios-dia">
-        <span class="dia-titulo">{{ entry.key | titlecase }}</span>
+      <div class="header specialist-card">
+        <div class="specialist-photo">
+          <img src="/assets/imagenDra.png" alt="Dra. Sofía Ramírez" />
+        </div>
+        <div class="specialist-details">
+          <h2>Especialista</h2>
+          <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
+          <div class="specialist-badges">
+            <span class="badge">Psicóloga Clínica</span>
+            <span class="badge">Terapia Cognitivo-Conductual</span>
+          </div>
+        </div>
+      </div>
 
-        <div class="chips">
-          @for (hora of entry.value; track hora) {
-          <span class="chip hora-chip">{{ hora }}</span>
+      <div class="description specialist-card">
+        <h3>Descripción</h3>
+        <p>{{ doctor.description }}</p>
+      </div>
+
+      <section class="philosophy-section specialist-card">
+        <h3>Mi Filosofía y Experiencia</h3>
+        <p>
+          Mi enfoque se basa en la Terapia Cognitivo-Conductual (TCC), una metodología
+          efectiva para identificar patrones de pensamiento y comportamiento negativos...
+        </p>
+        <ul>
+          <li>Idiomas de atención: Español, Inglés.</li>
+        </ul>
+      </section>
+
+      <div class="horarios-section specialist-card">
+        <h3>Horarios de Atención</h3>
+        <p class="session-info">
+          Las sesiones tienen una duración de <strong><span>1 hora</span></strong>.
+        </p>
+
+        <div class="horarios-list">
+          @for (entry of doctor.availability | keyvalue; track entry.key) { 
+            @if (entry.value && entry.value.length > 0) {
+              <div class="horarios-dia">
+                <span class="dia-titulo">{{ entry.key | titlecase }}</span>
+                <div class="chips">
+                  @for (hora of entry.value; track hora) {
+                    <span class="chip hora-chip">{{ hora }}</span>
+                  }
+                </div>
+              </div>
+            } 
           }
         </div>
       </div>
-      } }
-    </div>
-  </div>
 
-  <app-calendar
-    [schedule]="doctor.schedule"
-    [availability]="doctor.availability"
-    [doctorId]="doctor.id"
-  ></app-calendar>
-</div>
+    </div> <div class="booking-sidebar">
+
+      <app-calendar
+        [schedule]="doctor.schedule"
+        [availability]="doctor.availability"
+        [doctorId]="doctor.id"
+      ></app-calendar>
+
+    </div> </div> }
