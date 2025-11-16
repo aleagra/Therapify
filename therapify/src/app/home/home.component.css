@@ -137,6 +137,7 @@
   box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2);
   text-decoration: none;
   display: inline-block;
+  text-align: center;
 }
 
 .btn-secondary:hover {
@@ -167,11 +168,11 @@
   gap: 2rem;
 }
 .info span {
-  background: linear-gradient(to right, #0077B6, #00C4B4);
-  
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+
   -webkit-background-clip: text;
   background-clip: text;
-  
+
   -webkit-text-fill-color: transparent;
   color: transparent;
 }

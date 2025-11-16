@@ -8,6 +8,7 @@ import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
 import { TurnosComponent } from './turnos/turnos.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,10 @@ export const routes: Routes = [
     path: 'reviews/:id',
     component: ReviewsComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'about-us',
+    component: AboutComponent,
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },

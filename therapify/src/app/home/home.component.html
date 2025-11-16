@@ -2,14 +2,18 @@
   <!-- Card principal -->
   <div class="card">
     <img src="/assets/illustration.png" alt="Ilustración" class="card-img" />
+
     <div class="card-container">
       <h1>Tu Bienestar Mental <br /><span>Comienza Aquí.</span></h1>
       <p>
         Conecta con profesionales certificados y comienza a cultivar tu
         equilibrio y salud emocional hoy mismo.
       </p>
-      <button class="btn-primary">Buscar mi Terapeuta</button>
+
+      <!-- Cambiado a <a> con routerLink -->
+      <a routerLink="/doctors" class="btn-primary">Buscar mi Terapeuta</a>
     </div>
+
     <div class="info">
       <h3>Como <span>funciona</span></h3>
       <p>
@@ -27,7 +31,8 @@
         Mantenemos la misma calidad y confidencialidad de una sesión presencial,
         pero con la flexibilidad que necesitas.
       </p>
-      <button class="btn-secondary">Saber Mas</button>
+
+      <a routerLink="/about-us" class="btn-secondary">Saber Más</a>
     </div>
 
     <div class="side-card green">
@@ -37,7 +42,9 @@
         buscas un especialista hasta cada sesión, tu información personal y tus
         conversaciones están protegidas.
       </p>
-      <button class="btn-secondary">Comienza Ahora</button>
+
+      <!-- Cambiado a <a> con routerLink -->
+      <a routerLink="/appointments" class="btn-secondary">Comienza Ahora</a>
     </div>
   </div>
 
@@ -55,6 +62,7 @@
         <h2>350+</h2>
         <p>Terapeutas Certificados Disponibles</p>
       </div>
+
       <div class="elementStats">
         <img src="../../assets/safetyIcon.png" class="iconHome" alt="" />
         <h2>∞</h2>

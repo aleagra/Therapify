@@ -73,7 +73,7 @@ export class RegisterComponent {
 
     const user = this.form.getRawValue() as any;
     this.userService.postUser(user).subscribe(() => {
-      alert('usuario creado exitosamente.');
+      this.router.navigate(['/home']);
     });
   }
 

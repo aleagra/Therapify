@@ -1,10 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
   font-family: "Inter", sans-serif;
 }
 
+/* ====== PANEL IZQUIERDO ====== */
 .left-panel {
   flex: 1;
   background-color: #fff;
@@ -12,7 +12,25 @@
   flex-direction: column;
   justify-content: center;
 }
+.left-panel h1 {
+  font-size: 2rem;
+  text-align: right;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  background-size: 200% auto; /* Duplica el tamaño del fondo del degradado */
+  transition: background-position 0.3s ease-out;
 
+  /* 2. Recorta el fondo para que solo cubra el texto */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* 3. Hace el texto transparente para que se vea el fondo */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.left-panel h1 :hover {
+  /* Mueve el fondo del degradado, creando un efecto de "movimiento" o "brillo" */
+  background-position: -100% 0;
+}
 .logo {
   display: flex;
   flex-direction: column;
@@ -35,7 +53,6 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: #222;
-  margin-bottom: 0.5rem;
 }
 
 .subtitle {
@@ -45,6 +62,7 @@
   margin-bottom: 1rem;
 }
 
+/* ====== FORMULARIO ====== */
 .form {
   padding: 1rem 2rem;
   display: flex;
@@ -59,8 +77,8 @@ label {
 }
 
 input {
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #ccc;
+  padding: 1.2rem 0.8rem;
+  border: 1px solid #d8d7d7;
   border-radius: 6px;
   font-size: 0.9rem;
   transition: border 0.2s ease;
@@ -68,8 +86,8 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #6366f1;
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+  border: 2px solid #00c4b4;
 }
 
 .forgot {
@@ -77,25 +95,35 @@ input:focus {
 }
 
 .forgot a {
-  font-size: 0.8rem;
-  color: #6366f1;
+  font-size: 1rem;
+  color: #0077b6;
   text-decoration: none;
 }
 
 .forgot a:hover {
   text-decoration: underline;
+  color: #00c4b4;
 }
 
 .btn {
-  border: 0;
-  background-color: #6366f1;
-  color: white;
-  padding: 0.7rem;
-  border-radius: 15px;
+  /* Fondo con degradado lineal de azul a verde/cian */
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+  color: white; /* Texto blanco */
+  border: none;
+  font-size: 1rem;
+  padding: 1.3rem 2rem;
+  border-radius: 12px; /* Bordes redondeados */
   font-weight: 600;
   cursor: pointer;
-  margin-top: 0.5rem;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sombra */
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn :hover {
+  color: linear-gradient(to right, #0077b6, #00c4b4);
+  background-color: white; /* Texto blanco */
 }
 
 .register {
@@ -105,46 +133,55 @@ input:focus {
 }
 
 .register a {
-  color: #6366f1;
+  color: #00c4b4;
   text-decoration: none;
   font-weight: 500;
 }
 
 .register a:hover {
   text-decoration: underline;
+  color: #0077b6;
 }
 
+/* ====== PANEL DERECHO ====== */
 .right-panel {
   flex: 1;
   background-color: #f9fafb;
   text-align: center;
-  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
 
 .illustration {
-  background-color: #f2f3f5;
-  width: 80%;
+  width: 100%;
   height: auto;
   border-radius: 40px;
-  margin-bottom: 1.5rem;
 }
 
 .right-panel h3 {
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+
+  /* 2. Recorta el fondo para que solo cubra el texto */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* 3. Hace el texto transparente para que se vea el fondo */
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .right-panel p {
-  max-width: 350px;
+  max-width: 550px;
   color: #555;
   font-size: 0.9rem;
 }
 
+/* ====== RESPONSIVE ====== */
 @media (min-width: 768px) {
   .container {
     padding: 0;
@@ -174,7 +211,7 @@ input:focus {
 
 @media (min-width: 1200px) {
   .container {
-    padding: 0 10rem;
+    padding: 0 7rem;
   }
   .left-panel {
     padding: 2rem 3rem;

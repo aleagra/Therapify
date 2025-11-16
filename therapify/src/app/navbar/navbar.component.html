@@ -26,7 +26,12 @@
       </a>
     </li>
     <li>
-      <a href="#" class="inactive-link">Sobre Nosotros</a>
+      <a
+        routerLink="about-us"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Sobre Nosotros</a
+      >
     </li>
     <li>
       <a

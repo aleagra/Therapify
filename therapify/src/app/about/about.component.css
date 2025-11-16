@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   background-color: #e9eef2;
-  padding: 5rem 7rem;
+  padding: 2rem 3rem;
 }
 
 .mission .text {
@@ -29,9 +29,9 @@
   margin-bottom: 1.5rem;
 }
 
- span {
-  color:  linear-gradient(to right, #00C4B4, #0077B6);
-  background: linear-gradient(to right, #0077B6, #00C4B4);
+span {
+  color: linear-gradient(to right, #00c4b4, #0077b6);
+  background: linear-gradient(to right, #0077b6, #00c4b4);
   -webkit-background-clip: text; /* Para navegadores basados en Webkit (Chrome, Safari) */
   background-clip: text;
   -webkit-text-fill-color: transparent; /* Para navegadores basados en Webkit */
@@ -44,12 +44,7 @@
   color: #4a4a4a;
 }
 
-
-
 /* Historia */
-.history {
-  padding: 0 7rem;
-}
 
 .history h3,
 .values h3,
@@ -60,26 +55,26 @@
   font-weight: 600;
 }
 
-
-.heroImgAbout { /* Este es el tag <img> */
+.heroImgAbout {
+  /* Este es el tag <img> */
   width: 100%; /* Haz que la imagen sea responsive */
   max-width: 500px; /* Un tope para que no crezca demasiado */
   height: auto; /* Mantiene la proporción */
   border-radius: 20px; /* Bordes redondeados */
 }
-.heroImgAbout img{
-  overflow: hidden; 
+.heroImgAbout img {
+  overflow: hidden;
   position: relative;
-  z-index: -1; 
+  z-index: -1;
   /* Puede ser útil para centrarla si el contenedor es más grande */
-  display: flex; 
+  display: flex;
   justify-content: center;
   align-items: center;
-  
+
   /* Ajusta estos valores según dónde quieras la ilustración */
   width: 1200px; /* Que ocupe todo el ancho disponible */
-    margin: 3rem auto; /* Centrar y darle espacio vertical */
-  
+  margin: 3rem auto; /* Centrar y darle espacio vertical */
+
   /* Opcional: un fondo sutil o un borde si quieres que la imagen parezca una "tarjeta" */
   /* background-color: #f8fcfd;
      border-radius: 20px;
@@ -90,25 +85,24 @@
   flex-wrap: wrap;
   display: grid;
   gap: 15rem;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .history-card {
- background: linear-gradient(to bottom right, #ffffff, #abd6db); 
+  background: linear-gradient(to bottom right, #ffffff, #abd6db);
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid #e0f2f7; /* Un borde sutil para definir la tarjeta */
   border-radius: 18px; /* Bordes redondeados */
   padding: 2rem 2.5rem;
-box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
-.history-card h5{
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+.history-card h5 {
   font-size: 1.5rem;
   text-align: center;
 }
-.history-card p{
-
+.history-card p {
   text-align: center;
 }
 .history-card img {
@@ -231,7 +225,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
   .history,
   .values {
-    padding: 0 3rem;
+    padding: 0;
   }
 
   .impact {
@@ -268,17 +262,17 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
   align-items: center; /* 2. Centra las columnas verticalmente */
   flex-wrap: wrap; /* 3. Permite que se apilen en pantallas pequeñas */
   gap: 3rem; /* Espacio entre la columna de texto y las fotos */
-  width: 90%;
-  justify-content: center ;
-  
+  width: 100%;
+  justify-content: center;
+
   /* Padding consistente con el resto de tu diseño */
-  padding: 4rem 7rem; 
-  
+  padding: 2rem 3rem;
+
   /* Fondo blanco y bordes redondeados (como en la imagen) */
   background-color: #ffffff;
   border-radius: 20px;
-  margin: 4rem auto; /* Espacio vertical para separarlo de otras secciones */
-  
+  margin: 2rem 0rem; /* Espacio vertical para separarlo de otras secciones */
+
   /* Sombra que hemos usado en otras tarjetas */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
@@ -291,7 +285,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 .team-description h3 {
   /* Ya deberías tener este estilo global, pero por si acaso: */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 2.4rem;
   font-weight: 600;
   color: #20252f;
@@ -299,7 +293,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 }
 
 .team-description p {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.1rem;
   color: #555;
   line-height: 1.7;
@@ -327,17 +321,17 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
   height: 120px;
   border-radius: 50%; /* 1. Las hace circulares */
   object-fit: cover; /* 2. Evita que la imagen se estire */
-  
+
   /* 3. Borde con el degradado de tu marca */
   border: 3px solid transparent;
   background: linear-gradient(#fff, #fff) padding-box,
-              linear-gradient(to right, #00C4B4, #0077B6) border-box;
-  
+    linear-gradient(to right, #00c4b4, #0077b6) border-box;
+
   margin-bottom: 1rem;
 }
 
 .team-member-card h4 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   color: #20252f;
@@ -346,7 +340,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* Opcional: Estilo para el título/puesto */
 .team-member-card .member-title {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   color: #555;
   margin-top: 0.25rem;
@@ -354,8 +348,8 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 .impact {
   /* --- 1. Estilo de Tarjeta Flotante --- */
-  width: 90%; /* Ocupa el 85% del ancho */
-  margin: 4rem auto; /* Centrada horizontalmente, con margen vertical */
+  width: 100%; /* Ocupa el 85% del ancho */
+  /* Centrada horizontalmente, con margen vertical */
   background-color: #f8fcfd; /* Nuestro fondo azulado sutil */
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombra fuerte */
@@ -368,7 +362,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* --- Título H3 (Nuestro Impacto) --- */
 .impact h3 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 2.4rem;
   font-weight: 600;
   color: #20252f;
@@ -378,12 +372,12 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 /* --- El degradado para la palabra "Impacto" --- */
 .impact h3 span {
   /* Aplica el degradado como fondo */
-  background: linear-gradient(to right, #02689e, #00C4B4);
-  
+  background: linear-gradient(to right, #02689e, #00c4b4);
+
   /* Recorta el fondo solo al área del texto */
   -webkit-background-clip: text;
   background-clip: text;
-  
+
   /* Hace el texto transparente */
   -webkit-text-fill-color: transparent;
   color: transparent;
@@ -391,7 +385,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* --- Párrafo de Descripción --- */
 .impact p {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 1.5rem;
   color: #555;
   line-height: 1.7;
@@ -410,7 +404,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* --- Números (500+, 10,000+) --- */
 .impact-stats h4 {
-  font-size: 3rem; /* Números grandes */
+  font-size: 2.5rem; /* Números grandes */
   font-weight: 700;
   color: #00b0b6; /* Color azul principal para destacar */
   margin: 0 0 0.5rem 0; /* Espacio debajo del número */
@@ -418,7 +412,7 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* --- Etiquetas (Terapeutas Verificados...) --- */
 .impact-stats p {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #555;
   margin: 0;
   line-height: 1.5; /* Asegura buen espaciado si el texto tiene 2 líneas */
@@ -426,11 +420,11 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 30px rgba(0, 0, 0, 0.12);}
 
 /* --- Botón CTA Final --- */
 .impact .btn-primary {
-background: linear-gradient(to right, #0077B6, #00C4B4); 
+  background: linear-gradient(to right, #0077b6, #00c4b4);
   color: white; /* Texto blanco */
   border: none;
   font-size: 1rem;
-  padding: 1rem 2rem; 
+  padding: 1rem 2rem;
   border-radius: 12px; /* Bordes redondeados */
   font-weight: 100;
   cursor: pointer;
@@ -442,7 +436,7 @@ background: linear-gradient(to right, #0077B6, #00C4B4);
 }
 .btn-primary:hover {
   /* Cambia la dirección del degradado */
-  background: linear-gradient(to right, #00C4B4, #0077B6); 
+  background: linear-gradient(to right, #00c4b4, #0077b6);
   box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3);
   transform: translateY(-20px); /* Efecto de levantamiento */
 }
