@@ -16,7 +16,7 @@ import { ProfileDoctorComponent } from './profile-doctor/profile-doctor.componen
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'home', component: HomeComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
