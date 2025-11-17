@@ -1,0 +1,55 @@
+<div class="profile-grid">
+  <form
+    class="medical-form"
+    [formGroup]="formSchedule"
+    (ngSubmit)="onSubmitMedical()"
+  >
+    <div class="profile-header">
+      <h2>Medical Schedule</h2>
+      <p>Select your available days and provide a short description</p>
+    </div>
+
+    <div class="days-group">
+      <div class="day-row" *ngFor="let day of weekDays">
+        <label class="day-checkbox">
+          <input type="checkbox" [formControlName]="day.control" />
+          {{ day.label }}
+        </label>
+
+        <div
+          class="hours-container"
+          *ngIf="formSchedule.get(day.control)?.value"
+        >
+          <input
+            type="time"
+            [formControlName]="day.control + 'Start'"
+            class="hour-input"
+          />
+          <span>to</span>
+          <input
+            type="time"
+            [formControlName]="day.control + 'End'"
+            class="hour-input"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="input-field full">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        rows="6"
+        placeholder="Describe your specialties..."
+        formControlName="description"
+      ></textarea>
+    </div>
+
+    <div class="action-buttons">
+      <button type="button" class="btn-secondary" (click)="cancelMedical()">
+        Cancel
+      </button>
+      <button type="submit" class="btn-primary">Save Changes</button>
+    </div>
+  </form>
+</div>

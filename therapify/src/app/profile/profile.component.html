@@ -1,33 +1,29 @@
 <div class="profile-container">
   <div class="profile-grid">
     <form
-      class="profile-form"
       [formGroup]="formProfile"
       (ngSubmit)="onSubmitProfile()"
+      class="profile-form"
     >
       <div class="profile-header">
-        <h2>Profile Information</h2>
-        <p>View and edit your personal details below</p>
+        <div>
+          <h2>Profile Information</h2>
+          <p>View and edit your personal details below</p>
+        </div>
+
+        <div class="medical-profile-button" *ngIf="user?.userType === 'doctor'">
+          <a class="btn-medical" routerLink="/profile-doctor">Perfil Médico</a>
+        </div>
       </div>
 
       <div class="form-group double">
         <div class="input-field">
           <label for="firstName">First name</label>
-          <input
-            id="firstName"
-            type="text"
-            formControlName="firstName"
-            required
-          />
+          <input id="firstName" type="text" formControlName="firstName" />
         </div>
         <div class="input-field">
           <label for="lastName">Last name</label>
-          <input
-            id="lastName"
-            type="text"
-            formControlName="lastName"
-            required
-          />
+          <input id="lastName" type="text" formControlName="lastName" />
         </div>
       </div>
 
@@ -46,10 +42,10 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group full">
         <div class="input-field full">
           <label for="address">Address</label>
-          <input id="address" type="text" formControlName="address" required />
+          <input id="address" type="text" formControlName="address" />
         </div>
       </div>
 
@@ -69,62 +65,6 @@
             Non-binary</label
           >
         </div>
-      </div>
-
-      <div class="action-buttons">
-        <button type="button" class="btn-secondary" (click)="cancel()">
-          Cancel
-        </button>
-        <button type="submit" class="btn-primary">Save Changes</button>
-      </div>
-    </form>
-  </div>
-
-  <div *ngIf="user.userType === 'doctor'" class="profile-grid">
-    <form
-      class="medical-form"
-      [formGroup]="formSchedule"
-      (ngSubmit)="onSubmitMedical()"
-    >
-      <div class="profile-header">
-        <h3>Medical Schedule</h3>
-        <p>Select your available days and provide a short description</p>
-      </div>
-
-      <div class="days-group">
-        <div class="day-row" *ngFor="let day of weekDays">
-          <label class="day-checkbox">
-            <input type="checkbox" [formControlName]="day.control" />
-            {{ day.label }}
-          </label>
-
-          <div
-            class="hours-container"
-            *ngIf="formSchedule.get(day.control)?.value"
-          >
-            <input
-              type="time"
-              [formControlName]="day.control + 'Start'"
-              class="hour-input"
-            />
-            <span>to</span>
-            <input
-              type="time"
-              [formControlName]="day.control + 'End'"
-              class="hour-input"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="input-field full">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          rows="9"
-          placeholder="Describe your specialties..."
-          formControlName="description"
-        ></textarea>
       </div>
 
       <div class="action-buttons">

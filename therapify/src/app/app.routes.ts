@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { UsersComponent } from './users/users.component';
 import { adminGuard } from './guards/admin.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ProfileDoctorComponent } from './profile-doctor/profile-doctor.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,29 +21,38 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
   {
+    path: 'profile-doctor',
+    component: ProfileDoctorComponent,
+    canActivate: [authGuard],
+  },
+  {
     path: 'appointments',
     component: TurnosComponent,
     canActivate: [authGuard],
   },
+
   {
     path: 'doctor/:id',
     component: DoctorDetailComponent,
     canActivate: [authGuard],
   },
+
   {
     path: 'reviews/:id',
     component: ReviewsComponent,
     canActivate: [authGuard],
   },
+
   {
     path: 'about-us',
     component: AboutComponent,
   },
+
   {
     path: 'users',
     component: UsersComponent,
     canActivate: [adminGuard],
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', redirectTo: '/home' },
+  { path: '**', component: NotFoundComponent },
 ];

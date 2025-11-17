@@ -133,12 +133,9 @@ export class CalendarComponent implements OnChanges {
 
   calcularFin(hora: string): string {
     const [h, m] = hora.split(':').map(Number);
-    const endDate = new Date();
-    endDate.setHours(h, m);
-    endDate.setHours(endDate.getHours() + 1);
-    const hh = endDate.getHours().toString().padStart(2, '0');
-    const mm = endDate.getMinutes().toString().padStart(2, '0');
-    return `${hh}:${mm}`;
+    const endHour = (h + 1).toString().padStart(2, '0');
+    const endMin = m.toString().padStart(2, '0');
+    return `${endHour}:${endMin}`;
   }
   reservaConfirmada = false;
 
