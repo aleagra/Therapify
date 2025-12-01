@@ -93,13 +93,6 @@
         >
           Doctor
         </button>
-        <button
-          type="button"
-          [class.active]="userType === 'administrador'"
-          (click)="selectUserType('administrador')"
-        >
-          Administrador
-        </button>
       </div>
 
       @if (getControl('userType').invalid && getControl('userType').touched) {

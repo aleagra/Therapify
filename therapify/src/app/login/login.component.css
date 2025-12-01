@@ -79,7 +79,7 @@ label {
 
 input {
   padding: 1.2rem 0.8rem;
-  border: 1px solid #d8d7d7;
+  border: 2px solid #d8d7d7;
   border-radius: 6px;
   font-size: 0.9rem;
   transition: border 0.2s ease;
