@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
-import { User } from '../../types/user';
 import { AppointmentService } from '../services/appointments.service';
+import { User } from '../../types/user';
 
 @Component({
   selector: 'app-users',
@@ -44,10 +44,9 @@ export class UsersComponent implements OnInit {
 
   deleteUser(id: string) {
     const user = this.users.find((u) => u.id === id);
-
     if (!user) return;
 
-    if (user.userType === 'administrador') {
+    if (user.userType === 'ADMIN') {
       alert('❌ No puedes eliminar al administrador.');
       return;
     }
@@ -58,24 +57,22 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    this.appointmentService.getAppointments().subscribe((apps) => {
+    // 1️⃣ Borrar citas del usuario
+    this.appointmentService.getMyAppointments().subscribe((apps) => {
       const toDelete = apps.filter(
-        (a) => a.patientId === id || a.doctorId === id
+        (a) => a.patientId === id || a.doctorId === id,
       );
-
       toDelete.forEach((a) =>
-        this.appointmentService.deleteAppointment(a.id).subscribe()
+        this.appointmentService.deleteAppointment(a.id).subscribe(),
       );
     });
 
-    this.reviewsService.getReviewsforSpecialist().subscribe((revs) => {
-      const toDelete = revs.filter((r) => r.patientId === id || r.drId === id);
-
-      toDelete.forEach((r) =>
-        this.reviewsService.deleteReview(r.id).subscribe()
-      );
+    // 2️⃣ Borrar reviews del usuario (solo admin puede)
+    this.reviewsService.getReviewsForUser(id).subscribe((revs) => {
+      revs.forEach((r) => this.reviewsService.deleteReview(r.id).subscribe());
     });
 
+    // 3️⃣ Borrar usuario
     this.userService.deleteUser(id).subscribe({
       next: () => {
         this.users = this.users.filter((u) => u.id !== id);

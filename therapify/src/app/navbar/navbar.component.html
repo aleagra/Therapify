@@ -33,7 +33,7 @@
         >Sobre Nosotros</a
       >
     </li>
-    <li *ngIf="userService.getLoggedUser()?.userType === 'administrador'">
+    <li *ngIf="userService.getLoggedUser()?.userType === 'ADMIN'">
       <a
         routerLink="users"
         routerLinkActive="active-link"

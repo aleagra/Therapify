@@ -29,7 +29,7 @@ export class RegisterComponent {
     userType: ['', Validators.required],
   });
 
-  selectUserType(value: 'paciente' | 'doctor' | 'administrador') {
+  selectUserType(value: 'PACIENTE' | 'DOCTOR' | 'ADMINISTRADOR') {
     this.userType = value;
     this.form.patchValue({ userType: value });
   }

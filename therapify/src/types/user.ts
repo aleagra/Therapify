@@ -7,21 +7,11 @@ export interface User {
   password: string;
   confirmPassword: string;
   userType: string;
+  token?: string;
   gender?: string;
   address?: string;
-  schedule?: {
-    monday: boolean;
-    tuesday: boolean;
-    wednesday: boolean;
-    thursday: boolean;
-    friday: boolean;
-  };
-  availability?: {
-    monday?: string[];
-    tuesday?: string[];
-    wednesday?: string[];
-    thursday?: string[];
-    friday?: string[];
-  };
+  specialty?: string;
+  schedule?: Record<string, boolean>;
+  availability?: Record<string, string[]>;
   description?: string;
 }

@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../types/user';
 import { NgFor, NgIf } from '@angular/common';
+import { UserRequestDTO } from '../../types/UserRequestDTO';
 
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
@@ -11,7 +12,7 @@ type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
   selector: 'app-profile-doctor',
   imports: [ReactiveFormsModule, NgIf, NgFor],
   templateUrl: './profile-doctor.component.html',
-  styleUrl: './profile-doctor.component.css',
+  styleUrls: ['./profile-doctor.component.css'],
 })
 export class ProfileDoctorComponent {
   fb = inject(FormBuilder);
@@ -58,13 +59,16 @@ export class ProfileDoctorComponent {
 
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
-        if (!res || res.userType !== 'doctor') {
-          alert('Solo los doctores tienen acceso a esta sección');
+        if (!res) {
+          alert('Error al cargar datos del usuario');
           return;
         }
 
         this.user = res;
-        this.patchScheduleForm();
+
+        if (res.userType === 'DOCTOR') {
+          this.patchScheduleForm();
+        }
 
         this.weekDays.forEach((day) => {
           this.formSchedule
@@ -76,26 +80,36 @@ export class ProfileDoctorComponent {
                     [`${day.control}Start`]: '',
                     [`${day.control}End`]: '',
                   },
-                  { emitEvent: false }
+                  { emitEvent: false },
                 );
               }
             });
         });
       },
-      error: () => alert('Error al cargar datos del doctor'),
+      error: () => alert('Error al cargar datos del usuario'),
     });
   }
 
   patchScheduleForm() {
+    const scheduleObj =
+      typeof this.user.schedule === 'string'
+        ? JSON.parse(this.user.schedule)
+        : (this.user.schedule ?? {});
+
+    const availabilityObj =
+      typeof this.user.availability === 'string'
+        ? JSON.parse(this.user.availability)
+        : (this.user.availability ?? {});
+
     const schedulePatch: any = {};
 
     for (const day of this.weekDays) {
       const key = day.control;
-      const isEnabled = this.user.schedule?.[key] ?? true;
+      const isEnabled = scheduleObj[key] ?? true;
 
-      const availability = this.user.availability?.[key];
-      const start = availability?.[0] ?? '08:00';
-      const end = availability?.[availability.length - 1] ?? '17:00';
+      const dayAvailability = availabilityObj[key] ?? [];
+      const start = dayAvailability[0] ?? '08:00';
+      const end = dayAvailability[dayAvailability.length - 1] ?? '17:00';
 
       schedulePatch[key] = isEnabled;
       schedulePatch[`${key}Start`] = start;
@@ -117,30 +131,40 @@ export class ProfileDoctorComponent {
   }
 
   onSubmitMedical() {
+    if (!this.user || this.user.userType !== 'DOCTOR') return;
+
     const f = this.formSchedule.getRawValue();
 
-    const schedule: any = {};
-    const availability: any = {};
+    const schedule: { [key in WeekDay]: boolean } = {
+      monday: f.monday,
+      tuesday: f.tuesday,
+      wednesday: f.wednesday,
+      thursday: f.thursday,
+      friday: f.friday,
+    };
 
-    for (const day of this.weekDays) {
-      const key = day.control;
-      if (f[key]) {
-        schedule[key] = true;
-        availability[key] = this.generateHourSlots(
-          f[`${key}Start`],
-          f[`${key}End`]
-        );
-      } else {
-        schedule[key] = false;
-        availability[key] = [];
-      }
-    }
+    const availability: { [key in WeekDay]: string[] } = {
+      monday: f.monday
+        ? this.generateHourSlots(f.mondayStart, f.mondayEnd)
+        : [],
+      tuesday: f.tuesday
+        ? this.generateHourSlots(f.tuesdayStart, f.tuesdayEnd)
+        : [],
+      wednesday: f.wednesday
+        ? this.generateHourSlots(f.wednesdayStart, f.wednesdayEnd)
+        : [],
+      thursday: f.thursday
+        ? this.generateHourSlots(f.thursdayStart, f.thursdayEnd)
+        : [],
+      friday: f.friday
+        ? this.generateHourSlots(f.fridayStart, f.fridayEnd)
+        : [],
+    };
 
-    const updatedUser: User = {
-      ...this.user,
+    const updatedUser: UserRequestDTO = {
+      description: f.description,
       schedule,
       availability,
-      description: f.description,
     };
 
     this.loading = true;
@@ -149,7 +173,15 @@ export class ProfileDoctorComponent {
       next: (res) => {
         this.loading = false;
         alert('Horario médico actualizado correctamente');
-        this.user = res;
+
+        if ('token' in res && res.token) {
+          this.user.token = res.token;
+        }
+
+        this.user.schedule = schedule;
+        this.user.availability = availability;
+        this.user.description = f.description;
+        this.userService.updateLocalUser(this.user);
         this.patchScheduleForm();
       },
       error: () => {
@@ -160,7 +192,8 @@ export class ProfileDoctorComponent {
   }
 
   cancelMedical() {
-    if (!this.user || this.user.userType !== 'doctor') return;
+    if (!this.user || this.user.userType !== 'DOCTOR') return;
+
     this.patchScheduleForm();
     this.formSchedule.patchValue({
       description: this.user.description ?? '',

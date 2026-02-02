@@ -3,7 +3,6 @@ import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { CommonModule } from '@angular/common';
-import { User } from '../../types/user';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -19,75 +18,72 @@ export class TurnosComponent implements OnInit {
 
   userLogged = this.userService.getLoggedUser();
 
+  // Lista de turnos donde el usuario es paciente
   misTurnos = signal<Appointment[]>([]);
+  // Lista de turnos donde el usuario es doctor
   misPacientes = signal<Appointment[]>([]);
-  todosLosUsuarios = signal<User[]>([]);
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe((users) => {
-      this.todosLosUsuarios.set(users || []);
-
-      this.actualizarTurnosVencidos();
-    });
+    this.actualizarTurnosVencidos();
   }
 
   loadAppointments(): void {
-    if (!this.userLogged) return;
+    this.appointmentService.getMyAppointments().subscribe((appointments) => {
+      const allAppointments = appointments || [];
+      console.log('💡 Todos los turnos traídos del backend:', allAppointments);
 
-    this.appointmentService.getAppointments().subscribe((all) => {
-      const appointments = all || [];
-
-      if (this.userLogged!.userType === 'administrador') {
-        this.misTurnos.set(appointments);
-        this.misPacientes.set(appointments);
-        return;
-      }
-
-      this.misTurnos.set(
-        appointments.filter((a) => a.patientId === this.userLogged!.id)
+      // Separar turnos según rol
+      const turnosComoPaciente = allAppointments.filter(
+        (a) => a.patientId === this.userLogged?.id,
+      );
+      const turnosComoDoctor = allAppointments.filter(
+        (a) => a.doctorId === this.userLogged?.id,
       );
 
-      this.misPacientes.set(
-        appointments.filter((a) => a.doctorId === this.userLogged!.id)
-      );
+      this.misTurnos.set(turnosComoPaciente);
+      this.misPacientes.set(turnosComoDoctor);
+
+      console.log('Turnos como paciente:', this.misTurnos());
+      console.log('Turnos como doctor:', this.misPacientes());
     });
-  }
-
-  getNombreCompleto(id: string): string {
-    const u = this.todosLosUsuarios().find((x) => x.id === id);
-    return u ? `${u.firstName} ${u.lastName}` : '(Desconocido)';
   }
 
   deleteAppointment(id: string): void {
     this.appointmentService.deleteAppointment(id).subscribe((success) => {
-      if (success) {
-        this.misTurnos.set(this.misTurnos().filter((a) => a.id !== id));
-        this.misPacientes.set(this.misPacientes().filter((a) => a.id !== id));
-      }
+      if (!success) return;
+
+      // Eliminar de ambas listas
+      this.misTurnos.set(this.misTurnos().filter((a) => a.id !== id));
+      this.misPacientes.set(this.misPacientes().filter((a) => a.id !== id));
+
+      console.log(`Turno eliminado: ${id}`);
     });
   }
 
   confirmarTurno(id: string): void {
     this.appointmentService
-      .updateAppointmentStatus(id, 'confirmed')
+      .updateAppointmentStatus(id, 'CONFIRMED')
       .subscribe((updated) => {
         if (!updated) return;
 
+        // Solo afecta la vista del doctor
         this.misPacientes.set(
           this.misPacientes().map((a) =>
-            a.id === id ? { ...a, status: 'confirmed' } : a
-          )
+            a.id === id ? { ...a, status: 'CONFIRMED' } : a,
+          ),
         );
+        console.log(`Turno confirmado: ${id}`, this.misPacientes());
       });
   }
 
   private actualizarTurnosVencidos(): void {
-    this.appointmentService.getAppointments().subscribe((appointments) => {
+    this.appointmentService.getMyAppointments().subscribe((appointments) => {
       const ahora = new Date();
+      const allAppointments = appointments || [];
 
-      const vencidos = (appointments || []).filter((ap) => {
+      const vencidos = allAppointments.filter((ap) => {
         const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
-        return fechaCompleta < ahora && ap.status !== 'completed';
+        return fechaCompleta < ahora && ap.status !== 'COMPLETED';
       });
 
       if (vencidos.length === 0) {
@@ -97,12 +93,12 @@ export class TurnosComponent implements OnInit {
 
       const updates = vencidos.map((ap) =>
         this.appointmentService.updateAppointment(ap.id, {
-          status: 'completed' as const,
-        })
+          status: 'COMPLETED' as const,
+        }),
       );
 
       forkJoin(updates).subscribe(() => {
-        console.log(`Turnos vencidos marcados: ${vencidos.length}`);
+        console.log(`Turnos vencidos marcados: ${vencidos.length}`, vencidos);
         this.loadAppointments();
       });
     });

@@ -1,104 +1,139 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Appointment } from '../../types/appointments';
+import { User } from '../../types/user';
+import { AppointmentRequest } from '../../types/AppointmentRequest';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  apiUrl = 'http://localhost:3000/appointments';
+  private BASE_URL = 'http://localhost:8080';
+  private APPOINTMENTS_URL = `${this.BASE_URL}/appointments`;
 
-  createAppointment(ap: Omit<Appointment, 'id'>) {
-    return this.http.post<Appointment>(this.apiUrl, ap).pipe(
-      catchError((err) => {
-        console.error('Error al crear turno:', err);
-        return of(null);
-      })
-    );
+  // ================================
+  // LocalStorage + JWT
+  // ================================
+
+  private localKey = 'userLogged';
+
+  private getLoggedUser(): User | null {
+    const data = localStorage.getItem(this.localKey);
+    return data ? JSON.parse(data) : null;
   }
 
-  getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(this.apiUrl).pipe(
-      catchError((err) => {
-        console.error('Error al obtener turnos:', err);
-        return of([]);
-      })
-    );
+  private getToken(): string | null {
+    return this.getLoggedUser()?.token ?? null;
   }
 
-  getAppointmentById(id: string): Observable<Appointment | null> {
-    return this.http.get<Appointment>(`${this.apiUrl}/${id}`).pipe(
-      catchError((err) => {
-        console.error('Error al obtener turno por ID:', err);
-        return of(null);
-      })
-    );
+  private getAuthHeaders() {
+    const token = this.getToken();
+    return {
+      headers: token
+        ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+        : new HttpHeaders(),
+    };
   }
 
-  getAppointmentsByDoctor(doctorId: string): Observable<Appointment[]> {
+  // ================================
+  // CRUD TURNOS
+  // ================================
+
+  // ✅ Cambiado a AppointmentRequest
+  createAppointment(ap: AppointmentRequest): Observable<Appointment | null> {
     return this.http
-      .get<Appointment[]>(`${this.apiUrl}?doctorId=${doctorId}`)
+      .post<Appointment>(this.APPOINTMENTS_URL, ap, this.getAuthHeaders())
       .pipe(
         catchError((err) => {
-          console.error('Error al obtener turnos del doctor:', err);
-          return of([]);
-        })
+          console.error('Error al crear turno:', err);
+          return of(null);
+        }),
       );
   }
 
-  getAppointmentsByPatient(patientId: string): Observable<Appointment[]> {
+  getAppointmentById(id: string): Observable<Appointment | null> {
     return this.http
-      .get<Appointment[]>(`${this.apiUrl}?patientId=${patientId}`)
+      .get<Appointment>(`${this.APPOINTMENTS_URL}/${id}`, this.getAuthHeaders())
       .pipe(
         catchError((err) => {
-          console.error('Error al obtener turnos del paciente:', err);
+          console.error('Error al obtener turno por ID:', err);
+          return of(null);
+        }),
+      );
+  }
+
+  getMyAppointments(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(
+      `${this.APPOINTMENTS_URL}/mine`,
+      this.getAuthHeaders(),
+    );
+  }
+
+  getAppointmentsByDoctorAndDate(
+    doctorId: string,
+    date: string,
+  ): Observable<Appointment[]> {
+    return this.http
+      .get<
+        Appointment[]
+      >(`${this.APPOINTMENTS_URL}/doctor/${doctorId}?date=${date}`, this.getAuthHeaders())
+      .pipe(
+        catchError((err) => {
+          console.error('Error al obtener turnos por doctor y fecha:', err);
           return of([]);
-        })
+        }),
       );
   }
 
   updateAppointment(
     id: string,
-    appointment: Partial<Appointment>
+    appointment: Partial<Appointment>,
   ): Observable<Appointment | null> {
     return this.http
-      .patch<Appointment>(`${this.apiUrl}/${id}`, appointment)
+      .patch<Appointment>(
+        `${this.APPOINTMENTS_URL}/${id}`,
+        appointment,
+        this.getAuthHeaders(),
+      )
       .pipe(
         catchError((err) => {
           console.error('Error al actualizar turno:', err);
           return of(null);
-        })
+        }),
       );
   }
 
   deleteAppointment(id: string): Observable<boolean> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
-      map(() => true),
-      catchError((err) => {
-        console.error('Error al eliminar turno:', err);
-        return of(false);
-      })
-    );
-  }
-
-  getAppointmentsByDoctorAndDate(doctorId: string, date: string) {
-    return this.http.get<Appointment[]>(
-      `${this.apiUrl}?doctorId=${doctorId}&date=${date}`
-    );
-  }
-
-  updateAppointmentStatus(id: string, status: string) {
     return this.http
-      .patch<Appointment>(`${this.apiUrl}/${id}`, { status })
+      .delete(`${this.APPOINTMENTS_URL}/${id}`, this.getAuthHeaders())
+      .pipe(
+        map(() => true),
+        catchError((err) => {
+          console.error('Error al eliminar turno:', err);
+          return of(false);
+        }),
+      );
+  }
+
+  updateAppointmentStatus(
+    id: string,
+    status: string,
+  ): Observable<Appointment | null> {
+    return this.http
+      .patch<Appointment>(
+        `${this.APPOINTMENTS_URL}/${id}`,
+        { status },
+        this.getAuthHeaders(),
+      )
       .pipe(
         catchError((err) => {
-          console.error('Error al actualizar estado del turno:', err);
+          console.error('Error al actualizar estado:', err);
           return of(null);
-        })
+        }),
       );
   }
 }

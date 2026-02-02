@@ -13,12 +13,14 @@ import { User } from '../../types/user';
 
 @Component({
   selector: 'app-reviews',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
 })
 export class ReviewsComponent implements OnInit {
   @Input() doctorId!: string;
+
   reviews: Reviews[] = [];
   users: User[] = [];
 
@@ -29,12 +31,15 @@ export class ReviewsComponent implements OnInit {
   userService = inject(UserService);
   reviewsService = inject(ReviewsService);
   route = inject(ActivatedRoute);
-  userLogged = this.userService.getLoggedUser();
+
+  userLogged: User | null = this.userService.getLoggedUser();
 
   reviewForm: FormGroup = this.fb.group({
-    comment: [null, [Validators.required, Validators.minLength(8)]],
-    value: [1, Validators.required],
+    comment: ['', [Validators.required, Validators.minLength(8)]],
+    value: [1, [Validators.required]],
   });
+
+  // -------------------------------------
 
   ngOnInit(): void {
     if (!this.doctorId) {
@@ -45,33 +50,29 @@ export class ReviewsComponent implements OnInit {
       }
       this.doctorId = idFromRoute;
     }
-    this.userService.getUsers().subscribe((data) => {
-      this.users = data;
-    });
 
     this.loadReviews();
   }
 
+  // -------------------------------------
+
   loadReviews(): void {
-    if (!this.doctorId) return;
-    this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe((data) => {
-      this.reviews = data;
+    this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
+      next: (data) => {
+        this.reviews = data;
+        console.log(data);
+      },
+      error: () => {
+        alert('Error al cargar reseñas');
+      },
     });
   }
 
-  getUserName(patientId: string): string {
-    const user = this.users.find((u) => u.id === patientId);
-    return user ? `${user.firstName} ${user.lastName}` : 'Usuario desconocido';
-  }
+  // -------------------------------------
 
   onSubmitReview(): void {
     if (!this.userLogged) {
-      alert('Debes iniciar sesión para dejar una reseña.');
-      return;
-    }
-
-    if (!this.doctorId) {
-      alert('No se puede crear la reseña: doctorId no definido.');
+      alert('Debes iniciar sesión.');
       return;
     }
 
@@ -82,70 +83,116 @@ export class ReviewsComponent implements OnInit {
 
     const reviewData: Omit<Reviews, 'id'> = {
       patientId: this.userLogged.id,
-      drId: this.doctorId,
+      doctorId: this.doctorId,
       value: this.reviewForm.value.value,
       comment: this.reviewForm.value.comment,
       date: new Date().toISOString(),
     };
 
+    // ================= EDITAR =================
+
     if (this.isEditing && this.reviewToEditId) {
-      const updatedData: Reviews = { ...reviewData, id: this.reviewToEditId };
-      this.reviewsService
-        .updateReview(this.reviewToEditId, updatedData)
-        .subscribe((updatedReview) => {
-          if (!updatedReview) return alert('Error al actualizar la reseña.');
-          const index = this.reviews.findIndex(
-            (r) => r.id === updatedReview.id
-          );
-          if (index !== -1) this.reviews[index] = updatedReview;
+      const updated: Reviews = {
+        ...reviewData,
+        id: this.reviewToEditId,
+      };
+
+      this.reviewsService.updateReview(this.reviewToEditId, updated).subscribe({
+        next: (review) => {
+          const index = this.reviews.findIndex((r) => r.id === review.id);
+          if (index !== -1) {
+            this.reviews[index] = review;
+          }
+          alert('Reseña actualizada ✅');
           this.resetForm();
-        });
-    } else {
-      this.reviewsService.createReview(reviewData).subscribe((newReview) => {
-        if (!newReview) return alert('Error al crear la reseña.');
-        this.reviews.push(newReview);
-        this.resetForm();
+        },
+        error: () => {
+          alert('No se pudo actualizar la reseña');
+        },
       });
-    }
-  }
 
-  deleteReview(reviewId: string): void {
-    if (!this.userLogged) {
-      return alert('Debes iniciar sesión para eliminar una reseña.');
+      return;
     }
 
-    const reviewToDelete = this.reviews.find((r) => r.id === reviewId);
-    if (!reviewToDelete) return;
+    // ================= CREAR =================
 
-    const isAdmin = this.userLogged.userType === 'administrador';
-    const isOwner = reviewToDelete.patientId === this.userLogged.id;
-
-    if (!isOwner && !isAdmin) {
-      return alert('No puedes borrar reseñas de otros usuarios.');
-    }
-
-    this.reviewsService.deleteReview(reviewId).subscribe(() => {
-      this.reviews = this.reviews.filter((r) => r.id !== reviewId);
+    this.reviewsService.createReview(reviewData).subscribe({
+      next: (review) => {
+        this.reviews.push(review);
+        alert('Reseña creada ✅');
+        this.resetForm();
+      },
+      error: (err) => {
+        alert(
+          err?.error?.message ||
+            'No podés dejar una reseña si no tuviste turno con este doctor.',
+        );
+      },
     });
   }
 
+  // -------------------------------------
+
+  deleteReview(id: string): void {
+    if (!this.userLogged) {
+      alert('Debes iniciar sesión');
+      return;
+    }
+
+    const review = this.reviews.find((r) => r.id === id);
+    if (!review) return;
+
+    const isOwner = review.patientId === this.userLogged.id;
+    const isAdmin = this.userLogged.userType === 'ADMIN';
+
+    if (!isOwner && !isAdmin) {
+      alert('No tenés permiso para borrar esta reseña');
+      return;
+    }
+
+    if (!confirm('¿Eliminar reseña?')) return;
+
+    this.reviewsService.deleteReview(id).subscribe({
+      next: () => {
+        this.reviews = this.reviews.filter((r) => r.id !== id);
+        alert('Reseña eliminada');
+      },
+      error: () => {
+        alert('Error al eliminar');
+      },
+    });
+  }
+
+  // -------------------------------------
+
   selectReviewToEdit(review: Reviews): void {
-    if (!this.userLogged)
-      return alert('Debes iniciar sesión para editar una reseña.');
-    if (review.patientId !== this.userLogged.id)
-      return alert('No puedes editar reseñas de otros usuarios.');
+    if (!this.userLogged) {
+      alert('Debes iniciar sesión');
+      return;
+    }
+
+    if (review.patientId !== this.userLogged.id) {
+      alert('Solo podés editar tus reseñas');
+      return;
+    }
 
     this.isEditing = true;
     this.reviewToEditId = review.id;
+
     this.reviewForm.patchValue({
       value: review.value,
       comment: review.comment,
     });
   }
 
+  // -------------------------------------
+
   resetForm(): void {
-    this.reviewForm.reset();
-    this.reviewForm.controls['value'].setValue(1);
+    this.reviewForm.reset({
+      value: 1,
+      comment: '',
+    });
+
     this.isEditing = false;
     this.reviewToEditId = null;
   }

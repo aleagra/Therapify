@@ -24,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
-import { Appointment } from '../../types/appointments';
+import { AppointmentRequest } from '../../types/AppointmentRequest';
 
 @Component({
   selector: 'app-calendar',
@@ -124,7 +124,7 @@ export class CalendarComponent implements OnChanges {
         this.horariosOcupados = appointments.map((a) => a.startTime);
 
         this.horariosDisponibles = this.horariosDisponibles.filter(
-          (h) => !this.horariosOcupados.includes(h)
+          (h) => !this.horariosOcupados.includes(h),
         );
 
         this.citaForm.get('hora')?.setValue('');
@@ -137,28 +137,31 @@ export class CalendarComponent implements OnChanges {
     const endMin = m.toString().padStart(2, '0');
     return `${endHour}:${endMin}`;
   }
+
   reservaConfirmada = false;
 
   confirmarReserva() {
     if (this.citaForm.invalid || !this.userLogged || !this.doctorId) return;
+
     const fechaRaw = this.citaForm.get('fecha')!.value;
     const hora = this.citaForm.get('hora')!.value;
     const fecha = fechaRaw instanceof Date ? fechaRaw : new Date(fechaRaw);
 
-    const appointment: Omit<Appointment, 'id'> = {
+    const appointmentRequest: AppointmentRequest = {
       doctorId: this.doctorId,
       patientId: this.userLogged.id,
       date: fecha.toISOString().split('T')[0],
       startTime: hora,
       endTime: this.calcularFin(hora),
-      status: 'pending',
-      createdAt: new Date().toISOString(),
+      status: 'PENDING',
     };
 
-    this.appointmentsService.createAppointment(appointment).subscribe(() => {
-      console.log('Turno creado!');
-      this.reservaConfirmada = true;
-      this.citaForm.disable();
-    });
+    this.appointmentsService
+      .createAppointment(appointmentRequest)
+      .subscribe(() => {
+        console.log('Turno creado!');
+        this.reservaConfirmada = true;
+        this.citaForm.disable();
+      });
   }
 }

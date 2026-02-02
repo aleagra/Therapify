@@ -1,9 +1,9 @@
 export interface Reviews {
-      id: string, 
-      patientId: string,
-      drId:string,
-      date: string,
-      comment: string,
-      value: number
-
+  id: string;
+  comment: string;
+  value: number;
+  date: string;
+  patientId?: string;
+  doctorId?: string;
+  patientName?: string;
 }
