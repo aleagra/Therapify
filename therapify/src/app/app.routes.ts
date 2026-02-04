@@ -13,9 +13,13 @@ import { UsersComponent } from './users/users.component';
 import { adminGuard } from './guards/admin.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileDoctorComponent } from './profile-doctor/profile-doctor.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'register', component: RegisterComponent },
