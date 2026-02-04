@@ -10,6 +10,7 @@ import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { Reviews } from '../../types/reviews';
 import { User } from '../../types/user';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-reviews',
@@ -45,7 +46,7 @@ export class ReviewsComponent implements OnInit {
     if (!this.doctorId) {
       const idFromRoute = this.route.snapshot.paramMap.get('id');
       if (!idFromRoute) {
-        alert('No se encontró el ID del doctor.');
+        toast.error('No se encontró el ID del doctor.');
         return;
       }
       this.doctorId = idFromRoute;
@@ -63,7 +64,7 @@ export class ReviewsComponent implements OnInit {
         console.log(data);
       },
       error: () => {
-        alert('Error al cargar reseñas');
+        toast.error('Error al cargar reseñas');
       },
     });
   }
@@ -72,7 +73,7 @@ export class ReviewsComponent implements OnInit {
 
   onSubmitReview(): void {
     if (!this.userLogged) {
-      alert('Debes iniciar sesión.');
+      toast.warning('Debes iniciar sesión.');
       return;
     }
 
@@ -103,11 +104,11 @@ export class ReviewsComponent implements OnInit {
           if (index !== -1) {
             this.reviews[index] = review;
           }
-          alert('Reseña actualizada ✅');
+          toast.success('Reseña actualizada ✅');
           this.resetForm();
         },
         error: () => {
-          alert('No se pudo actualizar la reseña');
+          toast.error('No se pudo actualizar la reseña');
         },
       });
 
@@ -119,11 +120,11 @@ export class ReviewsComponent implements OnInit {
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
         this.reviews.push(review);
-        alert('Reseña creada ✅');
+        toast.success('Reseña creada ✅');
         this.resetForm();
       },
       error: (err) => {
-        alert(
+        toast.error(
           err?.error?.message ||
             'No podés dejar una reseña si no tuviste turno con este doctor.',
         );
@@ -135,7 +136,7 @@ export class ReviewsComponent implements OnInit {
 
   deleteReview(id: string): void {
     if (!this.userLogged) {
-      alert('Debes iniciar sesión');
+      toast.warning('Debes iniciar sesión');
       return;
     }
 
@@ -146,7 +147,7 @@ export class ReviewsComponent implements OnInit {
     const isAdmin = this.userLogged.userType === 'ADMIN';
 
     if (!isOwner && !isAdmin) {
-      alert('No tenés permiso para borrar esta reseña');
+      toast.error('No tenés permiso para borrar esta reseña');
       return;
     }
 
@@ -155,10 +156,10 @@ export class ReviewsComponent implements OnInit {
     this.reviewsService.deleteReview(id).subscribe({
       next: () => {
         this.reviews = this.reviews.filter((r) => r.id !== id);
-        alert('Reseña eliminada');
+        toast.success('Reseña eliminada');
       },
       error: () => {
-        alert('Error al eliminar');
+        toast.error('Error al eliminar');
       },
     });
   }
@@ -167,12 +168,12 @@ export class ReviewsComponent implements OnInit {
 
   selectReviewToEdit(review: Reviews): void {
     if (!this.userLogged) {
-      alert('Debes iniciar sesión');
+      toast.warning('Debes iniciar sesión');
       return;
     }
 
     if (review.patientId !== this.userLogged.id) {
-      alert('Solo podés editar tus reseñas');
+      toast.error('Solo podés editar tus reseñas');
       return;
     }
 

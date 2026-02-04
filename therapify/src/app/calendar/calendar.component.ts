@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-calendar',
@@ -141,6 +142,12 @@ export class CalendarComponent implements OnChanges {
   reservaConfirmada = false;
 
   confirmarReserva() {
+    if (this.userLogged?.userType === 'ADMIN') {
+      toast.error('Los administradores no pueden sacar turnos.', {
+        position: 'top-center',
+      });
+      return;
+    }
     if (this.citaForm.invalid || !this.userLogged || !this.doctorId) return;
 
     const fechaRaw = this.citaForm.get('fecha')!.value;

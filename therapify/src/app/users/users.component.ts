@@ -3,6 +3,7 @@ import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { AppointmentService } from '../services/appointments.service';
 import { User } from '../../types/user';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-users',
@@ -42,21 +43,38 @@ export class UsersComponent implements OnInit {
         : this.users.filter((u) => u.userType === type);
   }
 
+  // =============================
+  // Mostrar confirmación
+  // =============================
   deleteUser(id: string) {
     const user = this.users.find((u) => u.id === id);
     if (!user) return;
 
     if (user.userType === 'ADMIN') {
-      alert('❌ No puedes eliminar al administrador.');
+      toast.error('No puedes eliminar al administrador.', {
+        position: 'top-center',
+      });
       return;
     }
 
-    if (
-      !confirm('¿Seguro que quieres eliminar este usuario y todo su historial?')
-    ) {
-      return;
-    }
+    toast('¿Seguro que quieres eliminar este usuario?', {
+      position: 'top-center',
+      action: {
+        label: 'Eliminar',
+        onClick: () => {
+          this.executeDeleteUser(id);
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+      },
+    });
+  }
 
+  // =============================
+  // Eliminación real
+  // =============================
+  private executeDeleteUser(id: string) {
     // 1️⃣ Borrar citas del usuario
     this.appointmentService.getMyAppointments().subscribe((apps) => {
       const toDelete = apps.filter(
@@ -77,9 +95,14 @@ export class UsersComponent implements OnInit {
       next: () => {
         this.users = this.users.filter((u) => u.id !== id);
         this.filteredUsers = this.filteredUsers.filter((u) => u.id !== id);
-        alert('Usuario y datos asociados eliminados.');
+        toast.success('Usuario y datos asociados eliminados.', {
+          position: 'top-center',
+        });
       },
-      error: () => alert('Error al eliminar usuario'),
+      error: () =>
+        toast.error('Error al eliminar usuario', {
+          position: 'top-center',
+        }),
     });
   }
 }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../types/user';
 import { NgFor, NgIf } from '@angular/common';
 import { UserRequestDTO } from '../../types/UserRequestDTO';
+import { toast } from 'ngx-sonner';
 
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
@@ -52,7 +53,7 @@ export class ProfileDoctorComponent {
   ngOnInit() {
     const loggedUser = this.userService.getLoggedUser();
     if (!loggedUser) {
-      alert('No hay sesión activa');
+      toast.warning('No hay sesión activa');
       this.router.navigate(['/login']);
       return;
     }
@@ -60,7 +61,7 @@ export class ProfileDoctorComponent {
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
         if (!res) {
-          alert('Error al cargar datos del usuario');
+          toast.error('Error al cargar datos del usuario');
           return;
         }
 
@@ -86,7 +87,7 @@ export class ProfileDoctorComponent {
             });
         });
       },
-      error: () => alert('Error al cargar datos del usuario'),
+      error: () => toast.error('Error al cargar datos del usuario'),
     });
   }
 
@@ -172,7 +173,7 @@ export class ProfileDoctorComponent {
     this.userService.updateUser(updatedUser).subscribe({
       next: (res) => {
         this.loading = false;
-        alert('Horario médico actualizado correctamente');
+        toast.success('Horario médico actualizado correctamente');
 
         if ('token' in res && res.token) {
           this.user.token = res.token;
@@ -186,7 +187,7 @@ export class ProfileDoctorComponent {
       },
       error: () => {
         this.loading = false;
-        alert('Error al actualizar horario');
+        toast.error('Error al actualizar horario');
       },
     });
   }
@@ -198,7 +199,6 @@ export class ProfileDoctorComponent {
     this.formSchedule.patchValue({
       description: this.user.description ?? '',
     });
-
-    alert('Cambios descartados');
+    toast.info('Cambios descartados');
   }
 }

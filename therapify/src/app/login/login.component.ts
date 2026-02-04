@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../services/user.service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,7 @@ export class LoginComponent {
       if (user) {
         this.router.navigate(['/home']);
       } else {
-        alert('Email o contraseña incorrectos');
+        toast.error('Email o contraseña incorrectos');
       }
     });
   }

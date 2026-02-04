@@ -9,6 +9,7 @@ import { User } from '../../types/user';
 import { UserService } from '../services/user.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     const loggedUser = this.userService.getLoggedUser();
     if (!loggedUser) {
-      alert('No hay sesión activa');
+      toast.warning('No hay sesión activa');
       this.router.navigate(['/login']);
       return;
     }
@@ -55,14 +56,14 @@ export class ProfileComponent implements OnInit {
           gender: res.gender,
         });
       },
-      error: () => alert('Error al cargar usuario'),
+      error: () => toast.error('Error al cargar usuario'),
     });
   }
 
   onSubmitProfile() {
     if (this.formProfile.invalid) {
       Object.values(this.formProfile.controls).forEach((c: any) =>
-        c.markAsTouched()
+        c.markAsTouched(),
       );
       return;
     }
@@ -71,7 +72,7 @@ export class ProfileComponent implements OnInit {
       this.formProfile.getRawValue();
 
     if (password && password !== repeatPassword) {
-      alert('Las contraseñas no coinciden');
+      toast.error('Las contraseñas no coinciden');
       return;
     }
 
@@ -89,12 +90,12 @@ export class ProfileComponent implements OnInit {
     this.userService.updateUser(updatedUser).subscribe({
       next: (res) => {
         this.loading = false;
-        alert('Perfil actualizado correctamente');
+        toast.success('Perfil actualizado correctamente');
         this.user = res;
       },
       error: () => {
         this.loading = false;
-        alert('Error al actualizar el perfil');
+        toast.error('Error al actualizar el perfil');
       },
     });
   }
