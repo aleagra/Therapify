@@ -185,4 +185,10 @@ export class UserService {
   deleteUser(id: string) {
     return this.http.delete(`${this.USERS_URL}/${id}`, this.getAuthHeaders());
   }
+
+  getDoctorsNear(lat: number, lng: number) {
+    return this.http.get<User[]>(
+      `${this.USERS_URL}/doctors/near?lat=${lat}&lng=${lng}`,
+    );
+  }
 }

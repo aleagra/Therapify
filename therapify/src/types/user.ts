@@ -9,7 +9,10 @@ export interface User {
   userType: string;
   token?: string;
   gender?: string;
+  latitude?: number;
+  longitude?: number;
   address?: string;
+  distanceKm?: number;
   specialty?: string;
   schedule?: Record<string, boolean>;
   availability?: Record<string, string[]>;

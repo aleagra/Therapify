@@ -4,12 +4,16 @@
     <p class="dias">Atiende:</p>
 
     <div class="schedule">
-      @for (dia of doctor().schedule | keyvalue; track dia.key) { @if
-      (dia.value) {
-      <span class="chip">{{ dia.key | titlecase }}</span>
-      } }
+      @for (dia of doctor().schedule | keyvalue; track dia.key) {
+        @if (dia.value) {
+          <span class="chip">{{ dia.key | titlecase }}</span>
+        }
+      }
+      <div>
+        <p class="descripcion">{{ doctor().address }}</p>
+      </div>
     </div>
-
+    <p class="distance">📍{{ doctor().distanceKm?.toFixed(1) }} km</p>
     <p class="descripcion">{{ doctor().description }}</p>
 
     <button (click)="goToReviews(doctor().id)" class="btn-reviews">
