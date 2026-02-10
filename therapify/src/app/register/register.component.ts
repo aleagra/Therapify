@@ -19,6 +19,9 @@ export class RegisterComponent {
 
   step = 1;
   userType = '';
+  accountCreated = false;
+  loading = false;
+  errorMsg = '';
 
   form = this.fb.nonNullable.group({
     firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -29,7 +32,7 @@ export class RegisterComponent {
     userType: ['', Validators.required],
   });
 
-  selectUserType(value: 'PACIENTE' | 'DOCTOR' | 'ADMINISTRADOR') {
+  selectUserType(value: 'PACIENTE' | 'DOCTOR' | 'ADMIN') {
     this.userType = value;
     this.form.patchValue({ userType: value });
   }
@@ -71,9 +74,28 @@ export class RegisterComponent {
       return;
     }
 
+    this.loading = true;
+    this.errorMsg = '';
+
     const user = this.form.getRawValue() as any;
-    this.userService.postUser(user).subscribe(() => {
-      this.router.navigate(['/home']);
+
+    this.userService.postUser(user).subscribe({
+      next: () => {
+        this.loading = false;
+        this.accountCreated = true;
+      },
+      error: (err) => {
+        this.loading = false;
+
+        // Revisamos varias formas en que puede venir el mensaje del backend
+        const msg = err.error?.message || err.error || '';
+
+        if (msg.includes('email ya está registrado')) {
+          this.errorMsg = '❌ Este email ya está registrado. Probá con otro.';
+        } else {
+          this.errorMsg = '❌ Error al crear la cuenta.';
+        }
+      },
     });
   }
 

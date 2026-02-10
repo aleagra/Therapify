@@ -19,4 +19,7 @@ export class AuthService {
       password,
     });
   }
+  verifyEmail(token: string): Observable<any> {
+    return this.http.get(`${this.API}/verify-email?token=${token}`);
+  }
 }

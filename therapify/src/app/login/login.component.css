@@ -68,7 +68,7 @@
   padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.5rem;
 }
 
 label {
@@ -87,7 +87,6 @@ input {
 
 input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
   border: 2px solid #00c4b4;
 }
 
@@ -105,7 +104,17 @@ input:focus {
   text-decoration: underline;
   color: #00c4b4;
 }
-
+.error-msg {
+  color: #e63946;
+  font-size: 0.75rem;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: 500;
+}
+input.invalid {
+  border-color: #e63946;
+}
 .btn {
   /* Fondo con degradado lineal de azul a verde/cian */
   background: linear-gradient(to right, #0077b6, #00c4b4);

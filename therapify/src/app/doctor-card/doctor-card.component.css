@@ -27,6 +27,7 @@
 .info h3 {
   font-size: 1.1rem;
   color: #20252f;
+  text-transform: capitalize;
   margin-bottom: 0.4rem;
   word-wrap: break-word;
 }
@@ -49,8 +50,8 @@
 .chip {
   display: inline-block;
 
-  background-image: linear-gradient(#fff, #fff),
-    linear-gradient(to right, #0077b6, #00c4b4);
+  background-image:
+    linear-gradient(#fff, #fff), linear-gradient(to right, #0077b6, #00c4b4);
   background-origin: border-box;
   background-clip: padding-box, border-box;
 
@@ -61,7 +62,9 @@
   font-size: 0.85rem;
   font-weight: 500;
   cursor: default;
-  transition: ease-in-out 0.2s ease, color 0.2s ease;
+  transition:
+    ease-in-out 0.2s ease,
+    color 0.2s ease;
 }
 
 .chip:hover {

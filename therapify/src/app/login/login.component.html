@@ -15,9 +15,12 @@
         type="email"
         formControlName="email"
         placeholder="ejemplo@correo.com"
+        [class.invalid]="
+          getControl('email').invalid && getControl('email').touched
+        "
       />
-      @if (getControl('email').invalid && getControl('email').touched) {
-      <small>Ingresa una direccion de email valida.</small>
+      @if (getControl("email").invalid && getControl("email").touched) {
+        <small class="error-msg">Ingresa una direccion de email valida.</small>
       }
 
       <label for="password">Contraseña</label>
@@ -26,13 +29,16 @@
         type="password"
         formControlName="password"
         placeholder="********"
+        [class.invalid]="
+          getControl('password').invalid && getControl('password').touched
+        "
       />
-      @if (getControl('password').invalid && getControl('password').touched) {
-      <small>Es necesario ingresar una contraseña.</small>
+      @if (getControl("password").invalid && getControl("password").touched) {
+        <small class="error-msg">Es necesario ingresar una contraseña.</small>
       }
 
       <div class="forgot">
-        <a>¿Olvidaste tu contraseña?</a>
+        <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
       </div>
 
       <button type="submit" class="btn">

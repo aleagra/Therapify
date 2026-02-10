@@ -261,6 +261,7 @@
   .container {
     flex-direction: column;
     height: auto;
+    background-color: transparent;
   }
   .info {
     display: none;
