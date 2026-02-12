@@ -30,21 +30,27 @@ export class TurnosComponent implements OnInit {
   loadAppointments(): void {
     this.appointmentService.getMyAppointments().subscribe((appointments) => {
       const allAppointments = appointments || [];
-      console.log('💡 Todos los turnos traídos del backend:', allAppointments);
 
-      // Separar turnos según rol
+      const isAdmin = this.userLogged?.userType === 'ADMIN';
+
+      if (isAdmin) {
+        // El admin ve todo sin filtrar
+        this.misTurnos.set(allAppointments);
+        this.misPacientes.set([]);
+        return;
+      }
+
+      // Para doctor / paciente
       const turnosComoPaciente = allAppointments.filter(
         (a) => a.patientId === this.userLogged?.id,
       );
+
       const turnosComoDoctor = allAppointments.filter(
         (a) => a.doctorId === this.userLogged?.id,
       );
 
       this.misTurnos.set(turnosComoPaciente);
       this.misPacientes.set(turnosComoDoctor);
-
-      console.log('Turnos como paciente:', this.misTurnos());
-      console.log('Turnos como doctor:', this.misPacientes());
     });
   }
 

@@ -39,9 +39,7 @@
 /* === SOLO VARIABLE === */
 .nav-links a:hover,
 .nav-links a.active-link {
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #007ab6;
 }
 
 .login-btn,

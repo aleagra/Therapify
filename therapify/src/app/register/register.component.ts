@@ -4,6 +4,7 @@ import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../services/user.service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-register',
@@ -92,6 +93,7 @@ export class RegisterComponent {
 
         if (msg.includes('email ya está registrado')) {
           this.errorMsg = '❌ Este email ya está registrado. Probá con otro.';
+          toast.error('El email ingresado ya está registrado');
         } else {
           this.errorMsg = '❌ Error al crear la cuenta.';
         }

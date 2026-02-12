@@ -1,13 +1,7 @@
 @if (doctor$ | async; as doctor) {
-
   <div class="specialist-profile-container">
-
     <div class="specialist-info-column">
-
       <div class="header specialist-card">
-        <div class="specialist-photo">
-          <img src="/assets/imagenDra.png" alt="Dra. Sofía Ramírez" />
-        </div>
         <div class="specialist-details">
           <h2>Especialista</h2>
           <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
@@ -23,25 +17,28 @@
         <p>{{ doctor.description }}</p>
       </div>
 
-      <section class="philosophy-section specialist-card">
+      <!-- <section class="philosophy-section specialist-card">
         <h3>Mi Filosofía y Experiencia</h3>
         <p>
-          Mi enfoque se basa en la Terapia Cognitivo-Conductual (TCC), una metodología
-          efectiva para identificar patrones de pensamiento y comportamiento negativos...
+          Mi enfoque se basa en la Terapia Cognitivo-Conductual (TCC), una
+          metodología efectiva para identificar patrones de pensamiento y
+          comportamiento negativos...
         </p>
         <ul>
           <li>Idiomas de atención: Español, Inglés.</li>
         </ul>
-      </section>
+      </section> -->
 
       <div class="horarios-section specialist-card">
         <h3>Horarios de Atención</h3>
         <p class="session-info">
-          Las sesiones tienen una duración de <strong><span>1 hora</span></strong>.
+          Las sesiones tienen una duración de
+          <strong><span>1 hora</span></strong
+          >.
         </p>
 
         <div class="horarios-list">
-          @for (entry of doctor.availability | keyvalue; track entry.key) { 
+          @for (entry of doctor.availability | keyvalue; track entry.key) {
             @if (entry.value && entry.value.length > 0) {
               <div class="horarios-dia">
                 <span class="dia-titulo">{{ entry.key | titlecase }}</span>
@@ -51,17 +48,17 @@
                   }
                 </div>
               </div>
-            } 
+            }
           }
         </div>
       </div>
-
-    </div> <div class="booking-sidebar">
-
+    </div>
+    <div class="booking-sidebar">
       <app-calendar
         [schedule]="doctor.schedule"
         [availability]="doctor.availability"
         [doctorId]="doctor.id"
       ></app-calendar>
-
-    </div> </div> }
+    </div>
+  </div>
+}

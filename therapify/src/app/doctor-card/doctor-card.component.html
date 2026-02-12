@@ -4,12 +4,19 @@
     <p class="dias">Atiende:</p>
 
     <div class="schedule">
-      @for (dia of doctor().schedule | keyvalue; track dia.key) {
-        @if (dia.value) {
-          <span class="chip">{{ dia.key | titlecase }}</span>
+      @if (hasAvailableDays) {
+        @for (dia of doctor().schedule | keyvalue; track dia.key) {
+          @if (dia.value) {
+            <span class="chip">
+              {{ getDayLabel(dia.key) }}
+            </span>
+          }
         }
+      } @else {
+        <span class="chip no-availability"> No hay turnos disponibles </span>
       }
     </div>
+
     <div>
       <p class="descripcion">{{ doctor().address }}</p>
     </div>

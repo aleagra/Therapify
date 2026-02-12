@@ -20,7 +20,14 @@
           reviewForm.get("value")?.touched &&
           reviewForm.get("value")?.hasError("required")
         ) {
-          <div class="error-message">La valoración es obligatoria.</div>
+          <small class="error-msg">La valoración es obligatoria.</small>
+        }
+        @if (
+          reviewForm.get("value")?.touched &&
+          (reviewForm.get("value")?.hasError("min") ||
+            reviewForm.get("value")?.hasError("max"))
+        ) {
+          <small class="error-msg">La valoración debe estar entre 1 y 5.</small>
         }
       </div>
 
@@ -36,15 +43,15 @@
           reviewForm.get("comment")?.touched &&
           reviewForm.get("comment")?.hasError("required")
         ) {
-          <div class="error-message">El comentario es obligatorio.</div>
+          <small class="error-msg">El comentario es obligatorio.</small>
         }
         @if (
           reviewForm.get("comment")?.touched &&
           reviewForm.get("comment")?.hasError("minlength")
         ) {
-          <div class="error-message">
+          <small class="error-msg">
             El comentario debe tener al menos 8 caracteres.
-          </div>
+          </small>
         }
       </div>
 
@@ -73,7 +80,9 @@
         <div class="review-header">
           <div class="review-info">
             <span class="review-stars">Valoración: {{ review.value }} / 5</span>
-            <span class="review-user"> - {{ review.patientName }}</span>
+            <span class="review-user">
+              - {{ review.patientName }} {{ review.patientLastName }}</span
+            >
           </div>
           @if (
             review.patientId === userLogged?.id ||

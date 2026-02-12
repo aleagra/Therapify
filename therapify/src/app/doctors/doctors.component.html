@@ -2,7 +2,8 @@
 <input
   type="text"
   placeholder="Buscar por nombre, apellido o especialidad..."
-  [(ngModel)]="searchText"
+  [ngModel]="searchText()"
+  (ngModelChange)="searchText.set($event)"
   class="search-input"
 />
 
@@ -10,21 +11,21 @@
   <h2>Filtrar por día:</h2>
   <div class="day-filters">
     <button
-      *ngFor="let day of daysOfWeek"
+      *ngFor="let day of DAYS_OF_WEEK"
       class="day-btn"
       [class.active-day]="selectedDay() === day"
       (click)="setDay(day)"
     >
-      {{ day.charAt(0).toUpperCase() + day.slice(1) }}
+      {{ DAY_LABELS[day] }}
     </button>
   </div>
 </div>
 
 <div class="doctores-container">
   @for (doctor of filteredDoctors(); track doctor.id) {
-  <app-doctor-card
-    [doctor]="doctor"
-    (navigate)="goToDetail($event)"
-  ></app-doctor-card>
+    <app-doctor-card
+      [doctor]="doctor"
+      (navigate)="goToDetail($event)"
+    ></app-doctor-card>
   }
 </div>

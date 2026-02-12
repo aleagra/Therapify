@@ -1,90 +1,115 @@
 <div class="appointments-container">
-  <!-- ADMINISTRADOR -->
+  <!-- ================= ADMIN ================= -->
   @if (userLogged?.userType === "ADMIN") {
     <h3>Todos los Turnos</h3>
 
     @if (misTurnos().length === 0) {
       <div class="empty-state">No hay turnos registrados.</div>
     }
-    @for (ap of misTurnos(); track ap.id) {
-      <div class="appointment-card">
-        <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
-        <div><strong>Doctor:</strong> {{ ap.doctorName }}</div>
 
-        <div>
-          <strong>Fecha/Hora:</strong>
-          {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-        </div>
+    @if (misTurnos().length > 0) {
+      <div class="appointments-grid">
+        @for (ap of misTurnos(); track ap.id) {
+          <div class="appointment-card">
+            <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
+            <div><strong>Doctor:</strong> {{ ap.doctorName }}</div>
 
-        <div>
-          <strong>Estado:</strong>
-          <span class="status" [ngClass]="ap.status">
-            {{ ap.status }}
-          </span>
-        </div>
+            <div>
+              <strong>Fecha/Hora:</strong>
+              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+            </div>
 
-        <button (click)="deleteAppointment(ap.id)" class="button-delete">
-          Eliminar
-        </button>
+            <div>
+              <strong>Estado:</strong>
+              <span class="status" [ngClass]="ap.status">
+                {{ ap.status }}
+              </span>
+            </div>
+
+            <button (click)="deleteAppointment(ap.id)" class="button-delete">
+              Eliminar
+            </button>
+          </div>
+        }
       </div>
     }
   }
 
-  <!-- PACIENTE → solo si NO es admin -->
+  <!-- ================= PACIENTE ================= -->
   @if (userLogged?.userType !== "ADMIN") {
     <h3>Mis Turnos</h3>
 
     @if (misTurnos().length === 0) {
-      <div class="empty-state">No tenés turnos reservados.</div>
+      <div class="empty-state">No tenés turnos reservados como paciente.</div>
     }
-    @for (ap of misTurnos(); track ap.id) {
-      <div class="appointment-card">
-        <div><strong>Con:</strong> {{ ap.doctorName }}</div>
 
-        <div>
-          <strong>Fecha/Hora:</strong>
-          {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-        </div>
+    @if (misTurnos().length > 0) {
+      <div class="appointments-grid">
+        @for (ap of misTurnos(); track ap.id) {
+          <div class="appointment-card">
+            <div><strong>Con:</strong> {{ ap.doctorName }}</div>
 
-        <div>
-          <strong>Estado:</strong>
-          <span class="status" [ngClass]="ap.status">
-            {{ ap.status }}
-          </span>
-        </div>
+            <div>
+              <strong>Fecha y Hora:</strong>
+              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+            </div>
+
+            <div>
+              <strong>Estado:</strong>
+              <span class="status" [ngClass]="ap.status">
+                {{ ap.status }}
+              </span>
+            </div>
+          </div>
+        }
       </div>
     }
   }
 
-  <!-- DOCTOR → solo si NO es admin -->
-  @if (userLogged?.userType !== "ADMIN" && misPacientes().length > 0) {
+  <!-- ================= DOCTOR ================= -->
+  @if (userLogged?.userType === "DOCTOR") {
     <h3>Mis Pacientes</h3>
 
-    @for (ap of misPacientes(); track ap.id) {
-      <div class="appointment-card">
-        <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
+    @if (misPacientes().length === 0) {
+      <div class="empty-state">No tenés turnos asignados como doctor.</div>
+    }
 
-        <div>
-          <strong>Fecha/Hora:</strong>
-          {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-        </div>
+    @if (misPacientes().length > 0) {
+      <div class="appointments-grid">
+        @for (ap of misPacientes(); track ap.id) {
+          <div class="appointment-card">
+            <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
 
-        <div>
-          <strong>Estado:</strong>
-          <span class="status" [ngClass]="ap.status">
-            {{ ap.status }}
-          </span>
-        </div>
+            <div>
+              <strong>Fecha/Hora:</strong>
+              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
+            </div>
 
-        @if (userLogged?.userType === "DOCTOR" && ap.status === "PENDING") {
-          <button (click)="confirmarTurno(ap.id)" class="button-confirm">
-            Confirmar turno
-          </button>
+            <div>
+              <strong>Estado:</strong>
+              <span class="status" [ngClass]="ap.status">
+                {{ ap.status }}
+              </span>
+            </div>
+
+            <div class="doctor-actions">
+              @if (ap.status === "PENDING") {
+                <button (click)="confirmarTurno(ap.id)" class="button-confirm">
+                  Confirmar turno
+                </button>
+              }
+
+              @if (ap.status !== "COMPLETED") {
+                <button
+                  (click)="deleteAppointment(ap.id)"
+                  class="button-delete"
+                >
+                  Cancelar
+                </button>
+              }
+            </div>
+          </div>
         }
-
-        <button (click)="deleteAppointment(ap.id)" class="button-delete">
-          Eliminar
-        </button>
       </div>
     }
   }

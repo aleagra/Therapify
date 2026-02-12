@@ -14,3 +14,14 @@ body {
   --primary-gradient: linear-gradient(to right, #0077b6, #00c4b4);
   --primary-shadow: 0 0 0 3px rgba(0, 196, 180, 0.25);
 }
+.error-msg {
+  color: #e63946;
+  font-size: 0.75rem;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: 500;
+}
+input.invalid {
+  border-color: #e63946;
+}

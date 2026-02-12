@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { DoctorCardComponent } from '../doctor-card/doctor-card.component';
 import { FormsModule } from '@angular/forms';
 import { NgForOf } from '@angular/common';
+import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
 
 @Component({
   selector: 'app-doctors',
@@ -19,22 +20,16 @@ export class DoctorsComponent {
 
   searchText = signal('');
   selectedDay = signal('');
-
   allDoctors = signal<any[]>([]);
 
-  daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+  DAYS_OF_WEEK = DAYS_OF_WEEK;
+  DAY_LABELS = DAY_LABELS;
 
   constructor() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-
-        // ✅ LOG DE TU UBICACIÓN ACTUAL
-        console.log('📍 Mi ubicación actual:');
-        console.log('Latitude:', lat);
-        console.log('Longitude:', lng);
-
         this.userService.getDoctorsNear(lat, lng).subscribe((doctors) => {
           this.mapDoctors(doctors);
         });

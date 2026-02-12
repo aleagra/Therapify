@@ -4,9 +4,14 @@
     [formGroup]="formSchedule"
     (ngSubmit)="onSubmitMedical()"
   >
+    <div *ngIf="doctorWithoutAddress" class="address-warning">
+      ⚠️ Para que tu perfil se recomiende es necesario que ingreses tu
+      dirección.
+    </div>
+
     <div class="profile-header">
-      <h2>Medical Schedule</h2>
-      <p>Select your available days and provide a short description</p>
+      <h2>Horario Medico</h2>
+      <p>Selecciona tus días disponibles y agrega una breve descripción</p>
     </div>
 
     <div class="days-group">
@@ -25,7 +30,7 @@
             [formControlName]="day.control + 'Start'"
             class="hour-input"
           />
-          <span>to</span>
+          <span> - </span>
           <input
             type="time"
             [formControlName]="day.control + 'End'"
@@ -36,20 +41,20 @@
     </div>
 
     <div class="input-field full">
-      <label for="description">Description</label>
+      <label for="description">Descripcion</label>
       <textarea
         id="description"
         rows="6"
-        placeholder="Describe your specialties..."
+        placeholder="Describe tus especialidades..."
         formControlName="description"
       ></textarea>
     </div>
 
     <div class="action-buttons">
       <button type="button" class="btn-secondary" (click)="cancelMedical()">
-        Cancel
+        Cancelar
       </button>
-      <button type="submit" class="btn-primary">Save Changes</button>
+      <button type="submit" class="btn-primary">Guardar cambios</button>
     </div>
   </form>
 </div>

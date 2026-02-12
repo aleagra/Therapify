@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Reviews } from '../../types/reviews';
 import { catchError, Observable, of } from 'rxjs';
+import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +40,7 @@ export class ReviewsService {
   // ================================
   // CREATE (requiere login)
   // ================================
-  createReview(review: Omit<Reviews, 'id'>): Observable<Reviews> {
+  createReview(review: ReviewRequestDTO): Observable<Reviews> {
     return this.http.post<Reviews>(
       this.REVIEWS_URL,
       review,
@@ -79,14 +80,16 @@ export class ReviewsService {
   // ================================
   // UPDATE (requiere login)
   // ================================
-  updateReview(reviewId: string, reviewData: Reviews): Observable<Reviews> {
+  updateReview(
+    reviewId: string,
+    reviewData: ReviewRequestDTO,
+  ): Observable<Reviews> {
     return this.http.put<Reviews>(
       `${this.REVIEWS_URL}/${reviewId}`,
       reviewData,
       this.getAuthHeaders(),
     );
   }
-
   // ================================
   // DELETE (requiere login)
   // ================================

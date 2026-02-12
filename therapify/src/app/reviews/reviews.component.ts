@@ -37,7 +37,7 @@ export class ReviewsComponent implements OnInit {
 
   reviewForm: FormGroup = this.fb.group({
     comment: ['', [Validators.required, Validators.minLength(8)]],
-    value: [1, [Validators.required]],
+    value: [1, [Validators.required, Validators.min(1), Validators.max(5)]],
   });
 
   // -------------------------------------
@@ -82,14 +82,13 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    const reviewData: Omit<Reviews, 'id'> = {
-      patientId: this.userLogged.id,
-      doctorId: this.doctorId,
-      value: this.reviewForm.value.value,
+    const reviewData = {
+      patientId: String(this.userLogged.id),
+      doctorId: String(this.doctorId),
+      value: Number(this.reviewForm.value.value),
       comment: this.reviewForm.value.comment,
       date: new Date().toISOString(),
     };
-
     // ================= EDITAR =================
 
     if (this.isEditing && this.reviewToEditId) {

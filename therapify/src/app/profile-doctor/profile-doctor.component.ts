@@ -24,11 +24,11 @@ export class ProfileDoctorComponent {
   loading = false;
 
   weekDays = [
-    { label: 'Monday', control: 'monday' as WeekDay },
-    { label: 'Tuesday', control: 'tuesday' as WeekDay },
-    { label: 'Wednesday', control: 'wednesday' as WeekDay },
-    { label: 'Thursday', control: 'thursday' as WeekDay },
-    { label: 'Friday', control: 'friday' as WeekDay },
+    { label: 'Lunes', control: 'monday' as WeekDay },
+    { label: 'Martes', control: 'tuesday' as WeekDay },
+    { label: 'Miercoles', control: 'wednesday' as WeekDay },
+    { label: 'Jueves', control: 'thursday' as WeekDay },
+    { label: 'Viernes', control: 'friday' as WeekDay },
   ];
 
   formSchedule: FormGroup = this.fb.group({
@@ -110,8 +110,14 @@ export class ProfileDoctorComponent {
 
       const dayAvailability = availabilityObj[key] ?? [];
       const start = dayAvailability[0] ?? '08:00';
-      const end = dayAvailability[dayAvailability.length - 1] ?? '17:00';
+      const lastSlot = dayAvailability[dayAvailability.length - 1];
 
+      let end = '17:00';
+
+      if (lastSlot) {
+        const hour = parseInt(lastSlot.split(':')[0], 10) + 1;
+        end = `${hour.toString().padStart(2, '0')}:00`;
+      }
       schedulePatch[key] = isEnabled;
       schedulePatch[`${key}Start`] = start;
       schedulePatch[`${key}End`] = end;
@@ -200,5 +206,12 @@ export class ProfileDoctorComponent {
       description: this.user.description ?? '',
     });
     toast.info('Cambios descartados');
+  }
+
+  get doctorWithoutAddress(): boolean {
+    return (
+      this.user?.userType === 'DOCTOR' &&
+      (!this.user?.address || this.user.address.trim() === '')
+    );
   }
 }

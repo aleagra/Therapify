@@ -3,7 +3,7 @@
   width: 100%;
   font-family: "Poppins", sans-serif;
   color: #20252f;
-  max-width: 1200px;
+  max-width: 1100px;
   gap: 2.5rem;
   margin: auto;
   align-items: start;
@@ -14,10 +14,11 @@
   padding: 1.5rem;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
-  box-sizing: border-box;
   margin-bottom: 2rem;
+  min-height: 650px;
 }
 
 .profile-header {
@@ -45,10 +46,7 @@
 
 .profile-header h2,
 .medical-form h3 {
-  background-image: linear-gradient(to right, #0077b6, #00c4b4);
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: #0077b6;
 }
 
 .profile-header p,
@@ -101,7 +99,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(to right, #0077b6, #00c4b4);
+  background: #0077b6;
   color: white;
   border: none;
   padding: 0.9rem 1.6rem;

@@ -48,10 +48,7 @@
 .footer-members p {
   margin: 0;
   font-size: 0.9rem;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #007ab6;
   font-weight: 600;
 }
 
@@ -69,11 +66,7 @@
 }
 
 .footer-repo a {
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
+  color: #007ab6;
   font-weight: 600;
   text-decoration: none;
   font-size: 0.9rem;

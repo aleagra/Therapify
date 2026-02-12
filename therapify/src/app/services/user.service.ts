@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { User } from '../../types/user';
 
 @Injectable({
@@ -51,9 +51,12 @@ export class UserService {
         thursday: true,
         friday: true,
       };
+
       const hours: string[] = [];
-      for (let h = 8; h <= 17; h++)
+      for (let h = 8; h <= 17; h++) {
         hours.push(`${h.toString().padStart(2, '0')}:00`);
+      }
+
       user.availability = {
         monday: hours,
         tuesday: hours,
@@ -63,16 +66,12 @@ export class UserService {
       };
     }
 
-    return this.http
-      .post<User>(this.USERS_URL, user, {
-        headers: new HttpHeaders(),
-      })
-      .pipe(
-        catchError((err) => {
-          console.error('Error al crear usuario', err);
-          return of({ ...user, id: '0' } as User);
-        }),
-      );
+    return this.http.post<User>(this.USERS_URL, user).pipe(
+      catchError((err) => {
+        console.error('Error al crear usuario', err);
+        return throwError(() => err);
+      }),
+    );
   }
   // ================================
   // LOGIN
@@ -113,41 +112,29 @@ export class UserService {
   }
 
   updateUser(dto: Partial<User>): Observable<User> {
-    const payload: any = { ...dto };
-
-    // Convertimos a JSON solo si existen
-    if (dto.schedule) payload.schedule = JSON.stringify(dto.schedule);
-    if (dto.availability)
-      payload.availability = JSON.stringify(dto.availability);
-
-    // Tipamos la respuesta según lo que devuelve el backend
     return this.http
       .put<{
         mensaje: string;
+        user: User;
         token: string;
-      }>(`${this.USERS_URL}`, payload, this.getAuthHeaders())
+      }>(`${this.USERS_URL}`, dto, this.getAuthHeaders())
       .pipe(
-        tap((res) => {
-          // Obtenemos el usuario actual del localStorage
-          const current = this.getLoggedUser();
-          if (current) {
-            // Fusionamos el token recibido con los datos actuales
-            const updatedUser: User = { ...current, token: res.token };
-            localStorage.setItem(this.localKey, JSON.stringify(updatedUser));
-          }
+        map((res) => {
+          // Guardamos usuario actualizado con nuevo token
+          const updatedUser: User = {
+            ...res.user,
+            token: res.token,
+          };
+
+          localStorage.setItem(this.localKey, JSON.stringify(updatedUser));
+
+          return updatedUser;
         }),
-        // Para que TypeScript no se queje, devolvemos el usuario actualizado
-        // en lugar del objeto {mensaje, token}
-        // Esto mantiene la firma Observable<User>
         catchError((err) => {
           console.error('Error al actualizar usuario', err);
-          const local = this.getLoggedUser();
-          return of(local!) as Observable<User>;
+          return throwError(() => err);
         }),
-        // map para devolver el usuario actualizado
-        // en vez de {mensaje, token}
-        tap(() => {}), // opcional si no queremos mapear
-      ) as unknown as Observable<User>;
+      );
   }
 
   updateLocalUser(user: User): void {
