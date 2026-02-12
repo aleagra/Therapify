@@ -167,48 +167,44 @@ input:focus {
   font-size: 0.9rem;
 }
 
-.success-box {
+.auth-container {
   width: 100%;
-  max-width: 420px;
-  margin: 2rem auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 2rem;
-  border-radius: 18px;
-  background: #f0fff4;
-  border: 1px solid #38a169;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  font-family: "Poppins", sans-serif;
+}
+
+/* CARD BASE */
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
   text-align: center;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
-.success-box h2 {
-  font-size: 1.6rem;
-  color: #2f855a;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+/* SUCCESS STATE */
+.success-state h2 {
+  color: #0f766e;
 }
 
-.success-box p {
+.success-state p {
+  background-color: #e6f7f1;
+  border: 1px solid #b2f0df;
+  color: #0f766e;
+  padding: 1rem;
+  border-radius: 10px;
   font-size: 0.95rem;
-  color: #20252f;
-  margin: 0.5rem 0 1.5rem 0;
-  line-height: 1.4;
-}
-
-.success-box .btn {
-  padding: 0.6rem 1.4rem;
-  border: none;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(to right, #38a169, #2f855a);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.success-box .btn:hover {
-  background: linear-gradient(to right, #2f855a, #276749);
-  transform: translateY(-2px);
 }
 
 /* ====== RESPONSIVE ====== */
@@ -236,6 +232,13 @@ input:focus {
 
   .illustration {
     width: 60%;
+  }
+  .auth-container {
+    padding: 1.2rem;
+  }
+
+  .auth-card {
+    padding: 1.8rem 1.2rem;
   }
 }
 
