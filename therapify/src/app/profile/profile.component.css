@@ -14,7 +14,7 @@
   padding: 1.5rem;
   background: #ffffff;
   border-radius: 16px;
-  border: 1px solid #e5e8ff;
+  border: 1px solid #dbeafe;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
   margin-bottom: 2rem;
@@ -85,8 +85,8 @@
 
 .input-field input:focus,
 .input-field textarea:focus {
-  border-color: #00c4b4;
-  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.25);
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.25);
   outline: none;
 }
 
@@ -143,9 +143,7 @@
 }
 
 .btn-medical:hover {
-  background: #e0f7fa;
-  border-color: #00c4b4;
-  color: #00c4b4;
+  background: #e7f1ff;
   transform: translateY(-2px);
 }
 

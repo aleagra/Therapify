@@ -1,11 +1,9 @@
-/* ====== CONTENEDOR GENERAL ====== */
 .container {
   display: flex;
   flex-direction: column;
   font-family: "Inter", sans-serif;
 }
 
-/* ====== PANEL IZQUIERDO ====== */
 .left-panel {
   flex: 1;
   background-color: #fff;
@@ -53,7 +51,6 @@ input.invalid {
   border-color: #e63946;
 }
 
-/* ====== FORMULARIOS ====== */
 .form {
   display: flex;
   flex-direction: column;
@@ -82,7 +79,6 @@ input:focus {
   border: 2px solid #00c4b4;
 }
 
-/* ====== BOTONES ====== */
 .btn {
   background: linear-gradient(to right, #0077b6, #00c4b4);
   color: white;
@@ -103,7 +99,6 @@ input:focus {
   background-position: -100% 0;
 }
 
-/* ====== CONTROLES DE PASOS ====== */
 .actions {
   display: flex;
   gap: 1rem;
@@ -133,7 +128,6 @@ input:focus {
   border-color: transparent;
 }
 
-/* ====== PANEL DERECHO ====== */
 .right-panel {
   flex: 1;
   background-color: #f9fafb;
@@ -177,7 +171,6 @@ input:focus {
   font-family: "Poppins", sans-serif;
 }
 
-/* CARD BASE */
 .auth-card {
   width: 100%;
   max-width: 500px;
@@ -193,7 +186,6 @@ input:focus {
   animation: fadeIn 0.4s ease-in-out;
 }
 
-/* SUCCESS STATE */
 .success-state h2 {
   color: #0f766e;
 }
@@ -207,7 +199,6 @@ input:focus {
   font-size: 0.95rem;
 }
 
-/* ====== RESPONSIVE ====== */
 @media (min-width: 768px) {
   .container {
     padding: 0;

@@ -5,7 +5,6 @@
   font-family: "Inter", sans-serif;
 }
 
-/* ====== PANEL IZQUIERDO ====== */
 .left-panel {
   flex: 1;
   background-color: #fff;
@@ -17,19 +16,14 @@
   font-size: 2rem;
   text-align: right;
   background: linear-gradient(to right, #0077b6, #00c4b4);
-  background-size: 200% auto; /* Duplica el tamaño del fondo del degradado */
+  background-size: 200% auto;
   transition: background-position 0.3s ease-out;
-
-  /* 2. Recorta el fondo para que solo cubra el texto */
   -webkit-background-clip: text;
   background-clip: text;
-
-  /* 3. Hace el texto transparente para que se vea el fondo */
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 .left-panel h1 :hover {
-  /* Mueve el fondo del degradado, creando un efecto de "movimiento" o "brillo" */
   background-position: -100% 0;
 }
 .logo {
@@ -63,7 +57,6 @@
   margin-bottom: 1rem;
 }
 
-/* ====== FORMULARIO ====== */
 .form {
   padding: 1rem 2rem;
   display: flex;
@@ -116,24 +109,23 @@ input.invalid {
   border-color: #e63946;
 }
 .btn {
-  /* Fondo con degradado lineal de azul a verde/cian */
   background: linear-gradient(to right, #0077b6, #00c4b4);
-  color: white; /* Texto blanco */
+  color: white;
   border: none;
   font-size: 1rem;
   padding: 1.3rem 2rem;
-  border-radius: 12px; /* Bordes redondeados */
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); /* Sombra */
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2);
   text-decoration: none;
   display: inline-block;
 }
 
 .btn :hover {
   color: linear-gradient(to right, #0077b6, #00c4b4);
-  background-color: white; /* Texto blanco */
+  background-color: white;
 }
 
 .register {
@@ -152,8 +144,6 @@ input.invalid {
   text-decoration: underline;
   color: #0077b6;
 }
-
-/* ====== PANEL DERECHO ====== */
 .right-panel {
   flex: 1;
   background-color: #f9fafb;
@@ -175,12 +165,8 @@ input.invalid {
   font-weight: 700;
   margin-bottom: 1rem;
   background: linear-gradient(to right, #0077b6, #00c4b4);
-
-  /* 2. Recorta el fondo para que solo cubra el texto */
   -webkit-background-clip: text;
   background-clip: text;
-
-  /* 3. Hace el texto transparente para que se vea el fondo */
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
@@ -191,7 +177,6 @@ input.invalid {
   font-size: 0.9rem;
 }
 
-/* ====== RESPONSIVE ====== */
 @media (min-width: 768px) {
   .container {
     padding: 0;

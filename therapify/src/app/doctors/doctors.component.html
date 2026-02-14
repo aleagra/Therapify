@@ -1,31 +1,76 @@
-<h1>Psicologos disponibles</h1>
-<input
-  type="text"
-  placeholder="Buscar por nombre, apellido o especialidad..."
-  [ngModel]="searchText()"
-  (ngModelChange)="searchText.set($event)"
-  class="search-input"
-/>
-
-<div class="day-filter-container">
-  <h2>Filtrar por día:</h2>
-  <div class="day-filters">
-    <button
-      *ngFor="let day of DAYS_OF_WEEK"
-      class="day-btn"
-      [class.active-day]="selectedDay() === day"
-      (click)="setDay(day)"
-    >
-      {{ DAY_LABELS[day] }}
-    </button>
+<div class="page-container">
+  <div class="page-header">
+    <h1>Psicólogos disponibles</h1>
+    <p class="subtitle">
+      Encontrá profesionales según tu ubicación y preferencias
+    </p>
   </div>
-</div>
 
-<div class="doctores-container">
-  @for (doctor of filteredDoctors(); track doctor.id) {
-    <app-doctor-card
-      [doctor]="doctor"
-      (navigate)="goToDetail($event)"
-    ></app-doctor-card>
+  <div class="filters-card">
+    <input
+      type="text"
+      placeholder="Buscar por nombre, apellido o especialidad..."
+      [ngModel]="searchText()"
+      (ngModelChange)="searchText.set($event)"
+      class="search-input"
+    />
+
+    <div class="filter-group">
+      <span class="filter-label">Día</span>
+      <div class="chips">
+        <button
+          *ngFor="let day of DAYS_OF_WEEK"
+          class="chip-btn"
+          [class.active]="selectedDay() === day"
+          (click)="setDay(day)"
+        >
+          {{ DAY_LABELS[day] }}
+        </button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Distancia máxima</span>
+      <select
+        class="select-input"
+        [ngModel]="maxDistance()"
+        (ngModelChange)="maxDistance.set($event)"
+      >
+        <option value="">Sin límite</option>
+        <option value="2">2 km</option>
+        <option value="5">5 km</option>
+        <option value="10">10 km</option>
+        <option value="20">20 km</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Género del profesional</span>
+      <select
+        class="select-input"
+        [ngModel]="selectedGender()"
+        (ngModelChange)="selectedGender.set($event)"
+      >
+        <option value="">Todos</option>
+        <option value="FEMALE">Mujer</option>
+        <option value="MALE">Hombre</option>
+        <option value="OTHER">Otro</option>
+      </select>
+    </div>
+  </div>
+
+  @if (filteredDoctors().length > 0) {
+    <div class="doctors-grid">
+      @for (doctor of filteredDoctors(); track doctor.id) {
+        <app-doctor-card
+          [doctor]="doctor"
+          (navigate)="goToDetail($event)"
+        ></app-doctor-card>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <h3>No encontramos profesionales</h3>
+      <p>Probá cambiar los filtros o ampliar la distancia de búsqueda.</p>
+    </div>
   }
 </div>

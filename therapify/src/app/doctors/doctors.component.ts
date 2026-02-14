@@ -20,6 +20,8 @@ export class DoctorsComponent {
 
   searchText = signal('');
   selectedDay = signal('');
+  maxDistance = signal<number | ''>('');
+  selectedGender = signal<string>('');
   allDoctors = signal<any[]>([]);
 
   DAYS_OF_WEEK = DAYS_OF_WEEK;
@@ -37,7 +39,6 @@ export class DoctorsComponent {
       (error) => {
         console.error('❌ Error obteniendo ubicación', error);
 
-        // Fallback si no da permiso
         this.userService.getDoctores().subscribe((doctors) => {
           this.mapDoctors(doctors);
         });
@@ -45,7 +46,6 @@ export class DoctorsComponent {
     );
   }
 
-  // 🔹 NUEVO MÉTODO
   private mapDoctors(doctors: any[]) {
     const user = this.loggedUser();
 
@@ -58,6 +58,7 @@ export class DoctorsComponent {
       schedule: d.schedule || {},
       availability: d.availability || {},
       distanceKm: d.distanceKm ?? null,
+      gender: d.gender || '',
     }));
 
     if (user && user.userType === 'DOCTOR') {
@@ -67,12 +68,11 @@ export class DoctorsComponent {
     }
   }
 
-  // =====================
-  // FILTROS (SIN CAMBIOS)
-  // =====================
   filteredDoctors = computed(() => {
     const text = this.searchText().toLowerCase().trim();
     const day = this.selectedDay();
+    const dist = this.maxDistance();
+    const gender = this.selectedGender();
 
     return this.allDoctors()
       .filter((doc) => {
@@ -80,9 +80,21 @@ export class DoctorsComponent {
         const specialty = doc.specialty?.toLowerCase() || '';
         return fullName.includes(text) || specialty.includes(text);
       })
+
       .filter((doc) => {
         if (!day) return true;
         return doc.availability && doc.availability[day]?.length > 0;
+      })
+
+      .filter((doc) => {
+        if (!dist) return true;
+        if (doc.distanceKm == null) return true;
+        return doc.distanceKm <= dist;
+      })
+
+      .filter((doc) => {
+        if (!gender) return true;
+        return doc.gender === gender;
       });
   });
 

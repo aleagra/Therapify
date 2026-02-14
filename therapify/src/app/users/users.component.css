@@ -88,14 +88,11 @@ h1 {
   background: #e63946;
   color: #fff;
   font-weight: 600;
-  transition: background 0.2s ease;
 }
 
 .delete-btn:hover {
   background: #d62828;
 }
-
-/* --- RESPONSIVE --- */
 
 @media (max-width: 1024px) {
   .users-container {

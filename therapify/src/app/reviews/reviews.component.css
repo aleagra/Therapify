@@ -157,7 +157,9 @@ h3 {
   color: #20252f;
   margin: 0;
 }
-
+textarea {
+  resize: none;
+}
 .empty-state {
   color: #6c757d;
   padding: 2rem 0;

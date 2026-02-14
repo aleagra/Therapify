@@ -1,115 +1,57 @@
 .footer {
+  width: 100%;
   background: #ffffff;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #e6e8ec;
   font-family: "Poppins", sans-serif;
   color: #20252f;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
-  border-radius: 12px 12px 0 0;
-  padding: 2rem 0;
+  padding: 2rem 5rem;
 }
 
 .footer-container {
-  margin: 0 auto;
-  padding: 0 7rem;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 2rem;
-  text-align: left;
+  flex-wrap: wrap;
 }
 
-.footer-info {
+.footer-left,
+.footer-center,
+.footer-right {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
 }
 
-.footer-info p {
-  font-size: 0.95rem;
-  margin: 0;
+.footer-left strong {
+  font-weight: 700;
+}
+
+.footer-left span {
+  color: #6b7280;
+}
+
+.footer-center span:first-child {
   font-weight: 600;
   color: #374151;
 }
 
-.footer-members {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
-
-.footer-members h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #20252f;
-}
-
-.footer-members p {
-  margin: 0;
-  font-size: 0.9rem;
+.footer-right a {
   color: #007ab6;
-  font-weight: 600;
-}
-
-.footer-repo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.footer-repo h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #20252f;
-}
-
-.footer-repo a {
-  color: #007ab6;
-  font-weight: 600;
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: filter 0.3s ease;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
 }
 
-.footer-repo a:hover {
-  filter: brightness(1.2);
+.footer-right a:hover {
+  opacity: 0.7;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   .footer-container {
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 1.5rem;
-  }
-
-  .footer-members,
-  .footer-repo {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-container {
-    padding: 1rem 1.5rem;
-    gap: 1rem;
-  }
-
-  .footer-info p {
-    font-size: 0.85rem;
-  }
-
-  .footer-members h3,
-  .footer-repo h3 {
-    font-size: 0.9rem;
-  }
-
-  .footer-members p,
-  .footer-repo a {
-    font-size: 0.85rem;
   }
 }

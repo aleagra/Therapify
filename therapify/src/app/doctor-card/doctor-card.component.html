@@ -1,7 +1,14 @@
 <div class="doctor-card">
-  <div class="info">
-    <h3>{{ doctor().firstName }} {{ doctor().lastName }}</h3>
-    <p class="dias">Atiende:</p>
+  <div class="doctor-header">
+    <div class="doctor-name">
+      <h3>{{ doctor().firstName }} {{ doctor().lastName }}</h3>
+      <span class="distance">📍 {{ doctor().distanceKm?.toFixed(1) }} km</span>
+    </div>
+    <p class="address">{{ doctor().address }}</p>
+  </div>
+
+  <div class="doctor-body">
+    <p class="section-title">Días de atención</p>
 
     <div class="schedule">
       @if (hasAvailableDays) {
@@ -13,19 +20,18 @@
           }
         }
       } @else {
-        <span class="chip no-availability"> No hay turnos disponibles </span>
+        <span class="chip no-availability">No hay turnos disponibles</span>
       }
     </div>
 
-    <div>
-      <p class="descripcion">{{ doctor().address }}</p>
-    </div>
-    <p class="distance">📍{{ doctor().distanceKm?.toFixed(1) }} km</p>
-    <p class="descripcion">{{ doctor().description }}</p>
+    <p class="description">{{ doctor().description }}</p>
+  </div>
 
-    <button (click)="goToReviews(doctor().id)" class="btn-reviews">
+  <div class="doctor-footer">
+    <button (click)="goToReviews(doctor().id)" class="btn-secondary">
       Ver reseñas
     </button>
-    <button (click)="onClick()" class="btn-reviews">Reservar turno</button>
+
+    <button (click)="onClick()" class="btn-primary">Reservar turno</button>
   </div>
 </div>

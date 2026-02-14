@@ -17,9 +17,6 @@ export class UserService {
   localKey = 'userLogged';
   isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
 
-  // ================================
-  // Helpers JWT
-  // ================================
   public getLoggedUser(): User | null {
     const data = localStorage.getItem(this.localKey);
     return data ? JSON.parse(data) : null;
@@ -39,9 +36,6 @@ export class UserService {
     };
   }
 
-  // ================================
-  // REGISTRO
-  // ================================
   postUser(user: Omit<User, 'id'>): Observable<User> {
     if (user.userType === 'DOCTOR') {
       user.schedule = {
@@ -73,9 +67,7 @@ export class UserService {
       }),
     );
   }
-  // ================================
-  // LOGIN
-  // ================================
+
   login(email: string, password: string): Observable<User | null> {
     return this.http
       .post<User>(`${this.AUTH_URL}/login`, { email, password })
@@ -102,9 +94,6 @@ export class UserService {
     return !!this.getToken();
   }
 
-  // ================================
-  // PERFIL USUARIO
-  // ================================
   getUserById(id: string): Observable<User | null> {
     return this.http
       .get<User>(`${this.USERS_URL}/${id}`, this.getAuthHeaders())
@@ -120,7 +109,6 @@ export class UserService {
       }>(`${this.USERS_URL}`, dto, this.getAuthHeaders())
       .pipe(
         map((res) => {
-          // Guardamos usuario actualizado con nuevo token
           const updatedUser: User = {
             ...res.user,
             token: res.token,
@@ -145,9 +133,6 @@ export class UserService {
     );
   }
 
-  // ================================
-  // DOCTORES (Público)
-  // ================================
   getDoctores(): Observable<User[]> {
     return this.http.get<User[]>(`${this.USERS_URL}/rol/DOCTOR`).pipe(
       catchError((err) => {
@@ -157,9 +142,6 @@ export class UserService {
     );
   }
 
-  // ================================
-  // ADMIN
-  // ================================
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.USERS_URL, this.getAuthHeaders()).pipe(
       catchError((err) => {

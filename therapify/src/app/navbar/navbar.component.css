@@ -35,8 +35,6 @@
   font-weight: 600;
   transition: color 0.2s ease-in-out;
 }
-
-/* === SOLO VARIABLE === */
 .nav-links a:hover,
 .nav-links a.active-link {
   color: #007ab6;
@@ -52,7 +50,6 @@
   transition: all 0.2s ease;
 }
 
-/* === LOGIN BUTTON — SOLO VARIABLE === */
 .login-btn {
   border: 1px solid #66beb3;
   background-origin: border-box;

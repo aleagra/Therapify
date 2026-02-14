@@ -17,10 +17,7 @@ export class TurnosComponent implements OnInit {
   userService = inject(UserService);
 
   userLogged = this.userService.getLoggedUser();
-
-  // Lista de turnos donde el usuario es paciente
   misTurnos = signal<Appointment[]>([]);
-  // Lista de turnos donde el usuario es doctor
   misPacientes = signal<Appointment[]>([]);
 
   ngOnInit(): void {
@@ -34,13 +31,11 @@ export class TurnosComponent implements OnInit {
       const isAdmin = this.userLogged?.userType === 'ADMIN';
 
       if (isAdmin) {
-        // El admin ve todo sin filtrar
         this.misTurnos.set(allAppointments);
         this.misPacientes.set([]);
         return;
       }
 
-      // Para doctor / paciente
       const turnosComoPaciente = allAppointments.filter(
         (a) => a.patientId === this.userLogged?.id,
       );
@@ -71,8 +66,6 @@ export class TurnosComponent implements OnInit {
       .updateAppointmentStatus(id, 'CONFIRMED')
       .subscribe((updated) => {
         if (!updated) return;
-
-        // Solo afecta la vista del doctor
         this.misPacientes.set(
           this.misPacientes().map((a) =>
             a.id === id ? { ...a, status: 'CONFIRMED' } : a,

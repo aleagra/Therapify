@@ -1,14 +1,8 @@
-/* ============================= */
-/* CONTAINER */
-/* ============================= */
-
 .appointments-container {
   font-family: "Poppins", sans-serif;
   color: #20252f;
   padding: 0 2rem;
 }
-
-/* Título */
 
 .appointments-container h3 {
   font-size: 1.6rem;
@@ -16,20 +10,12 @@
   color: #007ab6;
 }
 
-/* ============================= */
-/* GRID DE CARDS */
-/* ============================= */
-
 .appointments-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin: 2rem 0;
 }
-
-/* ============================= */
-/* CARD */
-/* ============================= */
 
 .appointment-card {
   border: 1px solid #e5e8ff;
@@ -47,8 +33,6 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Info rows */
-
 .appointment-card div {
   display: flex;
   gap: 5px;
@@ -63,10 +47,6 @@
   font-weight: 700;
   font-size: 1rem;
 }
-
-/* ============================= */
-/* BOTONES */
-/* ============================= */
 
 .doctor-actions {
   display: flex;
@@ -103,10 +83,6 @@
   background: #1c3293;
 }
 
-/* ============================= */
-/* STATUS */
-/* ============================= */
-
 .status {
   padding: 4px 8px;
   border-radius: 6px;
@@ -140,7 +116,7 @@
 }
 
 .empty-state {
-  grid-column: 1 / -1; /* ocupa todo el ancho del grid */
+  grid-column: 1 / -1;
   text-align: center;
   margin: 2rem 0;
   padding: 2rem;
@@ -153,17 +129,12 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Ícono decorativo opcional */
 .empty-state::before {
   content: "📅";
   display: block;
   font-size: 2rem;
   margin-bottom: 0.8rem;
 }
-
-/* ============================= */
-/* TABLET */
-/* ============================= */
 
 @media (max-width: 1024px) {
   .appointments-grid {
@@ -193,10 +164,6 @@
     width: 100%;
   }
 }
-
-/* ============================= */
-/* MOBILE */
-/* ============================= */
 
 @media (max-width: 480px) {
   .appointments-container {

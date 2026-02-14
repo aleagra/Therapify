@@ -14,11 +14,6 @@ export class AppointmentService {
 
   private BASE_URL = 'http://localhost:8080';
   private APPOINTMENTS_URL = `${this.BASE_URL}/appointments`;
-
-  // ================================
-  // LocalStorage + JWT
-  // ================================
-
   private localKey = 'userLogged';
 
   private getLoggedUser(): User | null {
@@ -39,11 +34,6 @@ export class AppointmentService {
     };
   }
 
-  // ================================
-  // CRUD TURNOS
-  // ================================
-
-  // ✅ Cambiado a AppointmentRequest
   createAppointment(ap: AppointmentRequest): Observable<Appointment | null> {
     return this.http
       .post<Appointment>(this.APPOINTMENTS_URL, ap, this.getAuthHeaders())

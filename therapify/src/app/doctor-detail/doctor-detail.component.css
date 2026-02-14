@@ -1,207 +1,140 @@
-/* --- Contenedor Principal de 2 Columnas --- */
-.specialist-profile-container {
-  display: flex;
-  gap: 3rem;
+.specialist-page {
   max-width: 1400px;
-  margin: 0 auto;
-  font-family: "Inter", sans-serif;
+  margin: auto;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+  align-items: start;
+}
+.page-header {
+  margin-left: 10px;
+  margin-bottom: 1.5rem;
+}
+.page-header h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #0077b6;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.6rem;
+}
+
+.header-card h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.header-card h2 {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 0.2rem;
+}
+
+.card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
   color: #20252f;
 }
 
-/* --- Columna Izquierda (Información) --- */
-.specialist-info-column {
-  flex: 2; /* Ocupa 2/3 del espacio */
+.card p {
+  color: #4a4a4a;
+  line-height: 1.6;
+  font-size: 0.96rem;
+}
+
+.chips {
   display: flex;
-  flex-direction: column;
-  gap: 3rem; /* Espacio entre las tarjetas de info */
-}
-
-/* --- Estilo de Tarjeta Reutilizable --- */
-/* Aplicamos un estilo base a todas las tarjetas de la izquierda */
-.specialist-card {
-  background-color: #ffffff;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-}
-
-/* --- 1. Tu Sección 'header' --- */
-.header {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap; /* Para responsive */
-}
-
-.specialist-photo img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #e0f2f7;
-}
-
-.specialist-details h1 {
-  font-family: "Poppins", sans-serif;
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  background: linear-gradient(to right, #0077b6, #00c4b4);
-
-  /* 2. Recorta el fondo de modo que solo sea visible donde hay texto. */
-  -webkit-background-clip: text; /* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
-  background-clip: text; /* Estándar W3C */
-
-  /* 3. Hace el color del texto transparente para que el fondo degradado se muestre a través. */
-  -webkit-text-fill-color: transparent; /* Para navegadores basados en Webkit */
-  color: transparent;
-}
-
-.specialist-details h2 {
-  font-size: 1rem;
-  color: #4a4a4aa4;
-  margin-bottom: 0.5rem;
-}
-
-.specialist-badges {
-  display: flex;
-  gap: 0.75rem;
   flex-wrap: wrap;
+  gap: 0.45rem;
 }
 
-.badge {
-  color: white;
-  background-color: #00c4b4;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+.chip {
+  background: #f3f4f6;
+  color: #0077b6;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
-}
-
-/* --- 2. Tu Sección 'description' y 'philosophy' --- */
-.description h3,
-.philosophy-section h3,
-.horarios-section h3 {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.description p,
-.philosophy-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #4a4a4a;
-  margin-bottom: 1rem;
-}
-
-.philosophy-section ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1.5rem;
-}
-
-.philosophy-section ul li {
-  font-size: 1rem;
-  color: #4a4a4a;
-}
-
-/* --- 3. Tu Sección 'horarios-section' --- */
-.session-info {
-  font-size: 1rem;
-  color: #555;
-  margin-top: -1rem;
-  margin-bottom: 1.5rem;
-}
-.session-info span {
-  background: linear-gradient(to right, #0077b6, #00c4b4);
-
-  /* 2. Recorta el fondo de modo que solo sea visible donde hay texto. */
-  -webkit-background-clip: text; /* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
-  background-clip: text; /* Estándar W3C */
-
-  /* 3. Hace el color del texto transparente para que el fondo degradado se muestre a través. */
-  -webkit-text-fill-color: transparent; /* Para navegadores basados en Webkit */
-  color: transparent;
 }
 
 .horarios-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Espacio entre cada día */
+  gap: 0.9rem;
 }
 
 .horarios-dia {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap; /* Para responsive */
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.dia-titulo {
-  font-family: "Poppins", sans-serif;
+.dia {
+  width: 90px;
   font-weight: 600;
-  font-size: 1rem;
-  width: 100px; /* Ancho fijo para alinear los días */
-}
-
-.chips {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap; /* Permite que las horas bajen de línea */
-}
-
-.hora-chip {
-  /* Reutilizamos el estilo de 'badge' pero más sutil */
-  background-color: #f8fcfd;
-  border: 1px solid #e0f2f7;
-  color: #0077b6;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
   font-size: 0.9rem;
-  font-weight: 500;
-}
-.hora-chip:hover {
-  color: #00c4b4; /* Fondo verde/cian */
-  border: 1px solid #00c4b4;
-  border-color: white; /* Borde verde/cian */
 }
 
-/* --- Columna Derecha (Sidebar) --- */
-.booking-sidebar {
-  flex: 1; /* Ocupa 1/3 del espacio */
-
-  /* Hacemos que la barra lateral sea "pegajosa" (sticky)
-     Se quedará fija mientras haces scroll en la info.
-  */
-  position: sticky;
-  top: 2rem; /* Se 'pega' a 2rem del borde superior */
-
-  /* Le damos el mismo estilo de tarjeta */
-  background-color: #ffffff;
-  padding: 2.5rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+.hour-chip {
+  background: #f8fcfd;
+  border: 1px solid #e0f2f7;
 }
 
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-  .specialist-profile-container {
-    flex-direction: column; /* Apila las columnas */
-    padding: 3rem 4rem;
+.hour-chip:hover {
+  border-color: #00c4b4;
+  color: #00c4b4;
+}
+
+.session-info {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.7rem;
+}
+.empty-text {
+  color: #888;
+  font-style: italic;
+}
+
+@media (max-width: 1000px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
   }
-  .booking-sidebar {
-    position: static; /* Quita el 'sticky' en móvil */
-  }
-}
 
-@media (max-width: 768px) {
-  .specialist-profile-container {
-    padding: 2rem 1.5rem;
+  .sidebar {
+    position: static;
   }
-  .header {
-    flex-direction: column;
+  .page-header {
     text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 1.2rem;
+  }
+
+  .header-card h1 {
+    font-size: 1.6rem;
+  }
+
+  .dia {
+    width: 70px;
   }
 }

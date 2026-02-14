@@ -43,9 +43,6 @@ export class UsersComponent implements OnInit {
         : this.users.filter((u) => u.userType === type);
   }
 
-  // =============================
-  // Mostrar confirmación
-  // =============================
   deleteUser(id: string) {
     const user = this.users.find((u) => u.id === id);
     if (!user) return;
@@ -71,11 +68,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  // =============================
-  // Eliminación real
-  // =============================
   private executeDeleteUser(id: string) {
-    // 1️⃣ Borrar citas del usuario
     this.appointmentService.getMyAppointments().subscribe((apps) => {
       const toDelete = apps.filter(
         (a) => a.patientId === id || a.doctorId === id,
@@ -85,12 +78,10 @@ export class UsersComponent implements OnInit {
       );
     });
 
-    // 2️⃣ Borrar reviews del usuario (solo admin puede)
     this.reviewsService.getReviewsForUser(id).subscribe((revs) => {
       revs.forEach((r) => this.reviewsService.deleteReview(r.id).subscribe());
     });
 
-    // 3️⃣ Borrar usuario
     this.userService.deleteUser(id).subscribe({
       next: () => {
         this.users = this.users.filter((u) => u.id !== id);

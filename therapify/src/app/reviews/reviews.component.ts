@@ -40,8 +40,6 @@ export class ReviewsComponent implements OnInit {
     value: [1, [Validators.required, Validators.min(1), Validators.max(5)]],
   });
 
-  // -------------------------------------
-
   ngOnInit(): void {
     if (!this.doctorId) {
       const idFromRoute = this.route.snapshot.paramMap.get('id');
@@ -55,8 +53,6 @@ export class ReviewsComponent implements OnInit {
     this.loadReviews();
   }
 
-  // -------------------------------------
-
   loadReviews(): void {
     this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
       next: (data) => {
@@ -68,8 +64,6 @@ export class ReviewsComponent implements OnInit {
       },
     });
   }
-
-  // -------------------------------------
 
   onSubmitReview(): void {
     if (!this.userLogged) {
@@ -89,8 +83,6 @@ export class ReviewsComponent implements OnInit {
       comment: this.reviewForm.value.comment,
       date: new Date().toISOString(),
     };
-    // ================= EDITAR =================
-
     if (this.isEditing && this.reviewToEditId) {
       const updated: Reviews = {
         ...reviewData,
@@ -114,8 +106,6 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    // ================= CREAR =================
-
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
         this.reviews.push(review);
@@ -130,8 +120,6 @@ export class ReviewsComponent implements OnInit {
       },
     });
   }
-
-  // -------------------------------------
 
   deleteReview(id: string): void {
     if (!this.userLogged) {
@@ -163,8 +151,6 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // -------------------------------------
-
   selectReviewToEdit(review: Reviews): void {
     if (!this.userLogged) {
       toast.warning('Debes iniciar sesión');
@@ -184,8 +170,6 @@ export class ReviewsComponent implements OnInit {
       comment: review.comment,
     });
   }
-
-  // -------------------------------------
 
   resetForm(): void {
     this.reviewForm.reset({

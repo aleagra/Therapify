@@ -12,12 +12,8 @@ export class ReviewsService {
 
   private BASE_URL = 'http://localhost:8080';
   private REVIEWS_URL = `${this.BASE_URL}/reviews`;
-
   private localKey = 'userLogged';
 
-  // ================================
-  // Helpers JWT (igual que UserService)
-  // ================================
   private getLoggedUser() {
     const data = localStorage.getItem(this.localKey);
     return data ? JSON.parse(data) : null;
@@ -37,9 +33,6 @@ export class ReviewsService {
     };
   }
 
-  // ================================
-  // CREATE (requiere login)
-  // ================================
   createReview(review: ReviewRequestDTO): Observable<Reviews> {
     return this.http.post<Reviews>(
       this.REVIEWS_URL,
@@ -48,9 +41,6 @@ export class ReviewsService {
     );
   }
 
-  // ================================
-  // GET PUBLICOS
-  // ================================
   getReviewsForUser(userId: string): Observable<Reviews[]> {
     return this.http
       .get<
@@ -77,9 +67,6 @@ export class ReviewsService {
     );
   }
 
-  // ================================
-  // UPDATE (requiere login)
-  // ================================
   updateReview(
     reviewId: string,
     reviewData: ReviewRequestDTO,
@@ -90,9 +77,7 @@ export class ReviewsService {
       this.getAuthHeaders(),
     );
   }
-  // ================================
-  // DELETE (requiere login)
-  // ================================
+
   deleteReview(reviewId: string): Observable<boolean> {
     return this.http
       .delete<boolean>(`${this.REVIEWS_URL}/${reviewId}`, this.getAuthHeaders())

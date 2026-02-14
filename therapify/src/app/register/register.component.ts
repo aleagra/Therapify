@@ -87,8 +87,6 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.loading = false;
-
-        // Revisamos varias formas en que puede venir el mensaje del backend
         const msg = err.error?.message || err.error || '';
 
         if (msg.includes('email ya está registrado')) {

@@ -16,49 +16,59 @@ import { ProfileDoctorComponent } from './profile-doctor/profile-doctor.componen
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { PublicLayoutComponent } from './public-layout/public-layout.component';
+import { PrivateLayoutComponent } from './private-layout/private-layout.component';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'verify-email', component: VerifyEmailComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
-  { path: 'register', component: RegisterComponent },
-  { path: 'doctors', component: DoctorsComponent, canActivate: [authGuard] },
   {
-    path: 'profile-doctor',
-    component: ProfileDoctorComponent,
-    canActivate: [authGuard],
-  },
-  {
-    path: 'appointments',
-    component: TurnosComponent,
-    canActivate: [authGuard],
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
+      { path: 'verify-email', component: VerifyEmailComponent },
+      { path: 'about-us', component: AboutComponent },
+      { path: 'doctor/:id', component: DoctorDetailComponent },
+    ],
   },
 
   {
-    path: 'doctor/:id',
-    component: DoctorDetailComponent,
-    canActivate: [authGuard],
+    path: '',
+    component: PrivateLayoutComponent,
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'doctors',
+        component: DoctorsComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'profile-doctor',
+        component: ProfileDoctorComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'appointments',
+        component: TurnosComponent,
+        canActivate: [authGuard],
+      },
+      {
+        path: 'reviews/:id',
+        component: ReviewsComponent,
+        canActivate: [authGuard],
+      },
+      { path: 'users', component: UsersComponent, canActivate: [adminGuard] },
+    ],
   },
 
-  {
-    path: 'reviews/:id',
-    component: ReviewsComponent,
-    canActivate: [authGuard],
-  },
-
-  {
-    path: 'about-us',
-    component: AboutComponent,
-  },
-
-  {
-    path: 'users',
-    component: UsersComponent,
-    canActivate: [adminGuard],
-  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];

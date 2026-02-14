@@ -1,64 +1,71 @@
 @if (doctor$ | async; as doctor) {
-  <div class="specialist-profile-container">
-    <div class="specialist-info-column">
-      <div class="header specialist-card">
-        <div class="specialist-details">
-          <h2>Especialista</h2>
-          <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
-          <div class="specialist-badges">
-            <span class="badge">Psicóloga Clínica</span>
-            <span class="badge">Terapia Cognitivo-Conductual</span>
+  <div class="page-container specialist-page">
+    <div class="page-header">
+      <h1>Perfil del profesional</h1>
+      <p class="subtitle">Conocé su enfoque, horarios y reservá tu turno</p>
+    </div>
+
+    <div class="profile-layout">
+      <div class="info-column">
+        <div class="card header-card">
+          <div class="specialist-details">
+            <h2>Especialista</h2>
+            <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
+
+            <div class="chips">
+              <span class="chip">Psicología Clínica</span>
+              <span class="chip">Terapia Cognitivo-Conductual</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="description specialist-card">
-        <h3>Descripción</h3>
-        <p>{{ doctor.description }}</p>
-      </div>
+        <div class="card">
+          <h3>Descripción</h3>
 
-      <!-- <section class="philosophy-section specialist-card">
-        <h3>Mi Filosofía y Experiencia</h3>
-        <p>
-          Mi enfoque se basa en la Terapia Cognitivo-Conductual (TCC), una
-          metodología efectiva para identificar patrones de pensamiento y
-          comportamiento negativos...
-        </p>
-        <ul>
-          <li>Idiomas de atención: Español, Inglés.</li>
-        </ul>
-      </section> -->
+          @if (doctor.description) {
+            <p>{{ doctor.description }}</p>
+          } @else {
+            <p class="empty-text">No hay descripción disponible.</p>
+          }
+        </div>
 
-      <div class="horarios-section specialist-card">
-        <h3>Horarios de Atención</h3>
-        <p class="session-info">
-          Las sesiones tienen una duración de
-          <strong><span>1 hora</span></strong
-          >.
-        </p>
+        <div class="card">
+          <h3>Horarios de atención</h3>
+          <p class="session-info">
+            Duración de sesión: <strong>1 hora</strong>
+          </p>
 
-        <div class="horarios-list">
-          @for (entry of doctor.availability | keyvalue; track entry.key) {
-            @if (entry.value && entry.value.length > 0) {
-              <div class="horarios-dia">
-                <span class="dia-titulo">{{ entry.key | titlecase }}</span>
-                <div class="chips">
-                  @for (hora of entry.value; track hora) {
-                    <span class="chip hora-chip">{{ hora }}</span>
-                  }
-                </div>
-              </div>
-            }
+          @if (
+            doctor.availability && (doctor.availability | keyvalue).length > 0
+          ) {
+            <div class="horarios-list">
+              @for (entry of doctor.availability | keyvalue; track entry.key) {
+                @if (entry.value?.length) {
+                  <div class="horarios-dia">
+                    <span class="dia">{{ entry.key | titlecase }}</span>
+
+                    <div class="chips">
+                      @for (hora of entry.value; track hora) {
+                        <span class="chip hour-chip">{{ hora }}</span>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          } @else {
+            <p class="empty-text">No hay horarios de atención disponibles.</p>
           }
         </div>
       </div>
-    </div>
-    <div class="booking-sidebar">
-      <app-calendar
-        [schedule]="doctor.schedule"
-        [availability]="doctor.availability"
-        [doctorId]="doctor.id"
-      ></app-calendar>
+
+      <aside class="sidebar card">
+        <app-calendar
+          [schedule]="doctor.schedule"
+          [availability]="doctor.availability"
+          [doctorId]="doctor.id"
+        ></app-calendar>
+      </aside>
     </div>
   </div>
 }

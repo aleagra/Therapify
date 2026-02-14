@@ -1,5 +1,4 @@
 <div class="appointments-container">
-  <!-- ================= ADMIN ================= -->
   @if (userLogged?.userType === "ADMIN") {
     <h3>Todos los Turnos</h3>
 
@@ -35,7 +34,6 @@
     }
   }
 
-  <!-- ================= PACIENTE ================= -->
   @if (userLogged?.userType !== "ADMIN") {
     <h3>Mis Turnos</h3>
 
@@ -66,7 +64,6 @@
     }
   }
 
-  <!-- ================= DOCTOR ================= -->
   @if (userLogged?.userType === "DOCTOR") {
     <h3>Mis Pacientes</h3>
 
