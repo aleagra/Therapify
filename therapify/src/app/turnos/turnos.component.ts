@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
@@ -17,8 +17,42 @@ export class TurnosComponent implements OnInit {
   userService = inject(UserService);
 
   userLogged = this.userService.getLoggedUser();
-  misTurnos = signal<Appointment[]>([]);
-  misPacientes = signal<Appointment[]>([]);
+
+  turnosPacienteRaw = signal<Appointment[]>([]);
+  turnosDoctorRaw = signal<Appointment[]>([]);
+  turnosAdminRaw = signal<Appointment[]>([]);
+
+  mostrarCompletadosPaciente = signal(true);
+  mostrarCompletadosDoctor = signal(true);
+  mostrarCompletadosAdmin = signal(true);
+
+  ordenPacienteAsc = signal(true);
+  ordenDoctorAsc = signal(true);
+  ordenAdminAsc = signal(true);
+
+  misTurnos = computed(() =>
+    this.procesarTurnos(
+      this.turnosPacienteRaw(),
+      this.mostrarCompletadosPaciente(),
+      this.ordenPacienteAsc(),
+    ),
+  );
+
+  misPacientes = computed(() =>
+    this.procesarTurnos(
+      this.turnosDoctorRaw(),
+      this.mostrarCompletadosDoctor(),
+      this.ordenDoctorAsc(),
+    ),
+  );
+
+  turnosAdmin = computed(() =>
+    this.procesarTurnos(
+      this.turnosAdminRaw(),
+      this.mostrarCompletadosAdmin(),
+      this.ordenAdminAsc(),
+    ),
+  );
 
   ngOnInit(): void {
     this.actualizarTurnosVencidos();
@@ -27,25 +61,20 @@ export class TurnosComponent implements OnInit {
   loadAppointments(): void {
     this.appointmentService.getMyAppointments().subscribe((appointments) => {
       const allAppointments = appointments || [];
-
       const isAdmin = this.userLogged?.userType === 'ADMIN';
 
       if (isAdmin) {
-        this.misTurnos.set(allAppointments);
-        this.misPacientes.set([]);
+        this.turnosAdminRaw.set(allAppointments);
         return;
       }
 
-      const turnosComoPaciente = allAppointments.filter(
-        (a) => a.patientId === this.userLogged?.id,
+      this.turnosPacienteRaw.set(
+        allAppointments.filter((a) => a.patientId === this.userLogged?.id),
       );
 
-      const turnosComoDoctor = allAppointments.filter(
-        (a) => a.doctorId === this.userLogged?.id,
+      this.turnosDoctorRaw.set(
+        allAppointments.filter((a) => a.doctorId === this.userLogged?.id),
       );
-
-      this.misTurnos.set(turnosComoPaciente);
-      this.misPacientes.set(turnosComoDoctor);
     });
   }
 
@@ -53,11 +82,9 @@ export class TurnosComponent implements OnInit {
     this.appointmentService.deleteAppointment(id).subscribe((success) => {
       if (!success) return;
 
-      // Eliminar de ambas listas
-      this.misTurnos.set(this.misTurnos().filter((a) => a.id !== id));
-      this.misPacientes.set(this.misPacientes().filter((a) => a.id !== id));
-
-      console.log(`Turno eliminado: ${id}`);
+      this.turnosPacienteRaw.update((list) => list.filter((a) => a.id !== id));
+      this.turnosDoctorRaw.update((list) => list.filter((a) => a.id !== id));
+      this.turnosAdminRaw.update((list) => list.filter((a) => a.id !== id));
     });
   }
 
@@ -66,12 +93,10 @@ export class TurnosComponent implements OnInit {
       .updateAppointmentStatus(id, 'CONFIRMED')
       .subscribe((updated) => {
         if (!updated) return;
-        this.misPacientes.set(
-          this.misPacientes().map((a) =>
-            a.id === id ? { ...a, status: 'CONFIRMED' } : a,
-          ),
+
+        this.turnosDoctorRaw.update((list) =>
+          list.map((a) => (a.id === id ? { ...a, status: 'CONFIRMED' } : a)),
         );
-        console.log(`Turno confirmado: ${id}`, this.misPacientes());
       });
   }
 
@@ -96,10 +121,38 @@ export class TurnosComponent implements OnInit {
         }),
       );
 
-      forkJoin(updates).subscribe(() => {
-        console.log(`Turnos vencidos marcados: ${vencidos.length}`, vencidos);
-        this.loadAppointments();
-      });
+      forkJoin(updates).subscribe(() => this.loadAppointments());
     });
+  }
+
+  traducirEstado(status: string | undefined): string {
+    if (!status) return '';
+
+    const mapa: Record<string, string> = {
+      PENDING: 'Pendiente',
+      CONFIRMED: 'Confirmado',
+      CANCELLED: 'Cancelado',
+      COMPLETED: 'Completado',
+    };
+
+    return mapa[status] ?? status.toLowerCase();
+  }
+
+  private procesarTurnos(
+    turnos: Appointment[],
+    mostrarCompletados: boolean,
+    asc: boolean,
+  ): Appointment[] {
+    let resultado = turnos.filter(
+      (t) => mostrarCompletados || t.status !== 'COMPLETED',
+    );
+
+    resultado.sort((a, b) => {
+      const fechaA = new Date(`${a.date}T${a.startTime}`).getTime();
+      const fechaB = new Date(`${b.date}T${b.startTime}`).getTime();
+      return asc ? fechaA - fechaB : fechaB - fechaA;
+    });
+
+    return resultado;
   }
 }

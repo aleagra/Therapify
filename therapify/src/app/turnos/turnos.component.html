@@ -2,13 +2,27 @@
   @if (userLogged?.userType === "ADMIN") {
     <h3>Todos los Turnos</h3>
 
-    @if (misTurnos().length === 0) {
+    <div class="filters">
+      <button (click)="mostrarCompletadosAdmin.set(!mostrarCompletadosAdmin())">
+        {{
+          mostrarCompletadosAdmin()
+            ? "Ocultar completados"
+            : "Mostrar completados"
+        }}
+      </button>
+
+      <button (click)="ordenAdminAsc.set(!ordenAdminAsc())">
+        {{ ordenAdminAsc() ? "Más lejanos primero" : "Más cercanos primero" }}
+      </button>
+    </div>
+
+    @if (turnosAdmin().length === 0) {
       <div class="empty-state">No hay turnos registrados.</div>
     }
 
-    @if (misTurnos().length > 0) {
+    @if (turnosAdmin().length > 0) {
       <div class="appointments-grid">
-        @for (ap of misTurnos(); track ap.id) {
+        @for (ap of turnosAdmin(); track ap.id) {
           <div class="appointment-card">
             <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
             <div><strong>Doctor:</strong> {{ ap.doctorName }}</div>
@@ -20,8 +34,8 @@
 
             <div>
               <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status">
-                {{ ap.status }}
+              <span class="status" [ngClass]="ap.status.toLowerCase()">
+                {{ traducirEstado(ap.status) }}
               </span>
             </div>
 
@@ -36,6 +50,24 @@
 
   @if (userLogged?.userType !== "ADMIN") {
     <h3>Mis Turnos</h3>
+
+    <div class="filters">
+      <button
+        (click)="mostrarCompletadosPaciente.set(!mostrarCompletadosPaciente())"
+      >
+        {{
+          mostrarCompletadosPaciente()
+            ? "Ocultar completados"
+            : "Mostrar completados"
+        }}
+      </button>
+
+      <button (click)="ordenPacienteAsc.set(!ordenPacienteAsc())">
+        {{
+          ordenPacienteAsc() ? "Más lejanos primero" : "Más cercanos primero"
+        }}
+      </button>
+    </div>
 
     @if (misTurnos().length === 0) {
       <div class="empty-state">No tenés turnos reservados como paciente.</div>
@@ -54,8 +86,8 @@
 
             <div>
               <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status">
-                {{ ap.status }}
+              <span class="status" [ngClass]="ap.status.toLowerCase()">
+                {{ traducirEstado(ap.status) }}
               </span>
             </div>
           </div>
@@ -66,6 +98,21 @@
 
   @if (userLogged?.userType === "DOCTOR") {
     <h3>Mis Pacientes</h3>
+
+    <div class="filters">
+      <button
+        (click)="mostrarCompletadosDoctor.set(!mostrarCompletadosDoctor())"
+      >
+        {{
+          mostrarCompletadosDoctor()
+            ? "Ocultar completados"
+            : "Mostrar completados"
+        }}
+      </button>
+      <button (click)="ordenDoctorAsc.set(!ordenDoctorAsc())">
+        {{ ordenDoctorAsc() ? "Más lejanos primero" : "Más cercanos primero" }}
+      </button>
+    </div>
 
     @if (misPacientes().length === 0) {
       <div class="empty-state">No tenés turnos asignados como doctor.</div>
@@ -84,8 +131,8 @@
 
             <div>
               <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status">
-                {{ ap.status }}
+              <span class="status" [ngClass]="ap.status.toLowerCase()">
+                {{ traducirEstado(ap.status) }}
               </span>
             </div>
 

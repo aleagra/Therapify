@@ -76,17 +76,16 @@
 }
 
 .button-confirm {
-  background: #2a47b5;
+  background: #0077b6;
 }
 
 .button-confirm:hover {
-  background: #1c3293;
+  background: #0096d6;
 }
-
 .status {
   padding: 4px 8px;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -134,6 +133,45 @@
   display: block;
   font-size: 2rem;
   margin-bottom: 0.8rem;
+}
+
+/* CONTENEDOR FILTROS */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin: 0.8rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* BOTONES FILTRO */
+.filters button {
+  font-family: "Poppins", sans-serif;
+  border: 1px solid #e5e8ff;
+  background: #ffffff;
+  color: #007ab6;
+  padding: 0.45rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* HOVER */
+.filters button:hover {
+  background: #f2f6ff;
+  border-color: #cdd8ff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+/* BOTÓN ACTIVO (cuando está encendido el filtro) */
+.filters button.active {
+  background: #007ab6;
+  color: #fff;
+  border-color: #007ab6;
+  box-shadow: 0 4px 14px rgba(0, 122, 182, 0.25);
 }
 
 @media (max-width: 1024px) {

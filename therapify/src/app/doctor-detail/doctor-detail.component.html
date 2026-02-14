@@ -40,7 +40,7 @@
           ) {
             <div class="horarios-list">
               @for (entry of doctor.availability | keyvalue; track entry.key) {
-                @if (entry.value?.length) {
+                @if (entry.value.length) {
                   <div class="horarios-dia">
                     <span class="dia">{{ entry.key | titlecase }}</span>
 

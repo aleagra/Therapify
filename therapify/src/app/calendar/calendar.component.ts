@@ -166,7 +166,6 @@ export class CalendarComponent implements OnChanges {
     this.appointmentsService
       .createAppointment(appointmentRequest)
       .subscribe(() => {
-        console.log('Turno creado!');
         this.reservaConfirmada = true;
         this.citaForm.disable();
       });
