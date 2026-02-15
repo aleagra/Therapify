@@ -44,6 +44,29 @@
     </div>
 
     <div class="filter-group">
+      <span class="filter-label">Especialidad</span>
+      <select
+        class="select-input"
+        [ngModel]="selectedSpecialty()"
+        (ngModelChange)="selectedSpecialty.set($event)"
+      >
+        <option value="">Todas</option>
+        <option value="PSICOLOGIA_CLINICA">Psicología clínica</option>
+        <option value="TERAPIA_COGNITIVO_CONDUCTUAL">
+          Terapia cognitivo conductual
+        </option>
+        <option value="TERAPIA_DE_PAREJA">Terapia de pareja</option>
+        <option value="TERAPIA_FAMILIAR">Terapia familiar</option>
+        <option value="PSIQUIATRIA">Psiquiatría</option>
+        <option value="NEUROPSICOLOGIA">Neuropsicología</option>
+        <option value="PSICOLOGIA_INFANTIL">Psicología infantil</option>
+        <option value="PSICOLOGIA_LABORAL">Psicología laboral</option>
+        <option value="SEXOLOGIA">Sexología</option>
+        <option value="TERAPIA_HUMANISTA">Terapia humanista</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
       <span class="filter-label">Género del profesional</span>
       <select
         class="select-input"

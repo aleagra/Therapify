@@ -39,12 +39,41 @@
         </div>
       </div>
     </div>
+    <div class="row-inline">
+      <div class="input-field">
+        <label>Especialidad</label>
+        <select formControlName="specialty">
+          <option value="">Seleccionar especialidad</option>
+          <option value="PSICOLOGIA_CLINICA">Psicología clínica</option>
+          <option value="TERAPIA_COGNITIVO_CONDUCTUAL">
+            Terapia cognitivo conductual
+          </option>
+          <option value="TERAPIA_DE_PAREJA">Terapia de pareja</option>
+          <option value="TERAPIA_FAMILIAR">Terapia familiar</option>
+          <option value="PSIQUIATRIA">Psiquiatría</option>
+          <option value="NEUROPSICOLOGIA">Neuropsicología</option>
+          <option value="PSICOLOGIA_INFANTIL">Psicología infantil</option>
+          <option value="PSICOLOGIA_LABORAL">Psicología laboral</option>
+          <option value="SEXOLOGIA">Sexología</option>
+          <option value="TERAPIA_HUMANISTA">Terapia humanista</option>
+        </select>
+      </div>
 
+      <div></div>
+      <div class="input-field">
+        <label>Precio de consulta (ARS)</label>
+        <input
+          type="number"
+          formControlName="consultationPrice"
+          placeholder="Ej: 15000"
+        />
+      </div>
+    </div>
     <div class="input-field full">
       <label for="description">Descripcion</label>
       <textarea
         id="description"
-        rows="6"
+        rows="4"
         placeholder="Describe tus especialidades..."
         formControlName="description"
       ></textarea>

@@ -23,6 +23,7 @@ export class DoctorsComponent {
   maxDistance = signal<number | ''>('');
   selectedGender = signal<string>('');
   allDoctors = signal<any[]>([]);
+  selectedSpecialty = signal<string>('');
 
   DAYS_OF_WEEK = DAYS_OF_WEEK;
   DAY_LABELS = DAY_LABELS;
@@ -53,7 +54,7 @@ export class DoctorsComponent {
       ...d,
       firstName: d.firstName || '',
       lastName: d.lastName || '',
-      specialty: d.specialty || '',
+      specialty: (d.specialty ?? '').toString().trim().toUpperCase(),
       description: d.description || '',
       schedule: d.schedule || {},
       availability: d.availability || {},
@@ -73,11 +74,15 @@ export class DoctorsComponent {
     const day = this.selectedDay();
     const dist = this.maxDistance();
     const gender = this.selectedGender();
+    const specialtySelected = this.selectedSpecialty();
 
     return this.allDoctors()
       .filter((doc) => {
+        if (!text) return true;
+
         const fullName = `${doc.firstName} ${doc.lastName}`.toLowerCase();
         const specialty = doc.specialty?.toLowerCase() || '';
+
         return fullName.includes(text) || specialty.includes(text);
       })
 
@@ -95,6 +100,15 @@ export class DoctorsComponent {
       .filter((doc) => {
         if (!gender) return true;
         return doc.gender === gender;
+      })
+
+      .filter((doc) => {
+        if (!specialtySelected) return true;
+
+        const docSpec = (doc.specialty ?? '').toString().trim().toUpperCase();
+        const selectedSpec = specialtySelected.toString().trim().toUpperCase();
+
+        return docSpec === selectedSpec;
       });
   });
 

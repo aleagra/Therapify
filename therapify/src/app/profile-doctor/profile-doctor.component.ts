@@ -48,6 +48,8 @@ export class ProfileDoctorComponent {
     fridayStart: ['08:00'],
     fridayEnd: ['17:00'],
     description: [''],
+    specialty: [''],
+    consultationPrice: [null],
   });
 
   ngOnInit() {
@@ -124,6 +126,8 @@ export class ProfileDoctorComponent {
     }
 
     schedulePatch.description = this.user.description ?? '';
+    schedulePatch.specialty = this.user.specialty ?? '';
+    schedulePatch.consultationPrice = this.user.consultationPrice ?? null;
     this.formSchedule.patchValue(schedulePatch);
   }
 
@@ -172,6 +176,8 @@ export class ProfileDoctorComponent {
       description: f.description,
       schedule,
       availability,
+      consultationPrice: f.consultationPrice,
+      ...(f.specialty ? { specialty: f.specialty } : {}),
     };
 
     this.loading = true;
@@ -188,6 +194,8 @@ export class ProfileDoctorComponent {
         this.user.schedule = schedule;
         this.user.availability = availability;
         this.user.description = f.description;
+        this.user.specialty = f.specialty;
+        this.user.consultationPrice = f.consultationPrice;
         this.userService.updateLocalUser(this.user);
         this.patchScheduleForm();
       },

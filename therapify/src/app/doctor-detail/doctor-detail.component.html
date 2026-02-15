@@ -12,10 +12,15 @@
             <h2>Especialista</h2>
             <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
 
-            <div class="chips">
-              <span class="chip">Psicología Clínica</span>
-              <span class="chip">Terapia Cognitivo-Conductual</span>
-            </div>
+            @if (doctor.specialty) {
+              <div class="chips">
+                <span class="chip">
+                  {{ specialtyLabels[doctor.specialty] || doctor.specialty }}
+                </span>
+              </div>
+            } @else {
+              <p class="empty-text">Especialidad no especificada</p>
+            }
           </div>
         </div>
 
@@ -64,6 +69,7 @@
           [schedule]="doctor.schedule"
           [availability]="doctor.availability"
           [doctorId]="doctor.id"
+          [consultationPrice]="doctor.consultationPrice"
         ></app-calendar>
       </aside>
     </div>

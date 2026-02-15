@@ -7,4 +7,6 @@ export interface UserRequestDTO {
   userType?: string;
   schedule?: Record<string, boolean>;
   availability?: Record<string, string[]>;
+  specialty?: string;
+  consultationPrice?: number;
 }

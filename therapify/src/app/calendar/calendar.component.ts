@@ -50,7 +50,7 @@ export class CalendarComponent implements OnChanges {
   @Input() schedule: { [dia: string]: boolean } | undefined;
   @Input() availability: { [dia: string]: string[] } | undefined;
   @Input() doctorId!: string;
-
+  @Input() consultationPrice?: number;
   fb = inject(FormBuilder);
   userService = inject(UserService);
   appointmentsService = inject(AppointmentService);

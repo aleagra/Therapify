@@ -14,6 +14,7 @@ export interface User {
   address?: string;
   distanceKm?: number;
   specialty?: string;
+  consultationPrice?: number;
   schedule?: Record<string, boolean>;
   availability?: Record<string, string[]>;
   description?: string;

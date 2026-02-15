@@ -79,7 +79,13 @@
 
         <div class="fila total">
           <span>Total</span>
-          <strong class="precio">$45.000</strong>
+          <strong class="precio">
+            {{
+              consultationPrice && consultationPrice > 0
+                ? (consultationPrice | currency: "ARS " : "symbol" : "1.0-0")
+                : "Consultar precio el día de la consulta"
+            }}
+          </strong>
         </div>
       </div>
 
