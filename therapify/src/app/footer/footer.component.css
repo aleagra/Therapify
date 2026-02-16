@@ -50,8 +50,34 @@
 }
 
 @media (max-width: 700px) {
+  .footer {
+    padding: 1.6rem 1.2rem;
+  }
+
   .footer-container {
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    flex-direction: column;
+    gap: 0.3rem;
     text-align: center;
+  }
+
+  .footer-left span {
+    font-size: 0.82rem;
+  }
+
+  .footer-center span:first-child {
+    margin-bottom: 0.2rem;
+  }
+
+  .footer-right a {
+    display: inline-block;
+    margin-top: 0.3rem;
   }
 }

@@ -19,11 +19,14 @@
             getControl('firstName').invalid && getControl('firstName').touched
           "
         />
-        @if (
-          getControl("firstName").invalid && getControl("firstName").touched
-        ) {
-          <small class="error-msg">Debe tener al menos 3 caracteres</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('firstName').invalid && getControl('firstName').touched
+          "
+        >
+          Debe tener al menos 3 caracteres
+        </small>
 
         <label for="lastName">Apellido</label>
         <input
@@ -34,9 +37,15 @@
             getControl('lastName').invalid && getControl('lastName').touched
           "
         />
-        @if (getControl("lastName").invalid && getControl("lastName").touched) {
-          <small class="error-msg">Debe tener al menos 3 caracteres</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('lastName').invalid && getControl('lastName').touched
+          "
+        >
+          Debe tener al menos 3 caracteres
+        </small>
+
         <label for="email">Correo Electrónico</label>
         <input
           id="email"
@@ -47,9 +56,14 @@
             getControl('email').invalid && getControl('email').touched
           "
         />
-        @if (getControl("email").invalid && getControl("email").touched) {
-          <small class="error-msg">Ingresa un correo válido</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('email').invalid && getControl('email').touched
+          "
+        >
+          Ingresa un correo válido
+        </small>
 
         <button type="button" class="btn" (click)="nextStep()">
           Continuar →
@@ -66,9 +80,14 @@
             getControl('password').invalid && getControl('password').touched
           "
         />
-        @if (getControl("password").invalid && getControl("password").touched) {
-          <small class="error-msg">Mínimo 6 caracteres</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('password').invalid && getControl('password').touched
+          "
+        >
+          Mínimo 6 caracteres
+        </small>
 
         <label for="confirmPassword">Confirmar Contraseña</label>
         <input
@@ -80,12 +99,15 @@
             getControl('confirmPassword').value !== getControl('password').value
           "
         />
-        @if (
-          getControl("confirmPassword").touched &&
-          getControl("confirmPassword").value !== getControl("password").value
-        ) {
-          <small class="error-msg">Las contraseñas no coinciden</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('confirmPassword').touched &&
+            getControl('confirmPassword').value !== getControl('password').value
+          "
+        >
+          Las contraseñas no coinciden
+        </small>
 
         <div class="actions">
           <button type="button" class="btn" (click)="prevStep()">
@@ -104,6 +126,7 @@
         class="form"
       >
         <label>Tipo de usuario</label>
+
         <div class="options">
           <button
             type="button"
@@ -112,6 +135,7 @@
           >
             Paciente
           </button>
+
           <button
             type="button"
             [class.active]="userType === 'DOCTOR'"
@@ -121,9 +145,14 @@
           </button>
         </div>
 
-        @if (getControl("userType").invalid && getControl("userType").touched) {
-          <small class="error-msg">Selecciona un tipo de usuario</small>
-        }
+        <small
+          class="error-msg"
+          [class.visible]="
+            getControl('userType').invalid && getControl('userType').touched
+          "
+        >
+          Selecciona un tipo de usuario
+        </small>
 
         <div class="actions">
           <button type="button" class="btn" (click)="prevStep()">
@@ -133,10 +162,9 @@
         </div>
       </form>
     </div>
-
-   
   </div>
 }
+
 @if (accountCreated) {
   <div class="auth-container">
     <div class="auth-card success-state">

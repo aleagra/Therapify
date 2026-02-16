@@ -26,6 +26,7 @@
   margin-bottom: 2rem;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .form-group {
@@ -59,7 +60,10 @@
   display: flex;
   flex-direction: column;
 }
-
+.medical-profile-button {
+  display: flex;
+  align-items: center;
+}
 .input-field {
   flex: 1;
   display: flex;
@@ -162,12 +166,44 @@
 }
 
 @media (max-width: 768px) {
+  .profile-container {
+    padding: 0 0.8rem;
+  }
+
+  .profile-grid {
+    padding: 1.2rem;
+    border-radius: 14px;
+    min-height: auto; /* 👈 evita que estire raro */
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .profile-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .profile-header p {
+    font-size: 0.9rem;
+  }
+
   .form-group.double {
     flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .gender-options {
+    flex-direction: column;
+    gap: 0.6rem;
   }
 
   .action-buttons {
-    flex-direction: column;
+    flex-direction: column-reverse;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
   }
 
   .btn-primary,

@@ -191,12 +191,10 @@
   width: 100%;
 }
 
-/* que ambos ocupen el mismo ancho */
 .row-inline .input-field {
   flex: 1;
 }
 
-/* opcional: que el precio sea un poco más chico */
 .row-inline .input-field.price-field {
   max-width: 220px;
 }
@@ -242,7 +240,6 @@
     flex-wrap: nowrap;
   }
 
-  /* botones */
   .action-buttons {
     flex-direction: column;
     gap: 0.8rem;

@@ -6,7 +6,6 @@ import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-users',
