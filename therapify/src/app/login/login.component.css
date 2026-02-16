@@ -1,8 +1,19 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  height: 80%;
+  width: 50%;
+  justify-content: center;
+  margin: auto;
   font-family: "Inter", sans-serif;
+  border: 1px solid rgba(224, 242, 247, 0.5);
+  border-radius:  40px;
+  box-shadow:
+    /* Capa 1: Sombra cercana y sutil para definir el borde */
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    /* Capa 2: Sombra lejana, difusa y desplazada hacia abajo para la profundidad */
+    0 25px 60px -12px rgba(0, 182, 158, 0.25);
+
 }
 
 .left-panel {
@@ -72,15 +83,18 @@ label {
 
 input {
   padding: 1.2rem 0.8rem;
-  border: 2px solid #d8d7d7;
-  border-radius: 6px;
+  border-radius: 26px;
   font-size: 0.9rem;
   transition: border 0.2s ease;
+  background-color: #ebfcf8; /* Un blanco azulado muy sutil para diferenciarlo del fondo */
+  border: 2px solid #bdf4fe; /* Borde azul muy suave por defecto */
+  color: #008f7c;
 }
 
 input:focus {
   outline: none;
   border: 2px solid #00c4b4;
+  box-shadow: 0 0 0 4px rgba(0, 196, 180, 0.1);
 }
 
 .forgot {
