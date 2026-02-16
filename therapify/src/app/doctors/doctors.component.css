@@ -103,7 +103,7 @@
 
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 360px));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 351px));
   gap: 1.4rem;
 }
 .empty-state {
@@ -122,6 +122,11 @@
 
 .empty-state p {
   font-size: 0.9rem;
+}
+@media (max-width: 1300px) {
+  .doctors-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 }
 
 @media (max-width: 1100px) {
