@@ -1,13 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { AppointmentService } from '../services/appointments.service';
 import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-users',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
@@ -16,35 +20,57 @@ export class UsersComponent implements OnInit {
   reviewsService = inject(ReviewsService);
   appointmentService = inject(AppointmentService);
 
-  users: User[] = [];
-  filteredUsers: User[] = [];
-  loading = true;
+  users = signal<User[]>([]);
+  loading = signal(true);
+
+  searchText = signal('');
+  selectedType = signal<'ALL' | 'ADMIN' | 'DOCTOR' | 'PACIENTE'>('ALL');
+
+  filteredUsers = computed(() => {
+    let filtered = [...this.users()];
+
+    const search = this.searchText().toLowerCase().trim();
+    if (search) {
+      filtered = filtered.filter(
+        (u) =>
+          u.firstName.toLowerCase().includes(search) ||
+          u.lastName.toLowerCase().includes(search) ||
+          u.email.toLowerCase().includes(search),
+      );
+    }
+
+    if (this.selectedType() !== 'ALL') {
+      filtered = filtered.filter((u) => u.userType === this.selectedType());
+    }
+
+    return filtered;
+  });
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers() {
-    this.loading = true;
+    this.loading.set(true);
     this.userService.getUsers().subscribe({
       next: (res) => {
-        this.users = res;
-        this.filteredUsers = res;
-        this.loading = false;
+        this.users.set(res);
+        this.loading.set(false);
       },
-      error: () => (this.loading = false),
+      error: () => this.loading.set(false),
     });
   }
 
-  filter(type: string) {
-    this.filteredUsers =
-      type === 'all'
-        ? this.users
-        : this.users.filter((u) => u.userType === type);
+  setType(type: 'ALL' | 'ADMIN' | 'DOCTOR' | 'PACIENTE') {
+    this.selectedType.set(type);
+  }
+
+  trackById(index: number, user: User) {
+    return user.id;
   }
 
   deleteUser(id: string) {
-    const user = this.users.find((u) => u.id === id);
+    const user = this.users().find((u) => u.id === id);
     if (!user) return;
 
     if (user.userType === 'ADMIN') {
@@ -58,40 +84,22 @@ export class UsersComponent implements OnInit {
       position: 'top-center',
       action: {
         label: 'Eliminar',
-        onClick: () => {
-          this.executeDeleteUser(id);
-        },
+        onClick: () => this.executeDeleteUser(id),
       },
-      cancel: {
-        label: 'Cancelar',
-      },
+      cancel: { label: 'Cancelar' },
     });
   }
 
   private executeDeleteUser(id: string) {
-    this.appointmentService.getMyAppointments().subscribe((apps) => {
-      const toDelete = apps.filter(
-        (a) => a.patientId === id || a.doctorId === id,
-      );
-      toDelete.forEach((a) =>
-        this.appointmentService.deleteAppointment(a.id).subscribe(),
-      );
-    });
-
-    this.reviewsService.getReviewsForUser(id).subscribe((revs) => {
-      revs.forEach((r) => this.reviewsService.deleteReview(r.id).subscribe());
-    });
-
-    this.userService.deleteUser(id).subscribe({
+    this.userService.deleteUserCascade(id).subscribe({
       next: () => {
-        this.users = this.users.filter((u) => u.id !== id);
-        this.filteredUsers = this.filteredUsers.filter((u) => u.id !== id);
+        this.users.set(this.users().filter((u) => u.id !== id));
         toast.success('Usuario y datos asociados eliminados.', {
           position: 'top-center',
         });
       },
       error: () =>
-        toast.error('Error al eliminar usuario', {
+        toast.error('Error al eliminar usuario y sus datos', {
           position: 'top-center',
         }),
     });

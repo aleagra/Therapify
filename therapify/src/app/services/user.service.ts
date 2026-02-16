@@ -154,6 +154,12 @@ export class UserService {
   deleteUser(id: string) {
     return this.http.delete(`${this.USERS_URL}/${id}`, this.getAuthHeaders());
   }
+  deleteUserCascade(id: string) {
+    return this.http.delete(
+      `${this.USERS_URL}/${id}/cascade`,
+      this.getAuthHeaders(),
+    );
+  }
 
   getDoctorsNear(lat: number, lng: number) {
     return this.http.get<User[]>(

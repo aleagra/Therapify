@@ -3,10 +3,8 @@ export interface Reviews {
   comment: string;
   value: number;
   date: string;
-
   patientId: string;
   doctorId: string;
-
   patientName?: string;
   patientLastName?: string;
 }

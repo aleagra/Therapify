@@ -11,6 +11,7 @@ import { ReviewsService } from '../services/reviews.service';
 import { Reviews } from '../../types/reviews';
 import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
+import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 
 @Component({
   selector: 'app-reviews',
@@ -23,8 +24,6 @@ export class ReviewsComponent implements OnInit {
   @Input() doctorId!: string;
 
   reviews: Reviews[] = [];
-  users: User[] = [];
-
   isEditing = false;
   reviewToEditId: string | null = null;
 
@@ -55,13 +54,8 @@ export class ReviewsComponent implements OnInit {
 
   loadReviews(): void {
     this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
-      next: (data) => {
-        this.reviews = data;
-        console.log(data);
-      },
-      error: () => {
-        toast.error('Error al cargar reseñas');
-      },
+      next: (data) => (this.reviews = data),
+      error: () => toast.error('Error al cargar reseñas'),
     });
   }
 
@@ -76,33 +70,25 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    const reviewData = {
-      patientId: String(this.userLogged.id),
-      doctorId: String(this.doctorId),
+    const reviewData: ReviewRequestDTO = {
+      doctorId: Number(this.doctorId),
       value: Number(this.reviewForm.value.value),
       comment: this.reviewForm.value.comment,
-      date: new Date().toISOString(),
     };
+
     if (this.isEditing && this.reviewToEditId) {
-      const updated: Reviews = {
-        ...reviewData,
-        id: this.reviewToEditId,
-      };
+      this.reviewsService
+        .updateReview(this.reviewToEditId, reviewData)
+        .subscribe({
+          next: (review) => {
+            const index = this.reviews.findIndex((r) => r.id === review.id);
+            if (index !== -1) this.reviews[index] = review;
 
-      this.reviewsService.updateReview(this.reviewToEditId, updated).subscribe({
-        next: (review) => {
-          const index = this.reviews.findIndex((r) => r.id === review.id);
-          if (index !== -1) {
-            this.reviews[index] = review;
-          }
-          toast.success('Reseña actualizada ✅');
-          this.resetForm();
-        },
-        error: () => {
-          toast.error('No se pudo actualizar la reseña');
-        },
-      });
-
+            toast.success('Reseña actualizada ✅');
+            this.resetForm();
+          },
+          error: () => toast.error('No se pudo actualizar la reseña'),
+        });
       return;
     }
 
@@ -112,12 +98,11 @@ export class ReviewsComponent implements OnInit {
         toast.success('Reseña creada ✅');
         this.resetForm();
       },
-      error: (err) => {
+      error: (err) =>
         toast.error(
           err?.error?.message ||
             'No podés dejar una reseña si no tuviste turno con este doctor.',
-        );
-      },
+        ),
     });
   }
 
@@ -145,9 +130,7 @@ export class ReviewsComponent implements OnInit {
         this.reviews = this.reviews.filter((r) => r.id !== id);
         toast.success('Reseña eliminada');
       },
-      error: () => {
-        toast.error('Error al eliminar');
-      },
+      error: () => toast.error('Error al eliminar'),
     });
   }
 
@@ -172,11 +155,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.reviewForm.reset({
-      value: 1,
-      comment: '',
-    });
-
+    this.reviewForm.reset({ value: 1, comment: '' });
     this.isEditing = false;
     this.reviewToEditId = null;
   }

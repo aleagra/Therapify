@@ -21,18 +21,33 @@
       <div class="form-group double">
         <div class="input-field">
           <label for="firstName">Nombre</label>
-          <input id="firstName" type="text" formControlName="firstName" />
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            autocomplete="name"
+          />
         </div>
         <div class="input-field">
           <label for="lastName">Apellido</label>
-          <input id="lastName" type="text" formControlName="lastName" />
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            autocomplete="name"
+          />
         </div>
       </div>
 
       <div class="form-group double">
         <div class="input-field">
           <label for="password">Nueva contraseña</label>
-          <input id="password" type="password" formControlName="password" />
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+          />
         </div>
         <div class="input-field">
           <label for="repeatPassword">Repetir contraseña</label>
@@ -40,6 +55,7 @@
             id="repeatPassword"
             type="password"
             formControlName="repeatPassword"
+            autocomplete="new-password"
           />
         </div>
       </div>

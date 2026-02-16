@@ -1,5 +1,5 @@
 export interface ReviewRequestDTO {
-  doctorId: string;
-  comment: string;
+  doctorId: number;
   value: number;
+  comment: string;
 }
