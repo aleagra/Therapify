@@ -1,5 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../types/user';
@@ -26,31 +33,70 @@ export class ProfileDoctorComponent {
   weekDays = [
     { label: 'Lunes', control: 'monday' as WeekDay },
     { label: 'Martes', control: 'tuesday' as WeekDay },
-    { label: 'Miercoles', control: 'wednesday' as WeekDay },
+    { label: 'Miércoles', control: 'wednesday' as WeekDay },
     { label: 'Jueves', control: 'thursday' as WeekDay },
     { label: 'Viernes', control: 'friday' as WeekDay },
   ];
 
-  formSchedule: FormGroup = this.fb.group({
-    monday: [true],
-    mondayStart: ['08:00'],
-    mondayEnd: ['17:00'],
-    tuesday: [true],
-    tuesdayStart: ['08:00'],
-    tuesdayEnd: ['17:00'],
-    wednesday: [true],
-    wednesdayStart: ['08:00'],
-    wednesdayEnd: ['17:00'],
-    thursday: [true],
-    thursdayStart: ['08:00'],
-    thursdayEnd: ['17:00'],
-    friday: [true],
-    fridayStart: ['08:00'],
-    fridayEnd: ['17:00'],
-    description: [''],
-    specialty: [''],
-    consultationPrice: [null],
-  });
+  scheduleValidator: ValidatorFn = (
+    group: AbstractControl,
+  ): ValidationErrors | null => {
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
+    for (const day of days) {
+      const enabled = group.get(day)?.value;
+      const start = group.get(`${day}Start`)?.value;
+      const end = group.get(`${day}End`)?.value;
+
+      if (!enabled) continue;
+
+      if (!start || !end) {
+        return { scheduleInvalid: 'Hay días activos sin horario completo' };
+      }
+
+      const [s] = start.split(':').map(Number);
+      const [e] = end.split(':').map(Number);
+
+      if (e <= s) {
+        return { scheduleInvalid: 'La hora fin debe ser mayor al inicio' };
+      }
+
+      if (s < 0 || e > 23) {
+        return { scheduleInvalid: 'Horario fuera del rango permitido' };
+      }
+    }
+
+    return null;
+  };
+
+  formSchedule: FormGroup = this.fb.group(
+    {
+      monday: [false],
+      mondayStart: [''],
+      mondayEnd: [''],
+
+      tuesday: [false],
+      tuesdayStart: [''],
+      tuesdayEnd: [''],
+
+      wednesday: [false],
+      wednesdayStart: [''],
+      wednesdayEnd: [''],
+
+      thursday: [false],
+      thursdayStart: [''],
+      thursdayEnd: [''],
+
+      friday: [false],
+      fridayStart: [''],
+      fridayEnd: [''],
+
+      description: [''],
+      specialty: [''],
+      consultationPrice: [null],
+    },
+    { validators: this.scheduleValidator },
+  );
 
   ngOnInit() {
     const loggedUser = this.userService.getLoggedUser();
@@ -63,7 +109,7 @@ export class ProfileDoctorComponent {
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
         if (!res) {
-          toast.error('Error al cargar datos del usuario');
+          toast.error('Error al cargar usuario');
           return;
         }
 
@@ -74,22 +120,19 @@ export class ProfileDoctorComponent {
         }
 
         this.weekDays.forEach((day) => {
-          this.formSchedule
-            .get(day.control)
-            ?.valueChanges.subscribe((value) => {
-              if (!value) {
-                this.formSchedule.patchValue(
-                  {
-                    [`${day.control}Start`]: '',
-                    [`${day.control}End`]: '',
-                  },
-                  { emitEvent: false },
-                );
-              }
-            });
+          this.formSchedule.get(day.control)?.valueChanges.subscribe((v) => {
+            if (!v) {
+              this.formSchedule.patchValue(
+                {
+                  [`${day.control}Start`]: '',
+                  [`${day.control}End`]: '',
+                },
+                { emitEvent: false },
+              );
+            }
+          });
         });
       },
-      error: () => toast.error('Error al cargar datos del usuario'),
     });
   }
 
@@ -104,49 +147,57 @@ export class ProfileDoctorComponent {
         ? JSON.parse(this.user.availability)
         : (this.user.availability ?? {});
 
-    const schedulePatch: any = {};
+    const patch: any = {};
 
     for (const day of this.weekDays) {
       const key = day.control;
-      const isEnabled = scheduleObj[key] ?? true;
 
-      const dayAvailability = availabilityObj[key] ?? [];
-      const start = dayAvailability[0] ?? '08:00';
-      const lastSlot = dayAvailability[dayAvailability.length - 1];
+      const enabled = scheduleObj[key] ?? false;
+      const slots = availabilityObj[key] ?? [];
 
-      let end = '17:00';
+      const start = slots.length ? slots[0] : '';
+      const last = slots.length ? slots[slots.length - 1] : null;
 
-      if (lastSlot) {
-        const hour = parseInt(lastSlot.split(':')[0], 10) + 1;
+      let end = '';
+      if (last) {
+        const hour = parseInt(last.split(':')[0], 10) + 1;
         end = `${hour.toString().padStart(2, '0')}:00`;
       }
-      schedulePatch[key] = isEnabled;
-      schedulePatch[`${key}Start`] = start;
-      schedulePatch[`${key}End`] = end;
+
+      patch[key] = enabled;
+      patch[`${key}Start`] = start;
+      patch[`${key}End`] = end;
     }
 
-    schedulePatch.description = this.user.description ?? '';
-    schedulePatch.specialty = this.user.specialty ?? '';
-    schedulePatch.consultationPrice = this.user.consultationPrice ?? null;
-    this.formSchedule.patchValue(schedulePatch);
+    patch.description = this.user.description ?? '';
+    patch.specialty = this.user.specialty ?? '';
+    patch.consultationPrice = this.user.consultationPrice ?? null;
+
+    this.formSchedule.patchValue(patch);
   }
 
   generateHourSlots(start: string, end: string): string[] {
     const slots: string[] = [];
     if (!start || !end) return slots;
+
     const [s] = start.split(':').map(Number);
     const [e] = end.split(':').map(Number);
+
     for (let h = s; h < e; h++)
       slots.push(`${h.toString().padStart(2, '0')}:00`);
+
     return slots;
   }
 
   onSubmitMedical() {
-    if (!this.user || this.user.userType !== 'DOCTOR') return;
+    if (this.formSchedule.invalid) {
+      toast.error('Hay horarios inválidos');
+      return;
+    }
 
     const f = this.formSchedule.getRawValue();
 
-    const schedule: { [key in WeekDay]: boolean } = {
+    const schedule: Record<WeekDay, boolean> = {
       monday: f.monday,
       tuesday: f.tuesday,
       wednesday: f.wednesday,
@@ -154,7 +205,7 @@ export class ProfileDoctorComponent {
       friday: f.friday,
     };
 
-    const availability: { [key in WeekDay]: string[] } = {
+    const availability: Record<WeekDay, string[]> = {
       monday: f.monday
         ? this.generateHourSlots(f.mondayStart, f.mondayEnd)
         : [],
@@ -172,7 +223,7 @@ export class ProfileDoctorComponent {
         : [],
     };
 
-    const updatedUser: UserRequestDTO = {
+    const dto: UserRequestDTO = {
       description: f.description,
       schedule,
       availability,
@@ -182,30 +233,17 @@ export class ProfileDoctorComponent {
 
     this.loading = true;
 
-    this.userService.updateUser(updatedUser).subscribe({
-      next: (res) => {
+    this.userService.updateUser(dto).subscribe({
+      next: () => {
         this.loading = false;
-        toast.success('Horario médico actualizado correctamente');
-
-        if ('token' in res && res.token) {
-          this.user.token = res.token;
-        }
-
-        this.user.schedule = schedule;
-        this.user.availability = availability;
-        this.user.description = f.description;
-        this.user.specialty = f.specialty;
-        this.user.consultationPrice = f.consultationPrice;
-        this.userService.updateLocalUser(this.user);
-        this.patchScheduleForm();
+        toast.success('Agenda actualizada');
       },
       error: () => {
         this.loading = false;
-        toast.error('Error al actualizar horario');
+        toast.error('Error al guardar agenda');
       },
     });
   }
-
   cancelMedical() {
     if (!this.user || this.user.userType !== 'DOCTOR') return;
 

@@ -40,17 +40,15 @@
             Duración de sesión: <strong>1 hora</strong>
           </p>
 
-          @if (
-            doctor.availability && (doctor.availability | keyvalue).length > 0
-          ) {
+          @if (doctor.availability) {
             <div class="horarios-list">
-              @for (entry of doctor.availability | keyvalue; track entry.key) {
-                @if (entry.value.length) {
+              @for (day of DAYS_OF_WEEK; track day) {
+                @if (doctor.availability?.[day]?.length) {
                   <div class="horarios-dia">
-                    <span class="dia">{{ entry.key | titlecase }}</span>
+                    <span class="dia">{{ DAY_LABELS[day] }}</span>
 
                     <div class="chips">
-                      @for (hora of entry.value; track hora) {
+                      @for (hora of doctor.availability[day]; track hora) {
                         <span class="chip hour-chip">{{ hora }}</span>
                       }
                     </div>

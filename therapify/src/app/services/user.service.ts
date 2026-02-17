@@ -38,26 +38,8 @@ export class UserService {
 
   postUser(user: Omit<User, 'id'>): Observable<User> {
     if (user.userType === 'DOCTOR') {
-      user.schedule = {
-        monday: true,
-        tuesday: true,
-        wednesday: true,
-        thursday: true,
-        friday: true,
-      };
-
-      const hours: string[] = [];
-      for (let h = 8; h <= 17; h++) {
-        hours.push(`${h.toString().padStart(2, '0')}:00`);
-      }
-
-      user.availability = {
-        monday: hours,
-        tuesday: hours,
-        wednesday: hours,
-        thursday: hours,
-        friday: hours,
-      };
+      user.schedule = undefined as any;
+      user.availability = undefined as any;
     }
 
     return this.http.post<User>(this.USERS_URL, user).pipe(

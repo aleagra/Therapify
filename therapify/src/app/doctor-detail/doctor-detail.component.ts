@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { AsyncPipe, NgIf, KeyValuePipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
 
 @Component({
   selector: 'app-doctor-detail',
   standalone: true,
-  imports: [AsyncPipe, KeyValuePipe, TitleCasePipe, CalendarComponent],
+  imports: [AsyncPipe, CalendarComponent],
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css'],
 })
@@ -17,6 +18,9 @@ export class DoctorDetailComponent {
 
   id = this.route.snapshot.paramMap.get('id')!;
   doctor$ = this.doctorService.getUserById(this.id);
+
+  DAYS_OF_WEEK = DAYS_OF_WEEK;
+  DAY_LABELS = DAY_LABELS;
 
   specialtyLabels: Record<string, string> = {
     PSICOLOGIA_CLINICA: 'Psicología clínica',
@@ -30,4 +34,8 @@ export class DoctorDetailComponent {
     SEXOLOGIA: 'Sexología',
     TERAPIA_HUMANISTA: 'Terapia humanista',
   };
+
+  getDayLabel(day: string): string {
+    return this.DAY_LABELS[day as keyof typeof this.DAY_LABELS] || day;
+  }
 }

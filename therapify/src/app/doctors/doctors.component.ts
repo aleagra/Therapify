@@ -79,11 +79,8 @@ export class DoctorsComponent {
     return this.allDoctors()
       .filter((doc) => {
         if (!text) return true;
-
         const fullName = `${doc.firstName} ${doc.lastName}`.toLowerCase();
-        const specialty = doc.specialty?.toLowerCase() || '';
-
-        return fullName.includes(text) || specialty.includes(text);
+        return fullName.includes(text);
       })
 
       .filter((doc) => {
