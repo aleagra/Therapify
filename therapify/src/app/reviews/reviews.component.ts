@@ -76,7 +76,6 @@ export class ReviewsComponent implements OnInit {
       comment: this.reviewForm.value.comment,
     };
 
-    // ✏️ EDITAR
     if (this.isEditing && this.reviewToEditId) {
       this.reviewsService
         .updateReview(this.reviewToEditId, reviewData)
@@ -96,7 +95,6 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    // ➕ CREAR
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
         this.reviews.push(review);
@@ -112,7 +110,6 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // 🗑 BORRAR CON CONFIRM TOAST
   deleteReview(id: string): void {
     if (!this.userLogged) {
       toast.warning('Debes iniciar sesión');
@@ -140,7 +137,6 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  // 👉 eliminación real
   private executeDeleteReview(id: string): void {
     this.reviewsService.deleteReview(id).subscribe({
       next: () => {

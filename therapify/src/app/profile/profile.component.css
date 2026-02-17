@@ -173,7 +173,7 @@
   .profile-grid {
     padding: 1.2rem;
     border-radius: 14px;
-    min-height: auto; /* 👈 evita que estire raro */
+    min-height: auto;
   }
 
   .profile-header {

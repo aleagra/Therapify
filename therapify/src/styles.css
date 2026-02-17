@@ -45,7 +45,6 @@ app-footer {
   grid-row: 3;
 }
 
-/* Responsive paddings */
 @media (max-width: 1200px) {
   .main-content {
     padding: 3rem;
