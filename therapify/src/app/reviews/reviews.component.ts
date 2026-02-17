@@ -76,6 +76,7 @@ export class ReviewsComponent implements OnInit {
       comment: this.reviewForm.value.comment,
     };
 
+    // ✏️ EDITAR
     if (this.isEditing && this.reviewToEditId) {
       this.reviewsService
         .updateReview(this.reviewToEditId, reviewData)
@@ -84,28 +85,34 @@ export class ReviewsComponent implements OnInit {
             const index = this.reviews.findIndex((r) => r.id === review.id);
             if (index !== -1) this.reviews[index] = review;
 
-            toast.success('Reseña actualizada ✅');
+            toast.success('Reseña actualizada ✅', { position: 'top-center' });
             this.resetForm();
           },
-          error: () => toast.error('No se pudo actualizar la reseña'),
+          error: () =>
+            toast.error('No se pudo actualizar la reseña', {
+              position: 'top-center',
+            }),
         });
       return;
     }
 
+    // ➕ CREAR
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
         this.reviews.push(review);
-        toast.success('Reseña creada ✅');
+        toast.success('Reseña creada ✅', { position: 'top-center' });
         this.resetForm();
       },
       error: (err) =>
         toast.error(
           err?.error?.message ||
             'No podés dejar una reseña si no tuviste turno con este doctor.',
+          { position: 'top-center' },
         ),
     });
   }
 
+  // 🗑 BORRAR CON CONFIRM TOAST
   deleteReview(id: string): void {
     if (!this.userLogged) {
       toast.warning('Debes iniciar sesión');
@@ -123,14 +130,27 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    if (!confirm('¿Eliminar reseña?')) return;
+    toast('¿Seguro que querés eliminar esta reseña?', {
+      position: 'top-center',
+      action: {
+        label: 'Eliminar',
+        onClick: () => this.executeDeleteReview(id),
+      },
+      cancel: { label: 'Cancelar' },
+    });
+  }
 
+  // 👉 eliminación real
+  private executeDeleteReview(id: string): void {
     this.reviewsService.deleteReview(id).subscribe({
       next: () => {
         this.reviews = this.reviews.filter((r) => r.id !== id);
-        toast.success('Reseña eliminada');
+        toast.success('Reseña eliminada', { position: 'top-center' });
       },
-      error: () => toast.error('Error al eliminar'),
+      error: () =>
+        toast.error('Error al eliminar la reseña', {
+          position: 'top-center',
+        }),
     });
   }
 
