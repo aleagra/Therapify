@@ -4,6 +4,7 @@ import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-turnos',
@@ -79,12 +80,29 @@ export class TurnosComponent implements OnInit {
   }
 
   deleteAppointment(id: string): void {
-    this.appointmentService.deleteAppointment(id).subscribe((success) => {
-      if (!success) return;
+    this.appointmentService.deleteAppointment(id).subscribe({
+      next: (success) => {
+        if (!success) {
+          toast.error('No se pudo eliminar el turno', {
+            position: 'top-center',
+          });
+          return;
+        }
 
-      this.turnosPacienteRaw.update((list) => list.filter((a) => a.id !== id));
-      this.turnosDoctorRaw.update((list) => list.filter((a) => a.id !== id));
-      this.turnosAdminRaw.update((list) => list.filter((a) => a.id !== id));
+        this.turnosPacienteRaw.update((list) =>
+          list.filter((a) => a.id !== id),
+        );
+        this.turnosDoctorRaw.update((list) => list.filter((a) => a.id !== id));
+        this.turnosAdminRaw.update((list) => list.filter((a) => a.id !== id));
+
+        toast.success('Turno eliminado correctamente 🗑️', {
+          position: 'top-center',
+        });
+      },
+      error: () =>
+        toast.error('Error al eliminar el turno', {
+          position: 'top-center',
+        }),
     });
   }
 
