@@ -1,0 +1,153 @@
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { User } from '../../types/user';
+
+import { API_CONFIG } from '../config/api.config';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private http = inject(HttpClient);
+
+  private BASE_URL = API_CONFIG.baseUrl;
+  private USERS_URL = `${this.BASE_URL}/usuarios`;
+  private AUTH_URL = `${this.BASE_URL}/auth`;
+
+  localKey = 'userLogged';
+  isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
+
+  public getLoggedUser(): User | null {
+    const data = localStorage.getItem(this.localKey);
+    return data ? JSON.parse(data) : null;
+  }
+
+  private getToken(): string | null {
+    const user = this.getLoggedUser();
+    return user?.token ?? null;
+  }
+
+  private getAuthHeaders(): { headers: HttpHeaders } {
+    const token = this.getToken();
+    return {
+      headers: token
+        ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+        : new HttpHeaders(),
+    };
+  }
+
+  postUser(user: Omit<User, 'id'>): Observable<User> {
+    if (user.userType === 'DOCTOR') {
+      user.schedule = undefined as any;
+      user.availability = undefined as any;
+    }
+
+    return this.http.post<User>(this.USERS_URL, user).pipe(
+      catchError((err) => {
+        console.error('Error al crear usuario', err);
+        return throwError(() => err);
+      }),
+    );
+  }
+
+  login(email: string, password: string): Observable<User | null> {
+    return this.http
+      .post<User>(`${this.AUTH_URL}/login`, { email, password })
+      .pipe(
+        tap((user) => {
+          if (user?.token) {
+            localStorage.setItem(this.localKey, JSON.stringify(user));
+            this.isLoggedSignal.set(true);
+          }
+        }),
+        catchError((err) => {
+          console.error('Credenciales inválidas', err);
+          return of(null);
+        }),
+      );
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.localKey);
+    this.isLoggedSignal.set(false);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  getUserById(id: string): Observable<User | null> {
+    return this.http
+      .get<User>(`${this.USERS_URL}/${id}`, this.getAuthHeaders())
+      .pipe(catchError(() => of(null)));
+  }
+
+  updateUser(dto: Partial<User>): Observable<User> {
+    return this.http
+      .put<{
+        mensaje: string;
+        user: User;
+        token: string;
+      }>(`${this.USERS_URL}`, dto, this.getAuthHeaders())
+      .pipe(
+        map((res) => {
+          const updatedUser: User = {
+            ...res.user,
+            token: res.token,
+          };
+
+          localStorage.setItem(this.localKey, JSON.stringify(updatedUser));
+
+          return updatedUser;
+        }),
+        catchError((err) => {
+          console.error('Error al actualizar usuario', err);
+          return throwError(() => err);
+        }),
+      );
+  }
+
+  updateLocalUser(user: User): void {
+    const current = this.getLoggedUser();
+    localStorage.setItem(
+      this.localKey,
+      JSON.stringify({ ...user, token: current?.token }),
+    );
+  }
+
+  getDoctores(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.USERS_URL}/rol/DOCTOR`).pipe(
+      catchError((err) => {
+        console.error('Error al obtener doctores', err);
+        return of([]);
+      }),
+    );
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.USERS_URL, this.getAuthHeaders()).pipe(
+      catchError((err) => {
+        console.error('Error al obtener usuarios', err);
+        return of([]);
+      }),
+    );
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.USERS_URL}/${id}`, this.getAuthHeaders());
+  }
+  deleteUserCascade(id: string) {
+    return this.http.delete(
+      `${this.USERS_URL}/${id}/cascade`,
+      this.getAuthHeaders(),
+    );
+  }
+
+  getDoctorsNear(lat: number, lng: number) {
+    return this.http.get<User[]>(
+      `${this.USERS_URL}/doctors/near?lat=${lat}&lng=${lng}`,
+    );
+  }
+}

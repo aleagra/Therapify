@@ -1,0 +1,193 @@
+.doctor-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.doctor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+.doctor-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.doctor-header h3 {
+  color: #20252f;
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.doctor-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.distance {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.address {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.3rem;
+}
+
+.section-title {
+  font-weight: 600;
+  color: #0077b6;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+
+.schedule {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  min-height: 60px;
+}
+
+.chip {
+  background: #f3f4f6;
+  color: #0077b6;
+  border-radius: 999px;
+  height: fit-content;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.no-availability {
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.45;
+  min-height: 3.2em;
+  margin-top: 5px;
+}
+
+.doctor-footer {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.btn-primary {
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@media (max-width: 900px) {
+  .doctor-card {
+    max-width: 100%;
+    padding: 1.2rem;
+  }
+
+  .doctor-header h3 {
+    font-size: 1.05rem;
+  }
+
+  .description {
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .doctor-card {
+    padding: 1.1rem;
+    border-radius: 14px;
+    gap: 1rem;
+  }
+
+  .doctor-name {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .distance {
+    font-size: 0.8rem;
+  }
+
+  .address {
+    font-size: 0.85rem;
+  }
+
+  .chip {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+
+  .doctor-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .doctor-card {
+    padding: 1rem;
+  }
+
+  .doctor-header h3 {
+    font-size: 0.98rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+  }
+}

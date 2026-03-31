@@ -1,0 +1,37 @@
+<div class="doctor-card">
+  <div class="doctor-header">
+    <div class="doctor-name">
+      <h3>{{ doctor().firstName }} {{ doctor().lastName }}</h3>
+      <span class="distance">📍 {{ doctor().distanceKm?.toFixed(1) }} km</span>
+    </div>
+    <p class="address">{{ doctor().address }}</p>
+  </div>
+
+  <div class="doctor-body">
+    <p class="section-title">Días de atención</p>
+
+    <div class="schedule">
+      @if (hasAvailableDays) {
+        @for (dia of doctor().schedule | keyvalue; track dia.key) {
+          @if (dia.value) {
+            <span class="chip">
+              {{ getDayLabel(dia.key) }}
+            </span>
+          }
+        }
+      } @else {
+        <span class="chip no-availability">No hay turnos disponibles</span>
+      }
+    </div>
+
+    <p class="description">{{ doctor().description }}</p>
+  </div>
+
+  <div class="doctor-footer">
+    <button (click)="goToReviews(doctor().id)" class="btn-secondary">
+      Ver reseñas
+    </button>
+
+    <button (click)="onClick()" class="btn-primary">Reservar turno</button>
+  </div>
+</div>

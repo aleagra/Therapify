@@ -1,0 +1,111 @@
+<div class="reviews-grid-container">
+  <div class="review-form-section">
+    @if (!isEditing) {
+      <h3>Deja tu reseña</h3>
+    } @else {
+      <h3>Editando tu reseña</h3>
+    }
+
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="form">
+      <div class="form-group">
+        <label for="value">Valoración (1 a 5 estrellas):</label>
+        <input
+          id="value"
+          type="number"
+          formControlName="value"
+          min="1"
+          max="5"
+        />
+        @if (
+          reviewForm.get("value")?.touched &&
+          reviewForm.get("value")?.hasError("required")
+        ) {
+          <small class="error-msg">La valoración es obligatoria.</small>
+        }
+        @if (
+          reviewForm.get("value")?.touched &&
+          (reviewForm.get("value")?.hasError("min") ||
+            reviewForm.get("value")?.hasError("max"))
+        ) {
+          <small class="error-msg">La valoración debe estar entre 1 y 5.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Comentario:</label>
+        <textarea
+          id="comment"
+          formControlName="comment"
+          rows="4"
+          placeholder="Escribe tu opinión aquí..."
+        ></textarea>
+        @if (
+          reviewForm.get("comment")?.touched &&
+          reviewForm.get("comment")?.hasError("required")
+        ) {
+          <small class="error-msg">El comentario es obligatorio.</small>
+        }
+        @if (
+          reviewForm.get("comment")?.touched &&
+          reviewForm.get("comment")?.hasError("minlength")
+        ) {
+          <small class="error-msg">
+            El comentario debe tener al menos 8 caracteres.
+          </small>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="reviewForm.invalid">
+          {{ isEditing ? "Actualizar Reseña" : "Publicar Reseña" }}
+        </button>
+        @if (isEditing) {
+          <button type="button" (click)="resetForm()" class="button-secondary">
+            Cancelar Edición
+          </button>
+        }
+      </div>
+    </form>
+  </div>
+  <div class="review-list-section">
+    <h3>Reseñas del Doctor</h3>
+
+    @if (reviews.length === 0) {
+      <div class="empty-state">
+        Todavía no hay reseñas para este doctor. ¡Sé el primero!
+      </div>
+    }
+    @for (review of reviews; track review.id) {
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-info">
+            <span class="review-stars">Valoración: {{ review.value }} / 5</span>
+            <span class="review-user">
+              - {{ review.patientName }} {{ review.patientLastName }}</span
+            >
+          </div>
+          @if (
+            review.patientId === userLogged?.id ||
+            userLogged?.userType === "ADMIN"
+          ) {
+            <div class="review-actions">
+              @if (review.patientId === userLogged?.id) {
+                <button
+                  (click)="selectReviewToEdit(review)"
+                  class="button-edit"
+                >
+                  Editar
+                </button>
+              }
+
+              <button (click)="deleteReview(review.id)" class="button-delete">
+                Eliminar
+              </button>
+            </div>
+          }
+        </div>
+        <p class="review-comment">{{ review.comment }}</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="verify-container">
+  <div class="verify-card">
+    @if (loading) {
+      <h2 class="loading">Verificando tu email</h2>
+    }
+
+    @if (success) {
+      <h2 class="success">Email verificado correctamente</h2>
+      <p>Ya podés iniciar sesión.</p>
+      <p>Redirigiendo al login...</p>
+    }
+
+    @if (!loading && errorMessage) {
+      <h2>Ocurrió un error</h2>
+      <p class="error-msg">{{ errorMessage }}</p>
+    }
+  </div>
+</div>

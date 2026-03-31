@@ -1,0 +1,253 @@
+.page-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.page-header {
+  text-align: center;
+}
+
+.page-header h1 {
+  color: #0077b6;
+  font-weight: 700;
+  font-size: 2.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.filters-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.search-input {
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.18);
+  outline: none;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0077b6;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chip-btn {
+  background: #f3f4f6;
+  color: #0077b6;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-btn:hover {
+  background: #e5e7eb;
+}
+
+.chip-btn.active {
+  background: #0077b6;
+  color: white;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 351.73px));
+  gap: 1.4rem;
+}
+
+.user-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-header h3 {
+  font-size: 1.15rem;
+  color: #20252f;
+  margin: 0;
+}
+
+.type-badge {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(to right, #0077b6, #00c4b4);
+}
+
+.user-body p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0.2rem 0;
+}
+
+.user-footer {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+}
+
+.btn-primary {
+  flex: 1;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 182, 0.25);
+}
+
+.btn-secondary {
+  flex: 1;
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px dashed #d1d5db;
+  border-radius: 16px;
+  padding: 2.2rem;
+  color: #6b7280;
+}
+
+.empty-state h3 {
+  color: #0077b6;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1300px) {
+  .users-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .page-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .filters-card {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .users-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .users-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-card {
+    gap: 1rem;
+  }
+
+  .chip-btn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .page-header h1 {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+}

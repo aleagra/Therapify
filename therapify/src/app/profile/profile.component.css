@@ -1,0 +1,214 @@
+.profile-container {
+  border-radius: 20px;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+  max-width: 1100px;
+  gap: 2.5rem;
+  margin: auto;
+  align-items: start;
+}
+
+.profile-grid {
+  width: 100%;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+  min-height: 650px;
+}
+
+.profile-header {
+  display: flex;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group.double {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.form-group.full {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.profile-header h2,
+.medical-form h3 {
+  color: #0077b6;
+}
+
+.profile-header p,
+.medical-form p {
+  color: #6b7280;
+}
+
+.profile-form,
+.medical-form {
+  display: flex;
+  flex-direction: column;
+}
+.medical-profile-button {
+  display: flex;
+  align-items: center;
+}
+.input-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.input-field label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input-field input,
+.input-field textarea {
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-field input:focus,
+.input-field textarea:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.25);
+  outline: none;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-medical {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-medical {
+  background: #ffffff;
+  border: 2px solid #0077b6;
+  color: #0077b6;
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-medical:hover {
+  background: #e7f1ff;
+  transform: translateY(-2px);
+}
+
+.gender-group {
+  flex-direction: column;
+}
+.gender-options {
+  display: flex;
+  gap: 1.5rem;
+}
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 0 0.8rem;
+  }
+
+  .profile-grid {
+    padding: 1.2rem;
+    border-radius: 14px;
+    min-height: auto;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .profile-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .profile-header p {
+    font-size: 0.9rem;
+  }
+
+  .form-group.double {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .gender-options {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .action-buttons {
+    flex-direction: column-reverse;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-medical {
+    width: 100%;
+  }
+}

@@ -1,0 +1,351 @@
+.about-container {
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.about-container h2,
+.about-container h3 {
+  color: #007ab6;
+  font-weight: 700;
+}
+
+.about-container h2 {
+  font-size: 2.2rem;
+}
+
+.about-container h3 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.mission {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3rem;
+  border-radius: 18px;
+  padding: 2.5rem;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.mission .text {
+  flex: 1 1 450px;
+}
+
+.mission p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  margin-top: 1rem;
+}
+
+.heroImgAbout {
+  max-width: 420px;
+  width: 100%;
+  border-radius: 16px;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.history-card {
+  background: #ffffff;
+  border: 1px solid #e5e8ff;
+  border-radius: 14px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.history-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.history-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.history-card h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #007ab6;
+  margin-bottom: 0.7rem;
+}
+
+.history-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.team-section {
+  padding: 3rem 2rem;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.team-header {
+  max-width: 750px;
+  margin: 0 auto 3.5rem auto;
+  text-align: center;
+}
+
+.team-header h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #007ab6;
+  margin-bottom: 1rem;
+}
+
+.team-header p {
+  font-size: 1rem;
+  color: #5a6474;
+  line-height: 1.7;
+}
+
+.team-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.team-member-card {
+  text-align: center;
+  padding: 2rem;
+  border: 2px solid #007ab6;
+  border-radius: 16px;
+  color: #007ab6;
+  transition: all 0.2s ease;
+}
+
+.team-member-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+}
+
+.team-member-card img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid #007ab6;
+}
+
+.team-member-card h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.role {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #007ab6;
+  margin-bottom: 0.8rem;
+}
+
+.member-bio {
+  font-size: 0.9rem;
+  color: #5a6474;
+  line-height: 1.6;
+}
+
+.impact {
+  background: #ffffff;
+  border: 1px solid #e6e9f5;
+  border-radius: 18px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.impact h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #007ab6;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.impact-description {
+  font-size: 1rem;
+  color: #5a6474;
+  max-width: 700px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.7;
+}
+
+.impact-stats {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat h4 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #007ab6;
+  margin-bottom: 0.5rem;
+}
+
+.stat span {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.impact .btn-primary {
+  background: #007ab6;
+  padding: 0.9rem 2rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.impact .btn-primary:hover {
+  background: #005f8d;
+  transform: translateY(-3px);
+}
+
+.btn-primary {
+  background: #007ab6;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.btn-primary:hover {
+  background: #005f8d;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1250px) {
+  .image {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .history-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mission {
+    padding: 2rem;
+  }
+
+  .team-section {
+    padding: 3rem 1.8rem;
+  }
+
+  .impact {
+    padding: 2.5rem;
+  }
+
+  .impact-stats {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 0 1.2rem;
+    gap: 2.5rem;
+  }
+
+  .history-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .mission .text {
+    flex: unset;
+  }
+
+  .heroImgAbout {
+    max-width: 100%;
+  }
+
+  .team-section {
+    padding: 2.5rem 1.2rem;
+  }
+
+  .team-members {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+  }
+
+  .team-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .impact {
+    padding: 2rem 1.5rem;
+  }
+
+  .impact-stats {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-container {
+    padding: 0 1rem;
+  }
+
+  .mission {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .team-section {
+    padding: 2rem 1rem;
+  }
+
+  .impact {
+    padding: 1.8rem 1.2rem;
+  }
+
+  .stat h4 {
+    font-size: 2rem;
+  }
+}

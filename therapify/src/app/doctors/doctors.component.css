@@ -1,0 +1,175 @@
+.page-container {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.page-header {
+  text-align: center;
+}
+
+.page-header h1 {
+  color: #0077b6;
+  font-weight: 700;
+  font-size: 2.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.filters-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.search-input {
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.18);
+  outline: none;
+}
+
+.select-input {
+  padding: 0.55rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.select-input:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.18);
+  outline: none;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0077b6;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chip-btn {
+  background: #f3f4f6;
+  color: #0077b6;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chip-btn:hover {
+  background: #e5e7eb;
+}
+
+.chip-btn.active {
+  background: #0077b6;
+  color: white;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 351px));
+  gap: 1.4rem;
+}
+.empty-state {
+  background: #ffffff;
+  border: 1px dashed #d1d5db;
+  border-radius: 16px;
+  padding: 2.2rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty-state h3 {
+  color: #0077b6;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+}
+@media (max-width: 1300px) {
+  .doctors-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .page-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .filters-card {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .doctors-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .doctors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-card {
+    gap: 1rem;
+  }
+
+  .chip-btn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .page-header h1 {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+}

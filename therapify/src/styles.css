@@ -3,3 +3,68 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  height: 100vh;
+}
+:root {
+  --primary-gradient: linear-gradient(to right, #0077b6, #00c4b4);
+  --primary-shadow: 0 0 0 3px rgba(0, 196, 180, 0.25);
+}
+.error-msg {
+  color: #e63946;
+  font-size: 0.75rem;
+  margin-top: -0.3rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-weight: 500;
+}
+input.invalid {
+  border-color: #e63946;
+}
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  width: 100%;
+}
+
+header {
+  grid-row: 1;
+}
+
+.main-content {
+  grid-row: 2;
+  padding: 3rem 5rem;
+}
+
+app-footer {
+  grid-row: 3;
+}
+
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    padding: 2.5rem 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+  }
+}

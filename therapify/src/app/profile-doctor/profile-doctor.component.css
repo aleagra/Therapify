@@ -1,0 +1,260 @@
+.profile-container {
+  border-radius: 20px;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  color: #20252f;
+  gap: 2.5rem;
+  align-items: start;
+}
+.profile-grid {
+  width: 100%;
+  margin: auto;
+  max-width: 1100px;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  min-height: 650px;
+}
+
+.medical-form h2,
+.profile-header h2 {
+  color: #0077b6;
+}
+
+.profile-header p,
+.medical-form p {
+  color: #6b7280;
+}
+
+.medical-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.days-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 69px;
+  padding: 0.8rem 0.8rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.day-row:hover {
+  background-color: #f3f4f6;
+  border-radius: 12px;
+}
+
+.day-checkbox {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  gap: 0.5rem;
+  color: #0077b6;
+}
+
+.day-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #0077b6;
+  cursor: pointer;
+}
+
+.hours-container {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex: 1;
+}
+
+.hour-input {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  width: 120px;
+  transition: all 0.2s ease;
+}
+
+.hour-input:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.2);
+  outline: none;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-field label {
+  font-weight: 600;
+  color: #0077b6;
+}
+
+.input-field textarea {
+  font-size: 1.2rem;
+  color: #374151;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
+  resize: none;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-field textarea:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.25);
+  outline: none;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.9rem 1.6rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+.address-warning {
+  background-color: #fff4e5;
+  border: 1px solid #ffcc80;
+  color: #b26a00;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.input-field select,
+.input-field input[type="number"] {
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.input-field select:focus,
+.input-field input[type="number"]:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 0 3px rgba(0, 196, 180, 0.25);
+  outline: none;
+}
+
+.input-field select {
+  cursor: pointer;
+}
+
+.row-inline {
+  display: flex;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.row-inline .input-field {
+  flex: 1;
+}
+
+.row-inline .input-field.price-field {
+  max-width: 220px;
+}
+@media (max-width: 1250px) {
+  .days-group {
+    width: 100%;
+    flex-direction: column;
+  }
+  .hours-container {
+    justify-content: end;
+  }
+}
+
+@media (max-width: 768px) {
+  .day-row {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 0.6rem;
+  }
+  .day-row span {
+    margin: auto;
+  }
+
+  .day-checkbox {
+    flex: none;
+  }
+
+  .hours-container {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 0.6rem;
+  }
+
+  .hour-input {
+    width: 100%;
+  }
+
+  .days-group {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+  .row-inline {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .row-inline .input-field.price-field {
+    max-width: 100%;
+  }
+}

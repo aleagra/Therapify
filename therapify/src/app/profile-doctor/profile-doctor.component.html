@@ -1,0 +1,90 @@
+<div class="profile-grid">
+  <form
+    class="medical-form"
+    [formGroup]="formSchedule"
+    (ngSubmit)="onSubmitMedical()"
+  >
+    <div *ngIf="doctorWithoutAddress" class="address-warning">
+      ⚠️ Para que tu perfil se recomiende es necesario que ingreses tu
+      dirección.
+    </div>
+
+    <div class="profile-header">
+      <h2>Horario Medico</h2>
+      <p>Selecciona tus días disponibles y agrega una breve descripción</p>
+    </div>
+
+    <div class="days-group">
+      <div class="day-row" *ngFor="let day of weekDays">
+        <label class="day-checkbox">
+          <input type="checkbox" [formControlName]="day.control" />
+          {{ day.label }}
+        </label>
+
+        <div
+          class="hours-container"
+          *ngIf="formSchedule.get(day.control)?.value"
+        >
+          <input
+            type="time"
+            [formControlName]="day.control + 'Start'"
+            class="hour-input"
+          />
+          <span> - </span>
+          <input
+            type="time"
+            [formControlName]="day.control + 'End'"
+            class="hour-input"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row-inline">
+      <div class="input-field">
+        <label>Especialidad</label>
+        <select formControlName="specialty">
+          <option value="">Seleccionar especialidad</option>
+          <option value="PSICOLOGIA_CLINICA">Psicología clínica</option>
+          <option value="TERAPIA_COGNITIVO_CONDUCTUAL">
+            Terapia cognitivo conductual
+          </option>
+          <option value="TERAPIA_DE_PAREJA">Terapia de pareja</option>
+          <option value="TERAPIA_FAMILIAR">Terapia familiar</option>
+          <option value="PSIQUIATRIA">Psiquiatría</option>
+          <option value="NEUROPSICOLOGIA">Neuropsicología</option>
+          <option value="PSICOLOGIA_INFANTIL">Psicología infantil</option>
+          <option value="PSICOLOGIA_LABORAL">Psicología laboral</option>
+          <option value="SEXOLOGIA">Sexología</option>
+          <option value="TERAPIA_HUMANISTA">Terapia humanista</option>
+        </select>
+      </div>
+
+      <div></div>
+      <div class="input-field">
+        <label>Precio de consulta (ARS)</label>
+        <input
+          type="number"
+          formControlName="consultationPrice"
+          placeholder="Ej: 15000"
+        />
+      </div>
+    </div>
+    <div class="input-field full">
+      <label for="description">Descripcion</label>
+      <textarea
+        id="description"
+        rows="4"
+        placeholder="Describe tus especialidades..."
+        formControlName="description"
+      ></textarea>
+    </div>
+
+    <div class="action-buttons">
+      <button type="button" class="btn-secondary" (click)="cancelMedical()">
+        Cancelar
+      </button>
+
+      <button type="submit" class="btn-primary">Guardar cambios</button>
+    </div>
+  </form>
+</div>

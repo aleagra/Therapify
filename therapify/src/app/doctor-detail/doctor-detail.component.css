@@ -1,0 +1,140 @@
+.specialist-page {
+  max-width: 1400px;
+  margin: auto;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+  align-items: start;
+}
+.page-header {
+  margin-left: 10px;
+  margin-bottom: 1.5rem;
+}
+.page-header h1 {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #0077b6;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e8ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1.6rem;
+}
+
+.header-card h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.header-card h2 {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 0.2rem;
+}
+
+.card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  color: #20252f;
+}
+
+.card p {
+  color: #4a4a4a;
+  line-height: 1.6;
+  font-size: 0.96rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chip {
+  background: #f3f4f6;
+  color: #0077b6;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.horarios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.horarios-dia {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.dia {
+  width: 90px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.hour-chip {
+  background: #f8fcfd;
+  border: 1px solid #e0f2f7;
+}
+
+.hour-chip:hover {
+  border-color: #00c4b4;
+  color: #00c4b4;
+}
+
+.session-info {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.7rem;
+}
+.empty-text {
+  color: #888;
+  font-style: italic;
+}
+
+@media (max-width: 1000px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+  }
+  .page-header {
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 1.2rem;
+  }
+
+  .header-card h1 {
+    font-size: 1.6rem;
+  }
+
+  .dia {
+    width: 70px;
+  }
+}

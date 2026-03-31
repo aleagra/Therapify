@@ -1,0 +1,75 @@
+@if (doctor$ | async; as doctor) {
+  <div class="page-container specialist-page">
+    <div class="page-header">
+      <h1>Perfil del profesional</h1>
+      <p class="subtitle">Conocé su enfoque, horarios y reservá tu turno</p>
+    </div>
+
+    <div class="profile-layout">
+      <div class="info-column">
+        <div class="card header-card">
+          <div class="specialist-details">
+            <h2>Especialista</h2>
+            <h1>{{ doctor.firstName }} {{ doctor.lastName }}</h1>
+
+            @if (doctor.specialty) {
+              <div class="chips">
+                <span class="chip">
+                  {{ specialtyLabels[doctor.specialty] || doctor.specialty }}
+                </span>
+              </div>
+            } @else {
+              <p class="empty-text">Especialidad no especificada</p>
+            }
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Descripción</h3>
+
+          @if (doctor.description) {
+            <p>{{ doctor.description }}</p>
+          } @else {
+            <p class="empty-text">No hay descripción disponible.</p>
+          }
+        </div>
+
+        <div class="card">
+          <h3>Horarios de atención</h3>
+          <p class="session-info">
+            Duración de sesión: <strong>1 hora</strong>
+          </p>
+
+          @if (doctor.availability) {
+            <div class="horarios-list">
+              @for (day of DAYS_OF_WEEK; track day) {
+                @if (doctor.availability[day].length) {
+                  <div class="horarios-dia">
+                    <span class="dia">{{ DAY_LABELS[day] }}</span>
+
+                    <div class="chips">
+                      @for (hora of doctor.availability[day]; track hora) {
+                        <span class="chip hour-chip">{{ hora }}</span>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          } @else {
+            <p class="empty-text">No hay horarios de atención disponibles.</p>
+          }
+        </div>
+      </div>
+
+      <aside class="sidebar card">
+        <app-calendar
+          [schedule]="doctor.schedule"
+          [availability]="doctor.availability"
+          [doctorId]="doctor.id"
+          [consultationPrice]="doctor.consultationPrice"
+        ></app-calendar>
+      </aside>
+    </div>
+  </div>
+}

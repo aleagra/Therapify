@@ -1,0 +1,96 @@
+<div class="profile-container">
+  <div class="profile-grid">
+    <form
+      [formGroup]="formProfile"
+      (ngSubmit)="onSubmitProfile()"
+      class="profile-form"
+    >
+      <div class="profile-header">
+        <div>
+          <h2>Información del Perfil</h2>
+          <p>Visualiza y edita tus datos personales a continuación</p>
+        </div>
+
+        <div class="medical-profile-button" *ngIf="user?.userType === 'DOCTOR'">
+          <a class="btn-medical" routerLink="/profile-doctor">
+            Perfil Médico
+          </a>
+        </div>
+      </div>
+
+      <div class="form-group double">
+        <div class="input-field">
+          <label for="firstName">Nombre</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            autocomplete="name"
+          />
+        </div>
+        <div class="input-field">
+          <label for="lastName">Apellido</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            autocomplete="name"
+          />
+        </div>
+      </div>
+
+      <div class="form-group double">
+        <div class="input-field">
+          <label for="password">Nueva contraseña</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="input-field">
+          <label for="repeatPassword">Repetir contraseña</label>
+          <input
+            id="repeatPassword"
+            type="password"
+            formControlName="repeatPassword"
+            autocomplete="new-password"
+          />
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <div class="input-field full">
+          <label for="address">Dirección</label>
+          <input id="address" type="text" formControlName="address" />
+        </div>
+      </div>
+
+      <div class="form-group gender-group">
+        <label>Genero</label>
+        <div class="gender-options">
+          <label>
+            <input type="radio" value="male" formControlName="gender" />
+            Masculino
+          </label>
+          <label>
+            <input type="radio" value="female" formControlName="gender" />
+            Femenino
+          </label>
+          <label>
+            <input type="radio" value="non-binary" formControlName="gender" />
+            No binario
+          </label>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" class="btn-secondary" (click)="cancel()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

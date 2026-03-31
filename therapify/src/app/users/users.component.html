@@ -1,0 +1,80 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Usuarios del Sistema</h1>
+    <p class="subtitle">Gestiona y filtra los usuarios registrados.</p>
+  </div>
+
+  <div class="filters-card">
+    <input
+      type="text"
+      placeholder="Buscar por nombre, apellido o email..."
+      [ngModel]="searchText()"
+      (ngModelChange)="searchText.set($event)"
+      class="search-input"
+    />
+    <div class="filter-group">
+      <span class="filter-label">Tipo de usuario</span>
+      <div class="chips">
+        <button
+          class="chip-btn"
+          [class.active]="selectedType() === 'ALL'"
+          (click)="setType('ALL')"
+        >
+          Todos
+        </button>
+        <button
+          class="chip-btn"
+          [class.active]="selectedType() === 'DOCTOR'"
+          (click)="setType('DOCTOR')"
+        >
+          Doctor
+        </button>
+        <button
+          class="chip-btn"
+          [class.active]="selectedType() === 'PACIENTE'"
+          (click)="setType('PACIENTE')"
+        >
+          Paciente
+        </button>
+        <button
+          class="chip-btn"
+          [class.active]="selectedType() === 'ADMIN'"
+          (click)="setType('ADMIN')"
+        >
+          Admin
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="users-grid">
+    <div
+      *ngFor="let u of filteredUsers(); trackBy: trackById"
+      class="user-card"
+    >
+      <div class="user-header">
+        <h3>{{ u.firstName }} {{ u.lastName }}</h3>
+        <span
+          class="type-badge"
+          [class.doctor]="u.userType === 'DOCTOR'"
+          [class.admin]="u.userType === 'ADMIN'"
+          [class.patient]="u.userType === 'PACIENTE'"
+        >
+          {{ u.userType }}
+        </span>
+      </div>
+      <div class="user-body">
+        <p>ID: {{ u.id }}</p>
+        <p>Email: {{ u.email }}</p>
+      </div>
+      <div class="user-footer">
+        <button class="btn-primary" (click)="deleteUser(u.id)">Eliminar</button>
+      </div>
+    </div>
+
+    <div *ngIf="filteredUsers().length === 0" class="empty-state">
+      <h3>No se encontraron usuarios</h3>
+      <p>Probá cambiar los filtros o el texto de búsqueda.</p>
+    </div>
+  </div>
+</div>

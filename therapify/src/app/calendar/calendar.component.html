@@ -1,0 +1,103 @@
+<form
+  class="agendar-container"
+  [formGroup]="citaForm"
+  (ngSubmit)="confirmarReserva()"
+>
+  <div class="selector-columna">
+    <h2>Agendar Sesión</h2>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha de la Cita</mat-label>
+
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="fecha"
+        [min]="minDate"
+        [matDatepickerFilter]="filtroDeDias"
+        (dateChange)="onFechaSeleccionada($event.value)"
+      />
+
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="horario-selector">
+      <label class="horario-label">Horarios disponibles</label>
+
+      <div class="mensaje-horarios" *ngIf="!citaForm.get('fecha')?.value">
+        Seleccioná un día para ver los horarios
+      </div>
+      <div
+        class="mensaje-horarios"
+        *ngIf="
+          citaForm.get('fecha')?.value &&
+          (!horariosDisponibles || horariosDisponibles.length === 0)
+        "
+      >
+        No hay horarios disponibles para este día
+      </div>
+
+      <mat-button-toggle-group
+        *ngIf="horariosDisponibles.length"
+        formControlName="hora"
+        class="horarios-grid"
+      >
+        <mat-button-toggle
+          *ngFor="let hora of horariosDisponibles"
+          [value]="hora"
+        >
+          {{ hora }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <div class="resumen-columna">
+    <mat-card class="detalle-cita compact">
+      <div class="resumen-header">
+        <h3>Resumen</h3>
+      </div>
+
+      <div class="resumen-body">
+        <div class="fila">
+          <span>Fecha</span>
+          <strong>{{
+            citaForm.get("fecha")?.value | date: "mediumDate"
+          }}</strong>
+        </div>
+
+        <div class="fila">
+          <span>Hora</span>
+          <strong>{{ citaForm.get("hora")?.value || "—" }}</strong>
+        </div>
+
+        <div class="fila">
+          <span>Modalidad</span>
+          <strong>Presencial</strong>
+        </div>
+
+        <div class="fila total">
+          <span>Total</span>
+          <strong class="precio">
+            {{
+              consultationPrice && consultationPrice > 0
+                ? (consultationPrice | currency: "ARS " : "symbol" : "1.0-0")
+                : "Consultar precio el día de la consulta"
+            }}
+          </strong>
+        </div>
+      </div>
+
+      <button
+        mat-raised-button
+        class="confirmar-btn"
+        type="submit"
+        [disabled]="citaForm.invalid || reservaConfirmada"
+        [ngClass]="{ confirmado: reservaConfirmada }"
+      >
+        {{ reservaConfirmada ? "Reserva confirmada" : "Confirmar reserva" }}
+      </button>
+    </mat-card>
+  </div>
+</form>
