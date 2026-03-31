@@ -6,13 +6,15 @@ import { Appointment } from '../../types/appointments';
 import { User } from '../../types/user';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
 
+import { API_CONFIG } from '../config/api.config';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
   private http = inject(HttpClient);
 
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = API_CONFIG.baseUrl;
   private APPOINTMENTS_URL = `${this.BASE_URL}/appointments`;
   private localKey = 'userLogged';
 

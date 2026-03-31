@@ -43,7 +43,7 @@
           @if (doctor.availability) {
             <div class="horarios-list">
               @for (day of DAYS_OF_WEEK; track day) {
-                @if (doctor.availability?.[day]?.length) {
+                @if (doctor.availability[day].length) {
                   <div class="horarios-dia">
                     <span class="dia">{{ DAY_LABELS[day] }}</span>
 

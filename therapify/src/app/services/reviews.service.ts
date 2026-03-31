@@ -4,13 +4,15 @@ import { Reviews } from '../../types/reviews';
 import { catchError, Observable, of } from 'rxjs';
 import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 
+import { API_CONFIG } from '../config/api.config';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewsService {
   private http = inject(HttpClient);
 
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = API_CONFIG.baseUrl;
   private REVIEWS_URL = `${this.BASE_URL}/reviews`;
   private localKey = 'userLogged';
 

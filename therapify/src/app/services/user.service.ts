@@ -4,13 +4,15 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { User } from '../../types/user';
 
+import { API_CONFIG } from '../config/api.config';
+
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private http = inject(HttpClient);
 
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = API_CONFIG.baseUrl;
   private USERS_URL = `${this.BASE_URL}/usuarios`;
   private AUTH_URL = `${this.BASE_URL}/auth`;
 
