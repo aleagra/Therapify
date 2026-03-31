@@ -1,8 +1,73 @@
 # Therapify
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.18.
+Therapify es una plataforma diseñada para organizar sesiones, gestionar clientes y llevar un seguimiento claro del progreso terapéutico. El proyecto fue desarrollado por **Bruno Costales** y **Alejandro Agra**.
+
+## Tecnologías utilizadas
+
+- TypeScript (≈ 89.7% del código)
+- HTML (≈ 8.5%)
+- CSS (≈ 1.8%)
+
+## Requisitos previos
+
+- Node.js
+- npm o yarn
 
 ## Development server
+
+Para iniciar el servidor de desarrollo, ejecuta:
+
+```bash
+npm run dev
+Una vez que el servidor esté corriendo, abre tu navegador en la URL indicada por la terminal.
+
+Building
+Para compilar el proyecto para producción, ejecuta:
+npm run build
+
+
+Esto generará los archivos optimizados listos para despliegue.
+
+🎯 Funcionalidades
+
+Gestión de psicólogos y sus horarios de atención
+Sistema de turnos online (reservar, cancelar, ver disponibilidad)
+Administración de pacientes
+Reseñas y valoraciones de parte de los pacientes
+Perfil del psicólogo con días y horarios disponibles
+Interfaz simple, clara e intuitiva
+
+👤 Uso básico 
+
+Crear una cuenta o iniciar sesión
+Buscar un psicólogo o filtrar por disponibilidad
+Reservar un turno en un horario disponible
+Asistir a la sesión
+
+Estructura del proyecto
+	•	/src — Código fuente principal
+	•	/public — Archivos estáticos
+	•	/components — Componentes de interfaz
+	•	/pages — Vistas del sistema
+
+Contribuciones
+	1.	Realizar un fork del repositorio
+	2.	Crear una rama de desarrollo
+	3.	Aplicar cambios y realizar commits
+	4.	Enviar un Pull Request
+
+Licencia
+
+Proyecto bajo licencia MIT.
+Link https://github.com/aleagra/Therapify
+
+Integrantes
+	•	Bruno Costales
+	•	Alejandro Agra
+
+
+
+
 
 To start a local development server, run:
 
