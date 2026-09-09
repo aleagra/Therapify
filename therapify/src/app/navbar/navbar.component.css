@@ -1,11 +1,11 @@
 .navbar {
   display: flex;
   height: 72px;
-  padding: 0 48px;
+  padding: 0 24px;
   align-items: center;
   justify-content: space-between;
   background-color: rgba(255, 255, 255, 0.96);
-  max-width: 1440px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 

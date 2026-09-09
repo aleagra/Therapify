@@ -1,11 +1,10 @@
 .doctor-profile-page {
-  padding: 2.5rem 1.5rem 4rem;
-  background-color: var(--c-bg);
-  min-height: calc(100vh - 72px);
+  padding: 0;
+  width: 100%;
 }
 
 .doctor-profile-container {
-  max-width: 860px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
