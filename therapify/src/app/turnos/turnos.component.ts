@@ -156,6 +156,24 @@ export class TurnosComponent implements OnInit {
     return mapa[status] ?? status.toLowerCase();
   }
 
+  formatFecha(dateStr: string): string {
+    if (!dateStr) return '';
+    try {
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return d.toLocaleDateString('es-AR', {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'long',
+        });
+      }
+      return dateStr;
+    } catch {
+      return dateStr;
+    }
+  }
+
   private procesarTurnos(
     turnos: Appointment[],
     mostrarCompletados: boolean,

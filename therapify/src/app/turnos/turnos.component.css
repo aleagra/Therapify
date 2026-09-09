@@ -1,229 +1,232 @@
-.appointments-container {
-  font-family: "Poppins", sans-serif;
-  color: #20252f;
-  padding: 0 2rem;
+.appointments-page {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-.appointments-container h3 {
-  font-size: 1.6rem;
+.appointments-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #007ab6;
+  color: var(--c-ink-900);
+  letter-spacing: -0.01em;
 }
 
-.appointments-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin: 2rem 0;
+.section-subtitle {
+  font-size: 0.875rem;
+  color: var(--c-ink-500);
+  margin-top: 2px;
+}
+
+/* Filtros segmentados */
+.filters-segmented {
+  display: inline-flex;
+  background: var(--c-surface-alt);
+  padding: 4px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--c-line);
+  gap: 4px;
+}
+
+.filter-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--c-ink-700);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.filter-btn:hover {
+  color: var(--c-ink-900);
+}
+
+.filter-btn.active {
+  background: var(--c-surface);
+  color: var(--c-primary-700);
+  box-shadow: var(--sh-1);
+}
+
+/* Lista de turnos */
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .appointment-card {
-  border: 1px solid #e5e8ff;
-  border-radius: 14px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  transition: all 0.2s ease;
-  background: #fff;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-left-width: 5px;
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
 }
 
 .appointment-card:hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-2);
 }
 
-.appointment-card div {
+/* Bordes por estado */
+.appointment-card.border-confirmed {
+  border-left-color: var(--c-primary-600);
+}
+
+.appointment-card.border-pending {
+  border-left-color: var(--c-warn-500);
+}
+
+.appointment-card.border-completed {
+  border-left-color: var(--c-accent-600);
+}
+
+.appointment-card.border-cancelled {
+  border-left-color: var(--c-danger-600);
+}
+
+.card-main-info {
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.header-line {
+  display: flex;
   align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
-  font-size: 0.95rem;
-  color: #333;
 }
 
-.appointment-card strong {
-  color: #007ab6;
-  font-weight: 700;
-  font-size: 1rem;
+.appointment-title {
+  font-size: 1.125rem;
+  font-weight: 650;
+  color: var(--c-ink-900);
+  margin: 0;
 }
 
+.doctor-sub {
+  font-size: 0.875rem;
+  color: var(--c-ink-700);
+}
+
+.datetime-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--c-ink-700);
+  font-size: 0.875rem;
+}
+
+.datetime-tag svg {
+  color: var(--c-primary-600);
+}
+
+.date-text {
+  font-weight: 600;
+  color: var(--c-ink-900);
+  text-transform: capitalize;
+}
+
+.hours-text {
+  color: var(--c-ink-500);
+}
+
+/* Badges por estado */
+.badge-confirmed {
+  background: var(--c-primary-100);
+  color: var(--c-primary-700);
+}
+
+.badge-pending {
+  background: var(--c-warn-100);
+  color: var(--c-warn-700);
+}
+
+.badge-completed {
+  background: var(--c-accent-100);
+  color: var(--c-accent-700);
+}
+
+.badge-cancelled {
+  background: var(--c-danger-100);
+  color: var(--c-danger-600);
+}
+
+/* Acciones para el médico */
 .doctor-actions {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
-.button-delete,
-.button-confirm {
-  padding: 0.5rem 0.9rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.btn-sm {
+  height: 36px;
+  padding: 0 14px;
+  font-size: 0.8125rem;
 }
 
-.button-delete {
-  background: #e53935;
-}
-
-.button-delete:hover {
-  background: #b71c1c;
-}
-
-.button-confirm {
-  background: #0077b6;
-}
-
-.button-confirm:hover {
-  background: #0096d6;
-}
-.status {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.status.completed {
-  background: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-}
-
-.status.pending {
-  background: #fff4cc;
-  color: #b8860b;
-  border: 1px solid #f0d98a;
-}
-
-.status.confirmed {
-  background: #e8fbe8;
-  color: #2e7d32;
-  border: 1px solid #8ad18a;
-}
-
-.status.cancelled,
-.status.rejected {
-  background: #ffe5e5;
-  color: #c62828;
-  border: 1px solid #f5a4a4;
-}
-
+/* Empty State */
 .empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  margin: 2rem 0;
-  padding: 2rem;
-  border: 2px dashed #d9defc;
-  border-radius: 16px;
-  background: #f8faff;
-  color: #5c6ac4;
-  font-weight: 500;
-  font-size: 1rem;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.empty-state::before {
-  content: "📅";
-  display: block;
-  font-size: 2rem;
-  margin-bottom: 0.8rem;
-}
-
-.filters {
   display: flex;
-  gap: 12px;
-  margin: 0.8rem 0 1.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: var(--c-surface);
+  border: 1px dashed var(--c-line-strong);
+  border-radius: var(--r-md);
+  text-align: center;
 }
 
-.filters button {
-  font-family: "Poppins", sans-serif;
-  border: 1px solid #e5e8ff;
-  background: #ffffff;
-  color: #007ab6;
-  padding: 0.45rem 0.9rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+.empty-svg {
+  color: var(--c-ink-300);
+  margin-bottom: 12px;
 }
 
-.filters button:hover {
-  background: #f2f6ff;
-  border-color: #cdd8ff;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
-}
-
-.filters button.active {
-  background: #007ab6;
-  color: #fff;
-  border-color: #007ab6;
-  box-shadow: 0 4px 14px rgba(0, 122, 182, 0.25);
-}
-
-@media (max-width: 1024px) {
-  .appointments-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.empty-state p {
+  color: var(--c-ink-500);
+  font-size: 0.9375rem;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
-  .appointments-container {
-    padding: 1.2rem;
-  }
-
-  .appointments-container h3 {
-    font-size: 1.4rem;
-  }
-
-  .appointments-grid {
-    grid-template-columns: 1fr;
+  .appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
   .doctor-actions {
-    flex-direction: column;
-  }
-
-  .button-delete,
-  .button-confirm {
     width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .appointments-container {
-    padding: 1rem;
-  }
-
-  .appointments-container h3 {
-    font-size: 1.2rem;
-  }
-
-  .appointment-card {
-    padding: 1rem;
-  }
-
-  .appointment-card div {
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-
-  .button-delete,
-  .button-confirm {
-    padding: 0.7rem;
-    font-size: 0.9rem;
-  }
-
-  .status {
-    font-size: 0.8rem;
+    justify-content: flex-end;
   }
 }

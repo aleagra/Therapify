@@ -1,156 +1,213 @@
-<div class="appointments-container">
+<div class="appointments-page">
+  <!-- SECCIÓN ADMIN: Todos los turnos -->
   @if (userLogged?.userType === "ADMIN") {
-    <h3>Todos los Turnos</h3>
+    <section class="appointments-section">
+      <div class="section-header">
+        <div>
+          <h2>Todos los turnos del sistema</h2>
+          <p class="section-subtitle">Gestión global de sesiones y estados</p>
+        </div>
 
-    <div class="filters">
-      <button (click)="mostrarCompletadosAdmin.set(!mostrarCompletadosAdmin())">
-        {{
-          mostrarCompletadosAdmin()
-            ? "Ocultar completados"
-            : "Mostrar completados"
-        }}
-      </button>
-
-      <button (click)="ordenAdminAsc.set(!ordenAdminAsc())">
-        {{ ordenAdminAsc() ? "Más lejanos primero" : "Más cercanos primero" }}
-      </button>
-    </div>
-
-    @if (turnosAdmin().length === 0) {
-      <div class="empty-state">No hay turnos registrados.</div>
-    }
-
-    @if (turnosAdmin().length > 0) {
-      <div class="appointments-grid">
-        @for (ap of turnosAdmin(); track ap.id) {
-          <div class="appointment-card">
-            <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
-            <div><strong>Doctor:</strong> {{ ap.doctorName }}</div>
-
-            <div>
-              <strong>Fecha/Hora:</strong>
-              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-            </div>
-
-            <div>
-              <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status.toLowerCase()">
-                {{ traducirEstado(ap.status) }}
-              </span>
-            </div>
-          </div>
-        }
+        <div class="filters-segmented">
+          <button
+            type="button"
+            class="filter-btn"
+            [class.active]="!mostrarCompletadosAdmin()"
+            (click)="mostrarCompletadosAdmin.set(!mostrarCompletadosAdmin())"
+          >
+            {{ mostrarCompletadosAdmin() ? "Ocultar completados" : "Ver todos" }}
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            (click)="ordenAdminAsc.set(!ordenAdminAsc())"
+          >
+            {{ ordenAdminAsc() ? "Más lejanos primero" : "Próximos primero" }}
+          </button>
+        </div>
       </div>
-    }
+
+      @if (turnosAdmin().length === 0) {
+        <div class="empty-state">
+          <svg class="empty-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <p>No hay turnos registrados en este momento.</p>
+        </div>
+      } @else {
+        <div class="appointments-list">
+          @for (ap of turnosAdmin(); track ap.id) {
+            <div class="appointment-card card" [ngClass]="'border-' + ap.status.toLowerCase()">
+              <div class="card-main-info">
+                <div class="header-line">
+                  <h3 class="appointment-title">Paciente: {{ ap.patientName }}</h3>
+                  <span class="badge" [ngClass]="'badge-' + ap.status.toLowerCase()">
+                    {{ traducirEstado(ap.status) }}
+                  </span>
+                </div>
+                <p class="doctor-sub">Doctor: <strong>{{ ap.doctorName }}</strong></p>
+                <div class="datetime-tag">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span class="date-text">{{ formatFecha(ap.date) }}</span>
+                  <span class="hours-text tabular-nums">· {{ ap.startTime }} - {{ ap.endTime }} hs</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
   }
 
+  <!-- SECCIÓN PACIENTE: Mis Turnos -->
   @if (userLogged?.userType !== "ADMIN") {
-    <h3>Mis Turnos</h3>
+    <section class="appointments-section">
+      <div class="section-header">
+        <div>
+          <h2>Mis turnos</h2>
+          <p class="section-subtitle">Tus sesiones agendadas con profesionales</p>
+        </div>
 
-    <div class="filters">
-      <button
-        (click)="mostrarCompletadosPaciente.set(!mostrarCompletadosPaciente())"
-      >
-        {{
-          mostrarCompletadosPaciente()
-            ? "Ocultar completados"
-            : "Mostrar completados"
-        }}
-      </button>
-
-      <button (click)="ordenPacienteAsc.set(!ordenPacienteAsc())">
-        {{
-          ordenPacienteAsc() ? "Más lejanos primero" : "Más cercanos primero"
-        }}
-      </button>
-    </div>
-
-    @if (misTurnos().length === 0) {
-      <div class="empty-state">No tenés turnos reservados como paciente.</div>
-    }
-
-    @if (misTurnos().length > 0) {
-      <div class="appointments-grid">
-        @for (ap of misTurnos(); track ap.id) {
-          <div class="appointment-card">
-            <div><strong>Con:</strong> {{ ap.doctorName }}</div>
-
-            <div>
-              <strong>Fecha y Hora:</strong>
-              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-            </div>
-
-            <div>
-              <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status.toLowerCase()">
-                {{ traducirEstado(ap.status) }}
-              </span>
-            </div>
-          </div>
-        }
+        <div class="filters-segmented">
+          <button
+            type="button"
+            class="filter-btn"
+            [class.active]="!mostrarCompletadosPaciente()"
+            (click)="mostrarCompletadosPaciente.set(!mostrarCompletadosPaciente())"
+          >
+            {{ mostrarCompletadosPaciente() ? "Ocultar completados" : "Ver todos" }}
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            (click)="ordenPacienteAsc.set(!ordenPacienteAsc())"
+          >
+            {{ ordenPacienteAsc() ? "Más lejanos primero" : "Próximos primero" }}
+          </button>
+        </div>
       </div>
-    }
+
+      @if (misTurnos().length === 0) {
+        <div class="empty-state">
+          <svg class="empty-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <p>No tenés turnos reservados actualmente como paciente.</p>
+          <a routerLink="/doctors" class="btn-primary" style="margin-top: 16px;">
+            Buscar profesionales
+          </a>
+        </div>
+      } @else {
+        <div class="appointments-list">
+          @for (ap of misTurnos(); track ap.id) {
+            <div class="appointment-card card" [ngClass]="'border-' + ap.status.toLowerCase()">
+              <div class="card-main-info">
+                <div class="header-line">
+                  <h3 class="appointment-title">Sesión con {{ ap.doctorName }}</h3>
+                  <span class="badge" [ngClass]="'badge-' + ap.status.toLowerCase()">
+                    {{ traducirEstado(ap.status) }}
+                  </span>
+                </div>
+                <div class="datetime-tag">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span class="date-text">{{ formatFecha(ap.date) }}</span>
+                  <span class="hours-text tabular-nums">· {{ ap.startTime }} - {{ ap.endTime }} hs</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
   }
 
+  <!-- SECCIÓN DOCTOR: Mis Pacientes -->
   @if (userLogged?.userType === "DOCTOR") {
-    <h3>Mis Pacientes</h3>
+    <section class="appointments-section doctor-section">
+      <div class="section-header">
+        <div>
+          <h2>Mis pacientes</h2>
+          <p class="section-subtitle">Sesiones programadas con pacientes</p>
+        </div>
 
-    <div class="filters">
-      <button
-        (click)="mostrarCompletadosDoctor.set(!mostrarCompletadosDoctor())"
-      >
-        {{
-          mostrarCompletadosDoctor()
-            ? "Ocultar completados"
-            : "Mostrar completados"
-        }}
-      </button>
-      <button (click)="ordenDoctorAsc.set(!ordenDoctorAsc())">
-        {{ ordenDoctorAsc() ? "Más lejanos primero" : "Más cercanos primero" }}
-      </button>
-    </div>
-
-    @if (misPacientes().length === 0) {
-      <div class="empty-state">No tenés turnos asignados como doctor.</div>
-    }
-
-    @if (misPacientes().length > 0) {
-      <div class="appointments-grid">
-        @for (ap of misPacientes(); track ap.id) {
-          <div class="appointment-card">
-            <div><strong>Paciente:</strong> {{ ap.patientName }}</div>
-
-            <div>
-              <strong>Fecha/Hora:</strong>
-              {{ ap.date }} {{ ap.startTime }} - {{ ap.endTime }}
-            </div>
-
-            <div>
-              <strong>Estado:</strong>
-              <span class="status" [ngClass]="ap.status.toLowerCase()">
-                {{ traducirEstado(ap.status) }}
-              </span>
-            </div>
-
-            <div class="doctor-actions">
-              @if (ap.status === "PENDING") {
-                <button (click)="confirmarTurno(ap.id)" class="button-confirm">
-                  Confirmar turno
-                </button>
-              }
-
-              @if (ap.status !== "COMPLETED") {
-                <button
-                  (click)="deleteAppointment(ap.id)"
-                  class="button-delete"
-                >
-                  Cancelar
-                </button>
-              }
-            </div>
-          </div>
-        }
+        <div class="filters-segmented">
+          <button
+            type="button"
+            class="filter-btn"
+            [class.active]="!mostrarCompletadosDoctor()"
+            (click)="mostrarCompletadosDoctor.set(!mostrarCompletadosDoctor())"
+          >
+            {{ mostrarCompletadosDoctor() ? "Ocultar completados" : "Ver todos" }}
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            (click)="ordenDoctorAsc.set(!ordenDoctorAsc())"
+          >
+            {{ ordenDoctorAsc() ? "Más lejanos primero" : "Próximos primero" }}
+          </button>
+        </div>
       </div>
-    }
+
+      @if (misPacientes().length === 0) {
+        <div class="empty-state">
+          <svg class="empty-svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <p>No tenés turnos asignados con pacientes en este momento.</p>
+        </div>
+      } @else {
+        <div class="appointments-list">
+          @for (ap of misPacientes(); track ap.id) {
+            <div class="appointment-card card" [ngClass]="'border-' + ap.status.toLowerCase()">
+              <div class="card-main-info">
+                <div class="header-line">
+                  <h3 class="appointment-title">Paciente: {{ ap.patientName }}</h3>
+                  <span class="badge" [ngClass]="'badge-' + ap.status.toLowerCase()">
+                    {{ traducirEstado(ap.status) }}
+                  </span>
+                </div>
+                <div class="datetime-tag">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span class="date-text">{{ formatFecha(ap.date) }}</span>
+                  <span class="hours-text tabular-nums">· {{ ap.startTime }} - {{ ap.endTime }} hs</span>
+                </div>
+              </div>
+
+              <div class="doctor-actions">
+                @if (ap.status === "PENDING") {
+                  <button type="button" (click)="confirmarTurno(ap.id)" class="btn-primary btn-sm">
+                    Confirmar turno
+                  </button>
+                }
+                @if (ap.status !== "COMPLETED") {
+                  <button type="button" (click)="deleteAppointment(ap.id)" class="btn-destructive btn-sm">
+                    Cancelar
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
   }
 </div>

@@ -36,8 +36,34 @@ export class ReviewsComponent implements OnInit {
 
   reviewForm: FormGroup = this.fb.group({
     comment: ['', [Validators.required, Validators.minLength(8)]],
-    value: [1, [Validators.required, Validators.min(1), Validators.max(5)]],
+    value: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
   });
+
+  hoverRating = 0;
+
+  setHover(val: number): void {
+    this.hoverRating = val;
+  }
+
+  setRating(val: number): void {
+    this.reviewForm.get('value')?.setValue(val);
+  }
+
+  get commentLength(): number {
+    return this.reviewForm.get('comment')?.value?.length || 0;
+  }
+
+  get averageRating(): number {
+    if (!this.reviews.length) return 0;
+    const sum = this.reviews.reduce((acc, r) => acc + r.value, 0);
+    return Number((sum / this.reviews.length).toFixed(1));
+  }
+
+  getPatientInitials(name?: string, lastName?: string): string {
+    const fn = (name || '').trim().charAt(0);
+    const ln = (lastName || '').trim().charAt(0);
+    return `${fn}${ln}`.toUpperCase() || 'P';
+  }
 
   ngOnInit(): void {
     if (!this.doctorId) {
