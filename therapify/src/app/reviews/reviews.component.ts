@@ -1,13 +1,18 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, computed } from '@angular/core';
+import { Location, DatePipe } from '@angular/common';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { concat, of, timer } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { Reviews } from '../../types/reviews';
 import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
@@ -16,7 +21,7 @@ import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 @Component({
   selector: 'app-reviews',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SkeletonComponent, RouterLink, DatePipe],
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
 })
@@ -26,13 +31,66 @@ export class ReviewsComponent implements OnInit {
   reviews: Reviews[] = [];
   isEditing = false;
   reviewToEditId: string | null = null;
+  isLoadingReviews = signal(true);
+  loadError = signal<string | null>(null);
+
+  private skeletonShownTime: number | null = null;
+
+  private readonly skeletonState = toSignal(
+    toObservable(this.isLoadingReviews).pipe(
+      switchMap((loading) => {
+        if (loading) {
+          this.skeletonShownTime = null;
+          return concat(
+            of({ displayLoading: true, showSkeleton: false }),
+            timer(150).pipe(
+              tap(() => {
+                this.skeletonShownTime = Date.now();
+              }),
+              map(() => ({ displayLoading: true, showSkeleton: true })),
+            ),
+          );
+        } else {
+          if (this.skeletonShownTime !== null) {
+            const elapsed = Date.now() - this.skeletonShownTime;
+            const remaining = Math.max(0, 350 - elapsed);
+            this.skeletonShownTime = null;
+            if (remaining > 0) {
+              return timer(remaining).pipe(
+                map(() => ({ displayLoading: false, showSkeleton: false })),
+              );
+            }
+          }
+          this.skeletonShownTime = null;
+          return of({ displayLoading: false, showSkeleton: false });
+        }
+      }),
+    ),
+    { initialValue: { displayLoading: true, showSkeleton: false } },
+  );
+
+  showSkeleton = computed(() => this.skeletonState().showSkeleton);
+  displayLoading = computed(() => this.skeletonState().displayLoading);
+
+  readonly skeletonCards = [1, 2, 3, 4];
 
   fb = inject(FormBuilder);
   userService = inject(UserService);
   reviewsService = inject(ReviewsService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
+  location = inject(Location);
 
   userLogged: User | null = this.userService.getLoggedUser();
+
+  goBack(event?: Event): void {
+    if (event) event.preventDefault();
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/doctor', this.doctorId]);
+    }
+  }
 
   reviewForm: FormGroup = this.fb.group({
     comment: ['', [Validators.required, Validators.minLength(8)]],
@@ -47,6 +105,20 @@ export class ReviewsComponent implements OnInit {
 
   setRating(val: number): void {
     this.reviewForm.get('value')?.setValue(val);
+  }
+
+  onStarKey(event: KeyboardEvent, star: number): void {
+    if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const next = Math.min(5, star + 1);
+      this.setRating(next);
+      this.setHover(0);
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      const prev = Math.max(1, star - 1);
+      this.setRating(prev);
+      this.setHover(0);
+    }
   }
 
   get commentLength(): number {
@@ -65,6 +137,15 @@ export class ReviewsComponent implements OnInit {
     return `${fn}${ln}`.toUpperCase() || 'P';
   }
 
+  getStarCount(star: number): number {
+    return this.reviews.filter((r) => r.value === star).length;
+  }
+
+  getStarPercentage(star: number): number {
+    if (!this.reviews.length) return 0;
+    return Math.round((this.getStarCount(star) / this.reviews.length) * 100);
+  }
+
   ngOnInit(): void {
     if (!this.doctorId) {
       const idFromRoute = this.route.snapshot.paramMap.get('id');
@@ -79,9 +160,18 @@ export class ReviewsComponent implements OnInit {
   }
 
   loadReviews(): void {
+    this.isLoadingReviews.set(true);
+    this.loadError.set(null);
     this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
-      next: (data) => (this.reviews = data),
-      error: () => toast.error('Error al cargar reseñas'),
+      next: (data) => {
+        this.reviews = data;
+        this.isLoadingReviews.set(false);
+      },
+      error: (err) => {
+        console.error('Error al cargar reseñas', err);
+        this.loadError.set('No pudimos cargar las reseñas. Por favor, revisá tu conexión e intentá nuevamente.');
+        this.isLoadingReviews.set(false);
+      },
     });
   }
 

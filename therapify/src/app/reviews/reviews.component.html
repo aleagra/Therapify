@@ -1,154 +1,276 @@
-<div class="reviews-page">
-  <div class="reviews-layout">
-    <!-- Formulario para dejar o editar reseña -->
-    <div class="review-form-card card">
-      <div class="form-header">
-        <h3 class="form-title">
-          {{ isEditing ? "Editá tu reseña" : "Dejá tu opinión profesional" }}
-        </h3>
-        <p class="form-subtitle">
-          Tu experiencia ayuda a otras personas a encontrar el acompañamiento adecuado
+<div class="reviews-page-root density-work">
+  <div class="reviews-container">
+
+    <!-- Enlace de Retorno -->
+    <a [routerLink]="['/doctor', doctorId]" (click)="goBack($event)" class="back-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Volver al perfil</span>
+    </a>
+
+    <!-- Encabezado con Margen de Ficha (96px) -->
+    <header class="ficha-layout ficha-page header-block">
+      <div class="ficha-rail header-rail">
+        <div class="rail-kicker">Reseñas</div>
+        <div class="rail-number">06</div>
+      </div>
+      <div class="ficha-body header-body">
+        <h1 class="page-title">
+          Lo que dicen sus <span class="text-accent-word">pacientes</span>
+        </h1>
+        <p class="page-subtitle">
+          Opiniones verificadas de personas que tuvieron al menos una sesión.
         </p>
       </div>
+    </header>
 
-      <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="review-form">
-        <!-- Selector interactivo de estrellas -->
-        <div class="form-group rating-group">
-          <label class="group-label">Valoración general</label>
-          <div class="stars-picker" (mouseleave)="setHover(0)">
-            @for (star of [1, 2, 3, 4, 5]; track star) {
-              <button
-                type="button"
-                class="star-button"
-                [class.active]="(hoverRating || reviewForm.get('value')?.value) >= star"
-                (mouseenter)="setHover(star)"
-                (click)="setRating(star)"
-                [attr.aria-label]="star + ' de 5 estrellas'"
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                </svg>
-              </button>
-            }
-            <span class="rating-label-value tabular-nums">
-              {{ hoverRating || reviewForm.get('value')?.value }} / 5
-            </span>
-          </div>
-          <!-- Control input oculto/sincronizado con formControlName="value" -->
-          <input type="hidden" formControlName="value" />
-        </div>
+    <!-- Layout Principal de 2 Columnas -->
+    <div class="ficha-layout ficha-page reviews-main-layout">
+      <div class="ficha-rail content-rail-empty"></div>
+      <div class="ficha-body content-body-wrap">
+        <div class="reviews-columns-grid">
 
-        <!-- Comentario -->
-        <div class="form-group">
-          <div class="comment-label-row">
-            <label for="comment" class="group-label">Comentario</label>
-            <span class="char-counter tabular-nums" [class.valid]="commentLength >= 8">
-              {{ commentLength }} caracteres (mín. 8)
-            </span>
-          </div>
-          <textarea
-            id="comment"
-            formControlName="comment"
-            rows="4"
-            placeholder="Contá cómo fue la atención, el trato recibido y tu experiencia en la sesión..."
-            class="review-textarea"
-            [class.invalid]="reviewForm.get('comment')?.touched && reviewForm.get('comment')?.invalid"
-          ></textarea>
+          <!-- Columna Izquierda: Bloque de Promedio + Lista de Reseñas -->
+          <div class="reviews-list-column">
 
-          @if (reviewForm.get('comment')?.touched && reviewForm.get('comment')?.hasError('required')) {
-            <small class="error-msg">El comentario es obligatorio.</small>
-          }
-          @if (reviewForm.get('comment')?.touched && reviewForm.get('comment')?.hasError('minlength')) {
-            <small class="error-msg">El comentario debe tener al menos 8 caracteres.</small>
-          }
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" [disabled]="reviewForm.invalid" class="btn-primary">
-            {{ isEditing ? "Actualizar reseña" : "Publicar reseña" }}
-          </button>
-          @if (isEditing) {
-            <button type="button" (click)="resetForm()" class="btn-secondary">
-              Cancelar edición
-            </button>
-          }
-        </div>
-      </form>
-    </div>
-
-    <!-- Lista de reseñas existentes -->
-    <div class="reviews-list-section">
-      <div class="list-header">
-        <div class="header-titles">
-          <h3>Reseñas de pacientes</h3>
-          <span class="reviews-badge badge badge-accent">{{ reviews.length }} en total</span>
-        </div>
-
-        @if (reviews.length > 0) {
-          <div class="score-summary">
-            <span class="score-number tabular-nums">{{ averageRating }}</span>
-            <div class="stars-display">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="#d99b26">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-              <span>Promedio general</span>
-            </div>
-          </div>
-        }
-      </div>
-
-      @if (reviews.length === 0) {
-        <div class="empty-state">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 12px; color: var(--c-ink-300);">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-          </svg>
-          <p>Todavía no hay reseñas registradas para este profesional.</p>
-        </div>
-      } @else {
-        <div class="reviews-cards-list">
-          @for (review of reviews; track review.id) {
-            <div class="review-item card">
-              <div class="review-top-row">
-                <div class="reviewer-info">
-                  <div class="reviewer-avatar">
-                    {{ getPatientInitials(review.patientName, review.patientLastName) }}
+            @if (loadError()) {
+              <div class="empty-state-box">
+                <div class="empty-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                </div>
+                <h3>No pudimos cargar las opiniones</h3>
+                <p>{{ loadError() }}</p>
+                <button type="button" (click)="loadReviews()" class="btn btn-secondary">
+                  Reintentar
+                </button>
+              </div>
+            } @else {
+              <!-- Bloque de Promedio (Margen ancho de 180px) -->
+              <div class="rating-score-block">
+                <div class="rating-score-rail">
+                  <div class="big-rating-number">
+                    {{ averageRating > 0 ? averageRating.toFixed(1) : '—' }}
                   </div>
-                  <div class="reviewer-meta">
-                    <span class="reviewer-name">{{ review.patientName }} {{ review.patientLastName }}</span>
-                    <div class="stars-rendered">
-                      @for (s of [1, 2, 3, 4, 5]; track s) {
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          [attr.fill]="s <= review.value ? '#d99b26' : 'var(--c-line-strong)'"
-                        >
-                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                      }
-                    </div>
+                  <div class="rating-stars-lead">
+                    ★★★★★
+                  </div>
+                  <div class="rating-reviews-count">
+                    {{ reviews.length ? reviews.length + ' reseñas de pacientes' : 'Sin valoraciones' }}
                   </div>
                 </div>
 
-                @if (review.patientId === userLogged?.id || userLogged?.userType === "ADMIN") {
-                  <div class="review-actions">
-                    @if (review.patientId === userLogged?.id) {
-                      <button type="button" (click)="selectReviewToEdit(review)" class="btn-ghost action-sm">
-                        Editar
-                      </button>
-                    }
-                    <button type="button" (click)="deleteReview(review.id)" class="btn-destructive action-sm">
-                      Eliminar
-                    </button>
-                  </div>
-                }
+                <div class="rating-distribution-body">
+                  @for (star of [5, 4, 3, 2, 1]; track star) {
+                    <div class="dist-bar-row">
+                      <span class="dist-star-label">{{ star }}★</span>
+                      <div class="dist-bar-track">
+                        <span
+                          class="dist-bar-fill"
+                          [style.width.%]="getStarPercentage(star)"
+                        ></span>
+                      </div>
+                      <span class="dist-count-label">{{ getStarCount(star) }}</span>
+                    </div>
+                  }
+                </div>
               </div>
 
-              <p class="review-comment-text">{{ review.comment }}</p>
+              <!-- Cabecera de Lista -->
+              <div class="reviews-subhead-row">
+                <span class="reviews-kicker">Todas las reseñas</span>
+                <span class="reviews-sort-text">
+                  Ordenar por <strong class="sort-bold">más recientes</strong>
+                </span>
+              </div>
+
+              <!-- Lista de Reseñas Nivel 3 -->
+              @if (displayLoading()) {
+                <div class="reviews-loading-list" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
+                  @for (c of skeletonCards; track c) {
+                    <div class="review-row-item">
+                      <div class="review-date-rail">
+                        <app-skeleton circle="true" width="36px" height="36px"></app-skeleton>
+                        <app-skeleton width="60px" height="12px"></app-skeleton>
+                      </div>
+                      <div class="review-text-body">
+                        <app-skeleton width="140px" height="18px"></app-skeleton>
+                        <app-skeleton width="100%" height="14px" style="margin-top: 8px;"></app-skeleton>
+                        <app-skeleton width="80%" height="14px"></app-skeleton>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else if (reviews.length === 0) {
+                <!-- Estado Vacío respetando la estructura -->
+                <div class="empty-reviews-notice">
+                  <h3 class="notice-title">Todavía no hay reseñas de este profesional</h3>
+                  <p class="notice-desc">
+                    Si ya tuviste una sesión, tu opinión va a ser la primera y ayuda a que otras personas se decidan.
+                  </p>
+                </div>
+              } @else {
+                <div class="reviews-rendered-list">
+                  @for (r of reviews; track r.id) {
+                    <div class="review-row-item">
+                      <!-- Rail de la reseña: 96px con avatar y fecha -->
+                      <div class="review-date-rail">
+                        <div class="review-author-avatar">
+                          {{ getPatientInitials(r.patientName, r.patientLastName) }}
+                        </div>
+                        <div class="review-date-caption">
+                          {{ r.date | date:'d MMM yyyy':'':'es-AR' }}
+                        </div>
+                      </div>
+
+                      <!-- Cuerpo de la reseña -->
+                      <div class="review-text-body">
+                        <div class="review-header-meta">
+                          <span class="author-fullname">
+                            {{ r.patientName }} {{ r.patientLastName }}
+                          </span>
+                          <span class="stars-rating-text" [attr.aria-label]="r.value + ' de 5 estrellas'">
+                            @for (s of [1,2,3,4,5]; track s) {
+                              <span [style.color]="s <= r.value ? '#253340' : '#cbd6e2'">★</span>
+                            }
+                          </span>
+                          <span class="verified-session-badge">Sesión verificada</span>
+
+                          @if (userLogged && (r.patientId === userLogged.id || userLogged.userType === 'ADMIN')) {
+                            <div class="review-owner-actions">
+                              @if (r.patientId === userLogged.id) {
+                                <button
+                                  type="button"
+                                  (click)="selectReviewToEdit(r)"
+                                  class="btn-action-edit"
+                                  title="Editar reseña"
+                                >
+                                  Editar
+                                </button>
+                              }
+                              <button
+                                type="button"
+                                (click)="deleteReview(r.id)"
+                                class="btn-action-delete"
+                                title="Eliminar reseña"
+                              >
+                                Eliminar
+                              </button>
+                            </div>
+                          }
+                        </div>
+
+                        <p class="review-comment-paragraph">
+                          {{ r.comment }}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+
+          <!-- Columna Derecha: Card Nivel 1 "Dejá tu reseña" -->
+          <aside class="review-form-column">
+            <div class="review-entry-card surface-card">
+              <div class="form-header-pad">
+                <span class="form-kicker">Tu experiencia</span>
+                <h3 class="form-title">
+                  {{ isEditing ? 'Editá tu reseña' : 'Dejá tu reseña' }}
+                </h3>
+                <p class="form-subtitle">
+                  Ayudás a otras personas a encontrar el acompañamiento adecuado.
+                </p>
+              </div>
+
+              <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="review-form-content">
+                <!-- Selector de Estrellas -->
+                <div class="form-rating-group">
+                  <label class="rating-subhead-kicker">Valoración</label>
+                  <div
+                    class="stars-interactive-picker"
+                    role="radiogroup"
+                    aria-label="Calificación del profesional"
+                    (mouseleave)="setHover(0)"
+                  >
+                    @for (star of [1, 2, 3, 4, 5]; track star) {
+                      <button
+                        type="button"
+                        role="radio"
+                        class="star-pick-btn"
+                        [class.is-lit]="(hoverRating || reviewForm.get('value')?.value) >= star"
+                        [attr.aria-checked]="reviewForm.get('value')?.value === star"
+                        (mouseenter)="setHover(star)"
+                        (click)="setRating(star)"
+                        (keydown)="onStarKey($event, star)"
+                        [attr.aria-label]="star + ' de 5 estrellas'"
+                      >
+                        ★
+                      </button>
+                    }
+                    <span class="star-rating-count tabular-nums">
+                      {{ hoverRating || reviewForm.get('value')?.value }} / 5
+                    </span>
+                  </div>
+                  <input type="hidden" formControlName="value" />
+                </div>
+
+                <!-- Textarea de Comentario -->
+                <div class="form-comment-group">
+                  <div class="comment-label-row">
+                    <label for="comment" class="comment-field-label">Comentario</label>
+                    <span
+                      class="char-limit-indicator tabular-nums"
+                      [class.is-valid]="commentLength >= 8"
+                    >
+                      {{ commentLength }} / mín. 8
+                    </span>
+                  </div>
+                  <textarea
+                    id="comment"
+                    formControlName="comment"
+                    rows="4"
+                    placeholder="Contá cómo fue la atención, el trato recibido y tu experiencia en la sesión..."
+                    class="review-textarea-input"
+                    [class.is-invalid]="reviewForm.get('comment')?.touched && reviewForm.get('comment')?.invalid"
+                  ></textarea>
+                </div>
+
+                <!-- Acciones del Formulario -->
+                <button
+                  type="submit"
+                  [disabled]="reviewForm.invalid"
+                  class="btn-submit-review"
+                >
+                  {{ isEditing ? 'Actualizar reseña' : 'Publicar reseña' }}
+                </button>
+
+                @if (isEditing) {
+                  <button
+                    type="button"
+                    (click)="resetForm()"
+                    class="btn-cancel-edit"
+                  >
+                    Cancelar edición
+                  </button>
+                }
+
+                <p class="form-privacy-note">
+                  Se publica con tu nombre y la fecha de la sesión.
+                </p>
+              </form>
             </div>
-          }
+          </aside>
+
         </div>
-      }
+      </div>
     </div>
+
   </div>
 </div>
