@@ -40,3 +40,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Agents & AI skills
+.agents/
+skills-lock.json
+
