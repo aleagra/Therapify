@@ -1,270 +1,252 @@
-<div class="profile-page-wrapper">
-  <div class="profile-layout-1200">
-    <!-- Columna Izquierda: Identidad (~300px) -->
-    <aside class="profile-sidebar">
-      <div class="card profile-user-card">
-        <div class="user-avatar-circle">
-          {{ getInitials(user?.firstName, user?.lastName) }}
-        </div>
+<div class="profile-page-root">
+  <div class="profile-container">
+    <!-- Header con rail de página 96px: Cuenta 05 -->
+    <header class="header-block rail-layout-96">
+      <div class="header-rail">
+        <span class="rail-kicker">Cuenta</span>
+        <span class="rail-number">05</span>
+      </div>
+      <div class="header-body">
+        <h1 class="page-title">Configuración de perfil</h1>
+        <p class="page-subtitle">Gestioná tus datos personales, domicilio y credenciales de acceso a la plataforma.</p>
+      </div>
+    </header>
 
-        <div class="user-profile-meta">
-          <h2 class="user-name-title">
-            {{ user?.firstName ? user?.firstName + ' ' + user?.lastName : 'Tu perfil' }}
-          </h2>
-          <span class="user-email-subtitle">{{ user?.email }}</span>
-          
-          <div class="user-role-badge">
-            <span class="badge" [class.badge-accent]="user?.userType === 'DOCTOR'" [class.badge-primary]="user?.userType !== 'DOCTOR'">
-              {{ user?.userType === 'DOCTOR' ? 'Profesional de la salud' : (user?.userType === 'ADMIN' ? 'Administrador' : 'Paciente') }}
-            </span>
-          </div>
-        </div>
+    <div class="profile-main-layout rail-layout-96">
+      <div class="content-rail-empty"></div>
+      <div class="content-body-wrap">
+        <div class="profile-columns-grid">
+          <!-- Columna Izquierda: Tarjeta Nivel 1 de Usuario -->
+          <aside class="profile-sidebar-column">
+            <div class="user-summary-card surface-card">
+              <div class="user-avatar-circle">
+                {{ getInitials(user?.firstName, user?.lastName) }}
+              </div>
+              <h2 class="user-name-title">
+                {{ user?.firstName ? user?.firstName + ' ' + user?.lastName : 'Tu perfil' }}
+              </h2>
+              <span class="user-email-subtitle">{{ user?.email }}</span>
 
-        @if (user?.userType === 'DOCTOR') {
-          <div class="doctor-quick-action">
-            <a class="btn btn-secondary btn-full" routerLink="/profile-doctor">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span>Configurar agenda médica &rarr;</span>
-            </a>
-          </div>
-        }
+              <div class="user-role-badge">
+                <span class="role-chip" [class.is-doctor]="user?.userType === 'DOCTOR'">
+                  {{ user?.userType === 'DOCTOR' ? 'Profesional de la salud' : (user?.userType === 'ADMIN' ? 'Administrador' : 'Paciente') }}
+                </span>
+              </div>
 
-        <div class="account-security-status">
-          <div class="status-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <path d="m9 12 2 2 4-4"/>
-            </svg>
-            <span>Cuenta activa y verificada</span>
-          </div>
+              @if (user?.userType === 'DOCTOR') {
+                <div class="doctor-quick-action">
+                  <a class="btn-manage-agenda" routerLink="/profile-doctor">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Configurar agenda médica &rarr;</span>
+                  </a>
+                </div>
+              }
 
-          <div class="status-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            <span>Sesión protegida por cifrado</span>
-          </div>
+              <div class="security-meta-list">
+                <div class="security-meta-item">
+                  <span class="security-dot-verified"></span>
+                  <span>Cuenta activa y verificada</span>
+                </div>
+                <div class="security-meta-item">
+                  <span class="security-dot-encrypted"></span>
+                  <span>Datos encriptados de punta a punta</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Columna Derecha: Formularios de Nivel 1 -->
+          <main class="profile-forms-column">
+            <form
+              [formGroup]="formProfile"
+              (ngSubmit)="onSubmitProfile()"
+              class="profile-form-flow"
+            >
+              <!-- Card Nivel 1: Datos básicos -->
+              <section class="form-section-card surface-card">
+                <div class="section-header-row">
+                  <div>
+                    <span class="section-kicker">01 Información</span>
+                    <h3 class="section-title">Datos básicos</h3>
+                  </div>
+                  <p class="section-desc">Información que identifica tu cuenta y tus datos de contacto.</p>
+                </div>
+
+                <div class="fields-grid-2">
+                  <div class="form-field">
+                    <label for="firstName">Nombre</label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      formControlName="firstName"
+                      autocomplete="given-name"
+                      placeholder="Ej: Alejandro"
+                      class="profile-input"
+                    />
+                  </div>
+
+                  <div class="form-field">
+                    <label for="lastName">Apellido</label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      formControlName="lastName"
+                      autocomplete="family-name"
+                      placeholder="Ej: Agra"
+                      class="profile-input"
+                    />
+                  </div>
+
+                  <div class="form-field full-width">
+                    <div class="field-label-inline">
+                      <label for="address">Dirección</label>
+                      @if (user?.userType === 'DOCTOR') {
+                        <span class="consultation-tag">Requerida para consultorio</span>
+                      }
+                    </div>
+                    <input
+                      id="address"
+                      type="text"
+                      formControlName="address"
+                      placeholder="Ej: Av. Santa Fe 2450, CABA"
+                      class="profile-input"
+                    />
+                  </div>
+
+                  <div class="form-field full-width">
+                    <label class="field-label">Género</label>
+                    <div class="gender-radio-group">
+                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'male'">
+                        <input type="radio" value="male" formControlName="gender" class="sr-only" />
+                        <span class="radio-indicator"></span>
+                        <span class="radio-label">Masculino</span>
+                      </label>
+
+                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'female'">
+                        <input type="radio" value="female" formControlName="gender" class="sr-only" />
+                        <span class="radio-indicator"></span>
+                        <span class="radio-label">Femenino</span>
+                      </label>
+
+                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'non-binary'">
+                        <input type="radio" value="non-binary" formControlName="gender" class="sr-only" />
+                        <span class="radio-indicator"></span>
+                        <span class="radio-label">No binario</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Card Nivel 1: Seguridad de la cuenta -->
+              <section class="form-section-card surface-card">
+                <div class="section-header-row">
+                  <div>
+                    <span class="section-kicker">02 Credenciales</span>
+                    <h3 class="section-title">Seguridad de la cuenta</h3>
+                  </div>
+                  <p class="section-desc">Completá estos campos únicamente si deseás actualizar tu contraseña actual.</p>
+                </div>
+
+                <div class="fields-grid-2">
+                  <div class="form-field">
+                    <label for="password">Nueva contraseña</label>
+                    <div class="password-input-wrapper">
+                      <input
+                        id="password"
+                        [type]="showPassword ? 'text' : 'password'"
+                        formControlName="password"
+                        autocomplete="new-password"
+                        placeholder="Mínimo 8 caracteres"
+                        class="profile-input"
+                      />
+                      <button
+                        type="button"
+                        class="password-toggle-btn"
+                        (click)="showPassword = !showPassword"
+                        [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
+                      >
+                        @if (showPassword) {
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                          </svg>
+                        } @else {
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        }
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="repeatPassword">Confirmar contraseña</label>
+                    <div class="password-input-wrapper">
+                      <input
+                        id="repeatPassword"
+                        [type]="showRepeatPassword ? 'text' : 'password'"
+                        formControlName="repeatPassword"
+                        autocomplete="new-password"
+                        placeholder="Repetí la contraseña"
+                        class="profile-input"
+                      />
+                      <button
+                        type="button"
+                        class="password-toggle-btn"
+                        (click)="showRepeatPassword = !showRepeatPassword"
+                        [attr.aria-label]="showRepeatPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
+                      >
+                        @if (showRepeatPassword) {
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                          </svg>
+                        } @else {
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Barra de acciones -->
+              <div class="form-actions-bar">
+                <button
+                  type="button"
+                  class="btn-discard"
+                  (click)="cancel()"
+                  [disabled]="loading || formProfile.pristine"
+                >
+                  Descartar cambios
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn-save-profile"
+                  [disabled]="loading || formProfile.pristine"
+                >
+                  @if (loading) {
+                    <span>Guardando...</span>
+                  } @else {
+                    <span>Guardar cambios</span>
+                  }
+                </button>
+              </div>
+            </form>
+          </main>
         </div>
       </div>
-    </aside>
-
-    <!-- Columna Derecha: Contenido y Formularios -->
-    <main class="profile-main-content">
-      <!-- Encabezado plano (sin card) -->
-      <header class="profile-header-flat">
-        <span class="profile-eyebrow">Configuración de cuenta</span>
-        <h1 class="profile-title">Información personal</h1>
-        <p class="profile-subtitle">Gestioná tus datos personales, domicilio y credenciales de acceso a la plataforma.</p>
-      </header>
-
-      <form
-        [formGroup]="formProfile"
-        (ngSubmit)="onSubmitProfile()"
-        class="profile-form-flow"
-      >
-        <!-- Card 1: Datos Básicos -->
-        <section class="card form-section-card">
-          <div class="section-header-compact">
-            <div class="section-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </div>
-            <div class="section-header-text">
-              <h3>Datos básicos</h3>
-              <p>Información que identifica tu cuenta en Therapify.</p>
-            </div>
-          </div>
-
-          <div class="fields-grid-2">
-            <!-- Fila 1: Nombre y Apellido -->
-            <div class="form-field">
-              <label for="firstName">Nombre</label>
-              <input
-                id="firstName"
-                type="text"
-                formControlName="firstName"
-                autocomplete="given-name"
-                placeholder="Ej: Alejandro"
-                class="form-input"
-              />
-            </div>
-
-            <div class="form-field">
-              <label for="lastName">Apellido</label>
-              <input
-                id="lastName"
-                type="text"
-                formControlName="lastName"
-                autocomplete="family-name"
-                placeholder="Ej: Agra"
-                class="form-input"
-              />
-            </div>
-
-            <!-- Fila 2: Dirección y Género en la misma fila -->
-            <div class="form-field">
-              <div class="field-label-inline">
-                <label for="address">Dirección</label>
-                @if (user?.userType === 'DOCTOR') {
-                  <span class="consultation-tag">Requerida para consultorio</span>
-                }
-              </div>
-              <input
-                id="address"
-                type="text"
-                formControlName="address"
-                placeholder="Ej: Av. Santa Fe 2450, CABA"
-                class="form-input"
-              />
-              @if (user?.userType === 'DOCTOR') {
-                <span class="field-hint">Visible para pacientes que agenden turnos presenciales.</span>
-              }
-            </div>
-
-            <div class="form-field">
-              <label class="field-label">Género</label>
-              <div class="gender-radio-group">
-                <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'male'">
-                  <input type="radio" value="male" formControlName="gender" class="sr-only" />
-                  <span class="radio-indicator"></span>
-                  <span class="radio-label">Masculino</span>
-                </label>
-
-                <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'female'">
-                  <input type="radio" value="female" formControlName="gender" class="sr-only" />
-                  <span class="radio-indicator"></span>
-                  <span class="radio-label">Femenino</span>
-                </label>
-
-                <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'non-binary'">
-                  <input type="radio" value="non-binary" formControlName="gender" class="sr-only" />
-                  <span class="radio-indicator"></span>
-                  <span class="radio-label">No binario</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Card 2: Seguridad y Contraseña -->
-        <section class="card form-section-card">
-          <div class="section-header-compact">
-            <div class="section-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-            </div>
-            <div class="section-header-text">
-              <h3>Seguridad de la cuenta</h3>
-              <p>Completá estos campos únicamente si deseás actualizar tu contraseña actual.</p>
-            </div>
-          </div>
-
-          <div class="fields-grid-2">
-            <div class="form-field">
-              <label for="password">Nueva contraseña</label>
-              <div class="password-input-wrapper">
-                <input
-                  id="password"
-                  [type]="showPassword ? 'text' : 'password'"
-                  formControlName="password"
-                  autocomplete="new-password"
-                  placeholder="Mínimo 8 caracteres"
-                  class="form-input"
-                />
-                <button
-                  type="button"
-                  class="password-toggle-btn"
-                  (click)="showPassword = !showPassword"
-                  [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
-                >
-                  @if (showPassword) {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                      <line x1="1" y1="1" x2="23" y2="23"/>
-                    </svg>
-                  } @else {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  }
-                </button>
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label for="repeatPassword">Confirmar nueva contraseña</label>
-              <div class="password-input-wrapper">
-                <input
-                  id="repeatPassword"
-                  [type]="showRepeatPassword ? 'text' : 'password'"
-                  formControlName="repeatPassword"
-                  autocomplete="new-password"
-                  placeholder="Repetí la contraseña"
-                  class="form-input"
-                />
-                <button
-                  type="button"
-                  class="password-toggle-btn"
-                  (click)="showRepeatPassword = !showRepeatPassword"
-                  [attr.aria-label]="showRepeatPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
-                >
-                  @if (showRepeatPassword) {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                      <line x1="1" y1="1" x2="23" y2="23"/>
-                    </svg>
-                  } @else {
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  }
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Barra de Acciones al pie del flujo -->
-        <div class="form-actions-bar">
-          @if (!formProfile.pristine) {
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="cancel()"
-              [disabled]="loading"
-            >
-              Descartar cambios
-            </button>
-          }
-
-          <button
-            type="submit"
-            class="btn profile-btn-save"
-            [disabled]="loading || formProfile.pristine"
-          >
-            @if (loading) {
-              <span>Guardando...</span>
-            } @else {
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              <span>Guardar cambios</span>
-            }
-          </button>
-        </div>
-      </form>
-    </main>
+    </div>
   </div>
 </div>

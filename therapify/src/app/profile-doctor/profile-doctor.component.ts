@@ -259,4 +259,49 @@ export class ProfileDoctorComponent {
       (!this.user?.address || this.user.address.trim() === '')
     );
   }
+
+  copyScheduleToAll(): void {
+    const firstActive = this.weekDays.find((d) => {
+      const enabled = this.formSchedule.get(d.control)?.value;
+      const start = this.formSchedule.get(`${d.control}Start`)?.value;
+      const end = this.formSchedule.get(`${d.control}End`)?.value;
+      return enabled && start && end;
+    });
+
+    if (!firstActive) {
+      toast.info('Definí el horario de al menos un día activo primero');
+      return;
+    }
+
+    const startVal = this.formSchedule.get(`${firstActive.control}Start`)?.value;
+    const endVal = this.formSchedule.get(`${firstActive.control}End`)?.value;
+
+    let appliedCount = 0;
+    this.weekDays.forEach((d) => {
+      if (d.control !== firstActive.control && this.formSchedule.get(d.control)?.value) {
+        this.formSchedule.patchValue({
+          [`${d.control}Start`]: startVal,
+          [`${d.control}End`]: endVal,
+        });
+        appliedCount++;
+      }
+    });
+
+    if (appliedCount > 0) {
+      toast.success(`Horario (${startVal} a ${endVal}) copiado a los demás días activos`);
+    } else {
+      toast.info('Activá otros días marcando sus casillas para copiarles el horario');
+    }
+  }
+
+  getDayDurationHours(dayControl: string): string {
+    const start = this.formSchedule.get(`${dayControl}Start`)?.value;
+    const end = this.formSchedule.get(`${dayControl}End`)?.value;
+    if (!start || !end) return '';
+    const [s] = start.split(':').map(Number);
+    const [e] = end.split(':').map(Number);
+    const diff = e - s;
+    if (diff <= 0) return '';
+    return `${diff} hs de atención`;
+  }
 }
