@@ -18,6 +18,8 @@ export class ProfileComponent implements OnInit {
   router = inject(Router);
 
   loading = false;
+  showPassword = false;
+  showRepeatPassword = false;
 
   user: User | null = null;
 
@@ -55,6 +57,7 @@ export class ProfileComponent implements OnInit {
           address: res.address,
           gender: res.gender,
         });
+        this.formProfile.markAsPristine();
       },
       error: () => toast.error('Error al cargar usuario'),
     });
@@ -94,6 +97,11 @@ export class ProfileComponent implements OnInit {
         this.loading = false;
         toast.success('Perfil actualizado correctamente');
         this.user = res;
+        this.formProfile.patchValue({
+          password: '',
+          repeatPassword: '',
+        });
+        this.formProfile.markAsPristine();
       },
       error: () => {
         this.loading = false;
@@ -113,5 +121,6 @@ export class ProfileComponent implements OnInit {
       password: '',
       repeatPassword: '',
     });
+    this.formProfile.markAsPristine();
   }
 }

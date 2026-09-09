@@ -176,6 +176,11 @@ button, .btn-primary, .btn-secondary, .btn-ghost, .btn-destructive {
   text-decoration: none;
 }
 
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
 /* Primario */
 .btn-primary, button[type="submit"]:not(.button-secondary):not(.btn-secondary):not(.button-delete) {
   background: var(--grad-brand);
@@ -445,3 +450,17 @@ app-footer {
   --mdc-outlined-text-field-outline-color: var(--c-line-strong) !important;
   --mdc-outlined-text-field-hover-outline-color: var(--c-primary-400) !important;
 }
+
+/* Accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
