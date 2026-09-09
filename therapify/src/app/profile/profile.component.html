@@ -1,95 +1,186 @@
-<div class="profile-container">
-  <div class="profile-grid">
+<div class="profile-page">
+  <div class="profile-container">
     <form
       [formGroup]="formProfile"
       (ngSubmit)="onSubmitProfile()"
       class="profile-form"
     >
-      <div class="profile-header">
-        <div>
-          <h2>Información del Perfil</h2>
-          <p>Visualiza y edita tus datos personales a continuación</p>
+      <!-- Header Card -->
+      <div class="profile-header-card">
+        <div class="header-titles">
+          <span class="badge-role">Tu cuenta</span>
+          <h2>Información personal</h2>
+          <p>Gestioná tus datos personales, dirección de contacto y credenciales de acceso.</p>
         </div>
 
-        <div class="medical-profile-button" *ngIf="user?.userType === 'DOCTOR'">
-          <a class="btn-medical" routerLink="/profile-doctor">
-            Perfil Médico
-          </a>
-        </div>
+        @if (user?.userType === 'DOCTOR') {
+          <div class="doctor-badge-action">
+            <a class="btn btn-secondary" routerLink="/profile-doctor">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>Configurar agenda médica &rarr;</span>
+            </a>
+          </div>
+        }
       </div>
 
-      <div class="form-group double">
-        <div class="input-field">
-          <label for="firstName">Nombre</label>
+      <!-- Basic Information Section -->
+      <section class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Datos básicos</h3>
+            <p>Información que identifica tu cuenta en Therapify.</p>
+          </div>
+        </div>
+
+        <div class="fields-grid-2">
+          <div class="form-field">
+            <label for="firstName">Nombre</label>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              placeholder="Ej: Laura"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="lastName">Apellido</label>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              autocomplete="family-name"
+              placeholder="Ej: González"
+              class="form-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-field full-width">
+          <div class="field-label-row">
+            <label for="address">Dirección</label>
+            @if (user?.userType === 'DOCTOR') {
+              <span class="consultation-tag">Requerida para consultorio</span>
+            }
+          </div>
           <input
-            id="firstName"
+            id="address"
             type="text"
-            formControlName="firstName"
-            autocomplete="name"
+            formControlName="address"
+            placeholder="Ej: Av. Santa Fe 2450, Piso 4, CABA"
+            class="form-input"
           />
+          @if (user?.userType === 'DOCTOR') {
+            <span class="field-hint">Esta dirección será visible para los pacientes que agenden turnos presenciales con vos.</span>
+          }
         </div>
-        <div class="input-field">
-          <label for="lastName">Apellido</label>
-          <input
-            id="lastName"
-            type="text"
-            formControlName="lastName"
-            autocomplete="name"
-          />
-        </div>
-      </div>
 
-      <div class="form-group double">
-        <div class="input-field">
-          <label for="password">Nueva contraseña</label>
-          <input
-            id="password"
-            type="password"
-            formControlName="password"
-            autocomplete="new-password"
-          />
-        </div>
-        <div class="input-field">
-          <label for="repeatPassword">Repetir contraseña</label>
-          <input
-            id="repeatPassword"
-            type="password"
-            formControlName="repeatPassword"
-            autocomplete="new-password"
-          />
-        </div>
-      </div>
+        <div class="form-field full-width">
+          <label class="field-label">Género</label>
+          <div class="gender-radio-group">
+            <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'male'">
+              <input type="radio" value="male" formControlName="gender" class="sr-only" />
+              <div class="radio-indicator"></div>
+              <span>Masculino</span>
+            </label>
 
-      <div class="form-group full">
-        <div class="input-field full">
-          <label for="address">Dirección</label>
-          <input id="address" type="text" formControlName="address" />
-        </div>
-      </div>
+            <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'female'">
+              <input type="radio" value="female" formControlName="gender" class="sr-only" />
+              <div class="radio-indicator"></div>
+              <span>Femenino</span>
+            </label>
 
-      <div class="form-group gender-group">
-        <label>Genero</label>
-        <div class="gender-options">
-          <label>
-            <input type="radio" value="male" formControlName="gender" />
-            Masculino
-          </label>
-          <label>
-            <input type="radio" value="female" formControlName="gender" />
-            Femenino
-          </label>
-          <label>
-            <input type="radio" value="non-binary" formControlName="gender" />
-            No binario
-          </label>
+            <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'non-binary'">
+              <input type="radio" value="non-binary" formControlName="gender" class="sr-only" />
+              <div class="radio-indicator"></div>
+              <span>No binario</span>
+            </label>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="action-buttons">
-        <button type="button" class="btn-secondary" (click)="cancel()">
-          Cancelar
+      <!-- Security / Password Section -->
+      <section class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Seguridad de la cuenta</h3>
+            <p>Completá estos campos únicamente si deseás actualizar tu contraseña actual.</p>
+          </div>
+        </div>
+
+        <div class="fields-grid-2">
+          <div class="form-field">
+            <label for="password">Nueva contraseña</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              autocomplete="new-password"
+              placeholder="••••••••"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="repeatPassword">Confirmar nueva contraseña</label>
+            <input
+              id="repeatPassword"
+              type="password"
+              formControlName="repeatPassword"
+              autocomplete="new-password"
+              placeholder="••••••••"
+              class="form-input"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions Bar -->
+      <div class="form-actions-bar">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancel()"
+          [disabled]="loading"
+        >
+          Descartar
         </button>
-        <button type="submit" class="btn-primary">Guardar cambios</button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading"
+        >
+          @if (loading) {
+            <span>Guardando...</span>
+          } @else {
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            <span>Guardar cambios</span>
+          }
+        </button>
       </div>
     </form>
   </div>

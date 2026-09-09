@@ -3,13 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../types/user';
 import { UserService } from '../services/user.service';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule, NgIf } from '@angular/common';
 import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, RouterLink, CommonModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
@@ -20,7 +19,7 @@ export class ProfileComponent implements OnInit {
 
   loading = false;
 
-  user!: User;
+  user: User | null = null;
 
   formProfile: FormGroup = this.fb.group({
     firstName: [''],
@@ -63,6 +62,8 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
+    if (!this.user) return;
+
     const { firstName, lastName, address, gender, password, repeatPassword } =
       this.formProfile.getRawValue();
 
@@ -96,6 +97,8 @@ export class ProfileComponent implements OnInit {
   }
 
   cancel() {
+    if (!this.user) return;
+
     this.formProfile.patchValue({
       firstName: this.user.firstName,
       lastName: this.user.lastName,

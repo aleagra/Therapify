@@ -8,9 +8,8 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { User } from '../../types/user';
-import { NgFor, NgIf } from '@angular/common';
 import { UserRequestDTO } from '../../types/UserRequestDTO';
 import { toast } from 'ngx-sonner';
 
@@ -18,7 +17,7 @@ type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
 @Component({
   selector: 'app-profile-doctor',
-  imports: [ReactiveFormsModule, NgIf, NgFor],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './profile-doctor.component.html',
   styleUrls: ['./profile-doctor.component.css'],
 })
