@@ -1,83 +1,130 @@
 .footer {
   width: 100%;
-  background: #ffffff;
-  border-top: 1px solid #e6e8ec;
-  font-family: "Poppins", sans-serif;
-  color: #20252f;
-  padding: 2rem 5rem;
+  background-color: var(--c-primary-900);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 64px 24px 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 48px;
 }
 
-.footer-left,
-.footer-center,
-.footer-right {
+.footer-col {
   display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: 0.9rem;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.footer-left strong {
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: brightness(1.2);
+}
+
+.footer-title {
+  font-size: 1.25rem;
+  font-weight: 750;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.footer-desc {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  max-width: 380px;
+}
+
+.copyright {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+}
+
+.col-title {
+  font-size: 0.9375rem;
   font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
 }
 
-.footer-left span {
-  color: #6b7280;
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.footer-center span:first-child {
-  font-weight: 600;
-  color: #374151;
-}
-
-.footer-right a {
-  color: #007ab6;
+.footer-links a {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9375rem;
   text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.team-names {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+}
+
+.team-names strong {
+  color: #ffffff;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 18px;
+  border-radius: var(--r-sm);
+  font-size: 0.875rem;
   font-weight: 600;
-  transition: opacity 0.2s ease;
+  width: fit-content;
+  transition: all var(--t-base);
+  margin-top: 8px;
+  text-decoration: none;
 }
 
-.footer-right a:hover {
-  opacity: 0.7;
+.github-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .footer {
-    padding: 1.6rem 1.2rem;
+    padding: 48px 20px 36px;
   }
 
   .footer-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.4rem;
+    grid-template-columns: 1fr;
+    gap: 36px;
   }
 
-  .footer-left,
-  .footer-center,
-  .footer-right {
-    flex-direction: column;
-    gap: 0.3rem;
-    text-align: center;
-  }
-
-  .footer-left span {
-    font-size: 0.82rem;
-  }
-
-  .footer-center span:first-child {
-    margin-bottom: 0.2rem;
-  }
-
-  .footer-right a {
-    display: inline-block;
-    margin-top: 0.3rem;
+  .footer-desc {
+    max-width: 100%;
   }
 }
