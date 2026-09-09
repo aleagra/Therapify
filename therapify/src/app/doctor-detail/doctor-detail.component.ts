@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AsyncPipe } from '@angular/common';
 import { CalendarComponent } from '../calendar/calendar.component';
@@ -8,7 +8,7 @@ import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
 @Component({
   selector: 'app-doctor-detail',
   standalone: true,
-  imports: [AsyncPipe, CalendarComponent],
+  imports: [AsyncPipe, CalendarComponent, RouterLink],
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css'],
 })

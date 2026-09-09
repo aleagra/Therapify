@@ -53,11 +53,13 @@
         <mat-button-toggle-group
           formControlName="hora"
           class="horarios-grid"
+          hideSingleSelectionIndicator="true"
         >
           @for (hora of horariosDisponibles; track hora) {
             <mat-button-toggle
               [value]="hora"
               class="slot-toggle"
+              hideSingleSelectionIndicator="true"
             >
               <span class="slot-time">{{ hora }}</span>
             </mat-button-toggle>
@@ -101,7 +103,7 @@
             <strong class="total-price tabular-nums">
               {{
                 consultationPrice && consultationPrice > 0
-                  ? (consultationPrice | currency: "ARS " : "symbol" : "1.0-0")
+                  ? (consultationPrice | currency: "ARS" : "symbol" : "1.0-0")
                   : "A convenir"
               }}
             </strong>
@@ -113,7 +115,6 @@
       </div>
 
       <button
-        mat-raised-button
         class="confirmar-btn btn-primary"
         type="submit"
         [disabled]="citaForm.invalid || reservaConfirmada"

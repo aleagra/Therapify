@@ -30,6 +30,12 @@ export class ProfileComponent implements OnInit {
     repeatPassword: [''],
   });
 
+  getInitials(first?: string, last?: string): string {
+    const f = first ? first.trim().charAt(0).toUpperCase() : '';
+    const l = last ? last.trim().charAt(0).toUpperCase() : '';
+    return f + l || 'U';
+  }
+
   ngOnInit() {
     const loggedUser = this.userService.getLoggedUser();
     if (!loggedUser) {

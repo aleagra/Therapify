@@ -14,14 +14,25 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--c-ink-500);
-  font-size: 0.9375rem;
+  padding: 8px 18px;
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-full);
+  color: var(--c-ink-700);
+  font-size: 0.875rem;
   font-weight: 600;
-  transition: color var(--t-fast);
+  box-shadow: var(--sh-1);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  text-decoration: none;
 }
 
 .back-link:hover {
-  color: var(--c-primary-600);
+  background-color: var(--c-surface-alt);
+  border-color: var(--c-primary-500);
+  color: var(--c-primary-700);
+  transform: translateX(-2px);
+  box-shadow: var(--sh-2);
 }
 
 .profile-layout {
@@ -136,19 +147,18 @@
 .schedule-table {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background: var(--c-surface-alt);
-  padding: 16px;
-  border-radius: var(--r-md);
-  border: 1px solid var(--c-line);
+  gap: 12px;
+  background: transparent;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--c-line);
 }
 
 .schedule-row {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(207, 218, 229, 0.5);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--c-line);
 }
 
 .schedule-row:last-child {
@@ -156,9 +166,9 @@
 }
 
 .day-col {
-  width: 90px;
+  width: 96px;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--c-ink-900);
   flex-shrink: 0;
 }
@@ -166,17 +176,18 @@
 .hours-col {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .hour-token {
   font-size: 0.8125rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--c-ink-700);
-  background: var(--c-surface);
-  padding: 2px 8px;
-  border-radius: var(--r-xs);
-  border: 1px solid var(--c-line);
+  color: var(--c-primary-800);
+  background: var(--c-primary-050);
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 .booking-sidebar {

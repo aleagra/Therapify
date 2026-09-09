@@ -72,45 +72,63 @@
   border-style: solid;
 }
 
-/* Grilla de horarios con botones de 56px de alto */
+/* Grilla de horarios */
 .horarios-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 8px !important;
-  background: none !important;
+  gap: 10px !important;
+  background: transparent !important;
   border: none !important;
   width: 100% !important;
 }
 
 ::ng-deep .slot-toggle {
-  border: 1px solid var(--c-line-strong) !important;
-  border-radius: var(--r-sm) !important;
-  background: var(--c-surface) !important;
-  height: 52px !important;
+  --mat-standard-button-toggle-shape: var(--r-md) !important;
+  --mat-standard-button-toggle-background-color: #ffffff !important;
+  --mat-standard-button-toggle-text-color: var(--c-ink-900) !important;
+  --mat-standard-button-toggle-selected-state-background-color: var(--c-primary-600) !important;
+  --mat-standard-button-toggle-selected-state-text-color: #ffffff !important;
+  --mat-standard-button-toggle-divider-color: transparent !important;
+  border: 1.5px solid var(--c-line-strong) !important;
+  border-radius: var(--r-md) !important;
+  background-color: #ffffff !important;
+  height: 48px !important;
+  transition: all var(--t-fast) !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .slot-toggle .mat-button-toggle-button {
+  height: 100% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: all var(--t-fast) !important;
+  padding: 0 !important;
 }
 
 ::ng-deep .slot-toggle:hover:not(.mat-button-toggle-disabled) {
-  background: var(--c-primary-050) !important;
-  border-color: var(--c-primary-400) !important;
+  border-color: var(--c-primary-500) !important;
+  background-color: var(--c-primary-050) !important;
 }
 
 ::ng-deep .slot-toggle.mat-button-toggle-checked {
-  background: var(--c-primary-600) !important;
+  background-color: var(--c-primary-600) !important;
   border-color: var(--c-primary-600) !important;
   color: #ffffff !important;
-  box-shadow: var(--sh-1) !important;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25) !important;
 }
 
-::ng-deep .slot-toggle.mat-button-toggle-checked .slot-time {
+::ng-deep .slot-toggle.mat-button-toggle-checked .slot-time,
+::ng-deep .slot-toggle.mat-button-toggle-checked .mat-button-toggle-label-content {
   color: #ffffff !important;
   font-weight: 700 !important;
 }
 
+::ng-deep .slot-toggle .mat-pseudo-checkbox {
+  display: none !important;
+}
+
 .slot-time {
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
   font-size: 0.9375rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -124,17 +142,19 @@
 }
 
 .resumen-card {
-  background: var(--c-surface-alt);
-  border: 1px solid var(--c-line);
+  background: #ffffff;
+  border: 1px solid var(--c-border);
   border-radius: var(--r-md);
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .resumen-top h4 {
-  font-size: 0.9375rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
   font-weight: 700;
   color: var(--c-ink-900);
   margin: 0;
@@ -200,9 +220,11 @@
 .confirmar-btn {
   width: 100%;
   height: 48px;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif !important;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: var(--r-sm);
+  letter-spacing: -0.01em;
+  border-radius: var(--r-md);
   display: flex;
   align-items: center;
   justify-content: center;
