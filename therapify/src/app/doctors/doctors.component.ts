@@ -109,6 +109,24 @@ export class DoctorsComponent {
       });
   });
 
+  hasActiveFilters = computed(() => {
+    return !!(
+      this.searchText() ||
+      this.selectedDay() ||
+      this.maxDistance() !== '' ||
+      this.selectedGender() ||
+      this.selectedSpecialty()
+    );
+  });
+
+  clearFilters() {
+    this.searchText.set('');
+    this.selectedDay.set('');
+    this.maxDistance.set('');
+    this.selectedGender.set('');
+    this.selectedSpecialty.set('');
+  }
+
   setDay(day: string) {
     this.selectedDay.set(day === this.selectedDay() ? '' : day);
   }

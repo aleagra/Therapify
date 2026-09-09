@@ -1,37 +1,54 @@
-<div class="doctor-card">
-  <div class="doctor-header">
-    <div class="doctor-name">
-      <h3>{{ doctor().firstName }} {{ doctor().lastName }}</h3>
-      <span class="distance">📍 {{ doctor().distanceKm?.toFixed(1) }} km</span>
+<div class="doctor-card card card-interactive" [class.no-slots]="!hasAvailableDays">
+  <div class="card-top">
+    <div class="profile-header">
+      <div class="avatar-circle">
+        {{ initials }}
+      </div>
+      <div class="name-block">
+        <h3 class="doctor-name">{{ doctor().firstName }} {{ doctor().lastName }}</h3>
+        <span class="specialty-badge">{{ specialtyFormatted | titlecase }}</span>
+      </div>
     </div>
-    <p class="address">{{ doctor().address }}</p>
-  </div>
 
-  <div class="doctor-body">
-    <p class="section-title">Días de atención</p>
+    <div class="meta-row" *ngIf="doctor().address || doctor().distanceKm != null">
+      <span class="location" *ngIf="doctor().address">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <span class="address-text">{{ doctor().address }}</span>
+      </span>
+      <span class="distance" *ngIf="doctor().distanceKm != null">
+        · {{ doctor().distanceKm?.toFixed(1) }} km
+      </span>
+    </div>
 
-    <div class="schedule">
-      @if (hasAvailableDays) {
-        @for (dia of doctor().schedule | keyvalue; track dia.key) {
-          @if (dia.value) {
-            <span class="chip">
-              {{ getDayLabel(dia.key) }}
-            </span>
+    <p class="description">
+      {{ doctor().description || 'Profesional de la salud mental con dedicación al bienestar integral de sus pacientes.' }}
+    </p>
+
+    <div class="schedule-section">
+      <span class="schedule-title">Días de atención</span>
+      <div class="schedule-chips">
+        @if (hasAvailableDays) {
+          @for (dia of doctor().schedule | keyvalue; track dia.key) {
+            @if (dia.value) {
+              <span class="chip-day">{{ getDayLabel(dia.key) }}</span>
+            }
           }
+        } @else {
+          <span class="chip-warning">Sin turnos disponibles</span>
         }
-      } @else {
-        <span class="chip no-availability">No hay turnos disponibles</span>
-      }
+      </div>
     </div>
-
-    <p class="description">{{ doctor().description }}</p>
   </div>
 
   <div class="doctor-footer">
-    <button (click)="goToReviews(doctor().id)" class="btn-secondary">
+    <button type="button" (click)="goToReviews(doctor().id)" class="btn-ghost">
       Ver reseñas
     </button>
-
-    <button (click)="onClick()" class="btn-primary">Reservar turno</button>
+    <button type="button" (click)="onClick()" class="btn-primary">
+      Reservar turno
+    </button>
   </div>
 </div>
