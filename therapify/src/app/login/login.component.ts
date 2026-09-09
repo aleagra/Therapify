@@ -17,6 +17,7 @@ export class LoginComponent {
   router = inject(Router);
 
   loading = false;
+  showPassword = false;
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],

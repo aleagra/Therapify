@@ -1,225 +1,297 @@
 @if (!accountCreated) {
-  <div class="auth-page-wrapper">
-    <div class="auth-card card">
-      <div class="auth-header">
-        <img src="/assets/logo.png" alt="Therapify" class="auth-logo" />
-        <h1 class="auth-title">Creá tu cuenta</h1>
-        <p class="auth-subtitle">
-          Unite a la comunidad de Therapify para gestionar tu bienestar
-        </p>
+  <div class="register-page-root">
+    <div class="register-container">
+      <!-- Header con rail de página 96px: Registro 01 -->
+      <header class="header-block rail-layout-96">
+        <div class="header-rail">
+          <span class="rail-kicker">Registro</span>
+          <span class="rail-number">01</span>
+        </div>
+        <div class="header-body">
+          <h1 class="page-title">Creá tu cuenta</h1>
+          <p class="page-subtitle">Unite a la comunidad de Therapify para gestionar tu bienestar mental.</p>
+        </div>
+      </header>
 
-        <!-- Indicador visual de pasos -->
-        <div class="stepper-indicator">
-          <div class="step-item" [class.active]="step >= 1" [class.current]="step === 1">
-            <span class="step-num">1</span>
-            <span class="step-text">Datos</span>
-          </div>
-          <div class="step-line" [class.active]="step >= 2"></div>
-          <div class="step-item" [class.active]="step >= 2" [class.current]="step === 2">
-            <span class="step-num">2</span>
-            <span class="step-text">Seguridad</span>
-          </div>
-          <div class="step-line" [class.active]="step >= 3"></div>
-          <div class="step-item" [class.active]="step >= 3" [class.current]="step === 3">
-            <span class="step-num">3</span>
-            <span class="step-text">Rol</span>
+      <div class="register-main-layout rail-layout-96">
+        <div class="content-rail-empty"></div>
+        <div class="content-body-wrap">
+          <div class="wizard-surface surface-card">
+            <!-- Stepper con riel de wizard de 76px -->
+            <div class="wizard-stepper-header">
+              <div class="wizard-step-indicator" [class.is-done]="step > 1" [class.is-active]="step === 1">
+                <div class="step-rail-badge">
+                  @if (step > 1) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  } @else {
+                    <span>01</span>
+                  }
+                </div>
+                <span class="step-name-label">Datos personales</span>
+              </div>
+
+              <div class="wizard-step-line" [class.is-done]="step > 1"></div>
+
+              <div class="wizard-step-indicator" [class.is-done]="step > 2" [class.is-active]="step === 2">
+                <div class="step-rail-badge">
+                  @if (step > 2) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  } @else {
+                    <span>02</span>
+                  }
+                </div>
+                <span class="step-name-label">Seguridad</span>
+              </div>
+
+              <div class="wizard-step-line" [class.is-done]="step > 2"></div>
+
+              <div class="wizard-step-indicator" [class.is-done]="accountCreated" [class.is-active]="step === 3">
+                <div class="step-rail-badge">
+                  <span>03</span>
+                </div>
+                <span class="step-name-label">Tipo de cuenta</span>
+              </div>
+            </div>
+
+            <!-- Paso 1: Datos personales -->
+            @if (step === 1) {
+              <form [formGroup]="form" class="wizard-form-step">
+                <div class="step-intro-text">
+                  <h3 class="step-title">1. ¿Cómo te llamás?</h3>
+                  <p class="step-desc">Completá tus datos para que podamos identificarte en la plataforma.</p>
+                </div>
+
+                <div class="fields-grid-2">
+                  <div class="form-field">
+                    <label for="firstName" class="field-label">Nombre</label>
+                    <input
+                      id="firstName"
+                      formControlName="firstName"
+                      placeholder="Ej. Alicia"
+                      class="wizard-input"
+                      [class.invalid]="getControl('firstName').invalid && getControl('firstName').touched"
+                    />
+                    <small
+                      class="error-msg"
+                      [class.visible]="getControl('firstName').invalid && getControl('firstName').touched"
+                    >
+                      Debe tener al menos 3 caracteres
+                    </small>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="lastName" class="field-label">Apellido</label>
+                    <input
+                      id="lastName"
+                      formControlName="lastName"
+                      placeholder="Ej. Vikand"
+                      class="wizard-input"
+                      [class.invalid]="getControl('lastName').invalid && getControl('lastName').touched"
+                    />
+                    <small
+                      class="error-msg"
+                      [class.visible]="getControl('lastName').invalid && getControl('lastName').touched"
+                    >
+                      Debe tener al menos 3 caracteres
+                    </small>
+                  </div>
+
+                  <div class="form-field full-width">
+                    <label for="email" class="field-label">Correo electrónico</label>
+                    <input
+                      id="email"
+                      type="email"
+                      formControlName="email"
+                      placeholder="ejemplo@correo.com"
+                      class="wizard-input"
+                      [class.invalid]="getControl('email').invalid && getControl('email').touched"
+                    />
+                    <small
+                      class="error-msg"
+                      [class.visible]="getControl('email').invalid && getControl('email').touched"
+                    >
+                      Ingresá un correo válido
+                    </small>
+                  </div>
+                </div>
+
+                <div class="wizard-actions-row">
+                  <div></div>
+                  <button type="button" class="btn-wizard-next" (click)="nextStep()">
+                    <span>Continuar &rarr;</span>
+                  </button>
+                </div>
+              </form>
+            }
+
+            <!-- Paso 2: Seguridad -->
+            @if (step === 2) {
+              <form [formGroup]="form" class="wizard-form-step">
+                <div class="step-intro-text">
+                  <h3 class="step-title">2. Creá una contraseña segura</h3>
+                  <p class="step-desc">Asegurate de usar al menos 6 caracteres para proteger tu cuenta.</p>
+                </div>
+
+                <div class="fields-grid-2">
+                  <div class="form-field full-width">
+                    <label for="password" class="field-label">Contraseña</label>
+                    <input
+                      id="password"
+                      type="password"
+                      formControlName="password"
+                      placeholder="Mínimo 6 caracteres"
+                      class="wizard-input"
+                      [class.invalid]="getControl('password').invalid && getControl('password').touched"
+                    />
+                    <small
+                      class="error-msg"
+                      [class.visible]="getControl('password').invalid && getControl('password').touched"
+                    >
+                      Mínimo 6 caracteres requeridos
+                    </small>
+                  </div>
+
+                  <div class="form-field full-width">
+                    <label for="confirmPassword" class="field-label">Confirmar contraseña</label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      formControlName="confirmPassword"
+                      placeholder="Repetí tu contraseña"
+                      class="wizard-input"
+                      [class.invalid]="getControl('confirmPassword').touched && getControl('confirmPassword').value !== getControl('password').value"
+                    />
+                    <small
+                      class="error-msg"
+                      [class.visible]="getControl('confirmPassword').touched && getControl('confirmPassword').value !== getControl('password').value"
+                    >
+                      Las contraseñas no coinciden
+                    </small>
+                  </div>
+                </div>
+
+                <div class="wizard-actions-row">
+                  <button type="button" class="btn-wizard-back" (click)="prevStep()">
+                    &larr; Atrás
+                  </button>
+                  <button type="button" class="btn-wizard-next" (click)="nextStep()">
+                    <span>Continuar &rarr;</span>
+                  </button>
+                </div>
+              </form>
+            }
+
+            <!-- Paso 3: Rol -->
+            @if (step === 3) {
+              <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wizard-form-step">
+                <div class="step-intro-text">
+                  <h3 class="step-title">3. ¿Cómo deseás usar Therapify?</h3>
+                  <p class="step-desc">Seleccioná tu rol en la plataforma para configurar tu experiencia.</p>
+                </div>
+
+                <div class="user-role-selection-cards">
+                  <button
+                    type="button"
+                    class="role-select-card"
+                    [class.is-selected]="userType === 'PACIENTE'"
+                    (click)="selectUserType('PACIENTE')"
+                  >
+                    <div class="role-icon-box">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                      </svg>
+                    </div>
+                    <div class="role-info-text">
+                      <strong class="role-title">Paciente</strong>
+                      <span class="role-caption">Busco atención psicológica y agendar turnos con especialistas</span>
+                    </div>
+                    <div class="role-radio-mark">
+                      <div class="radio-inner-dot"></div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="role-select-card"
+                    [class.is-selected]="userType === 'DOCTOR'"
+                    (click)="selectUserType('DOCTOR')"
+                  >
+                    <div class="role-icon-box">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                      </svg>
+                    </div>
+                    <div class="role-info-text">
+                      <strong class="role-title">Profesional de la salud</strong>
+                      <span class="role-caption">Soy terapeuta y deseo brindar consultas y gestionar mi agenda</span>
+                    </div>
+                    <div class="role-radio-mark">
+                      <div class="radio-inner-dot"></div>
+                    </div>
+                  </button>
+                </div>
+
+                <small
+                  class="error-msg"
+                  [class.visible]="getControl('userType').invalid && getControl('userType').touched"
+                >
+                  Seleccioná un tipo de cuenta para continuar
+                </small>
+
+                @if (errorMsg) {
+                  <div class="register-error-banner">
+                    {{ errorMsg }}
+                  </div>
+                }
+
+                <div class="wizard-actions-row">
+                  <button type="button" class="btn-wizard-back" (click)="prevStep()">
+                    &larr; Atrás
+                  </button>
+                  <button type="submit" class="btn-wizard-finish" [disabled]="loading || !userType">
+                    {{ loading ? "Creando cuenta..." : "Finalizar registro" }}
+                  </button>
+                </div>
+              </form>
+            }
+
+            <p class="switch-auth-text">
+              ¿Ya tenés una cuenta?
+              <a routerLink="/login" class="link-bold">Iniciá sesión acá</a>
+            </p>
           </div>
         </div>
       </div>
-
-      <!-- Paso 1: Datos Personales -->
-      @if (step === 1) {
-        <form [formGroup]="form" class="auth-form">
-          <div class="form-field">
-            <label for="firstName" class="field-label">Nombre</label>
-            <input
-              id="firstName"
-              formControlName="firstName"
-              placeholder="Ej. Alicia"
-              [class.invalid]="getControl('firstName').invalid && getControl('firstName').touched"
-            />
-            <small
-              class="error-msg"
-              [class.visible]="getControl('firstName').invalid && getControl('firstName').touched"
-            >
-              Debe tener al menos 3 caracteres
-            </small>
-          </div>
-
-          <div class="form-field">
-            <label for="lastName" class="field-label">Apellido</label>
-            <input
-              id="lastName"
-              formControlName="lastName"
-              placeholder="Ej. Vikand"
-              [class.invalid]="getControl('lastName').invalid && getControl('lastName').touched"
-            />
-            <small
-              class="error-msg"
-              [class.visible]="getControl('lastName').invalid && getControl('lastName').touched"
-            >
-              Debe tener al menos 3 caracteres
-            </small>
-          </div>
-
-          <div class="form-field">
-            <label for="email" class="field-label">Correo electrónico</label>
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="ejemplo@correo.com"
-              [class.invalid]="getControl('email').invalid && getControl('email').touched"
-            />
-            <small
-              class="error-msg"
-              [class.visible]="getControl('email').invalid && getControl('email').touched"
-            >
-              Ingresá un correo válido
-            </small>
-          </div>
-
-          <button type="button" class="btn-primary auth-submit-btn" (click)="nextStep()">
-            Continuar →
-          </button>
-        </form>
-      }
-
-      <!-- Paso 2: Contraseña -->
-      @if (step === 2) {
-        <form [formGroup]="form" class="auth-form">
-          <div class="form-field">
-            <label for="password" class="field-label">Contraseña</label>
-            <input
-              id="password"
-              type="password"
-              formControlName="password"
-              placeholder="Mínimo 6 caracteres"
-              [class.invalid]="getControl('password').invalid && getControl('password').touched"
-            />
-            <small
-              class="error-msg"
-              [class.visible]="getControl('password').invalid && getControl('password').touched"
-            >
-              Mínimo 6 caracteres
-            </small>
-          </div>
-
-          <div class="form-field">
-            <label for="confirmPassword" class="field-label">Confirmar contraseña</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              formControlName="confirmPassword"
-              placeholder="Repetí tu contraseña"
-              [class.invalid]="getControl('confirmPassword').touched && getControl('confirmPassword').value !== getControl('password').value"
-            />
-            <small
-              class="error-msg"
-              [class.visible]="getControl('confirmPassword').touched && getControl('confirmPassword').value !== getControl('password').value"
-            >
-              Las contraseñas no coinciden
-            </small>
-          </div>
-
-          <div class="actions-split">
-            <button type="button" class="btn-secondary" (click)="prevStep()">
-              ← Atrás
-            </button>
-            <button type="button" class="btn-primary" (click)="nextStep()">
-              Continuar →
-            </button>
-          </div>
-        </form>
-      }
-
-      <!-- Paso 3: Tipo de usuario -->
-      @if (step === 3) {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
-          <div class="form-field">
-            <label class="field-label">¿Cómo deseás usar Therapify?</label>
-
-            <div class="user-type-selector">
-              <button
-                type="button"
-                class="type-option-card"
-                [class.active]="userType === 'PACIENTE'"
-                (click)="selectUserType('PACIENTE')"
-              >
-                <div class="type-icon-circle">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-                <div class="type-info">
-                  <strong>Paciente</strong>
-                  <span>Busco atención psicológica y agendar turnos</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                class="type-option-card"
-                [class.active]="userType === 'DOCTOR'"
-                (click)="selectUserType('DOCTOR')"
-              >
-                <div class="type-icon-circle">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                  </svg>
-                </div>
-                <div class="type-info">
-                  <strong>Profesional</strong>
-                  <span>Soy terapeuta y quiero brindar consultas</span>
-                </div>
-              </button>
-            </div>
-
-            <small
-              class="error-msg"
-              [class.visible]="getControl('userType').invalid && getControl('userType').touched"
-            >
-              Seleccioná un tipo de cuenta
-            </small>
-          </div>
-
-          <div class="actions-split">
-            <button type="button" class="btn-secondary" (click)="prevStep()">
-              ← Atrás
-            </button>
-            <button type="submit" class="btn-primary">
-              Finalizar registro
-            </button>
-          </div>
-        </form>
-      }
-
-      <p class="switch-auth-text">
-        ¿Ya tenés una cuenta?
-        <a routerLink="/login">Iniciá sesión acá</a>
-      </p>
     </div>
   </div>
 }
 
 @if (accountCreated) {
-  <div class="auth-page-wrapper">
-    <div class="auth-card card success-card">
-      <div class="success-icon-circle">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
+  <div class="register-page-root">
+    <div class="register-container">
+      <div class="register-success-layout">
+        <div class="register-success-card surface-card">
+          <div class="success-icon-badge">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0f6e56" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h2 class="success-title">Revisá tu correo</h2>
+          <p class="success-desc">
+            Te enviamos un email de confirmación a tu casilla.
+            <br />
+            Hacé clic en el enlace para verificar tu cuenta e iniciar sesión en Therapify.
+          </p>
+          <a routerLink="/login" class="btn-goto-login">
+            Ir a iniciar sesión &rarr;
+          </a>
+        </div>
       </div>
-      <h2>Revisá tu correo</h2>
-      <p class="success-desc">
-        Te enviamos un email de confirmación a tu casilla.
-        <br />
-        Hacé clic en el enlace para verificar tu cuenta e iniciar sesión.
-      </p>
-      <a routerLink="/login" class="btn-primary" style="margin-top: 12px; width: 100%;">
-        Ir a iniciar sesión
-      </a>
     </div>
   </div>
 }

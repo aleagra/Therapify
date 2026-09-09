@@ -1,21 +1,45 @@
-<div class="not-found-container">
-  <main class="content card">
-    <img
-      src="/assets/not-found.png"
-      alt="Ilustración 404"
-      class="illustration"
-    />
-    <div class="text">
-      <h1>Esta página no está disponible</h1>
-      <p>
-        No te preocupes, a veces tomar el camino equivocado forma parte del
-        viaje. El enlace que buscás no existe o fue movido.
-      </p>
-    </div>
+<div class="not-found-page">
+  <div class="not-found-container">
+    <header class="header-block rail-layout-96">
+      <div class="header-rail">
+        <span class="rail-kicker">Error</span>
+        <span class="rail-number">404</span>
+      </div>
+      <div class="header-body">
+        <h1 class="page-title">Página no encontrada</h1>
+        <p class="page-subtitle">El recurso que intentás consultar no existe, cambió de dirección o no se encuentra disponible.</p>
+      </div>
+    </header>
 
-    <div class="buttons">
-      <a routerLink="/home" class="btn-primary">Volver al inicio</a>
-      <a routerLink="/doctors" class="btn-secondary">Buscar profesionales</a>
+    <div class="not-found-layout rail-layout-96">
+      <div class="content-rail-empty"></div>
+      <div class="content-body-wrap">
+        <div class="not-found-card surface-card">
+          <div class="not-found-illustration-wrap">
+            <div class="error-circle-cube">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0b5d8e" stroke-width="1.8">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+          </div>
+
+          <h2 class="card-headline">Esta página no está disponible</h2>
+          <p class="card-message">
+            No te preocupes, a veces tomar el camino equivocado forma parte del viaje. Podés regresar a la página principal o explorar nuestra red de profesionales de salud mental.
+          </p>
+
+          <div class="not-found-buttons-group">
+            <a routerLink="/home" class="btn-primary-action">
+              Volver al inicio
+            </a>
+            <a routerLink="/doctors" class="btn-secondary-action">
+              Buscar profesionales &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </main>
+  </div>
 </div>

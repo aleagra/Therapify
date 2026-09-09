@@ -1,125 +1,55 @@
-.auth-page-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 220px);
-  padding: 32px 16px;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 440px;
-  padding: 40px;
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-lg);
-  box-shadow: var(--sh-3);
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.auth-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-}
-
-.auth-logo {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  margin-bottom: 4px;
-}
-
-.auth-title {
-  font-size: 1.625rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  color: var(--c-ink-900);
-}
-
-.auth-subtitle {
-  font-size: 0.9375rem;
-  color: var(--c-ink-500);
-  line-height: 1.5;
-  max-width: 320px;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-label {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--c-ink-700);
-}
-
-.forgot-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -6px;
-}
-
-.forgot-link {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--c-primary-600);
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-.auth-submit-btn {
-  width: 100%;
-  height: 46px;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-top: 6px;
-}
-
-.switch-auth-text {
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--c-ink-500);
-  margin-top: 6px;
-}
-
-.switch-auth-text a {
-  font-weight: 600;
-  color: var(--c-primary-700);
-}
-
-.switch-auth-text a:hover {
-  text-decoration: underline;
-}
-
-.error-msg {
-  display: none;
-  color: var(--c-danger-600);
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.error-msg.visible {
-  display: block;
-}
-
-@media (max-width: 480px) {
-  .auth-card {
-    padding: 28px 20px;
-    border-radius: var(--r-md);
-  }
+:host{display:block;width:100%}
+.login-split-page{min-height:calc(100vh - 130px);background:#f4f7fa;display:flex;align-items:stretch}
+.login-split-container{width:100%;display:grid;grid-template-columns:460px 1fr}
+.login-brand-banner{background:linear-gradient(180deg,#083c5c 0%,#062c45 100%);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;position:relative;overflow:hidden}
+.login-brand-banner::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.15) 0%,transparent 70%);pointer-events:none}
+.banner-top-mark{display:flex;align-items:center;gap:10px}
+.brand-mark-cube{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
+.banner-brand-name{font-size:18px;font-weight:750;letter-spacing:-.02em;color:#fff}
+.banner-center-content{margin:40px 0}
+.banner-ribbon-accent{width:36px;height:4px;border-radius:2px;background:#2dd4bf;margin-bottom:20px}
+.banner-headline{margin:0 0 14px;font-size:26px;font-weight:750;line-height:1.25;letter-spacing:-.02em;color:#fff}
+.banner-subtext{margin:0 0 28px;font-size:14.5px;line-height:1.6;color:#a8c4db}
+.banner-features-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.banner-feature-item{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:500;color:#e1f0fa}
+.banner-footer-quote{padding:18px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px}
+.quote-stars{font-size:13px;letter-spacing:2px;color:#2dd4bf;display:block;margin-bottom:6px}
+.quote-text{margin:0 0 8px;font-size:13px;line-height:1.55;color:#e1f0fa;font-style:italic}
+.quote-author{font-size:11.5px;color:#8ba0b5}
+.login-form-area{display:flex;align-items:center;justify-content:center;padding:48px 40px}
+.login-form-inner{width:100%;max-width:540px}
+.header-block{margin-bottom:26px}
+.header-rail{padding:4px 16px 8px 0}
+.rail-kicker{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#5a6e85}
+.rail-number{font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:#c3cedb;margin-top:2px}
+.header-body,.content-body-wrap{padding-left:28px}
+.content-body-wrap{min-width:0}
+.page-title{margin:0 0 6px;font-size:32px;font-weight:700;line-height:1.15;letter-spacing:-.02em;color:#16222c}
+.page-subtitle{margin:0;font-size:14px;line-height:1.55;color:#5a6e85}
+.login-content-layout .content-rail-empty{border-right:1px solid #dfe6ee}
+.login-form{display:flex;flex-direction:column;gap:18px;max-width:400px}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.field-label{font-size:12.5px;font-weight:600;color:#3d4e61}
+.label-with-action{display:flex;align-items:baseline;justify-content:space-between}
+.forgot-link{font-size:12px;font-weight:600;color:#0b5d8e;text-decoration:none}
+.forgot-link:hover{text-decoration:underline}
+.login-input{height:44px;padding:0 14px;border:1px solid #c3cedb;border-radius:8px;background:#fff;font-size:14px;color:#16222c;outline:none;box-sizing:border-box}
+.login-input:focus{border-color:#0b5d8e;box-shadow:0 0 0 3px rgba(11,93,142,.15)}
+.login-input.invalid{border-color:#dc2626}
+.password-input-wrapper{position:relative;display:flex;align-items:center}
+.password-input-wrapper .login-input{width:100%;padding-right:40px}
+.password-toggle-btn{position:absolute;right:8px;background:none;border:none;color:#5a6e85;cursor:pointer;display:flex;align-items:center;padding:4px}
+.error-msg{display:none;color:#dc2626;font-size:11.5px;font-weight:500}
+.error-msg.visible{display:block}
+.btn-submit-login{height:44px;background:#0b5d8e;color:#fff;border:none;border-radius:8px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:4px}
+.btn-submit-login:hover:not(:disabled){background:#094870}
+.btn-submit-login:disabled{background:#eaeff5;color:#8ba0b5;cursor:not-allowed}
+.switch-auth-text{text-align:center;font-size:13px;color:#5a6e85;margin-top:6px}
+.link-bold{font-weight:700;color:#0b5d8e;text-decoration:none}
+.link-bold:hover{text-decoration:underline}
+@media (max-width:960px){
+.login-split-container{grid-template-columns:1fr}
+.login-brand-banner{display:none}
+.login-form-area{padding:32px 16px}
+.header-body,.content-body-wrap{padding-left:16px}
 }
