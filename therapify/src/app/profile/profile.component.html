@@ -1,6 +1,6 @@
 <div class="profile-page-wrapper">
   <div class="profile-layout-1200">
-    <!-- Sidebar: Resumen del Usuario (~280px) -->
+    <!-- Sidebar: Resumen del Usuario y Accesos -->
     <aside class="profile-sidebar">
       <div class="card profile-user-card">
         <div class="user-avatar-circle">
@@ -29,7 +29,7 @@
                 <line x1="8" y1="2" x2="8" y2="6"/>
                 <line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
-              <span>Agenda médica &rarr;</span>
+              <span>Configurar agenda médica &rarr;</span>
             </a>
           </div>
         }
@@ -53,15 +53,24 @@
       </div>
     </aside>
 
-    <!-- Main: Formulario en 2 Columnas Horizontales sin Scroll (~890px) -->
+    <!-- Main Column: Formularios -->
     <main class="profile-main-content">
       <form
         [formGroup]="formProfile"
         (ngSubmit)="onSubmitProfile()"
-        class="profile-form-grid"
+        class="profile-form"
       >
-        <!-- Columna 1: Datos Personales (~510px) -->
-        <section class="card form-column-card">
+        <!-- Header del Formulario -->
+        <div class="card profile-header-banner">
+          <div class="header-titles">
+            <span class="badge-role">Configuración de cuenta</span>
+            <h1>Información personal</h1>
+            <p>Gestioná tus datos personales, domicilio y credenciales de acceso a la plataforma.</p>
+          </div>
+        </div>
+
+        <!-- Sección 1: Datos Básicos -->
+        <section class="card form-section-card">
           <div class="section-header-row">
             <div class="section-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -71,7 +80,7 @@
             </div>
             <div>
               <h3>Datos básicos</h3>
-              <p>Identificación personal en Therapify.</p>
+              <p>Información que identifica tu cuenta en Therapify.</p>
             </div>
           </div>
 
@@ -105,16 +114,19 @@
             <div class="field-label-row">
               <label for="address">Dirección</label>
               @if (user?.userType === 'DOCTOR') {
-                <span class="consultation-tag">Consultorio</span>
+                <span class="consultation-tag">Requerida para consultorio</span>
               }
             </div>
             <input
               id="address"
               type="text"
               formControlName="address"
-              placeholder="Ej: Av. Santa Fe 2450, CABA"
+              placeholder="Ej: Av. Santa Fe 2450, Piso 4, CABA"
               class="form-input"
             />
+            @if (user?.userType === 'DOCTOR') {
+              <span class="field-hint">Esta dirección será visible para los pacientes que agenden turnos presenciales con vos.</span>
+            }
           </div>
 
           <div class="form-field full-width">
@@ -141,8 +153,8 @@
           </div>
         </section>
 
-        <!-- Columna 2: Seguridad y Contraseña (~360px) -->
-        <section class="card form-column-card security-column">
+        <!-- Sección 2: Seguridad y Contraseña -->
+        <section class="card form-section-card">
           <div class="section-header-row">
             <div class="section-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -151,12 +163,12 @@
               </svg>
             </div>
             <div>
-              <h3>Seguridad</h3>
-              <p>Cambio de contraseña (opcional).</p>
+              <h3>Seguridad de la cuenta</h3>
+              <p>Completá estos campos únicamente si deseás actualizar tu contraseña actual.</p>
             </div>
           </div>
 
-          <div class="security-fields">
+          <div class="fields-grid-2">
             <div class="form-field">
               <label for="password">Nueva contraseña</label>
               <input
@@ -170,7 +182,7 @@
             </div>
 
             <div class="form-field">
-              <label for="repeatPassword">Confirmar contraseña</label>
+              <label for="repeatPassword">Confirmar nueva contraseña</label>
               <input
                 id="repeatPassword"
                 type="password"
@@ -180,41 +192,37 @@
                 class="form-input"
               />
             </div>
-
-            <p class="security-help-note">
-              Dejá estos campos vacíos si deseás mantener tu contraseña actual.
-            </p>
-          </div>
-
-          <!-- Acciones integradas -->
-          <div class="actions-column-footer">
-            <button
-              type="submit"
-              class="btn btn-primary btn-full"
-              [disabled]="loading"
-            >
-              @if (loading) {
-                <span>Guardando...</span>
-              } @else {
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                  <polyline points="17 21 17 13 7 13 7 21"/>
-                  <polyline points="7 3 7 8 15 8"/>
-                </svg>
-                <span>Guardar cambios</span>
-              }
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-secondary btn-full"
-              (click)="cancel()"
-              [disabled]="loading"
-            >
-              Descartar
-            </button>
           </div>
         </section>
+
+        <!-- Barra de Acciones -->
+        <div class="form-actions-bar">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancel()"
+            [disabled]="loading"
+          >
+            Descartar cambios
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading"
+          >
+            @if (loading) {
+              <span>Guardando...</span>
+            } @else {
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              <span>Guardar cambios</span>
+            }
+          </button>
+        </div>
       </form>
     </main>
   </div>
