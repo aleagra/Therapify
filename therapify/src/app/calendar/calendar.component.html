@@ -1,140 +1,189 @@
 <form
-  class="agendar-container card"
+  class="booking-panel-card surface-card"
   [formGroup]="citaForm"
   (ngSubmit)="confirmarReserva()"
 >
-  <div class="calendar-step-box">
-    <div class="step-header">
-      <h3 class="step-title">Elegir fecha y horario</h3>
-      <p class="step-subtitle">Seleccioná un día hábil disponible en el calendario</p>
+  <!-- Top Header con Kicker y Precio -->
+  <div class="booking-card-header">
+    <div class="header-text-block">
+      <span class="booking-kicker">Reservar</span>
+      <h3 class="booking-title">Elegí fecha y horario</h3>
+    </div>
+    <div class="price-block">
+      <div class="price-value tabular-nums">{{ formattedPrice }}</div>
+      @if (consultationPrice && consultationPrice > 0) {
+        <span class="price-caption">por sesión</span>
+      }
+    </div>
+  </div>
+
+  <!-- Calendario Mensual -->
+  <div class="calendar-section-pad">
+    <div class="month-navigation-row">
+      <button
+        type="button"
+        class="nav-arrow-btn"
+        [disabled]="!canGoPrevMonth"
+        (click)="prevMonth()"
+        aria-label="Mes anterior"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <span class="current-month-label">{{ currentMonthLabel }}</span>
+
+      <button
+        type="button"
+        class="nav-arrow-btn"
+        (click)="nextMonth()"
+        aria-label="Mes siguiente"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
     </div>
 
-    <mat-form-field appearance="outline" class="full-width date-field">
-      <mat-label>Fecha de la sesión</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        formControlName="fecha"
-        [min]="minDate"
-        [matDatepickerFilter]="filtroDeDias"
-        (dateChange)="onFechaSeleccionada($event.value)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    <!-- Días de la Semana -->
+    <div class="weekdays-grid-row">
+      @for (d of weekDays; track $index) {
+        <span class="weekday-abbr">{{ d }}</span>
+      }
+    </div>
 
-    <div class="horarios-block">
-      <div class="slot-header">
-        <label class="slot-label">Horarios disponibles</label>
-        @if (horariosDisponibles.length) {
-          <span class="badge badge-accent">{{ horariosDisponibles.length }} libres</span>
+    <!-- Celdas del Calendario -->
+    <div class="days-matrix-grid">
+      @for (day of calendarDays; track day.date.toISOString()) {
+        <button
+          type="button"
+          class="calendar-day-cell"
+          [class.is-today]="day.isToday"
+          [class.is-selected]="day.isSelected"
+          [class.is-disabled]="!day.isEnabled"
+          [class.is-other-month]="!day.isCurrentMonth"
+          [disabled]="!day.isEnabled"
+          (click)="selectDate(day)"
+          [attr.aria-label]="day.date | date:'fullDate'"
+        >
+          <span class="day-cell-number">{{ day.dayNumber }}</span>
+          <span class="day-status-dot" [class.dot-active]="day.isEnabled && !day.isSelected"></span>
+        </button>
+      }
+    </div>
+
+    <!-- Leyenda de colores -->
+    <div class="calendar-legend-line">
+      <span class="legend-item">
+        <span class="legend-dot-teal"></span>
+        <span>Con turnos</span>
+      </span>
+      <span class="legend-item">
+        <span class="legend-dot-blue"></span>
+        <span>Seleccionado</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Horarios Disponibles -->
+  <div class="slots-section-wrapper">
+    <div class="slots-header-line">
+      <span class="slots-kicker">
+        @if (citaForm.get('fecha')?.value) {
+          Horarios · {{ citaForm.get('fecha')?.value | date:'EEEE d':'':'es-AR' }}
+        } @else {
+          Horarios
         }
-      </div>
+      </span>
+      @if (horariosDisponibles.length && !isLoadingSlots && !isInitialLoading) {
+        <span class="slots-count-caption">{{ horariosDisponibles.length }} disponibles</span>
+      }
+    </div>
 
-      @if (!citaForm.get('fecha')?.value) {
-        <div class="hint-box">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="slots-interactive-zone">
+      @if (isInitialLoading || (isLoadingSlots && showSlotsSkeleton)) {
+        <div class="slots-skeleton-matrix" aria-busy="true">
+          @for (s of [1, 2, 3, 4, 5, 6, 7, 8]; track s) {
+            <app-skeleton height="38px" radius="8px"></app-skeleton>
+          }
+        </div>
+      } @else if (!citaForm.get('fecha')?.value) {
+        <div class="slot-instruction-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <span>Elegí un día en el calendario de arriba para ver turnos</span>
+          <span>Elegí un día disponible en el calendario</span>
         </div>
-      }
-
-      @if (citaForm.get('fecha')?.value && (!horariosDisponibles || horariosDisponibles.length === 0)) {
-        <div class="hint-box warning">
-          No hay turnos disponibles para la fecha elegida. Probá seleccionando otro día.
+      } @else if (!horariosDisponibles || horariosDisponibles.length === 0) {
+        <div class="slot-empty-notice">
+          Sin turnos libres para esta fecha. Probá otro día habilitado.
         </div>
-      }
-
-      @if (horariosDisponibles.length) {
-        <mat-button-toggle-group
-          formControlName="hora"
-          class="horarios-grid"
-          hideSingleSelectionIndicator="true"
-        >
+      } @else {
+        <div class="slots-options-matrix">
           @for (hora of horariosDisponibles; track hora) {
-            <mat-button-toggle
-              [value]="hora"
-              class="slot-toggle"
-              hideSingleSelectionIndicator="true"
+            <button
+              type="button"
+              class="slot-choice-btn"
+              [class.is-selected]="citaForm.get('hora')?.value === hora"
+              (click)="selectSlot(hora)"
             >
-              <span class="slot-time">{{ hora }}</span>
-            </mat-button-toggle>
+              {{ hora }}
+            </button>
           }
-        </mat-button-toggle-group>
+        </div>
       }
     </div>
   </div>
 
-  <div class="resumen-container">
-    <div class="resumen-card">
-      <div class="resumen-top">
-        <h4>Resumen de la reserva</h4>
-      </div>
+  <!-- Resumen de Reserva — Nivel 2 Hundida -->
+  <div class="summary-sunken-container surface-sunken">
+    <div class="summary-kicker">Resumen</div>
+    <div class="summary-details-grid">
+      <span class="summary-label">Fecha</span>
+      <span class="summary-val">
+        {{ (citaForm.get('fecha')?.value | date:'EEEE d \'de\' MMMM':'':'es-AR') || '—' }}
+      </span>
 
-      <div class="resumen-rows">
-        <div class="fila">
-          <span class="row-label">Fecha</span>
-          <strong class="row-value tabular-nums">
-            {{ (citaForm.get("fecha")?.value | date: "mediumDate") || "—" }}
-          </strong>
-        </div>
+      <span class="summary-label">Horario</span>
+      <span class="summary-val">
+        {{ citaForm.get('hora')?.value ? citaForm.get('hora')?.value + ' - ' + calcularFin(citaForm.get('hora')?.value) : '—' }}
+      </span>
 
-        <div class="fila">
-          <span class="row-label">Horario</span>
-          <strong class="row-value tabular-nums">
-            {{ citaForm.get("hora")?.value ? citaForm.get("hora")?.value + " hs" : "—" }}
-          </strong>
-        </div>
-
-        <div class="fila">
-          <span class="row-label">Modalidad</span>
-          <strong class="row-value">Presencial</strong>
-        </div>
-
-        <div class="resumen-separator"></div>
-
-        <div class="fila total-row">
-          <span class="total-label">Honorarios</span>
-          <div class="total-value-block">
-            <strong class="total-price tabular-nums">
-              {{
-                consultationPrice && consultationPrice > 0
-                  ? (consultationPrice | currency: "ARS" : "symbol" : "1.0-0")
-                  : "A convenir"
-              }}
-            </strong>
-            @if (consultationPrice && consultationPrice > 0) {
-              <span class="session-label">por sesión</span>
-            }
-          </div>
-        </div>
-      </div>
-
-      <button
-        class="confirmar-btn btn-primary"
-        type="submit"
-        [disabled]="citaForm.invalid || reservaConfirmada"
-        [ngClass]="{ confirmado: reservaConfirmada }"
-      >
-        @if (reservaConfirmada) {
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          <span>Reserva confirmada con éxito</span>
-        } @else {
-          <span>Confirmar reserva</span>
-        }
-      </button>
-
-      @if (reservaConfirmada) {
-        <div class="post-booking-hint">
-          <p>Tu solicitud quedó agendada. Podés hacerle seguimiento desde la sección <strong>Mis turnos</strong>.</p>
-        </div>
-      }
+      <span class="summary-label">Modalidad</span>
+      <span class="summary-val">Presencial</span>
     </div>
+
+    <div class="summary-rule-line" aria-hidden="true"></div>
+
+    <div class="summary-total-row">
+      <span class="total-caption">Honorarios</span>
+      <span class="total-amount tabular-nums">{{ formattedPrice }}</span>
+    </div>
+  </div>
+
+  <!-- Botón de Confirmación y Nota -->
+  <div class="booking-footer-submit">
+    <button
+      type="submit"
+      class="btn-confirm-booking"
+      [disabled]="citaForm.invalid || reservaConfirmada"
+      [class.is-confirmed]="reservaConfirmada"
+    >
+      @if (reservaConfirmada) {
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Reserva confirmada</span>
+      } @else {
+        <span>Confirmar reserva</span>
+      }
+    </button>
+    <p class="cancellation-policy-note">
+      Podés cancelar sin costo hasta 24 h antes de la sesión.
+    </p>
   </div>
 </form>

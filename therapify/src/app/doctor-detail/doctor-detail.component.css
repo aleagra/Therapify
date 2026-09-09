@@ -1,212 +1,429 @@
-.doctor-detail-page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.detail-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
+.doctor-detail-root {
+  width: 100%;
+  background-color: var(--c-neutral-50);
+  padding: 24px 0 64px;
 }
 
+.detail-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+/* Enlace Volver */
 .back-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
-  background-color: var(--c-surface);
-  border: 1px solid var(--c-border);
-  border-radius: var(--r-full);
-  color: var(--c-ink-700);
-  font-size: 0.875rem;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   font-weight: 600;
-  box-shadow: var(--sh-1);
-  cursor: pointer;
-  transition: all var(--t-fast);
+  color: var(--c-neutral-500);
   text-decoration: none;
+  margin-bottom: 24px;
+  transition: color var(--t-control);
 }
 
 .back-link:hover {
-  background-color: var(--c-surface-alt);
-  border-color: var(--c-primary-500);
-  color: var(--c-primary-700);
-  transform: translateX(-2px);
-  box-shadow: var(--sh-2);
+  color: var(--c-neutral-900);
 }
 
-.profile-layout {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 32px;
+/* Margen de Ficha */
+.detail-ficha-layout {
   align-items: start;
 }
 
-.info-column {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.detail-rail {
+  padding: 4px 16px 0 0;
 }
 
-.specialist-card,
-.description-card,
-.schedule-overview-card {
-  padding: 32px;
-}
-
-.specialist-header-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-}
-
-.avatar-large {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--r-full);
-  background: var(--c-primary-100);
-  color: var(--c-primary-700);
-  font-size: 1.625rem;
+.rail-kicker {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: var(--sh-1);
+  line-height: 1.4;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500);
 }
 
-.specialist-titles {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.rail-number {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #c3cedb;
+  margin-top: 2px;
+}
+
+.detail-body {
+  padding-left: 28px;
   min-width: 0;
 }
 
-.role-caption {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--c-ink-500);
+/* Grilla de 2 Columnas */
+.detail-columns-grid {
+  display: grid;
+  grid-template-columns: 1fr 452px;
+  gap: 36px;
+  align-items: start;
 }
 
-.specialist-name {
-  font-size: 1.75rem;
+/* Columna Izquierda */
+.specialist-info-column {
+  min-width: 0;
+}
+
+/* Header de Identidad */
+.doctor-identity-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.doctor-avatar-72 {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-pill);
+  background: var(--c-blue-100);
+  color: var(--c-blue-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 24px;
   font-weight: 700;
-  color: var(--c-ink-900);
-  line-height: 1.2;
-  margin: 0;
-}
-
-.address-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem;
-  color: var(--c-ink-500);
-  margin-top: 4px;
-}
-
-.card-section-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--c-ink-900);
-  margin-bottom: 12px;
-}
-
-.description-text {
-  font-size: 0.9375rem;
-  color: var(--c-ink-700);
-  line-height: 1.7;
-}
-
-.schedule-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.session-duration-tag {
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: var(--c-surface-alt);
-  color: var(--c-ink-700);
-  padding: 4px 10px;
-  border-radius: var(--r-full);
-  border: 1px solid var(--c-line);
-}
-
-.schedule-explanatory-text {
-  font-size: 0.8125rem;
-  color: var(--c-ink-500);
-  margin-bottom: 16px;
-}
-
-.schedule-table {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: transparent;
-  padding: 8px 0 0;
-  border-top: 1px solid var(--c-line);
-}
-
-.schedule-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--c-line);
-}
-
-.schedule-row:last-child {
-  border-bottom: none;
-}
-
-.day-col {
-  width: 96px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--c-ink-900);
   flex-shrink: 0;
 }
 
-.hours-col {
+.doctor-titles-block {
+  min-width: 0;
+}
+
+.doctor-fullname {
+  margin: 0 0 8px;
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--c-neutral-900);
+}
+
+.doctor-badges-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.hour-token {
-  font-size: 0.8125rem;
+.badge-specialty {
+  padding: 4px 9px;
+  border-radius: var(--radius-chip);
+  background: var(--c-neutral-100);
+  font-family: var(--font-sans);
+  font-size: 12px;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--c-primary-800);
-  background: var(--c-primary-050);
-  padding: 4px 12px;
-  border-radius: var(--r-full);
-  border: 1px solid rgba(13, 148, 136, 0.2);
+  color: var(--c-neutral-700);
 }
 
-.booking-sidebar {
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-chip);
+  background: var(--c-teal-50);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-teal-700);
+}
+
+.rating-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+}
+
+.stars-gold {
+  color: #253340;
+  letter-spacing: 1px;
+}
+
+.rating-num {
+  font-weight: 700;
+  color: var(--c-neutral-900);
+}
+
+.reviews-link {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--c-blue-600);
+  text-decoration: none;
+}
+
+.reviews-link:hover {
+  text-decoration: underline;
+}
+
+/* Metadatos */
+.doctor-meta-divider-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--c-neutral-150);
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+}
+
+.meta-icon {
+  color: var(--c-neutral-500);
+}
+
+.address-val {
+  color: var(--c-neutral-500);
+}
+
+.dist-val {
+  font-weight: 600;
+  color: var(--c-neutral-700);
+}
+
+.meta-separator-line {
+  width: 1px;
+  height: 16px;
+  background: var(--c-neutral-150);
+}
+
+.modality-val {
+  font-size: 14px;
+  color: var(--c-neutral-500);
+}
+
+/* Enfoque Clínico */
+.clinical-approach-section {
+  margin-bottom: 26px;
+}
+
+.section-heading {
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--c-neutral-900);
+}
+
+.approach-paragraph {
+  margin: 0 0 14px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--c-neutral-700);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+/* Horarios Habituales — Nivel 2 Hundida */
+.usual-schedule-sunken {
+  background: var(--c-neutral-100);
+  border-radius: var(--radius-sunken);
+  padding: 16px 18px;
+  margin-bottom: 26px;
+  max-width: 520px;
+}
+
+.schedule-sunken-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.schedule-kicker {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500);
+}
+
+.schedule-caption {
+  font-size: 12px;
+  color: var(--c-neutral-500);
+}
+
+.schedule-rows-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule-grid-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  padding: 8px 0;
+  border-top: 1px solid var(--c-neutral-150);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.day-label-col {
+  font-weight: 600;
+  color: var(--c-neutral-700);
+}
+
+.hours-label-col {
+  color: var(--c-neutral-500);
+}
+
+.empty-schedule-text {
+  font-size: 13.5px;
+  color: var(--c-neutral-500);
+  padding: 8px 0;
+}
+
+/* Reseñas Recientes — Nivel 3 Lista */
+.recent-reviews-section {
+  max-width: 620px;
+}
+
+.reviews-header-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.view-all-reviews-link {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--c-blue-600);
+  text-decoration: none;
+}
+
+.view-all-reviews-link:hover {
+  text-decoration: underline;
+}
+
+.recent-reviews-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-row-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  padding: 16px 0;
+  border-top: 1px solid var(--c-neutral-150);
+}
+
+.review-rail-mini {
+  border-right: 1px solid var(--c-neutral-150);
+  padding-right: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mini-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--c-neutral-100);
+  color: var(--c-neutral-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.review-content-mini {
+  padding-left: 16px;
+}
+
+.review-author-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.author-name {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-neutral-900);
+}
+
+.review-stars {
+  font-size: 12.5px;
+  color: #253340;
+  letter-spacing: 1px;
+}
+
+.review-date {
+  font-size: 12.5px;
+  color: var(--c-neutral-500);
+}
+
+.review-text-mini {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--c-neutral-500);
+}
+
+/* Columna Derecha Sticky */
+.booking-sidebar-column {
   position: sticky;
-  top: 96px;
+  top: 88px;
 }
 
-.empty-text {
-  font-size: 0.875rem;
-  color: var(--c-ink-500);
-  font-style: italic;
-}
-
-@media (max-width: 992px) {
-  .profile-layout {
+/* Responsive */
+@media (max-width: 1024px) {
+  .detail-columns-grid {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .booking-sidebar {
+  .booking-sidebar-column {
     position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-container {
+    padding: 0 16px;
+  }
+
+  .detail-body {
+    padding-left: 16px;
+  }
+
+  .doctor-fullname {
+    font-size: 24px;
   }
 }

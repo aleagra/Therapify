@@ -11,38 +11,26 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCardModule } from '@angular/material/card';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-
+import { CommonModule, DatePipe } from '@angular/common';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { toast } from 'ngx-sonner';
+
+export interface CalendarDay {
+  date: Date;
+  dayNumber: number;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+  isEnabled: boolean;
+  isSelected: boolean;
+}
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatDividerModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, DatePipe, SkeletonComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
@@ -51,6 +39,8 @@ export class CalendarComponent implements OnChanges {
   @Input() availability: { [dia: string]: string[] } | undefined;
   @Input() doctorId!: string;
   @Input() consultationPrice?: number;
+  @Input() isInitialLoading: boolean = false;
+
   fb = inject(FormBuilder);
   userService = inject(UserService);
   appointmentsService = inject(AppointmentService);
@@ -60,13 +50,26 @@ export class CalendarComponent implements OnChanges {
   diasHabilitados: number[] = [];
   horariosDisponibles: string[] = [];
   horariosOcupados: string[] = [];
+  isLoadingSlots = false;
+  showSlotsSkeleton = false;
+  private slotsTimer: ReturnType<typeof setTimeout> | null = null;
+  reservaConfirmada = false;
 
-  minDate: Date = new Date();
+  today: Date = new Date();
+  currentMonthDate: Date = new Date();
+
+  readonly weekDays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 
   citaForm: FormGroup = this.fb.group({
     fecha: [null, Validators.required],
     hora: ['', Validators.required],
   });
+
+  constructor() {
+    this.today.setHours(0, 0, 0, 0);
+    this.currentMonthDate.setDate(1);
+    this.currentMonthDate.setHours(0, 0, 0, 0);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['schedule'] && this.schedule) {
@@ -74,13 +77,13 @@ export class CalendarComponent implements OnChanges {
     }
   }
 
-  private mapearDiasHabilitados() {
+  private mapearDiasHabilitados(): void {
     if (!this.schedule) {
       this.diasHabilitados = [];
       return;
     }
 
-    const mapaDias: any = {
+    const mapaDias: Record<string, number> = {
       sunday: 0,
       monday: 1,
       tuesday: 2,
@@ -95,14 +98,151 @@ export class CalendarComponent implements OnChanges {
       .map((d) => mapaDias[d]);
   }
 
-  filtroDeDias = (d: Date | null): boolean => {
-    if (!d) return false;
-    if (this.diasHabilitados.length === 0) return true;
-    return this.diasHabilitados.includes(d.getDay());
-  };
+  get currentMonthLabel(): string {
+    const months = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ];
+    return `${months[this.currentMonthDate.getMonth()]} ${this.currentMonthDate.getFullYear()}`;
+  }
+
+  get canGoPrevMonth(): boolean {
+    const viewYear = this.currentMonthDate.getFullYear();
+    const viewMonth = this.currentMonthDate.getMonth();
+    const currentYear = this.today.getFullYear();
+    const currentMonth = this.today.getMonth();
+
+    return viewYear > currentYear || (viewYear === currentYear && viewMonth > currentMonth);
+  }
+
+  prevMonth(): void {
+    if (!this.canGoPrevMonth) return;
+    this.currentMonthDate = new Date(
+      this.currentMonthDate.getFullYear(),
+      this.currentMonthDate.getMonth() - 1,
+      1,
+    );
+  }
+
+  nextMonth(): void {
+    this.currentMonthDate = new Date(
+      this.currentMonthDate.getFullYear(),
+      this.currentMonthDate.getMonth() + 1,
+      1,
+    );
+  }
+
+  get calendarDays(): CalendarDay[] {
+    const year = this.currentMonthDate.getFullYear();
+    const month = this.currentMonthDate.getMonth();
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    const days: CalendarDay[] = [];
+    const selectedDate: Date | null = this.citaForm.get('fecha')?.value;
+
+    // Días del mes anterior (relleno)
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      const date = new Date(year, month - 1, daysInPrevMonth - i);
+      date.setHours(0, 0, 0, 0);
+      days.push({
+        date,
+        dayNumber: daysInPrevMonth - i,
+        isCurrentMonth: false,
+        isToday: false,
+        isEnabled: false,
+        isSelected: false,
+      });
+    }
+
+    // Días del mes actual
+    for (let i = 1; i <= daysInCurrentMonth; i++) {
+      const date = new Date(year, month, i);
+      date.setHours(0, 0, 0, 0);
+
+      const isToday =
+        date.getFullYear() === this.today.getFullYear() &&
+        date.getMonth() === this.today.getMonth() &&
+        date.getDate() === this.today.getDate();
+
+      const isPast = date < this.today;
+      const isDayOfWeekEnabled =
+        this.diasHabilitados.length === 0 || this.diasHabilitados.includes(date.getDay());
+
+      const isEnabled = !isPast && isDayOfWeekEnabled;
+
+      const isSelected =
+        !!selectedDate &&
+        date.getFullYear() === selectedDate.getFullYear() &&
+        date.getMonth() === selectedDate.getMonth() &&
+        date.getDate() === selectedDate.getDate();
+
+      days.push({
+        date,
+        dayNumber: i,
+        isCurrentMonth: true,
+        isToday,
+        isEnabled,
+        isSelected,
+      });
+    }
+
+    // Días del siguiente mes para completar la grilla
+    const totalCells = days.length <= 35 ? 35 : 42;
+    const remaining = totalCells - days.length;
+    for (let i = 1; i <= remaining; i++) {
+      const date = new Date(year, month + 1, i);
+      date.setHours(0, 0, 0, 0);
+      days.push({
+        date,
+        dayNumber: i,
+        isCurrentMonth: false,
+        isToday: false,
+        isEnabled: false,
+        isSelected: false,
+      });
+    }
+
+    return days;
+  }
+
+  selectDate(day: CalendarDay): void {
+    if (!day.isEnabled) return;
+    this.citaForm.get('fecha')?.setValue(day.date);
+    this.onFechaSeleccionada(day.date);
+  }
+
+  selectSlot(hora: string): void {
+    this.citaForm.get('hora')?.setValue(hora);
+  }
 
   onFechaSeleccionada(fecha: Date | null): void {
     if (!fecha || !this.availability) return;
+
+    this.isLoadingSlots = true;
+    this.showSlotsSkeleton = false;
+    if (this.slotsTimer) {
+      clearTimeout(this.slotsTimer);
+    }
+    this.slotsTimer = setTimeout(() => {
+      if (this.isLoadingSlots) {
+        this.showSlotsSkeleton = true;
+      }
+    }, 150);
+
+    this.citaForm.get('hora')?.setValue('');
 
     const dias = [
       'sunday',
@@ -115,21 +255,46 @@ export class CalendarComponent implements OnChanges {
     ];
 
     const diaString = dias[fecha.getDay()];
-    const fechaISO = fecha.toISOString().split('T')[0];
-
-    this.horariosDisponibles = [...(this.availability[diaString] || [])];
+    const fechaISO = this.formatDateISO(fecha);
+    const disponibles = [...(this.availability[diaString] || [])];
 
     this.appointmentsService
       .getAppointmentsByDoctorAndDate(this.doctorId, fechaISO)
-      .subscribe((appointments) => {
-        this.horariosOcupados = appointments.map((a) => a.startTime);
-
-        this.horariosDisponibles = this.horariosDisponibles.filter(
-          (h) => !this.horariosOcupados.includes(h),
-        );
-
-        this.citaForm.get('hora')?.setValue('');
+      .subscribe({
+        next: (appointments) => {
+          this.horariosOcupados = appointments.map((a) => a.startTime);
+          this.horariosDisponibles = disponibles.filter(
+            (h) => !this.horariosOcupados.includes(h),
+          );
+          this.isLoadingSlots = false;
+          this.showSlotsSkeleton = false;
+          if (this.slotsTimer) {
+            clearTimeout(this.slotsTimer);
+            this.slotsTimer = null;
+          }
+        },
+        error: () => {
+          this.horariosDisponibles = disponibles;
+          this.isLoadingSlots = false;
+          this.showSlotsSkeleton = false;
+          if (this.slotsTimer) {
+            clearTimeout(this.slotsTimer);
+            this.slotsTimer = null;
+          }
+        },
       });
+  }
+
+  private formatDateISO(d: Date): string {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  get formattedPrice(): string {
+    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A convenir';
+    return `ARS ${this.consultationPrice.toLocaleString('es-AR')}`;
   }
 
   calcularFin(hora: string): string {
@@ -139,9 +304,7 @@ export class CalendarComponent implements OnChanges {
     return `${endHour}:${endMin}`;
   }
 
-  reservaConfirmada = false;
-
-  confirmarReserva() {
+  confirmarReserva(): void {
     if (this.userLogged?.userType === 'ADMIN') {
       toast.error('Los administradores no pueden sacar turnos.', {
         position: 'top-center',
@@ -157,7 +320,7 @@ export class CalendarComponent implements OnChanges {
     const appointmentRequest: AppointmentRequest = {
       doctorId: this.doctorId,
       patientId: this.userLogged.id,
-      date: fecha.toISOString().split('T')[0],
+      date: this.formatDateISO(fecha),
       startTime: hora,
       endTime: this.calcularFin(hora),
       status: 'PENDING',
@@ -165,9 +328,18 @@ export class CalendarComponent implements OnChanges {
 
     this.appointmentsService
       .createAppointment(appointmentRequest)
-      .subscribe(() => {
-        this.reservaConfirmada = true;
-        this.citaForm.disable();
+      .subscribe({
+        next: () => {
+          this.reservaConfirmada = true;
+          this.citaForm.disable();
+          toast.success('¡Turno reservado con éxito!', { position: 'top-center' });
+        },
+        error: (err) => {
+          toast.error(
+            err?.error?.message || 'No se pudo reservar el turno. Por favor, intentá nuevamente.',
+            { position: 'top-center' },
+          );
+        },
       });
   }
 }

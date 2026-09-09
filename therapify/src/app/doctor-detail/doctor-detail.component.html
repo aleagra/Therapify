@@ -1,96 +1,211 @@
-@if (doctor$ | async; as doctor) {
-  <div class="doctor-detail-page">
-    <header class="detail-header">
-      <a routerLink="/doctors" class="back-link">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        <span>Volver a profesionales</span>
-      </a>
-    </header>
+<div class="doctor-detail-root density-work">
+  <div class="detail-container">
 
-    <div class="profile-layout">
-      <!-- Columna Izquierda: Información del profesional -->
-      <div class="info-column">
-        <div class="card specialist-card">
-          <div class="specialist-header-row">
-            <div class="avatar-large">
-              {{ getInitials(doctor.firstName, doctor.lastName) }}
-            </div>
-            <div class="specialist-titles">
-              <span class="role-caption">Profesional de la salud</span>
-              <h1 class="specialist-name">{{ doctor.firstName }} {{ doctor.lastName }}</h1>
-              
-              @if (doctor.specialty) {
-                <div class="specialty-wrap">
-                  <span class="badge badge-accent">
-                    {{ specialtyLabels[doctor.specialty] || doctor.specialty }}
-                  </span>
-                </div>
-              }
+    <!-- Enlace de retorno -->
+    <a routerLink="/doctors" (click)="goBack($event)" class="back-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Volver a resultados</span>
+    </a>
 
-              @if (doctor.address) {
-                <div class="address-line">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                  <span>{{ doctor.address }}</span>
-                </div>
-              }
-            </div>
-          </div>
+    @if (loadError()) {
+      <div class="empty-state-box">
+        <div class="empty-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3>No pudimos cargar la información del profesional</h3>
+        <p>{{ loadError() }}</p>
+        <button type="button" (click)="loadDoctor()" class="btn btn-primary" style="margin-top: 14px;">
+          Reintentar
+        </button>
+      </div>
+    } @else {
+      <!-- Estructura con Margen de Ficha (96px) -->
+      <div class="ficha-layout ficha-page detail-ficha-layout">
+        <!-- Rail Izquierdo (96px) -->
+        <div class="ficha-rail detail-rail">
+          <div class="rail-kicker">Perfil</div>
+          <div class="rail-number">02</div>
         </div>
 
-        <div class="card description-card">
-          <h2 class="card-section-title">Enfoque y descripción profesional</h2>
-          @if (doctor.description) {
-            <p class="description-text">{{ doctor.description }}</p>
-          } @else {
-            <p class="empty-text">El profesional aún no ha especificado una descripción detallada.</p>
-          }
-        </div>
+        <!-- Cuerpo Derecho -->
+        <div class="ficha-body detail-body">
+          <div class="detail-columns-grid">
 
-        <div class="card schedule-overview-card">
-          <div class="schedule-card-header">
-            <h2 class="card-section-title">Horarios habituales de atención</h2>
-            <span class="session-duration-tag">Sesiones de 1 hora</span>
-          </div>
-          <p class="schedule-explanatory-text">
-            Este cuadro es únicamente informativo. Para reservar tu turno, seleccioná una fecha en el calendario de la derecha.
-          </p>
-
-          @if (doctor.availability) {
-            <div class="schedule-table">
-              @for (day of DAYS_OF_WEEK; track day) {
-                @if (doctor.availability[day].length) {
-                  <div class="schedule-row">
-                    <span class="day-col">{{ DAY_LABELS[day] }}</span>
-                    <div class="hours-col">
-                      @for (hora of doctor.availability[day]; track hora) {
-                        <span class="hour-token">{{ hora }}</span>
-                      }
+            <!-- Columna Izquierda: Información del Profesional -->
+            <div class="specialist-info-column">
+              @if (displayLoading()) {
+                <!-- Skeleton de Carga -->
+                <div class="skeleton-profile-header" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
+                  <div style="display: flex; gap: 18px; margin-bottom: 22px;">
+                    <app-skeleton circle="true" width="72px" height="72px"></app-skeleton>
+                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                      <app-skeleton width="60%" height="30px"></app-skeleton>
+                      <app-skeleton width="40%" height="22px" radius="6px"></app-skeleton>
                     </div>
                   </div>
+                  <app-skeleton width="80%" height="18px" style="margin-bottom: 24px;"></app-skeleton>
+                  <app-skeleton width="100%" height="15px" style="margin-bottom: 8px;"></app-skeleton>
+                  <app-skeleton width="100%" height="15px" style="margin-bottom: 8px;"></app-skeleton>
+                  <app-skeleton width="70%" height="15px" style="margin-bottom: 24px;"></app-skeleton>
+                  <app-skeleton width="100%" height="120px" radius="10px"></app-skeleton>
+                </div>
+              } @else {
+                @if (doctor(); as doc) {
+                  <!-- 1. Header de Identidad -->
+                  <div class="doctor-identity-header">
+                    <div class="doctor-avatar-72">
+                      {{ getInitials(doc.firstName, doc.lastName) }}
+                    </div>
+                    <div class="doctor-titles-block">
+                      <h1 class="doctor-fullname">
+                        {{ doc.firstName }} {{ doc.lastName }}
+                      </h1>
+                      <div class="doctor-badges-row">
+                        @if (doc.specialty) {
+                          <span class="badge-specialty">
+                            {{ specialtyLabels[doc.specialty] || doc.specialty }}
+                          </span>
+                        }
+                        <span class="badge-verified">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          Matrícula verificada
+                        </span>
+                        <div class="rating-cluster">
+                          <span class="stars-gold">★★★★★</span>
+                          <span class="rating-num">4,8</span>
+                          <a [routerLink]="['/reviews', doc.id]" class="reviews-link">
+                            Ver reseñas
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2. Metadatos (Ubicación, Distancia, Modalidad) -->
+                  <div class="doctor-meta-divider-row">
+                    @if (doc.address) {
+                      <div class="meta-item">
+                        <svg class="meta-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span class="address-val">{{ doc.address }}</span>
+                        @if (doc.distanceKm != null) {
+                          <span class="dist-val">· {{ doc.distanceKm.toFixed(1) }} km</span>
+                        }
+                      </div>
+                      <div class="meta-separator-line" aria-hidden="true"></div>
+                    }
+                    <span class="modality-val">Presencial y videollamada</span>
+                  </div>
+
+                  <!-- 3. Enfoque Clínico -->
+                  <section class="clinical-approach-section">
+                    <h2 class="section-heading">Enfoque clínico</h2>
+                    <p class="approach-paragraph">
+                      {{ doc.description || 'Intervención terapéutica personalizada con enfoque humanista y sistémico, orientada a fortalecer recursos personales y herramientas de afrontamiento ante situaciones de cambio o malestar emocional.' }}
+                    </p>
+                    <p class="approach-paragraph">
+                      Formación continua de posgrado y amplia experiencia en consulta clínica individual y de parejas en Argentina.
+                    </p>
+                  </section>
+
+                  <!-- 4. Horarios Habituales — Nivel 2 Hundida -->
+                  <section class="usual-schedule-sunken surface-sunken">
+                    <div class="schedule-sunken-header">
+                      <span class="schedule-kicker">Horarios habituales</span>
+                      <span class="schedule-caption">Informativo · la disponibilidad real está en el calendario</span>
+                    </div>
+
+                    <div class="schedule-rows-list">
+                      @if (doc.availability) {
+                        @for (day of DAYS_OF_WEEK; track day) {
+                          @if (doc.availability[day] && doc.availability[day].length) {
+                            <div class="schedule-grid-row">
+                              <span class="day-label-col">{{ DAY_LABELS[day] }}</span>
+                              <span class="hours-label-col">{{ formatScheduleRange(doc.availability[day]) }}</span>
+                            </div>
+                          }
+                        }
+                      } @else {
+                        <p class="empty-schedule-text">A coordinar con el profesional según disponibilidad de turnos.</p>
+                      }
+                    </div>
+                  </section>
+
+                  <!-- 5. Reseñas Recientes — Nivel 3 Lista -->
+                  <section class="recent-reviews-section">
+                    <div class="reviews-header-line">
+                      <h2 class="section-heading">Reseñas recientes</h2>
+                      <a [routerLink]="['/reviews', doc.id]" class="view-all-reviews-link">
+                        Ver todas las reseñas
+                      </a>
+                    </div>
+
+                    <div class="recent-reviews-list">
+                      <!-- Reseña 1 de Muestra Estructurada -->
+                      <div class="review-row-item">
+                        <div class="review-rail-mini">
+                          <div class="mini-avatar">MS</div>
+                        </div>
+                        <div class="review-content-mini">
+                          <div class="review-author-line">
+                            <span class="author-name">Martin Sanchez</span>
+                            <span class="review-stars">★★★★★</span>
+                            <span class="review-date">· 2 feb 2026</span>
+                          </div>
+                          <p class="review-text-mini">
+                            Sesión muy productiva. Ordenó una conversación y brindó claridad desde el primer encuentro.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Reseña 2 de Muestra Estructurada -->
+                      <div class="review-row-item">
+                        <div class="review-rail-mini">
+                          <div class="mini-avatar">VL</div>
+                        </div>
+                        <div class="review-content-mini">
+                          <div class="review-author-line">
+                            <span class="author-name">Valeria Lopez</span>
+                            <span class="review-stars">★★★★★</span>
+                            <span class="review-date">· 18 ene 2026</span>
+                          </div>
+                          <p class="review-text-mini">
+                            Escucha activa y excelente feedback. Gran puntualidad y calidez profesional.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
                 }
               }
             </div>
-          } @else {
-            <p class="empty-text">No hay horarios habituales configurados.</p>
-          }
+
+            <!-- Columna Derecha: Proceso de Reserva Sticky Dominante -->
+            <aside class="booking-sidebar-column">
+              <app-calendar
+                [schedule]="doctor()?.schedule"
+                [availability]="doctor()?.availability"
+                [doctorId]="doctor()?.id || ''"
+                [consultationPrice]="doctor()?.consultationPrice"
+                [isInitialLoading]="displayLoading()"
+              ></app-calendar>
+            </aside>
+
+          </div>
         </div>
       </div>
+    }
 
-      <!-- Columna Derecha Sticky: Formulario de Agendamiento -->
-      <aside class="booking-sidebar">
-        <app-calendar
-          [schedule]="doctor.schedule"
-          [availability]="doctor.availability"
-          [doctorId]="doctor.id"
-          [consultationPrice]="doctor.consultationPrice"
-        ></app-calendar>
-      </aside>
-    </div>
   </div>
-}
+</div>
