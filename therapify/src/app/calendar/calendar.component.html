@@ -1,14 +1,16 @@
 <form
-  class="agendar-container"
+  class="agendar-container card"
   [formGroup]="citaForm"
   (ngSubmit)="confirmarReserva()"
 >
-  <div class="selector-columna">
-    <h2>Agendar Sesión</h2>
+  <div class="calendar-step-box">
+    <div class="step-header">
+      <h3 class="step-title">Elegir fecha y horario</h3>
+      <p class="step-subtitle">Seleccioná un día hábil disponible en el calendario</p>
+    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Fecha de la Cita</mat-label>
-
+    <mat-form-field appearance="outline" class="full-width date-field">
+      <mat-label>Fecha de la sesión</mat-label>
       <input
         matInput
         [matDatepicker]="picker"
@@ -17,87 +19,121 @@
         [matDatepickerFilter]="filtroDeDias"
         (dateChange)="onFechaSeleccionada($event.value)"
       />
-
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <div class="horario-selector">
-      <label class="horario-label">Horarios disponibles</label>
-
-      <div class="mensaje-horarios" *ngIf="!citaForm.get('fecha')?.value">
-        Seleccioná un día para ver los horarios
-      </div>
-      <div
-        class="mensaje-horarios"
-        *ngIf="
-          citaForm.get('fecha')?.value &&
-          (!horariosDisponibles || horariosDisponibles.length === 0)
-        "
-      >
-        No hay horarios disponibles para este día
+    <div class="horarios-block">
+      <div class="slot-header">
+        <label class="slot-label">Horarios disponibles</label>
+        @if (horariosDisponibles.length) {
+          <span class="badge badge-accent">{{ horariosDisponibles.length }} libres</span>
+        }
       </div>
 
-      <mat-button-toggle-group
-        *ngIf="horariosDisponibles.length"
-        formControlName="hora"
-        class="horarios-grid"
-      >
-        <mat-button-toggle
-          *ngFor="let hora of horariosDisponibles"
-          [value]="hora"
+      @if (!citaForm.get('fecha')?.value) {
+        <div class="hint-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Elegí un día en el calendario de arriba para ver turnos</span>
+        </div>
+      }
+
+      @if (citaForm.get('fecha')?.value && (!horariosDisponibles || horariosDisponibles.length === 0)) {
+        <div class="hint-box warning">
+          No hay turnos disponibles para la fecha elegida. Probá seleccionando otro día.
+        </div>
+      }
+
+      @if (horariosDisponibles.length) {
+        <mat-button-toggle-group
+          formControlName="hora"
+          class="horarios-grid"
         >
-          {{ hora }}
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+          @for (hora of horariosDisponibles; track hora) {
+            <mat-button-toggle
+              [value]="hora"
+              class="slot-toggle"
+            >
+              <span class="slot-time">{{ hora }}</span>
+            </mat-button-toggle>
+          }
+        </mat-button-toggle-group>
+      }
     </div>
   </div>
 
-  <div class="resumen-columna">
-    <mat-card class="detalle-cita compact">
-      <div class="resumen-header">
-        <h3>Resumen</h3>
+  <div class="resumen-container">
+    <div class="resumen-card">
+      <div class="resumen-top">
+        <h4>Resumen de la reserva</h4>
       </div>
 
-      <div class="resumen-body">
+      <div class="resumen-rows">
         <div class="fila">
-          <span>Fecha</span>
-          <strong>{{
-            citaForm.get("fecha")?.value | date: "mediumDate"
-          }}</strong>
-        </div>
-
-        <div class="fila">
-          <span>Hora</span>
-          <strong>{{ citaForm.get("hora")?.value || "—" }}</strong>
-        </div>
-
-        <div class="fila">
-          <span>Modalidad</span>
-          <strong>Presencial</strong>
-        </div>
-
-        <div class="fila total">
-          <span>Total</span>
-          <strong class="precio">
-            {{
-              consultationPrice && consultationPrice > 0
-                ? (consultationPrice | currency: "ARS " : "symbol" : "1.0-0")
-                : "Consultar precio el día de la consulta"
-            }}
+          <span class="row-label">Fecha</span>
+          <strong class="row-value tabular-nums">
+            {{ (citaForm.get("fecha")?.value | date: "mediumDate") || "—" }}
           </strong>
+        </div>
+
+        <div class="fila">
+          <span class="row-label">Horario</span>
+          <strong class="row-value tabular-nums">
+            {{ citaForm.get("hora")?.value ? citaForm.get("hora")?.value + " hs" : "—" }}
+          </strong>
+        </div>
+
+        <div class="fila">
+          <span class="row-label">Modalidad</span>
+          <strong class="row-value">Presencial</strong>
+        </div>
+
+        <div class="resumen-separator"></div>
+
+        <div class="fila total-row">
+          <span class="total-label">Honorarios</span>
+          <div class="total-value-block">
+            <strong class="total-price tabular-nums">
+              {{
+                consultationPrice && consultationPrice > 0
+                  ? (consultationPrice | currency: "ARS " : "symbol" : "1.0-0")
+                  : "A convenir"
+              }}
+            </strong>
+            @if (consultationPrice && consultationPrice > 0) {
+              <span class="session-label">por sesión</span>
+            }
+          </div>
         </div>
       </div>
 
       <button
         mat-raised-button
-        class="confirmar-btn"
+        class="confirmar-btn btn-primary"
         type="submit"
         [disabled]="citaForm.invalid || reservaConfirmada"
         [ngClass]="{ confirmado: reservaConfirmada }"
       >
-        {{ reservaConfirmada ? "Reserva confirmada" : "Confirmar reserva" }}
+        @if (reservaConfirmada) {
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Reserva confirmada con éxito</span>
+        } @else {
+          <span>Confirmar reserva</span>
+        }
       </button>
-    </mat-card>
+
+      @if (reservaConfirmada) {
+        <div class="post-booking-hint">
+          <p>Tu solicitud quedó agendada. Podés hacerle seguimiento desde la sección <strong>Mis turnos</strong>.</p>
+        </div>
+      }
+    </div>
   </div>
 </form>

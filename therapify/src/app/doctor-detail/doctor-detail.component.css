@@ -1,140 +1,201 @@
-.specialist-page {
-  max-width: 1400px;
-  margin: auto;
+.doctor-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--c-ink-500);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: color var(--t-fast);
+}
+
+.back-link:hover {
+  color: var(--c-primary-600);
 }
 
 .profile-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.6rem;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
   align-items: start;
-}
-.page-header {
-  margin-left: 10px;
-  margin-bottom: 1.5rem;
-}
-.page-header h1 {
-  font-size: 2.3rem;
-  font-weight: 700;
-  color: #0077b6;
 }
 
 .info-column {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
-}
-.card {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e8ff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 1.6rem;
+  gap: 24px;
 }
 
-.header-card h1 {
-  font-size: 2rem;
+.specialist-card,
+.description-card,
+.schedule-overview-card {
+  padding: 32px;
+}
+
+.specialist-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--r-full);
+  background: var(--c-primary-100);
+  color: var(--c-primary-700);
+  font-size: 1.625rem;
   font-weight: 700;
-  margin-bottom: 0.6rem;
-}
-
-.header-card h2 {
-  font-size: 0.95rem;
-  color: #6b7280;
-  margin-bottom: 0.2rem;
-}
-
-.card h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.7rem;
-  color: #20252f;
-}
-
-.card p {
-  color: #4a4a4a;
-  line-height: 1.6;
-  font-size: 0.96rem;
-}
-
-.chips {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.chip {
-  background: #f3f4f6;
-  color: #0077b6;
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.horarios-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.horarios-dia {
-  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  flex-direction: column;
+  flex-shrink: 0;
+  box-shadow: var(--sh-1);
 }
 
-.dia {
+.specialist-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.role-caption {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-ink-500);
+}
+
+.specialist-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--c-ink-900);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.address-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--c-ink-500);
+  margin-top: 4px;
+}
+
+.card-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--c-ink-900);
+  margin-bottom: 12px;
+}
+
+.description-text {
+  font-size: 0.9375rem;
+  color: var(--c-ink-700);
+  line-height: 1.7;
+}
+
+.schedule-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.session-duration-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--c-surface-alt);
+  color: var(--c-ink-700);
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--c-line);
+}
+
+.schedule-explanatory-text {
+  font-size: 0.8125rem;
+  color: var(--c-ink-500);
+  margin-bottom: 16px;
+}
+
+.schedule-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--c-surface-alt);
+  padding: 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--c-line);
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(207, 218, 229, 0.5);
+}
+
+.schedule-row:last-child {
+  border-bottom: none;
+}
+
+.day-col {
   width: 90px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  color: var(--c-ink-900);
+  flex-shrink: 0;
 }
 
-.hour-chip {
-  background: #f8fcfd;
-  border: 1px solid #e0f2f7;
+.hours-col {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.hour-chip:hover {
-  border-color: #00c4b4;
-  color: #00c4b4;
+.hour-token {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-700);
+  background: var(--c-surface);
+  padding: 2px 8px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--c-line);
 }
 
-.session-info {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 0.7rem;
+.booking-sidebar {
+  position: sticky;
+  top: 96px;
 }
+
 .empty-text {
-  color: #888;
+  font-size: 0.875rem;
+  color: var(--c-ink-500);
   font-style: italic;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 992px) {
   .profile-layout {
     grid-template-columns: 1fr;
   }
 
-  .sidebar {
+  .booking-sidebar {
     position: static;
-  }
-  .page-header {
-    text-align: center;
-  }
-}
-
-@media (max-width: 600px) {
-  .card {
-    padding: 1.2rem;
-  }
-
-  .header-card h1 {
-    font-size: 1.6rem;
-  }
-
-  .dia {
-    width: 70px;
   }
 }

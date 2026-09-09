@@ -38,4 +38,10 @@ export class DoctorDetailComponent {
   getDayLabel(day: string): string {
     return this.DAY_LABELS[day as keyof typeof this.DAY_LABELS] || day;
   }
+
+  getInitials(firstName?: string, lastName?: string): string {
+    const fn = (firstName || '').trim().charAt(0);
+    const ln = (lastName || '').trim().charAt(0);
+    return `${fn}${ln}`.toUpperCase() || 'P';
+  }
 }
