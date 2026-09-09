@@ -3,13 +3,14 @@ import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-turnos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './turnos.component.html',
   styleUrls: ['./turnos.component.css'],
 })
@@ -172,6 +173,35 @@ export class TurnosComponent implements OnInit {
     } catch {
       return dateStr;
     }
+  }
+
+  getDayNumber(dateStr: string): string {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    return parts[2] || dateStr;
+  }
+
+  getMonthShort(dateStr: string): string {
+    if (!dateStr) return '';
+    try {
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return d.toLocaleDateString('es-AR', { month: 'short' }).replace('.', '').toUpperCase();
+      }
+      return '';
+    } catch {
+      return '';
+    }
+  }
+
+  getInitials(name?: string): string {
+    if (!name) return 'P';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0].charAt(0)}${parts[1].charAt(0)}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
   }
 
   private procesarTurnos(
