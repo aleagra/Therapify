@@ -1,66 +1,173 @@
-<div class="container">
-  <div class="card">
-    <img src="/assets/illustration.png" alt="Ilustración" class="card-img" />
-
-    <div class="card-container">
-      <h1>Tu Bienestar Mental <br /><span>Comienza Aquí.</span></h1>
-      <p>
-        Conecta con profesionales certificados y comienza a cultivar tu
-        equilibrio y salud emocional hoy mismo.
-      </p>
-      <a routerLink="/doctors" class="btn-primary">Buscar mi Terapeuta</a>
-    </div>
-
-    <div class="info">
-      <h3>Como <span>funciona</span></h3>
-      <p>
-        Explora perfiles certificados, filtra por especialidad, agenda tu cita
-        online en minutos.
-      </p>
-    </div>
-  </div>
-  <div class="side">
-    <div class="side-card">
-      <h4>Evita llamadas interminables</h4>
-      <p>
-        Mantenemos la misma calidad y confidencialidad de una sesión presencial,
-        pero con la flexibilidad que necesitas.
-      </p>
-
-      <a routerLink="/about-us" class="btn-secondary">Saber Más</a>
-    </div>
-
-    <div class="side-card green">
-      <h4>Conecta con Total Confianza</h4>
-      <p>
-        Entendemos que tu privacidad es fundamental. Desde el momento en que
-        buscas un especialista hasta cada sesión, tu información personal y tus
-        conversaciones están protegidas.
-      </p>
-
-      <a routerLink="/appointments" class="btn-secondary">Comienza Ahora</a>
-    </div>
-  </div>
-
-  <div class="bottom-card">
-    <div class="stats">
-      <div class="elementStats">
-        <img src="../../assets/calendarIcon.png" class="iconHome" alt="" />
-        <h2>100+</h2>
-        <p>Turnos Diarios Disponibles</p>
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Atención psicológica online y presencial</span>
       </div>
 
-      <div class="elementStats">
-        <img src="../../assets/searchIcon.png" class="iconHome" alt="" />
-        <h2>350+</h2>
-        <p>Terapeutas Certificados Disponibles</p>
-      </div>
+      <h1 class="hero-title">
+        Tu bienestar emocional comienza con el profesional <span class="highlight">adecuado</span>.
+      </h1>
 
-      <div class="elementStats">
-        <img src="../../assets/safetyIcon.png" class="iconHome" alt="" />
-        <h2>∞</h2>
-        <p>Toda tu informacion siempre encriptados</p>
+      <p class="hero-subtitle">
+        Conectá con terapeutas matriculados en Argentina, encontrá el enfoque que necesitás y agendá tu consulta en minutos.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/doctors" class="btn btn-primary btn-lg">
+          <span>Encontrá tu terapeuta</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a routerLink="/about-us" class="btn btn-secondary btn-lg">
+          Conocé Therapify
+        </a>
       </div>
     </div>
-  </div>
+
+    <div class="hero-visual">
+      <div class="visual-frame">
+        <img src="/assets/illustration.png" alt="Profesional de la salud mental acompañando a un paciente" class="hero-image" />
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section" id="como-funciona">
+    <div class="section-heading">
+      <span class="section-tag">Paso a paso</span>
+      <h2>¿Cómo funciona Therapify?</h2>
+      <p>Diseñamos un proceso ágil y transparente para que acceder a terapia sea simple y seguro.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-badge">01</div>
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <h3>Explorá y filtrá</h3>
+        <p>Buscá por especialidad clínica, orientación terapéutica o días disponibles para encontrar tu especialista ideal.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">02</div>
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <h3>Elegí fecha y hora</h3>
+        <p>Accedé al calendario en tiempo real del profesional y seleccioná el horario que mejor encaje en tu rutina.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">03</div>
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h3>Iniciá tu proceso</h3>
+        <p>Recibí la confirmación inmediata y gestioná tus consultas con total privacidad desde tu panel de usuario.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Propositions / Features Grid -->
+  <section class="features-section">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="feature-body">
+        <h3>Sin llamadas ni esperas interminables</h3>
+        <p>Mantenemos la calidad y calidez de una sesión presencial con la flexibilidad que necesitás para coordinar tus horarios online.</p>
+        <a routerLink="/about-us" class="feature-link">
+          <span>Conocé nuestra historia</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon accent">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="feature-body">
+        <h3>Atención con total confianza y confidencialidad</h3>
+        <p>Tu privacidad es prioritaria. Desde el primer momento en que consultás un perfil hasta cada una de tus sesiones, tus datos están protegidos.</p>
+        <a routerLink="/doctors" class="feature-link">
+          <span>Ver terapeutas disponibles</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-Width Stats Band (Always visible) -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="stat-numbers">
+          <span class="stat-value">100+</span>
+          <span class="stat-label">Turnos diarios disponibles</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <polyline points="16 11 18 13 22 9"/>
+          </svg>
+        </div>
+        <div class="stat-numbers">
+          <span class="stat-value">350+</span>
+          <span class="stat-label">Terapeutas certificados</span>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div class="stat-numbers">
+          <span class="stat-value">100%</span>
+          <span class="stat-label">Tu información, siempre encriptada</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
