@@ -1,15 +1,18 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { concat, of, timer } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 import { DoctorCardComponent } from '../doctor-card/doctor-card.component';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { FormsModule } from '@angular/forms';
-import { NgForOf } from '@angular/common';
 import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
 
 @Component({
   selector: 'app-doctors',
   standalone: true,
-  imports: [DoctorCardComponent, FormsModule, NgForOf],
+  imports: [DoctorCardComponent, FormsModule, SkeletonComponent],
   templateUrl: './doctors.component.html',
   styleUrls: ['./doctors.component.css'],
 })
@@ -24,27 +27,99 @@ export class DoctorsComponent {
   selectedGender = signal<string>('');
   allDoctors = signal<any[]>([]);
   selectedSpecialty = signal<string>('');
+  isLoading = signal(true);
+  loadError = signal<string | null>(null);
+
+  private skeletonShownTime: number | null = null;
+
+  // Pipeline reactivo: 150ms delay anti-parpadeo + 350ms de permanencia mínima si el skeleton llega a mostrarse
+  private readonly skeletonState = toSignal(
+    toObservable(this.isLoading).pipe(
+      switchMap((loading) => {
+        if (loading) {
+          this.skeletonShownTime = null;
+          return concat(
+            of({ displayLoading: true, showSkeleton: false }),
+            timer(150).pipe(
+              tap(() => {
+                this.skeletonShownTime = Date.now();
+              }),
+              map(() => ({ displayLoading: true, showSkeleton: true })),
+            ),
+          );
+        } else {
+          if (this.skeletonShownTime !== null) {
+            const elapsed = Date.now() - this.skeletonShownTime;
+            const remaining = Math.max(0, 350 - elapsed);
+            this.skeletonShownTime = null;
+            if (remaining > 0) {
+              return timer(remaining).pipe(
+                map(() => ({ displayLoading: false, showSkeleton: false })),
+              );
+            }
+          }
+          this.skeletonShownTime = null;
+          return of({ displayLoading: false, showSkeleton: false });
+        }
+      }),
+    ),
+    { initialValue: { displayLoading: true, showSkeleton: false } },
+  );
+
+  showSkeleton = computed(() => this.skeletonState().showSkeleton);
+  displayLoading = computed(() => this.skeletonState().displayLoading);
+
+  readonly skeletonCards = [1, 2, 3, 4, 5, 6];
 
   DAYS_OF_WEEK = DAYS_OF_WEEK;
   DAY_LABELS = DAY_LABELS;
 
+  getDayLabel(day: string): string {
+    return (this.DAY_LABELS as Record<string, string>)[day] || day;
+  }
+
   constructor() {
+    this.fetchDoctors();
+  }
+
+  fetchDoctors() {
+    this.isLoading.set(true);
+    this.loadError.set(null);
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        this.userService.getDoctorsNear(lat, lng).subscribe((doctors) => {
-          this.mapDoctors(doctors);
+        this.userService.getDoctorsNear(lat, lng).subscribe({
+          next: (doctors) => {
+            this.mapDoctors(doctors);
+            this.isLoading.set(false);
+          },
+          error: (error) => {
+            console.error('❌ Error obteniendo doctores cercanos', error);
+            this.loadFallback();
+          },
         });
       },
       (error) => {
         console.error('❌ Error obteniendo ubicación', error);
-
-        this.userService.getDoctores().subscribe((doctors) => {
-          this.mapDoctors(doctors);
-        });
+        this.loadFallback();
       },
     );
+  }
+
+  private loadFallback() {
+    this.userService.getDoctores().subscribe({
+      next: (doctors) => {
+        this.mapDoctors(doctors);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('❌ Error cargando doctores', err);
+        this.loadError.set('No pudimos cargar la lista de profesionales. Por favor, revisá tu conexión e intentá nuevamente.');
+        this.isLoading.set(false);
+      },
+    });
   }
 
   private mapDoctors(doctors: any[]) {

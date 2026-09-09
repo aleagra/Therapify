@@ -1,54 +1,112 @@
-<div class="doctor-card card card-interactive" [class.no-slots]="!hasAvailableDays">
-  <div class="card-top">
-    <div class="profile-header">
-      <div class="avatar-circle">
-        {{ initials }}
+<div
+  class="doctor-card card card-interactive"
+  [class.no-slots]="!hasAvailableDays"
+>
+  <div class="card-ficha-grid">
+    <!-- Margen de Ficha (64px) -->
+    <div class="card-rail">
+      <div
+        class="card-avatar"
+        [style.background]="doctorPhoto ? 'var(--c-neutral-100)' : avatarPalette.bg"
+        [style.color]="avatarPalette.color"
+      >
+        @if (doctorPhoto) {
+          <img
+            [src]="doctorPhoto"
+            [alt]="doctor().firstName + ' ' + doctor().lastName"
+            class="avatar-photo"
+            loading="lazy"
+          />
+        } @else {
+          {{ initials }}
+        }
       </div>
-      <div class="name-block">
-        <h3 class="doctor-name">{{ doctor().firstName }} {{ doctor().lastName }}</h3>
-        <span class="specialty-badge">{{ specialtyFormatted | titlecase }}</span>
-      </div>
+      <span
+        class="availability-dot"
+        [class.dot-available]="hasAvailableDays"
+        [class.dot-unavailable]="!hasAvailableDays"
+        [title]="hasAvailableDays ? 'Con disponibilidad' : 'Sin turnos'"
+      ></span>
     </div>
 
-    <div class="meta-row" *ngIf="doctor().address || doctor().distanceKm != null">
-      <span class="location" *ngIf="doctor().address">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-          <circle cx="12" cy="10" r="3"></circle>
-        </svg>
-        <span class="address-text">{{ doctor().address }}</span>
-      </span>
-      <span class="distance" *ngIf="doctor().distanceKm != null">
-        · {{ doctor().distanceKm?.toFixed(1) }} km
-      </span>
-    </div>
+    <!-- Cuerpo de Ficha -->
+    <div class="card-body-content">
+      <div class="card-header-line">
+        <h3 class="doctor-name" (click)="onClick()">
+          {{ doctor().firstName }} {{ doctor().lastName }}
+        </h3>
+        <div class="header-tags">
+          <span class="specialty-tag">{{ specialtyFormatted }}</span>
+          <div class="rating-inline" (click)="goToReviews(doctor().id)" title="Ver reseñas">
+            <span class="stars-icon" aria-hidden="true">★★★★★</span>
+            <span class="rating-score">4,8</span>
+          </div>
+        </div>
+      </div>
 
-    <p class="description">
-      {{ doctor().description || 'Profesional de la salud mental con dedicación al bienestar integral de sus pacientes.' }}
-    </p>
+      @if (doctor().address || hasValidDistance) {
+        <div class="location-line">
+          <svg class="location-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          @if (doctor().address) {
+            <span class="address-text">{{ doctor().address }}</span>
+          }
+          @if (hasValidDistance) {
+            <span class="distance-badge">· {{ formatDistance(doctor().distanceKm) }}</span>
+          }
+        </div>
+      }
 
-    <div class="schedule-section">
-      <span class="schedule-title">Días de atención</span>
-      <div class="schedule-chips">
+      <p class="description-text">
+        {{ doctor().description || 'Profesional matriculado especializado en abordaje terapéutico integral y bienestar emocional.' }}
+      </p>
+
+      <div class="availability-status" [class.is-available]="hasAvailableDays">
+        <span class="status-indicator-dot"></span>
+        <span>{{ hasAvailableDays ? 'Disponible esta semana' : 'Sin turnos disponibles' }}</span>
+      </div>
+
+      <!-- Variante degradada: chips de días de atención -->
+      <div class="schedule-chips-row">
         @if (hasAvailableDays) {
           @for (dia of doctor().schedule | keyvalue; track dia.key) {
             @if (dia.value) {
-              <span class="chip-day">{{ getDayLabel(dia.key) }}</span>
+              <span class="day-chip">{{ getDayLabel(dia.key) }}</span>
             }
           }
         } @else {
-          <span class="chip-warning">Sin turnos disponibles</span>
+          <span class="no-slots-badge">Próximamente nuevas fechas</span>
+        }
+      </div>
+
+      <div class="card-actions-footer">
+        <button
+          type="button"
+          (click)="goToReviews(doctor().id)"
+          class="btn-reviews"
+        >
+          Ver reseñas
+        </button>
+        @if (hasAvailableDays) {
+          <button
+            type="button"
+            (click)="onClick()"
+            class="btn-book"
+          >
+            Reservar turno
+          </button>
+        } @else {
+          <button
+            type="button"
+            (click)="onClick()"
+            class="btn-view-profile"
+          >
+            Ver perfil
+          </button>
         }
       </div>
     </div>
-  </div>
-
-  <div class="doctor-footer">
-    <button type="button" (click)="goToReviews(doctor().id)" class="btn-ghost">
-      Ver reseñas
-    </button>
-    <button type="button" (click)="onClick()" class="btn-primary">
-      Reservar turno
-    </button>
   </div>
 </div>

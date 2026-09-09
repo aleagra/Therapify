@@ -14,6 +14,15 @@ describe('DoctorCardComponent', () => {
 
     fixture = TestBed.createComponent(DoctorCardComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('doctor', {
+      id: '1',
+      firstName: 'Ana',
+      lastName: 'García',
+      email: 'ana@example.com',
+      password: '',
+      confirmPassword: '',
+      userType: 'DOCTOR',
+    });
     fixture.detectChanges();
   });
 

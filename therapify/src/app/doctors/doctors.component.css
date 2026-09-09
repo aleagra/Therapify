@@ -1,214 +1,313 @@
-.doctors-page {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+:host {
+  display: block;
+  width: 100%;
 }
 
-.page-intro {
+.doctors-page-root {
+  width: 100%;
+  background-color: var(--c-neutral-50);
+  padding: 32px 0 64px;
+}
+
+.doctors-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+/* 1. Header con Margen de Ficha */
+.header-block {
+  margin-bottom: 26px;
+}
+
+.header-rail {
+  padding: 4px 16px 8px 0;
+}
+
+.rail-kicker {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500);
+}
+
+.rail-number {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #c3cedb;
+  margin-top: 2px;
+}
+
+.header-body {
+  padding: 0 0 4px 28px;
+}
+
+.page-title {
+  margin: 0 0 6px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--c-neutral-900);
+}
+
+.page-subtitle {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--c-neutral-500);
+  max-width: 60ch;
+}
+
+/* 2. Filtros — Nivel 2 Hundida */
+.filters-block {
+  margin-bottom: 32px;
+}
+
+.filters-panel-sunken {
+  background: var(--c-neutral-100);
+  border-radius: var(--radius-sunken);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filters-grid-controls {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-field-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--c-neutral-500);
+  pointer-events: none;
+}
+
+.filter-search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 32px 0 34px;
+  border: 1px solid var(--c-neutral-250);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--c-neutral-900);
+  outline: none;
+  transition: border-color var(--t-control), box-shadow var(--t-control);
+}
+
+.filter-search-input:focus {
+  border-color: var(--c-blue-600);
+  box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.16);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--c-neutral-500);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.filter-select-input {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--c-neutral-250);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--c-neutral-900);
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--t-control);
+}
+
+.filter-select-input:focus {
+  border-color: var(--c-blue-600);
+  box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.16);
+}
+
+/* Fila de Chips de Días */
+.filters-days-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.days-kicker-label {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500);
+  margin-right: 4px;
+}
+
+.days-chips-scroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.day-filter-chip {
+  height: 32px;
+  padding: 0 13px;
+  border: 1px solid var(--c-neutral-250);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--c-neutral-700);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--t-control), border-color var(--t-control), color var(--t-control);
+}
+
+.day-filter-chip:hover {
+  background: var(--c-neutral-50);
+}
+
+.day-filter-chip.is-active {
+  border-color: var(--c-blue-600);
+  background: var(--c-blue-600);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.clear-filters-link {
+  height: 32px;
+  padding: 0 10px;
+  margin-left: 4px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--c-neutral-500);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-control), color var(--t-control);
+}
+
+.clear-filters-link:hover {
+  background: var(--c-neutral-150);
+  color: var(--c-neutral-900);
+}
+
+/* 3. Barra de Metadatos y Orden */
+.results-meta-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 2px 14px;
+  margin-bottom: 12px;
+}
+
+.results-count-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--c-neutral-500);
+}
+
+.count-bold {
+  font-weight: 700;
+  color: var(--c-neutral-900);
+}
+
+.results-sort-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--c-neutral-500);
+}
+
+.sort-value {
+  font-weight: 600;
+  color: var(--c-neutral-900);
+}
+
+/* 4. Grilla de Doctores */
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* Skeleton Doctor Card */
+.skeleton-doctor-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  height: 220px;
+}
+
+.skeleton-rail {
+  border-right: 1px solid var(--c-neutral-150);
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.skeleton-body {
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.page-intro h1 {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--c-ink-900);
-}
+/* Responsive */
+@media (max-width: 1100px) {
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-.subtitle {
-  font-size: 1rem;
-  color: var(--c-ink-500);
-  max-width: 65ch;
-}
-
-/* Panel de filtros */
-.filters-panel {
-  padding: 24px;
-  background: var(--c-surface);
-  border: 1px solid var(--c-line);
-  border-radius: var(--r-lg);
-  box-shadow: var(--sh-1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.search-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.search-wrapper {
-  position: relative;
-  flex: 1;
-  min-width: 280px;
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--c-ink-500);
-  pointer-events: none;
-}
-
-.search-input {
-  width: 100%;
-  height: 46px;
-  padding-left: 42px;
-  padding-right: 36px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--c-line-strong);
-  font-size: 0.9375rem;
-  background-color: var(--c-surface);
-  color: var(--c-ink-900);
-  transition: all var(--t-fast);
-}
-
-.search-input:focus {
-  border-color: var(--c-primary-500);
-  box-shadow: var(--ring);
-}
-
-.clear-input-btn {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--c-ink-300);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: var(--r-full);
-}
-
-.clear-input-btn:hover {
-  color: var(--c-ink-700);
-}
-
-.clear-all-btn {
-  height: 40px;
-  font-size: 0.875rem;
-  color: var(--c-danger-600);
-}
-
-.clear-all-btn:hover {
-  background: var(--c-danger-050);
-  color: var(--c-danger-700);
-}
-
-/* Grilla de controles de filtros */
-.filter-controls-grid {
-  display: grid;
-  grid-template-columns: 1.8fr 1.2fr 1fr 1fr;
-  gap: 16px;
-  align-items: flex-end;
-}
-
-.filter-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.filter-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--c-ink-500);
-}
-
-.select-control {
-  height: 42px;
-  font-size: 0.875rem;
-}
-
-/* Chips para días */
-.chips-container {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.chip-button {
-  height: 42px;
-  padding: 0 12px;
-  border-radius: var(--r-sm);
-  background: var(--c-surface-alt);
-  color: var(--c-ink-700);
-  border: 1px solid var(--c-line);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--t-fast);
-}
-
-.chip-button:hover {
-  background: var(--c-primary-050);
-  border-color: var(--c-primary-400);
-  color: var(--c-primary-700);
-}
-
-.chip-button.active {
-  background: var(--c-primary-600);
-  color: #ffffff;
-  border-color: var(--c-primary-600);
-  font-weight: 600;
-}
-
-/* Encabezado de resultados */
-.results-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.results-count {
-  font-size: 0.9375rem;
-  color: var(--c-ink-500);
-}
-
-.results-count strong {
-  color: var(--c-ink-900);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Grilla de Doctores */
-.doctors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-/* Empty state */
-.empty-icon {
-  margin: 0 auto 16px;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--r-full);
-  background: var(--c-primary-050);
-  color: var(--c-primary-600);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 1024px) {
-  .filter-controls-grid {
+  .filters-grid-controls {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .filter-controls-grid {
+@media (max-width: 768px) {
+  .doctors-container {
+    padding: 0 16px;
+  }
+
+  .header-body {
+    padding-left: 16px;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+
+  .filters-grid-controls {
     grid-template-columns: 1fr;
   }
 
