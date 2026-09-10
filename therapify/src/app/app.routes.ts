@@ -94,6 +94,7 @@ export const routes: Routes = [
             (m) => m.DoctorsComponent,
           ),
         canActivate: [authGuard],
+        data: { preload: true },
       },
       {
         path: 'profile-doctor',

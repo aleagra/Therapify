@@ -23,9 +23,11 @@ export class AppointmentService {
   private localKey = 'userLogged';
 
   private myAppointmentsCache$ = new Map<string, Observable<Page<Appointment>>>();
+  private doctorDateSlotsCache$ = new Map<string, Observable<Appointment[]>>();
 
   invalidateCache(): void {
     this.myAppointmentsCache$.clear();
+    this.doctorDateSlotsCache$.clear();
   }
 
   private getLoggedUser(): User | null {
@@ -113,16 +115,23 @@ export class AppointmentService {
     doctorId: string,
     date: string,
   ): Observable<Appointment[]> {
-    return this.http
-      .get<
-        Appointment[]
-      >(`${this.APPOINTMENTS_URL}/doctor/${doctorId}?date=${date}`, this.getAuthHeaders())
-      .pipe(
-        catchError((err) => {
-          console.error('Error al obtener turnos por doctor y fecha:', err);
-          return of([]);
-        }),
-      );
+    const key = `${doctorId}:${date}`;
+    if (!this.doctorDateSlotsCache$.has(key)) {
+      const req$ = this.http
+        .get<
+          Appointment[]
+        >(`${this.APPOINTMENTS_URL}/doctor/${doctorId}?date=${date}`, this.getAuthHeaders())
+        .pipe(
+          catchError((err) => {
+            console.error('Error al obtener turnos por doctor y fecha:', err);
+            this.doctorDateSlotsCache$.delete(key);
+            return of([]);
+          }),
+          shareReplay(1),
+        );
+      this.doctorDateSlotsCache$.set(key, req$);
+    }
+    return this.doctorDateSlotsCache$.get(key)!;
   }
 
   updateAppointment(

@@ -172,9 +172,14 @@
   z-index: 0;
 }
 
+.hero-illustration-col {
+  aspect-ratio: 6 / 7;
+}
+
 .hero-illustration-img {
   width: 100%;
   height: auto;
+  aspect-ratio: 6 / 7;
   max-height: 320px;
   object-fit: contain;
   display: block;
