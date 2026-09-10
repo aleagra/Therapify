@@ -124,13 +124,17 @@
                     <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
+                        <div class="row-avatar" aria-hidden="true">{{ getInitials(ap.doctorName) }}</div>
                         <div class="doctor-details">
                           <h3 class="doctor-target-name">{{ ap.doctorName }}</h3>
                           <div class="doctor-meta-subline">
-                            <span class="appointment-modality">Presencial · Juncal 3130</span>
+                            <span class="meta-chip">Presencial</span>
+                            <span class="appointment-modality">Juncal 3130</span>
                           </div>
                         </div>
+                      </div>
 
+                      <div class="appointment-action-block">
                         <span
                           class="status-chip-badge"
                           [class.status-confirmed]="ap.status === 'CONFIRMED'"
@@ -139,11 +143,13 @@
                         >
                           {{ traducirEstado(ap.status) }}
                         </span>
-                      </div>
 
-                      <div class="appointment-action-block">
-                        <a [routerLink]="['/doctor', ap.doctorId]" class="btn-detail-link">
-                          Ver detalle
+                        <a
+                          [routerLink]="['/doctor', ap.doctorId]"
+                          class="btn-detail-link"
+                          title="Ir a la agenda del profesional"
+                        >
+                          {{ ap.status === 'COMPLETED' ? 'Reservar de nuevo' : 'Reprogramar' }}
                         </a>
                         @if (ap.status !== 'COMPLETED') {
                           <button
@@ -154,7 +160,7 @@
                             Cancelar
                           </button>
                         } @else {
-                          <a [routerLink]="['/doctor', ap.doctorId]" class="btn-review-link">
+                          <a [routerLink]="['/reviews', ap.doctorId]" class="btn-review-link">
                             Dejar reseña
                           </a>
                         }
@@ -243,13 +249,17 @@
                     <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
+                        <div class="row-avatar is-neutral" aria-hidden="true">{{ getInitials(ap.patientName) }}</div>
                         <div class="doctor-details">
-                          <h3 class="doctor-target-name">Paciente: {{ ap.patientName }}</h3>
+                          <h3 class="doctor-target-name">{{ ap.patientName }}</h3>
                           <div class="doctor-meta-subline">
-                            <span class="appointment-modality">Consulta · Hasta {{ ap.endTime }} hs</span>
+                            <span class="meta-chip">Consulta</span>
+                            <span class="appointment-modality">Hasta {{ ap.endTime }} hs</span>
                           </div>
                         </div>
+                      </div>
 
+                      <div class="appointment-action-block">
                         <span
                           class="status-chip-badge"
                           [class.status-confirmed]="ap.status === 'CONFIRMED'"
@@ -258,9 +268,7 @@
                         >
                           {{ traducirEstado(ap.status) }}
                         </span>
-                      </div>
 
-                      <div class="appointment-action-block">
                         @if (ap.status === 'PENDING') {
                           <button
                             type="button"

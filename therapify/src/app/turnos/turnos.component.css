@@ -24,28 +24,36 @@
 .appointments-card-list{background:#fff;border:1px solid var(--c-neutral-150);border-radius:var(--radius-card);box-shadow:var(--shadow-xs);overflow:hidden}
 .appointment-row{display:grid;grid-template-columns:96px 1fr}
 .appointment-row.has-divider{border-top:1px solid var(--c-neutral-100)}
-.row-date-rail{border-right:1px solid #dfe6ee;padding:16px 14px;text-align:right;background:transparent}
+.row-date-rail{border-right:1px solid var(--c-neutral-100);padding:16px 14px;text-align:right;background:transparent}
 .date-day-num{font-size:22px;font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--c-neutral-900)}
 .date-month-txt{font-size:10.5px;font-weight:700;line-height:1.6;letter-spacing:.11em;text-transform:uppercase;color:var(--c-neutral-500)}
 .date-time-txt{font-size:12.5px;font-weight:600;line-height:1.4;color:var(--c-neutral-500);margin-top:4px}
 .row-body-info{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .appointment-header-row{display:flex;align-items:center;gap:14px;min-width:0}
+/* Identidad de la fila: avatar de 38px + nombre, segun la maqueta */
+.row-avatar{width:38px;height:38px;flex:none;border-radius:var(--radius-pill);background:var(--c-blue-100);color:var(--c-blue-700);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:.01em}
+.row-avatar.is-neutral{background:var(--c-neutral-100);color:var(--c-neutral-500)}
+.meta-chip{padding:2px 7px;border-radius:var(--radius-chip);background:var(--c-neutral-100);font-size:11.5px;font-weight:600;color:var(--c-neutral-700);white-space:nowrap}
 .doctor-details{min-width:0}
 .doctor-target-name{margin:0;font-size:16px;font-weight:700;line-height:1.3;color:var(--c-neutral-900);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .doctor-meta-subline{display:flex;align-items:center;gap:8px;margin-top:5px}
 .appointment-modality{font-size:13px;color:var(--c-neutral-500)}
 .appointment-action-block{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.status-chip-badge{padding:4px 10px;border-radius:var(--radius-chip);font-size:12px;font-weight:600}
+.status-chip-badge{padding:5px 10px;flex:none;border-radius:var(--radius-chip);font-size:12px;font-weight:600}
 .status-confirmed{background:var(--c-teal-50);color:var(--c-teal-700)}
 .status-pending{background:var(--c-blue-50);color:var(--c-blue-700)}
 .status-cancelled{background:var(--c-coral-50);color:var(--c-coral-700)}
 .status-completed{background:var(--c-teal-50);color:var(--c-teal-700)}
-.btn-cancel-appt{height:34px;padding:0 12px;border:none;background:transparent;color:var(--c-neutral-700);font-size:13px;font-weight:600;border-radius:var(--radius-control);cursor:pointer;transition:background var(--t-control)}
-.btn-cancel-appt:hover{background:var(--c-coral-50);color:var(--c-coral-700)}
+.btn-cancel-appt{height:34px;padding:0 12px;border:1px solid var(--c-coral-200);background:#fff;color:var(--c-coral-700);font-size:13px;font-weight:600;border-radius:var(--radius-control);cursor:pointer;transition:background var(--t-control),border-color var(--t-control)}
+.btn-cancel-appt:hover{background:var(--c-coral-50);border-color:var(--c-coral-400)}
 .btn-confirm-appt{height:34px;padding:0 14px;border:none;background:var(--c-blue-600);color:#fff;font-size:13px;font-weight:600;border-radius:var(--radius-control);cursor:pointer;transition:background var(--t-control)}
 .btn-confirm-appt:hover{background:var(--c-blue-700)}
-.btn-detail-link,.btn-review-link{height:34px;padding:0 12px;border:1px solid var(--c-neutral-250);border-radius:var(--radius-control);background:#fff;color:var(--c-neutral-700);font-size:13px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:background var(--t-control)}
-.btn-detail-link:hover,.btn-review-link:hover{background:var(--c-neutral-50)}
+.btn-detail-link,.btn-review-link{height:34px;padding:0 12px;border-radius:var(--radius-control);font-size:13px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:background var(--t-control),border-color var(--t-control)}
+/* Secundario plano: no compite con la accion de la fila */
+.btn-detail-link{border:none;background:transparent;color:var(--c-neutral-700)}
+.btn-detail-link:hover{background:var(--c-neutral-100)}
+.btn-review-link{border:1px solid var(--c-neutral-250);background:#fff;color:var(--c-neutral-900)}
+.btn-review-link:hover{background:var(--c-neutral-50);border-color:var(--c-neutral-300)}
 
 .doctor-profile-lead{display:flex;align-items:center;gap:14px;min-width:0}
 .doctor-initials-avatar{width:42px;height:42px;border-radius:50%;background:var(--c-blue-50);color:var(--c-blue-600);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--c-blue-100)}
@@ -62,6 +70,12 @@
 /* Tabs Mobile */
 .mobile-turnos-tabs-bar{display:none}
 
+@media (max-width: 1023px) and (min-width: 769px) {
+  .appointments-container {
+    padding-inline: 20px;
+  }
+}
+
 @media (max-width:768px){
   .appointments-container{padding:0 16px}
   .header-block{display:grid !important;grid-template-columns:auto 1fr !important}
@@ -72,13 +86,13 @@
   .section-body-header,.content-body-wrap{padding-left:0 !important;width:100% !important}
   .section-body-header{flex-direction:column;align-items:flex-start;gap:10px}
   .filters-cluster{width:100%;justify-content:space-between;gap:8px;flex-wrap:wrap}
-  .btn-sort-toggle{height:32px;font-size:12px;padding:0 10px}
+  .btn-sort-toggle{min-height:40px;height:40px;font-size:12.5px;padding:0 12px}
   .mobile-turnos-tabs-bar{display:flex;background:#eaeff5;border-radius:8px;padding:3px;gap:4px;margin-top:14px;width:100%}
-  .mobile-tab-btn{flex:1;height:34px;border:none;border-radius:6px;background:transparent;font-size:13px;font-weight:500;color:#5a6e85;cursor:pointer;transition:background .15s ease,color .15s ease}
-  .mobile-tab-btn.is-active{background:#fff;color:#16222c;font-weight:600;box-shadow:0 1px 3px rgba(13,35,55,.08)}
+  .mobile-tab-btn{flex:1;min-height:40px;height:40px;border:none;border-radius:6px;background:transparent;font-size:13px;font-weight:600;color:#5a6e85;cursor:pointer;transition:background .15s ease,color .15s ease}
+  .mobile-tab-btn.is-active{background:#fff;color:#16222c;font-weight:700;box-shadow:0 1px 3px rgba(13,35,55,.08)}
   .appointments-section.mobile-hidden{display:none}
   .appointment-row{grid-template-columns:56px 1fr !important}
-  .row-date-rail{padding:14px 4px;text-align:center;border-right:1px solid #dfe6ee}
+  .row-date-rail{padding:14px 4px;text-align:center;border-right:1px solid var(--c-neutral-100)}
   .date-day-num{font-size:18px;font-weight:750;color:#16222c}
   .date-month-txt{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5a6e85;margin-top:2px}
   .date-time-txt{font-size:11px;font-weight:600;color:#5a6e85;margin-top:4px}
@@ -89,10 +103,14 @@
   .doctor-target-name{font-size:14.5px;font-weight:700;color:#16222c;margin:0 0 3px}
   .doctor-meta-subline{font-size:12px;color:#5a6e85;margin:0;display:flex;gap:6px;flex-wrap:wrap}
   .status-chip-badge{font-size:11px;padding:3px 8px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+  .row-avatar,
+  .meta-chip{display:none}
+  .appointment-header-row{padding-right:0}
   .appointment-action-block{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .status-chip-badge{grid-column:1 / -1;justify-self:start}
   .btn-detail-link,.btn-review-link,.btn-cancel-appt,.btn-confirm-appt{height:44px !important;min-height:44px !important;width:100% !important;box-sizing:border-box;display:flex !important;align-items:center;justify-content:center;border-radius:8px !important;font-size:13.5px !important;font-weight:600 !important;padding:0 8px !important;text-decoration:none;white-space:nowrap}
-  .btn-detail-link,.btn-review-link{background:#fff !important;border:1px solid #dfe6ee !important;color:#16222c !important}
-  .btn-cancel-appt{background:#fff !important;border:1px solid #fecaca !important;color:#dc2626 !important}
+  .btn-detail-link,.btn-review-link{background:#fff !important;border:1px solid var(--c-neutral-200) !important;color:var(--c-neutral-900) !important}
+  .btn-cancel-appt{background:#fff !important;border:1px solid var(--c-coral-200) !important;color:var(--c-coral-700) !important}
   .btn-confirm-appt{background:#084c74 !important;border:none !important;color:#fff !important}
 }
 
