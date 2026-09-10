@@ -1,19 +1,16 @@
 <form
   class="booking-panel-card surface-card"
+  [class.layout-split]="layout === 'split'"
   [formGroup]="citaForm"
   (ngSubmit)="confirmarReserva()"
 >
-  <!-- Top Header con Kicker y Precio -->
+  <!-- Zona A: elección de fecha y horario -->
+  <div class="booking-main-pane">
+  <!-- Top Header con Kicker -->
   <div class="booking-card-header">
     <div class="header-text-block">
       <span class="booking-kicker">Reservar</span>
       <h3 class="booking-title">Elegí fecha y horario</h3>
-    </div>
-    <div class="price-block">
-      <div class="price-value tabular-nums">{{ formattedPrice }}</div>
-      @if (consultationPrice && consultationPrice > 0) {
-        <span class="price-caption">por sesión</span>
-      }
     </div>
   </div>
 
@@ -56,20 +53,24 @@
     <!-- Celdas del Calendario -->
     <div class="days-matrix-grid">
       @for (day of calendarDays; track day.date.toISOString()) {
-        <button
-          type="button"
-          class="calendar-day-cell"
-          [class.is-today]="day.isToday"
-          [class.is-selected]="day.isSelected"
-          [class.is-disabled]="!day.isEnabled"
-          [class.is-other-month]="!day.isCurrentMonth"
-          [disabled]="!day.isEnabled"
-          (click)="selectDate(day)"
-          [attr.aria-label]="day.date | date:'fullDate'"
-        >
-          <span class="day-cell-number">{{ day.dayNumber }}</span>
-          <span class="day-status-dot" [class.dot-active]="day.isEnabled && !day.isSelected"></span>
-        </button>
+        @if (day.isCurrentMonth) {
+          <button
+            type="button"
+            class="calendar-day-cell"
+            [class.is-today]="day.isToday"
+            [class.is-selected]="day.isSelected"
+            [class.has-turns]="day.isEnabled && !day.isSelected"
+            [class.is-disabled]="!day.isEnabled"
+            [disabled]="!day.isEnabled"
+            (click)="selectDate(day)"
+            [attr.aria-label]="day.date | date:'fullDate'"
+          >
+            <span class="day-cell-number">{{ day.dayNumber }}</span>
+            <span class="day-status-dot" [class.dot-active]="day.isEnabled && !day.isSelected"></span>
+          </button>
+        } @else {
+          <div class="calendar-day-cell is-empty-filler" aria-hidden="true"></div>
+        }
       }
     </div>
 
@@ -139,22 +140,34 @@
     </div>
   </div>
 
-  <!-- Resumen de Reserva — Nivel 2 Hundida -->
-  <div class="summary-sunken-container surface-sunken">
+  </div>
+
+  <!-- Zona B: resumen del turno y confirmación -->
+  <div class="booking-summary-pane">
+  <!-- Resumen de Reserva — Separado por divisores sin fondos anidados -->
+  <div class="summary-section-zone">
     <div class="summary-kicker">Resumen</div>
     <div class="summary-details-grid">
-      <span class="summary-label">Fecha</span>
-      <span class="summary-val">
-        {{ (citaForm.get('fecha')?.value | date:'EEEE d \'de\' MMMM':'':'es-AR') || '—' }}
-      </span>
+      <div class="summary-item">
+        <span class="summary-label">Fecha</span>
+        <span class="summary-val">
+          {{ (citaForm.get('fecha')?.value | date:'EEEE d \'de\' MMMM':'':'es-AR') || '—' }}
+        </span>
+      </div>
 
-      <span class="summary-label">Horario</span>
-      <span class="summary-val">
-        {{ citaForm.get('hora')?.value ? citaForm.get('hora')?.value + ' - ' + calcularFin(citaForm.get('hora')?.value) : '—' }}
-      </span>
+      <div class="summary-item">
+        <span class="summary-label">Horario</span>
+        <span class="summary-val">
+          {{ citaForm.get('hora')?.value ? citaForm.get('hora')?.value + ' - ' + calcularFin(citaForm.get('hora')?.value) : '—' }}
+        </span>
+      </div>
 
-      <span class="summary-label">Modalidad</span>
-      <span class="summary-val">Presencial</span>
+      <div class="summary-item">
+        <span class="summary-label">Modalidad</span>
+        <span class="summary-val">
+          Presencial
+        </span>
+      </div>
     </div>
 
     <div class="summary-rule-line" aria-hidden="true"></div>
@@ -167,23 +180,76 @@
 
   <!-- Botón de Confirmación y Nota -->
   <div class="booking-footer-submit">
-    <button
-      type="submit"
-      class="btn-confirm-booking"
-      [disabled]="citaForm.invalid || reservaConfirmada"
-      [class.is-confirmed]="reservaConfirmada"
-    >
-      @if (reservaConfirmada) {
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>Reserva confirmada</span>
-      } @else {
-        <span>Confirmar reserva</span>
-      }
-    </button>
-    <p class="cancellation-policy-note">
-      Podés cancelar sin costo hasta 24 h antes de la sesión.
-    </p>
+    @if (isUserAdmin) {
+      <div class="admin-notice-card surface-sunken">
+        <div class="admin-notice-tag">Vista Administrador</div>
+        <p class="admin-notice-desc">
+          Como administrador podés supervisar las agendas y disponibilidad de los profesionales, pero no podés reservar turnos como paciente.
+        </p>
+      </div>
+      <button
+        type="button"
+        class="btn-confirm-booking is-admin-blocked"
+        disabled
+      >
+        No disponible para administradores
+      </button>
+    } @else {
+      <button
+        type="submit"
+        class="btn-confirm-booking"
+        [disabled]="citaForm.invalid || reservaConfirmada"
+        [class.is-confirmed]="reservaConfirmada"
+      >
+        @if (reservaConfirmada) {
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Reserva confirmada</span>
+        } @else {
+          <span>Confirmar reserva</span>
+        }
+      </button>
+      <p class="cancellation-policy-note">
+        Podés cancelar sin costo hasta 24 h antes de la sesión.
+      </p>
+    }
+  </div>
+  </div>
+
+  <!-- Barra Sticky Inferior Mobile (Foto 1) -->
+  <div class="mobile-sticky-booking-bar">
+    <div class="sticky-booking-info">
+      <div class="sticky-booking-price tabular-nums">{{ formattedPrice }}</div>
+      <div class="sticky-booking-slot">
+        @if (citaForm.get('fecha')?.value && citaForm.get('hora')?.value) {
+          {{ citaForm.get('fecha')?.value | date:'EEE d':'':'es-AR' }} · {{ citaForm.get('hora')?.value }}
+        } @else {
+          Seleccioná horario
+        }
+      </div>
+    </div>
+    @if (isUserAdmin) {
+      <button
+        type="button"
+        class="btn-sticky-confirm is-admin-blocked"
+        disabled
+      >
+        No disponible (Admin)
+      </button>
+    } @else {
+      <button
+        type="submit"
+        class="btn-sticky-confirm"
+        [disabled]="citaForm.invalid || reservaConfirmada"
+        [class.is-confirmed]="reservaConfirmada"
+      >
+        @if (reservaConfirmada) {
+          <span>Confirmada</span>
+        } @else {
+          <span>Confirmar reserva</span>
+        }
+      </button>
+    }
   </div>
 </form>

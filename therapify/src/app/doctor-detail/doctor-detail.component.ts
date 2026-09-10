@@ -28,6 +28,10 @@ export class DoctorDetailComponent implements OnInit {
   isLoading = signal(true);
   loadError = signal<string | null>(null);
 
+  get doctorRating(): number | undefined {
+    return (this.doctor() as any)?.rating;
+  }
+
   private skeletonShownTime: number | null = null;
 
   private readonly skeletonState = toSignal(

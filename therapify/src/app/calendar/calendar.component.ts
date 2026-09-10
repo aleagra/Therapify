@@ -40,12 +40,18 @@ export class CalendarComponent implements OnChanges {
   @Input() doctorId!: string;
   @Input() consultationPrice?: number;
   @Input() isInitialLoading: boolean = false;
+  /** 'panel': tarjeta unica en columna. 'split': calendario arriba y resumen en banda aparte. */
+  @Input() layout: 'panel' | 'split' = 'panel';
 
   fb = inject(FormBuilder);
   userService = inject(UserService);
   appointmentsService = inject(AppointmentService);
 
   userLogged = this.userService.getLoggedUser();
+
+  get isUserAdmin(): boolean {
+    return this.userLogged?.userType === 'ADMIN';
+  }
 
   diasHabilitados: number[] = [];
   horariosDisponibles: string[] = [];
@@ -58,7 +64,7 @@ export class CalendarComponent implements OnChanges {
   today: Date = new Date();
   currentMonthDate: Date = new Date();
 
-  readonly weekDays = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+  readonly weekDays = ['LU', 'MA', 'MI', 'JU', 'VI', 'SÁ', 'DO'];
 
   citaForm: FormGroup = this.fb.group({
     fecha: [null, Validators.required],
@@ -146,7 +152,8 @@ export class CalendarComponent implements OnChanges {
     const year = this.currentMonthDate.getFullYear();
     const month = this.currentMonthDate.getMonth();
 
-    const firstDayIndex = new Date(year, month, 1).getDay();
+    const rawFirstDay = new Date(year, month, 1).getDay();
+    const firstDayIndex = rawFirstDay === 0 ? 6 : rawFirstDay - 1;
     const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
     const daysInPrevMonth = new Date(year, month, 0).getDate();
 
@@ -199,8 +206,8 @@ export class CalendarComponent implements OnChanges {
       });
     }
 
-    // Días del siguiente mes para completar la grilla
-    const totalCells = days.length <= 35 ? 35 : 42;
+    // Días del siguiente mes para completar la grilla (siempre 6 filas = 42 celdas para altura fija sin saltos)
+    const totalCells = 42;
     const remaining = totalCells - days.length;
     for (let i = 1; i <= remaining; i++) {
       const date = new Date(year, month + 1, i);
@@ -294,7 +301,7 @@ export class CalendarComponent implements OnChanges {
 
   get formattedPrice(): string {
     if (!this.consultationPrice || this.consultationPrice <= 0) return 'A convenir';
-    return `ARS ${this.consultationPrice.toLocaleString('es-AR')}`;
+    return `$${this.consultationPrice.toLocaleString('es-AR')}`;
   }
 
   calcularFin(hora: string): string {

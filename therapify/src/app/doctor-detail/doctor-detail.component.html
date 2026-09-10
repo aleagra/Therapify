@@ -2,13 +2,17 @@
   <div class="detail-container">
 
     <!-- Enlace de retorno -->
-    <a routerLink="/doctors" (click)="goBack($event)" class="back-link">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"></line>
-        <polyline points="12 19 5 12 12 5"></polyline>
-      </svg>
-      <span>Volver a resultados</span>
-    </a>
+    <div class="detail-top-nav-bar">
+      <a routerLink="/doctors" (click)="goBack($event)" class="back-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span class="desktop-back-text">Volver a resultados</span>
+        <span class="mobile-back-text">Volver</span>
+      </a>
+      <div class="mobile-top-brand-mark" aria-hidden="true"></div>
+    </div>
 
     @if (loadError()) {
       <div class="empty-state-box">
@@ -31,12 +35,12 @@
         <!-- Rail Izquierdo (96px) -->
         <div class="ficha-rail detail-rail">
           <div class="rail-kicker">Perfil</div>
-          <div class="rail-number">02</div>
+          <div class="rail-number">01</div>
         </div>
 
         <!-- Cuerpo Derecho -->
         <div class="ficha-body detail-body">
-          <div class="detail-columns-grid">
+          <div class="booking-layout-grid">
 
             <!-- Columna Izquierda: Información del Profesional -->
             <div class="specialist-info-column">
@@ -79,13 +83,12 @@
                           </svg>
                           Matrícula verificada
                         </span>
-                        <div class="rating-cluster">
-                          <span class="stars-gold">★★★★★</span>
-                          <span class="rating-num">4,8</span>
-                          <a [routerLink]="['/reviews', doc.id]" class="reviews-link">
-                            Ver reseñas
-                          </a>
-                        </div>
+                        @if (doctorRating) {
+                          <span class="badge-rating">
+                            <span class="rating-star" aria-hidden="true">★</span>
+                            <span class="rating-num">{{ doctorRating }}</span>
+                          </span>
+                        }
                       </div>
                     </div>
                   </div>
@@ -112,10 +115,7 @@
                   <section class="clinical-approach-section">
                     <h2 class="section-heading">Enfoque clínico</h2>
                     <p class="approach-paragraph">
-                      {{ doc.description || 'Intervención terapéutica personalizada con enfoque humanista y sistémico, orientada a fortalecer recursos personales y herramientas de afrontamiento ante situaciones de cambio o malestar emocional.' }}
-                    </p>
-                    <p class="approach-paragraph">
-                      Formación continua de posgrado y amplia experiencia en consulta clínica individual y de parejas en Argentina.
+                      {{ doc.description || 'Intervención terapéutica orientada a fortalecer recursos personales y herramientas de afrontamiento ante situaciones de cambio o malestar emocional.' }}
                     </p>
                   </section>
 
@@ -142,65 +142,27 @@
                     </div>
                   </section>
 
-                  <!-- 5. Reseñas Recientes — Nivel 3 Lista -->
-                  <section class="recent-reviews-section">
-                    <div class="reviews-header-line">
-                      <h2 class="section-heading">Reseñas recientes</h2>
-                      <a [routerLink]="['/reviews', doc.id]" class="view-all-reviews-link">
-                        Ver todas las reseñas
-                      </a>
-                    </div>
-
-                    <div class="recent-reviews-list">
-                      <!-- Reseña 1 de Muestra Estructurada -->
-                      <div class="review-row-item">
-                        <div class="review-rail-mini">
-                          <div class="mini-avatar">MS</div>
-                        </div>
-                        <div class="review-content-mini">
-                          <div class="review-author-line">
-                            <span class="author-name">Martin Sanchez</span>
-                            <span class="review-stars">★★★★★</span>
-                            <span class="review-date">· 2 feb 2026</span>
-                          </div>
-                          <p class="review-text-mini">
-                            Sesión muy productiva. Ordenó una conversación y brindó claridad desde el primer encuentro.
-                          </p>
-                        </div>
-                      </div>
-
-                      <!-- Reseña 2 de Muestra Estructurada -->
-                      <div class="review-row-item">
-                        <div class="review-rail-mini">
-                          <div class="mini-avatar">VL</div>
-                        </div>
-                        <div class="review-content-mini">
-                          <div class="review-author-line">
-                            <span class="author-name">Valeria Lopez</span>
-                            <span class="review-stars">★★★★★</span>
-                            <span class="review-date">· 18 ene 2026</span>
-                          </div>
-                          <p class="review-text-mini">
-                            Escucha activa y excelente feedback. Gran puntualidad y calidez profesional.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
+                  <!-- 5. Enlace a Reseñas (único acceso: el header ya no lo repite) -->
+                  <div class="reviews-link-only-row">
+                    <span class="reviews-row-kicker">Reseñas</span>
+                    <a [routerLink]="['/reviews', doc.id]" class="view-all-reviews-link">
+                      Ver todas las reseñas &rarr;
+                    </a>
+                  </div>
                 }
               }
             </div>
 
-            <!-- Columna Derecha: Proceso de Reserva Sticky Dominante -->
-            <aside class="booking-sidebar-column">
+            <!-- Zona de reserva: calendario + horarios (arriba a la derecha)
+                 y banda de resumen a todo el ancho (abajo) -->
               <app-calendar
                 [schedule]="doctor()?.schedule"
                 [availability]="doctor()?.availability"
                 [doctorId]="doctor()?.id || ''"
                 [consultationPrice]="doctor()?.consultationPrice"
                 [isInitialLoading]="displayLoading()"
+                layout="split"
               ></app-calendar>
-            </aside>
 
           </div>
         </div>

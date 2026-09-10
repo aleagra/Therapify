@@ -10,10 +10,22 @@
 }
 
 .detail-container {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px;
   box-sizing: border-box;
+}
+
+/* Top Nav Bar */
+.detail-top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.mobile-back-text, .mobile-top-brand-mark {
+  display: none;
 }
 
 /* Enlace Volver */
@@ -26,7 +38,6 @@
   font-weight: 600;
   color: var(--c-neutral-500);
   text-decoration: none;
-  margin-bottom: 24px;
   transition: color var(--t-control);
 }
 
@@ -67,17 +78,29 @@
   min-width: 0;
 }
 
-/* Grilla de 2 Columnas */
-.detail-columns-grid {
+/* Grilla de reserva: fila 1 (ficha | calendario), fila 2 (resumen a lo ancho) */
+.booking-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 452px;
-  gap: 36px;
+  grid-template-columns: minmax(0, 1fr) 440px;
+  grid-template-areas:
+    "info    booking"
+    "summary summary";
+  gap: 32px;
   align-items: start;
+}
+
+/* El calendario se reparte solo en la grilla: cada zona toma su area */
+.booking-layout-grid app-calendar {
+  display: contents;
 }
 
 /* Columna Izquierda */
 .specialist-info-column {
+  grid-area: info;
   min-width: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header de Identidad */
@@ -147,32 +170,32 @@
   color: var(--c-teal-700);
 }
 
-.rating-cluster {
+.badge-rating {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13.5px;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: var(--radius-chip);
+  background: var(--c-neutral-100);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-neutral-700);
+}
+
+.rating-star {
+  color: var(--c-warn-700, #9a6b12);
+  font-size: 11px;
+  line-height: 1;
 }
 
 .stars-gold {
-  color: #253340;
+  color: var(--c-ink-700, #3a4a57);
   letter-spacing: 1px;
 }
 
 .rating-num {
   font-weight: 700;
   color: var(--c-neutral-900);
-}
-
-.reviews-link {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  color: var(--c-blue-600);
-  text-decoration: none;
-}
-
-.reviews-link:hover {
-  text-decoration: underline;
 }
 
 /* Metadatos */
@@ -245,9 +268,8 @@
 .usual-schedule-sunken {
   background: var(--c-neutral-100);
   border-radius: var(--radius-sunken);
-  padding: 16px 18px;
+  padding: 18px 20px;
   margin-bottom: 26px;
-  max-width: 520px;
 }
 
 .schedule-sunken-header {
@@ -326,6 +348,25 @@
   text-decoration: underline;
 }
 
+.reviews-link-only-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--c-neutral-150);
+  margin-top: auto;
+}
+
+.reviews-row-kicker {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500);
+}
+
 .recent-reviews-list {
   display: flex;
   flex-direction: column;
@@ -379,7 +420,7 @@
 
 .review-stars {
   font-size: 12.5px;
-  color: #253340;
+  color: #f59e0b;
   letter-spacing: 1px;
 }
 
@@ -396,34 +437,100 @@
   color: var(--c-neutral-500);
 }
 
-/* Columna Derecha Sticky */
-.booking-sidebar-column {
-  position: sticky;
-  top: 88px;
-}
+
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .detail-columns-grid {
+  .booking-layout-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    grid-template-areas:
+      "info"
+      "booking"
+      "summary";
+    gap: 24px;
   }
 
-  .booking-sidebar-column {
-    position: static;
+  .specialist-info-column {
+    align-self: auto;
+  }
+
+  .reviews-link-only-row {
+    margin-top: 24px;
   }
 }
 
 @media (max-width: 768px) {
+  .doctor-detail-root {
+    padding-bottom: 96px;
+  }
+
   .detail-container {
     padding: 0 16px;
   }
 
+  .detail-ficha-layout {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .detail-rail {
+    display: none !important;
+  }
+
   .detail-body {
-    padding-left: 16px;
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .desktop-back-text {
+    display: none;
+  }
+
+  .mobile-back-text {
+    display: inline;
+  }
+
+  .mobile-top-brand-mark {
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--c-blue-600), var(--c-teal-500));
+  }
+
+  .doctor-identity-header {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .doctor-avatar-72 {
+    width: 52px;
+    height: 52px;
+    font-size: 15px;
   }
 
   .doctor-fullname {
-    font-size: 24px;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .doctor-badges-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .badge-verified {
+    background: #eafaf6;
+    color: #0b6f5f;
+    font-weight: 600;
+  }
+
+  .clinical-approach-section {
+    margin-bottom: 18px;
+  }
+
+  .approach-paragraph {
+    font-size: 13.5px;
+    line-height: 1.55;
   }
 }
