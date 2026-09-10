@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, OnInit, computed } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
@@ -9,13 +9,24 @@ import { concat, forkJoin, of, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { toast } from 'ngx-sonner';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { DatePartPipe } from '../pipes/date-part.pipe';
+import { InitialsPipe } from '../pipes/initials.pipe';
+import { StatusLabelPipe } from '../pipes/status-label.pipe';
 
 @Component({
   selector: 'app-turnos',
   standalone: true,
-  imports: [CommonModule, RouterLink, SkeletonComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    SkeletonComponent,
+    DatePartPipe,
+    InitialsPipe,
+    StatusLabelPipe,
+  ],
   templateUrl: './turnos.component.html',
   styleUrls: ['./turnos.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TurnosComponent implements OnInit {
   appointmentService = inject(AppointmentService);

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, computed } from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
@@ -14,6 +14,7 @@ import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { AppointmentService } from '../services/appointments.service';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { InitialsPipe } from '../pipes/initials.pipe';
 import { Reviews } from '../../types/reviews';
 import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
@@ -22,21 +23,22 @@ import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 @Component({
   selector: 'app-reviews',
   standalone: true,
-  imports: [ReactiveFormsModule, SkeletonComponent, DatePipe],
+  imports: [ReactiveFormsModule, SkeletonComponent, DatePipe, InitialsPipe],
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewsComponent implements OnInit {
   @Input() doctorId!: string;
 
-  reviews: Reviews[] = [];
-  isEditing = false;
-  reviewToEditId: string | null = null;
+  reviews = signal<Reviews[]>([]);
+  isEditing = signal(false);
+  reviewToEditId = signal<string | null>(null);
   isLoadingReviews = signal(true);
   loadError = signal<string | null>(null);
 
   readonly reviewsPageSize = 8;
-  visibleReviewsCount = this.reviewsPageSize;
+  visibleReviewsCount = signal(this.reviewsPageSize);
 
   private skeletonShownTime: number | null = null;
 
@@ -92,20 +94,17 @@ export class ReviewsComponent implements OnInit {
   hasAppointmentWithDoctor = signal<boolean | null>(null);
 
   get canSubmitReview(): boolean {
-    if (this.isEditing) return true;
+    if (this.isEditing()) return true;
     if (!this.userLogged) return true;
     return this.hasAppointmentWithDoctor() !== false;
   }
 
   goBack(event?: Event): void {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    if (typeof window !== 'undefined' && window.history.length > 1) {
+    if (event) event.preventDefault();
+    if (window.history.length > 1) {
       this.location.back();
     } else {
-      this.router.navigate(['/appointments']);
+      this.router.navigate(['/doctors']);
     }
   }
 
@@ -114,10 +113,10 @@ export class ReviewsComponent implements OnInit {
     value: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
   });
 
-  hoverRating = 0;
+  hoverRating = signal(0);
 
   setHover(val: number): void {
-    this.hoverRating = val;
+    this.hoverRating.set(val);
   }
 
   setRating(val: number): void {
@@ -142,37 +141,46 @@ export class ReviewsComponent implements OnInit {
     return this.reviewForm.get('comment')?.value?.length || 0;
   }
 
-  get averageRating(): number {
-    if (!this.reviews.length) return 0;
-    const sum = this.reviews.reduce((acc, r) => acc + r.value, 0);
-    return Number((sum / this.reviews.length).toFixed(1));
-  }
+  averageRating = computed(() => {
+    const list = this.reviews();
+    if (!list.length) return 0;
+    const sum = list.reduce((acc, r) => acc + r.value, 0);
+    return Number((sum / list.length).toFixed(1));
+  });
 
-  getPatientInitials(name?: string, lastName?: string): string {
-    const fn = (name || '').trim().charAt(0);
-    const ln = (lastName || '').trim().charAt(0);
-    return `${fn}${ln}`.toUpperCase() || 'P';
-  }
+  starCounts = computed(() => {
+    const list = this.reviews();
+    const counts: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    for (const r of list) {
+      if (counts[r.value] !== undefined) {
+        counts[r.value]++;
+      }
+    }
+    return counts;
+  });
 
-  getStarCount(star: number): number {
-    return this.reviews.filter((r) => r.value === star).length;
-  }
+  starPercentages = computed(() => {
+    const list = this.reviews();
+    const total = list.length;
+    const percentages: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    if (!total) return percentages;
+    const counts = this.starCounts();
+    for (let s = 1; s <= 5; s++) {
+      percentages[s] = Math.round((counts[s] / total) * 100);
+    }
+    return percentages;
+  });
 
-  getStarPercentage(star: number): number {
-    if (!this.reviews.length) return 0;
-    return Math.round((this.getStarCount(star) / this.reviews.length) * 100);
-  }
+  visibleReviews = computed(() => {
+    return this.reviews().slice(0, this.visibleReviewsCount());
+  });
 
-  get visibleReviews(): Reviews[] {
-    return this.reviews.slice(0, this.visibleReviewsCount);
-  }
-
-  get remainingReviewsCount(): number {
-    return Math.max(0, this.reviews.length - this.visibleReviewsCount);
-  }
+  remainingReviewsCount = computed(() => {
+    return Math.max(0, this.reviews().length - this.visibleReviewsCount());
+  });
 
   showMoreReviews(): void {
-    this.visibleReviewsCount += this.reviewsPageSize;
+    this.visibleReviewsCount.update((c) => c + this.reviewsPageSize);
   }
 
   ngOnInit(): void {
@@ -213,8 +221,8 @@ export class ReviewsComponent implements OnInit {
     this.loadError.set(null);
     this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
       next: (data) => {
-        this.reviews = data;
-        this.visibleReviewsCount = this.reviewsPageSize;
+        this.reviews.set(data);
+        this.visibleReviewsCount.set(this.reviewsPageSize);
         this.isLoadingReviews.set(false);
       },
       error: (err) => {
@@ -250,14 +258,15 @@ export class ReviewsComponent implements OnInit {
       comment: commentVal || undefined,
     };
 
-    if (this.isEditing && this.reviewToEditId) {
+    if (this.isEditing() && this.reviewToEditId()) {
+      const editId = this.reviewToEditId()!;
       this.reviewsService
-        .updateReview(this.reviewToEditId, reviewData)
+        .updateReview(editId, reviewData)
         .subscribe({
           next: (review) => {
-            const index = this.reviews.findIndex((r) => r.id === review.id);
-            if (index !== -1) this.reviews[index] = review;
-
+            this.reviews.update((list) =>
+              list.map((r) => (r.id === review.id ? review : r)),
+            );
             toast.success('Reseña actualizada ✅', { position: 'top-center' });
             this.resetForm();
           },
@@ -271,8 +280,8 @@ export class ReviewsComponent implements OnInit {
 
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
-        this.reviews.push(review);
-        this.visibleReviewsCount += 1;
+        this.reviews.update((list) => [review, ...list]);
+        this.visibleReviewsCount.update((c) => c + 1);
         toast.success('Reseña creada ✅', { position: 'top-center' });
         this.resetForm();
       },
@@ -291,7 +300,7 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    const review = this.reviews.find((r) => r.id === id);
+    const review = this.reviews().find((r) => r.id === id);
     if (!review) return;
 
     const isOwner = review.patientId === this.userLogged.id;
@@ -315,7 +324,7 @@ export class ReviewsComponent implements OnInit {
   private executeDeleteReview(id: string): void {
     this.reviewsService.deleteReview(id).subscribe({
       next: () => {
-        this.reviews = this.reviews.filter((r) => r.id !== id);
+        this.reviews.update((list) => list.filter((r) => r.id !== id));
         toast.success('Reseña eliminada', { position: 'top-center' });
       },
       error: () =>
@@ -336,8 +345,8 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
-    this.isEditing = true;
-    this.reviewToEditId = review.id;
+    this.isEditing.set(true);
+    this.reviewToEditId.set(review.id);
 
     this.reviewForm.patchValue({
       value: review.value,
@@ -347,7 +356,7 @@ export class ReviewsComponent implements OnInit {
 
   resetForm(): void {
     this.reviewForm.reset({ value: 1, comment: '' });
-    this.isEditing = false;
-    this.reviewToEditId = null;
+    this.isEditing.set(false);
+    this.reviewToEditId.set(null);
   }
 }

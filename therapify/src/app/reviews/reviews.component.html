@@ -51,18 +51,18 @@
                 </button>
               </div>
             } @else {
-              @if (reviews.length > 0) {
+              @if (reviews().length > 0) {
                 <!-- Bloque de Promedio (Margen ancho de 180px) -->
                 <div class="rating-score-block">
                   <div class="rating-score-rail">
                     <div class="big-rating-number">
-                      {{ averageRating.toFixed(1) }}
+                      {{ averageRating() }}
                     </div>
                     <div class="rating-stars-lead">
                       ★★★★★
                     </div>
                     <div class="rating-reviews-count">
-                      {{ reviews.length === 1 ? '1 reseña de paciente' : reviews.length + ' reseñas de pacientes' }}
+                      {{ reviews().length === 1 ? '1 reseña de paciente' : reviews().length + ' reseñas de pacientes' }}
                     </div>
                   </div>
 
@@ -73,10 +73,10 @@
                         <div class="dist-bar-track">
                           <span
                             class="dist-bar-fill"
-                            [style.width.%]="getStarPercentage(star)"
+                            [style.width.%]="starPercentages()[star]"
                           ></span>
                         </div>
-                        <span class="dist-count-label">{{ getStarCount(star) }}</span>
+                        <span class="dist-count-label">{{ starCounts()[star] }}</span>
                       </div>
                     }
                   </div>
@@ -108,7 +108,7 @@
                     </div>
                   }
                 </div>
-              } @else if (reviews.length === 0) {
+              } @else if (reviews().length === 0) {
                 <!-- Estado Vacío respetando la estructura -->
                 <div class="empty-reviews-notice">
                   <h3 class="notice-title">Todavía no hay reseñas de este profesional</h3>
@@ -118,12 +118,12 @@
                 </div>
               } @else {
                 <div class="reviews-rendered-list">
-                  @for (r of visibleReviews; track r.id) {
+                  @for (r of visibleReviews(); track r.id) {
                     <div class="review-row-item">
                       <!-- Rail de la reseña: 96px con avatar y fecha -->
                       <div class="review-date-rail">
                         <div class="review-author-avatar">
-                          {{ getPatientInitials(r.patientName, r.patientLastName) }}
+                          {{ r.patientName | initials:r.patientLastName }}
                         </div>
                         <div class="review-date-caption">
                           {{ r.date | date:'d MMM yyyy':'':'es-AR' }}
@@ -181,13 +181,13 @@
                   }
                 </div>
 
-                @if (remainingReviewsCount > 0) {
+                @if (remainingReviewsCount() > 0) {
                   <button
                     type="button"
                     (click)="showMoreReviews()"
                     class="btn-load-more-reviews"
                   >
-                    Ver {{ remainingReviewsCount < reviewsPageSize ? remainingReviewsCount : reviewsPageSize }} reseñas más
+                    Ver {{ remainingReviewsCount() < reviewsPageSize ? remainingReviewsCount() : reviewsPageSize }} reseñas más
                   </button>
                 }
               }
@@ -200,7 +200,7 @@
               <div class="form-header-pad">
                 <span class="form-kicker">Tu experiencia</span>
                 <h3 class="form-title">
-                  {{ isEditing ? 'Editá tu reseña' : 'Dejá tu reseña' }}
+                  {{ isEditing() ? 'Editá tu reseña' : 'Dejá tu reseña' }}
                 </h3>
                 <p class="form-subtitle">
                   Ayudás a otras personas a encontrar el acompañamiento adecuado.
@@ -222,7 +222,7 @@
                         type="button"
                         role="radio"
                         class="star-pick-btn"
-                        [class.is-lit]="(hoverRating || reviewForm.get('value')?.value) >= star"
+                        [class.is-lit]="(hoverRating() || reviewForm.get('value')?.value) >= star"
                         [attr.aria-checked]="reviewForm.get('value')?.value === star"
                         (mouseenter)="setHover(star)"
                         (click)="setRating(star)"
@@ -233,7 +233,7 @@
                       </button>
                     }
                     <span class="star-rating-count tabular-nums">
-                      {{ hoverRating || reviewForm.get('value')?.value }} / 5
+                      {{ hoverRating() || reviewForm.get('value')?.value }} / 5
                     </span>
                   </div>
                   <input type="hidden" formControlName="value" />
@@ -273,10 +273,10 @@
                   [title]="!canSubmitReview ? 'Solo podés dejar reseñas a doctores con los que tuviste un turno.' : ''"
                   class="btn-submit-review"
                 >
-                  {{ isEditing ? 'Actualizar reseña' : 'Publicar reseña' }}
+                  {{ isEditing() ? 'Actualizar reseña' : 'Publicar reseña' }}
                 </button>
 
-                @if (isEditing) {
+                @if (isEditing()) {
                   <button
                     type="button"
                     (click)="resetForm()"

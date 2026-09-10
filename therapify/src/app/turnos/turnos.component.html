@@ -164,15 +164,15 @@
                   <div class="appointment-row" [class.has-divider]="!first">
                     <!-- Margen de fila con fecha (96px) -->
                     <div class="row-date-rail">
-                      <div class="date-day-num">{{ getDayNumber(ap.date) }}</div>
-                      <div class="date-month-txt">{{ getMonthShort(ap.date) }}</div>
+                      <div class="date-day-num">{{ ap.date | datePart:'day' }}</div>
+                      <div class="date-month-txt">{{ ap.date | datePart:'month' }}</div>
                       <div class="date-time-txt">{{ ap.startTime }} hs</div>
                     </div>
 
                     <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
-                        <div class="row-avatar" aria-hidden="true">{{ getInitials(ap.doctorName) }}</div>
+                        <div class="row-avatar" aria-hidden="true">{{ ap.doctorName | initials }}</div>
                         <div class="doctor-details">
                           <h3 class="doctor-target-name">{{ ap.doctorName }}</h3>
                           <div class="doctor-meta-subline">
@@ -189,7 +189,7 @@
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
                         >
-                          {{ traducirEstado(ap.status) }}
+                          {{ ap.status | statusLabel }}
                         </span>
 
                         <a
@@ -293,15 +293,15 @@
                   <div class="appointment-row" [class.has-divider]="!first">
                     <!-- Margen con fecha (96px) -->
                     <div class="row-date-rail">
-                      <div class="date-day-num">{{ getDayNumber(ap.date) }}</div>
-                      <div class="date-month-txt">{{ getMonthShort(ap.date) }}</div>
+                      <div class="date-day-num">{{ ap.date | datePart:'day' }}</div>
+                      <div class="date-month-txt">{{ ap.date | datePart:'month' }}</div>
                       <div class="date-time-txt">{{ ap.startTime }} hs</div>
                     </div>
 
                     <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
-                        <div class="row-avatar is-neutral" aria-hidden="true">{{ getInitials(ap.patientName) }}</div>
+                        <div class="row-avatar is-neutral" aria-hidden="true">{{ ap.patientName | initials }}</div>
                         <div class="doctor-details">
                           <h3 class="doctor-target-name">{{ ap.patientName }}</h3>
                           <div class="doctor-meta-subline">
@@ -318,7 +318,7 @@
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
                         >
-                          {{ traducirEstado(ap.status) }}
+                          {{ ap.status | statusLabel }}
                         </span>
 
                         @if (ap.status === 'PENDING') {
@@ -418,15 +418,15 @@
                 @for (ap of turnosAdmin(); track ap.id; let first = $first) {
                   <div class="appointment-row" [class.has-divider]="!first">
                     <div class="row-date-rail">
-                      <div class="date-day-num">{{ getDayNumber(ap.date) }}</div>
-                      <div class="date-month-txt">{{ getMonthShort(ap.date) }}</div>
+                      <div class="date-day-num">{{ ap.date | datePart:'day' }}</div>
+                      <div class="date-month-txt">{{ ap.date | datePart:'month' }}</div>
                       <div class="date-time-txt">{{ ap.startTime }} hs</div>
                     </div>
                     <div class="row-body-info">
                       <div class="appointment-header-row">
                         <div class="doctor-profile-lead">
                           <div class="doctor-initials-avatar">
-                            {{ getInitials(ap.patientName) }}
+                            {{ ap.patientName | initials }}
                           </div>
                           <div class="doctor-details">
                             <h3 class="doctor-target-name">
@@ -445,7 +445,7 @@
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
                         >
-                          {{ traducirEstado(ap.status) }}
+                          {{ ap.status | statusLabel }}
                         </span>
                       </div>
 
