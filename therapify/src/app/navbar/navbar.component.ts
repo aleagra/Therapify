@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
   Router,
   RouterLink,
@@ -14,17 +14,18 @@ import { NgIf } from '@angular/common';
   imports: [RouterLink, RouterLinkActive, RouterModule, NgIf],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
-  menuOpen = false;
+  menuOpen = signal(false);
   userService = inject(UserService);
   router = inject(Router);
 
   toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+    this.menuOpen.update((open) => !open);
   }
 
-  get authButtonLabel(): string {
+  authButtonLabel = computed(() => {
     if (this.userService.isLoggedSignal()) {
       return 'Cerrar sesión';
     }
@@ -32,7 +33,7 @@ export class NavbarComponent {
       return 'Registrate';
     }
     return 'Iniciar sesión';
-  }
+  });
 
   handleLoginLogout() {
     if (this.userService.isLoggedSignal()) {

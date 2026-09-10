@@ -10,21 +10,21 @@
     <button
       class="mobile-toggle"
       (click)="toggleMenu()"
-      [attr.aria-expanded]="menuOpen"
+      [attr.aria-expanded]="menuOpen()"
       aria-label="Menú de navegación"
     >
-      <span class="hamburger-bar" [class.open-bar-1]="menuOpen"></span>
-      <span class="hamburger-bar" [class.open-bar-2]="menuOpen"></span>
+      <span class="hamburger-bar" [class.open-bar-1]="menuOpen()"></span>
+      <span class="hamburger-bar" [class.open-bar-2]="menuOpen()"></span>
     </button>
 
     <!-- Navegación Desktop & Menú Mobile -->
-    <nav class="nav-wrapper" [class.is-open]="menuOpen">
+    <nav class="nav-wrapper" [class.is-open]="menuOpen()">
       <div class="nav-links">
         <a
           routerLink="/doctors"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: false }"
-          (click)="menuOpen = false"
+          (click)="menuOpen.set(false)"
           class="nav-item"
         >
           Buscar profesionales
@@ -33,7 +33,7 @@
           routerLink="/appointments"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
-          (click)="menuOpen = false"
+          (click)="menuOpen.set(false)"
           class="nav-item"
         >
           Mis turnos
@@ -42,7 +42,7 @@
           routerLink="/about-us"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
-          (click)="menuOpen = false"
+          (click)="menuOpen.set(false)"
           class="nav-item"
         >
           Sobre nosotros
@@ -52,7 +52,7 @@
           routerLink="/users"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
-          (click)="menuOpen = false"
+          (click)="menuOpen.set(false)"
           class="nav-item"
         >
           Usuarios
@@ -62,7 +62,7 @@
           routerLink="/profile"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
-          (click)="menuOpen = false"
+          (click)="menuOpen.set(false)"
           class="nav-item"
         >
           Mi perfil
@@ -77,7 +77,7 @@
           class="auth-button"
           (click)="handleLoginLogout()"
         >
-          {{ authButtonLabel }}
+          {{ authButtonLabel() }}
         </button>
       </div>
     </nav>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -9,5 +9,6 @@ import { FooterComponent } from '../footer/footer.component';
   imports: [NavbarComponent, FooterComponent, RouterModule],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthLayoutComponent {}

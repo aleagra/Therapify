@@ -1,10 +1,11 @@
-import { Component, computed, input, booleanAttribute } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, booleanAttribute } from '@angular/core';
 
 @Component({
   selector: 'app-skeleton',
   standalone: true,
   template: '',
   styleUrls: ['./skeleton.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[style.width]': 'resolvedWidth()',
     '[style.height]': 'resolvedHeight()',
