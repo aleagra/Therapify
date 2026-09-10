@@ -19,6 +19,7 @@ export class TurnosComponent implements OnInit {
   userService = inject(UserService);
 
   userLogged = this.userService.getLoggedUser();
+  mobileActiveTab = signal<'turnos' | 'pacientes'>('turnos');
 
   turnosPacienteRaw = signal<Appointment[]>([]);
   turnosDoctorRaw = signal<Appointment[]>([]);
