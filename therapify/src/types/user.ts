@@ -14,8 +14,16 @@ export interface User {
   address?: string;
   distanceKm?: number;
   specialty?: string;
+  doctorSpecialty?: string;
   consultationPrice?: number;
   schedule?: Record<string, boolean>;
   availability?: Record<string, string[]>;
   description?: string;
+  averageRating?: number | null;
+  totalReviews?: number | null;
+  availableSlotsCount?: number | null;
+  nextAvailableDates?: string[] | null;
 }
+
+export type UserDetailDTO = User;
+

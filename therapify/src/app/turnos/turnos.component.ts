@@ -25,6 +25,7 @@ export class TurnosComponent implements OnInit {
   mobileActiveTab = signal<'turnos' | 'pacientes'>('turnos');
 
   isLoading = signal(true);
+  loadError = signal<string | null>(null);
 
   private skeletonShownTime: number | null = null;
 
@@ -101,17 +102,49 @@ export class TurnosComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    this.actualizarTurnosVencidos();
+    this.reload();
+  }
+
+  reload(): void {
+    this.isLoading.set(true);
+    this.loadError.set(null);
+    this.loadAppointments();
   }
 
   loadAppointments(): void {
-    this.appointmentService.getMyAppointments().subscribe({
-      next: (appointments) => {
-        const allAppointments = appointments || [];
+    this.appointmentService.getMyAppointments({ size: 100 }).subscribe({
+      next: (response) => {
+        const allAppointments: Appointment[] =
+          response?.content ?? (Array.isArray(response) ? (response as any) : []);
+
+        // Verificamos si hay turnos pasados que deban marcarse como COMPLETED
+        const ahora = new Date();
+        const vencidos = allAppointments.filter((ap) => {
+          const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
+          return fechaCompleta < ahora && ap.status !== 'COMPLETED';
+        });
+
+        // Reflejamos de inmediato el estado en memoria para que la UI no espere
+        if (vencidos.length > 0) {
+          for (const ap of vencidos) {
+            ap.status = 'COMPLETED';
+          }
+          // Sincronizamos con el servidor en segundo plano sin relanzar getMyAppointments()
+          const updates = vencidos.map((ap) =>
+            this.appointmentService.updateAppointment(ap.id, {
+              status: 'COMPLETED' as const,
+            }),
+          );
+          forkJoin(updates).subscribe({
+            error: (err) =>
+              console.debug('Error sincronizando turnos vencidos en background:', err),
+          });
+        }
+
         const isAdmin = this.userLogged?.userType === 'ADMIN';
 
         if (isAdmin) {
-          this.turnosAdminRaw.set(allAppointments);
+          this.turnosAdminRaw.set([...allAppointments]);
         } else {
           this.turnosPacienteRaw.set(
             allAppointments.filter((a) => a.patientId === this.userLogged?.id),
@@ -124,7 +157,10 @@ export class TurnosComponent implements OnInit {
 
         this.isLoading.set(false);
       },
-      error: () => this.isLoading.set(false),
+      error: () => {
+        this.isLoading.set(false);
+        this.loadError.set('No pudimos cargar tus turnos.');
+      },
     });
   }
 
@@ -165,37 +201,6 @@ export class TurnosComponent implements OnInit {
           list.map((a) => (a.id === id ? { ...a, status: 'CONFIRMED' } : a)),
         );
       });
-  }
-
-  private actualizarTurnosVencidos(): void {
-    this.appointmentService.getMyAppointments().subscribe({
-      next: (appointments) => {
-        const ahora = new Date();
-        const allAppointments = appointments || [];
-
-        const vencidos = allAppointments.filter((ap) => {
-          const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
-          return fechaCompleta < ahora && ap.status !== 'COMPLETED';
-        });
-
-        if (vencidos.length === 0) {
-          this.loadAppointments();
-          return;
-        }
-
-        const updates = vencidos.map((ap) =>
-          this.appointmentService.updateAppointment(ap.id, {
-            status: 'COMPLETED' as const,
-          }),
-        );
-
-        forkJoin(updates).subscribe({
-          next: () => this.loadAppointments(),
-          error: () => this.loadAppointments(),
-        });
-      },
-      error: () => this.isLoading.set(false),
-    });
   }
 
   traducirEstado(status: string | undefined): string {

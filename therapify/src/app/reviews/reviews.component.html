@@ -2,12 +2,12 @@
   <div class="reviews-container">
 
     <!-- Enlace de Retorno -->
-    <a [routerLink]="['/doctor', doctorId]" (click)="goBack($event)" class="back-link">
+    <a (click)="goBack($event)" class="back-link" style="cursor: pointer;">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
-      <span>Volver al perfil</span>
+      <span>Volver</span>
     </a>
 
     <!-- Encabezado con Margen de Ficha (96px) -->
@@ -171,9 +171,11 @@
                           }
                         </div>
 
-                        <p class="review-comment-paragraph">
-                          {{ r.comment }}
-                        </p>
+                        @if (r.comment) {
+                          <p class="review-comment-paragraph">
+                            {{ r.comment }}
+                          </p>
+                        }
                       </div>
                     </div>
                   }
@@ -240,21 +242,21 @@
                 <!-- Textarea de Comentario -->
                 <div class="form-comment-group">
                   <div class="comment-label-row">
-                    <label for="comment" class="comment-field-label">Comentario</label>
-                    <span
-                      class="char-limit-indicator tabular-nums"
-                      [class.is-valid]="commentLength >= 8"
-                    >
-                      {{ commentLength }} / mín. 8
-                    </span>
+                    <label for="comment" class="comment-field-label">
+                      Comentario <span class="text-muted">(opcional)</span>
+                    </label>
+                    @if (commentLength > 0) {
+                      <span class="char-limit-indicator tabular-nums">
+                        {{ commentLength }} caracteres
+                      </span>
+                    }
                   </div>
                   <textarea
                     id="comment"
                     formControlName="comment"
                     rows="4"
-                    placeholder="Contá cómo fue la atención, el trato recibido y tu experiencia en la sesión..."
+                    placeholder="Contá cómo fue la atención, el trato recibido y tu experiencia en la sesión (opcional)..."
                     class="review-textarea-input"
-                    [class.is-invalid]="reviewForm.get('comment')?.touched && reviewForm.get('comment')?.invalid"
                   ></textarea>
                 </div>
 

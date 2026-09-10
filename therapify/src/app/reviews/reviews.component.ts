@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { concat, of, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
@@ -22,7 +22,7 @@ import { ReviewRequestDTO } from '../../types/ReviewRequestDTO';
 @Component({
   selector: 'app-reviews',
   standalone: true,
-  imports: [ReactiveFormsModule, SkeletonComponent, RouterLink, DatePipe],
+  imports: [ReactiveFormsModule, SkeletonComponent, DatePipe],
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css'],
 })
@@ -102,15 +102,15 @@ export class ReviewsComponent implements OnInit {
       event.preventDefault();
       event.stopPropagation();
     }
-    if (this.doctorId) {
-      this.router.navigate(['/doctor', this.doctorId]);
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      this.location.back();
     } else {
-      this.router.navigate(['/doctors']);
+      this.router.navigate(['/appointments']);
     }
   }
 
   reviewForm: FormGroup = this.fb.group({
-    comment: ['', [Validators.required, Validators.minLength(8)]],
+    comment: [''],
     value: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
   });
 
@@ -193,7 +193,9 @@ export class ReviewsComponent implements OnInit {
     if (!this.userLogged) return;
 
     this.appointmentService.getMyAppointments().subscribe({
-      next: (appointments) => {
+      next: (response) => {
+        const appointments =
+          response?.content ?? (Array.isArray(response) ? response : []);
         const hadAppointment = appointments.some(
           (a) => String(a.doctorId) === String(this.doctorId),
         );
@@ -239,10 +241,13 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
+    const rawComment = this.reviewForm.value.comment;
+    const commentVal = typeof rawComment === 'string' ? rawComment.trim() : '';
+
     const reviewData: ReviewRequestDTO = {
       doctorId: Number(this.doctorId),
       value: Number(this.reviewForm.value.value),
-      comment: this.reviewForm.value.comment,
+      comment: commentVal || undefined,
     };
 
     if (this.isEditing && this.reviewToEditId) {

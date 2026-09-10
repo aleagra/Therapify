@@ -11,3 +11,23 @@ export interface Appointment {
   notes?: string;
   createdAt: string;
 }
+
+export interface Page<T> {
+  content: T[];
+  totalElements?: number;
+  totalPages?: number;
+  size?: number;
+  number?: number;
+  numberOfElements?: number;
+  first?: boolean;
+  last?: boolean;
+  empty?: boolean;
+}
+
+export interface AppointmentFilterParams {
+  filter?: 'UPCOMING' | 'PAST';
+  status?: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | string;
+  page?: number;
+  size?: number;
+}
+

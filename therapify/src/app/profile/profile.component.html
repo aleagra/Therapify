@@ -15,7 +15,22 @@
     <div class="profile-main-layout rail-layout-96">
       <div class="content-rail-empty"></div>
       <div class="content-body-wrap">
-        @if (displayLoading()) {
+        @if (loadError()) {
+          <div class="empty-state-box">
+            <div class="empty-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3>No pudimos cargar tu perfil</h3>
+            <p>{{ loadError() }}</p>
+            <button type="button" (click)="loadProfile()" class="btn btn-secondary">
+              Reintentar
+            </button>
+          </div>
+        } @else if (displayLoading()) {
           <!-- Skeleton de Carga -->
           <div
             class="profile-columns-grid"

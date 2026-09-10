@@ -342,10 +342,19 @@ export class CalendarComponent implements OnChanges {
           toast.success('¡Turno reservado con éxito!', { position: 'top-center' });
         },
         error: (err) => {
-          toast.error(
-            err?.error?.message || 'No se pudo reservar el turno. Por favor, intentá nuevamente.',
-            { position: 'top-center' },
-          );
+          if (err?.status === 409) {
+            toast.error(
+              'El horario seleccionado ya no se encuentra disponible. Por favor, elegí otro turno.',
+              { position: 'top-center', duration: 5000 },
+            );
+            this.onFechaSeleccionada(fecha);
+          } else {
+            toast.error(
+              err?.error?.message ||
+                'No se pudo reservar el turno. Por favor, intentá nuevamente.',
+              { position: 'top-center' },
+            );
+          }
         },
       });
   }

@@ -289,17 +289,28 @@
   color: var(--c-neutral-700, #3d4e61);
 }
 
-.wizard-input {
+.wizard-input,
+.register-form-area input.wizard-input,
+.form-field input {
   height: 46px;
   padding: 0 14px;
   border: 1px solid var(--c-line, #dfe6ee);
   border-radius: 8px;
-  background-color: var(--c-surface, #ffffff) !important;
+  background-color: #ffffff !important;
   color: var(--c-ink-900, #16222c) !important;
   font-size: 14px;
   outline: none;
   box-sizing: border-box;
   width: 100%;
+}
+
+.wizard-input:-webkit-autofill,
+.wizard-input:-webkit-autofill:hover,
+.wizard-input:-webkit-autofill:focus,
+.register-form-area input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #16222c !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .wizard-input:focus {
@@ -749,6 +760,8 @@
   }
 
   .wizard-input {
+    background-color: #ffffff !important;
+    color: #16222c !important;
     height: 44px;
     padding: 0 13px;
     font-size: 14.5px;
@@ -993,6 +1006,8 @@
 
   /* Controles mobile: campo 46px, botón 50px */
   .wizard-input {
+    background-color: #ffffff !important;
+    color: #16222c !important;
     height: 46px;
     padding: 0 13px;
     font-size: 14.5px;

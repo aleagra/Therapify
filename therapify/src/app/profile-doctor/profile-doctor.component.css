@@ -28,10 +28,11 @@
 .day-slot-row{height:56px;border-radius:8px;padding:0 16px;display:grid;grid-template-columns:140px 1fr;align-items:center;box-sizing:border-box}
 .day-slot-row.is-day-active{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .day-toggle-label{display:inline-flex;align-items:center;gap:10px;cursor:pointer}
-.day-checkbox{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--c-line-strong, #cfdae5);border-radius:4px;background:var(--c-surface, #ffffff);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0;flex-shrink:0;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-.day-checkbox:checked{background-color:var(--c-primary-700, #0b5d8e);border-color:var(--c-primary-700, #0b5d8e);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");background-size:14px;background-position:center;background-repeat:no-repeat}
+.day-checkbox{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #cbd6e2;border-radius:4px;background-color:#ffffff !important;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0;flex-shrink:0;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+.day-checkbox:hover:not(:checked){border-color:#0b5d8e;background-color:#f0f7fb !important}
+.day-checkbox:checked{background-color:#0b5d8e !important;border-color:#0b5d8e !important;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E") !important;background-size:14px !important;background-position:center !important;background-repeat:no-repeat !important}
 .day-checkbox:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(11,93,142,.2)}
-.day-name{font-size:14px;font-weight:500;color:#8ba0b5}
+.day-name{font-size:14px;font-weight:500;color:#5a6e85}
 .day-slot-row.is-day-active .day-name{font-weight:700;color:#16222c}
 .day-slot-controls,.hours-inputs-group{display:flex;align-items:center}
 .hours-inputs-group{gap:8px}

@@ -25,6 +25,23 @@
   </div>
 </ng-template>
 
+<ng-template #turnosErrorBox>
+  <div class="empty-state-box">
+    <div class="empty-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+    </div>
+    <h3>No pudimos cargar tus turnos</h3>
+    <p>{{ loadError() }}</p>
+    <button type="button" (click)="reload()" class="btn btn-secondary">
+      Reintentar
+    </button>
+  </div>
+</ng-template>
+
 <div class="appointments-page-root density-work">
   <div class="appointments-container">
 
@@ -121,7 +138,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (displayLoading()) {
+            @if (loadError()) {
+              <ng-container *ngTemplateOutlet="turnosErrorBox"></ng-container>
+            } @else if (displayLoading()) {
               <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
             } @else if (misTurnos().length === 0) {
               <div class="empty-state-box">
@@ -251,7 +270,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (displayLoading()) {
+            @if (loadError()) {
+              <ng-container *ngTemplateOutlet="turnosErrorBox"></ng-container>
+            } @else if (displayLoading()) {
               <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
             } @else if (misPacientes().length === 0) {
               <div class="empty-state-box">
@@ -375,7 +396,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (displayLoading()) {
+            @if (loadError()) {
+              <ng-container *ngTemplateOutlet="turnosErrorBox"></ng-container>
+            } @else if (displayLoading()) {
               <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
             } @else if (turnosAdmin().length === 0) {
               <div class="empty-state-box">

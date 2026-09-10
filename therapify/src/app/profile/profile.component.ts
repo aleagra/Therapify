@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
   showRepeatPassword = false;
 
   isLoading = signal(true);
+  loadError = signal<string | null>(null);
 
   private skeletonShownTime: number | null = null;
 
@@ -83,17 +84,29 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    const loggedUser = this.userService.getLoggedUser();
-    if (!loggedUser) {
+    if (!this.userService.getLoggedUser()) {
       toast.warning('No hay sesión activa');
       this.router.navigate(['/login']);
       return;
     }
 
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    const loggedUser = this.userService.getLoggedUser();
+    if (!loggedUser) return;
+
+    this.isLoading.set(true);
+    this.loadError.set(null);
+
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
         this.isLoading.set(false);
-        if (!res) return;
+        if (!res) {
+          this.loadError.set('No pudimos cargar tu perfil.');
+          return;
+        }
         this.user = res;
 
         this.formProfile.patchValue({
@@ -106,7 +119,7 @@ export class ProfileComponent implements OnInit {
       },
       error: () => {
         this.isLoading.set(false);
-        toast.error('Error al cargar usuario');
+        this.loadError.set('No pudimos cargar tu perfil.');
       },
     });
   }

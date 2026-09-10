@@ -1,8 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Appointment } from '../../types/appointments';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
+import {
+  Appointment,
+  AppointmentFilterParams,
+  Page,
+} from '../../types/appointments';
 import { User } from '../../types/user';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
 
@@ -17,6 +21,12 @@ export class AppointmentService {
   private BASE_URL = API_CONFIG.baseUrl;
   private APPOINTMENTS_URL = `${this.BASE_URL}/appointments`;
   private localKey = 'userLogged';
+
+  private myAppointmentsCache$ = new Map<string, Observable<Page<Appointment>>>();
+
+  invalidateCache(): void {
+    this.myAppointmentsCache$.clear();
+  }
 
   private getLoggedUser(): User | null {
     const data = localStorage.getItem(this.localKey);
@@ -36,13 +46,14 @@ export class AppointmentService {
     };
   }
 
-  createAppointment(ap: AppointmentRequest): Observable<Appointment | null> {
+  createAppointment(ap: AppointmentRequest): Observable<Appointment> {
     return this.http
       .post<Appointment>(this.APPOINTMENTS_URL, ap, this.getAuthHeaders())
       .pipe(
+        tap(() => this.invalidateCache()),
         catchError((err) => {
           console.error('Error al crear turno:', err);
-          return of(null);
+          return throwError(() => err);
         }),
       );
   }
@@ -58,11 +69,44 @@ export class AppointmentService {
       );
   }
 
-  getMyAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(
-      `${this.APPOINTMENTS_URL}/mine`,
-      this.getAuthHeaders(),
-    );
+  getMyAppointments(
+    params?: AppointmentFilterParams,
+  ): Observable<Page<Appointment>> {
+    let httpParams = new HttpParams();
+    if (params) {
+      if (params.filter) {
+        httpParams = httpParams.set('filter', params.filter);
+      }
+      if (params.status) {
+        httpParams = httpParams.set('status', params.status);
+      }
+      if (params.page !== undefined) {
+        httpParams = httpParams.set('page', params.page.toString());
+      }
+      if (params.size !== undefined) {
+        httpParams = httpParams.set('size', params.size.toString());
+      }
+    }
+
+    const cacheKey = httpParams.toString();
+    if (!this.myAppointmentsCache$.has(cacheKey)) {
+      const authHeaders = this.getAuthHeaders();
+      const req$ = this.http
+        .get<Page<Appointment>>(`${this.APPOINTMENTS_URL}/mine`, {
+          headers: authHeaders.headers,
+          params: httpParams,
+        })
+        .pipe(
+          catchError((err) => {
+            this.myAppointmentsCache$.delete(cacheKey);
+            return throwError(() => err);
+          }),
+          shareReplay(1),
+        );
+      this.myAppointmentsCache$.set(cacheKey, req$);
+    }
+
+    return this.myAppointmentsCache$.get(cacheKey)!;
   }
 
   getAppointmentsByDoctorAndDate(
@@ -92,6 +136,7 @@ export class AppointmentService {
         this.getAuthHeaders(),
       )
       .pipe(
+        tap(() => this.invalidateCache()),
         catchError((err) => {
           console.error('Error al actualizar turno:', err);
           return of(null);
@@ -103,6 +148,7 @@ export class AppointmentService {
     return this.http
       .delete(`${this.APPOINTMENTS_URL}/${id}`, this.getAuthHeaders())
       .pipe(
+        tap(() => this.invalidateCache()),
         map(() => true),
         catchError((err) => {
           console.error('Error al eliminar turno:', err);
@@ -122,6 +168,7 @@ export class AppointmentService {
         this.getAuthHeaders(),
       )
       .pipe(
+        tap(() => this.invalidateCache()),
         catchError((err) => {
           console.error('Error al actualizar estado:', err);
           return of(null);

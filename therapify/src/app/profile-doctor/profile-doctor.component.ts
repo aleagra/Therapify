@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormGroup,
@@ -12,12 +13,15 @@ import { Router, RouterLink } from '@angular/router';
 import { User } from '../../types/user';
 import { UserRequestDTO } from '../../types/UserRequestDTO';
 import { toast } from 'ngx-sonner';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { concat, of, timer } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
 @Component({
   selector: 'app-profile-doctor',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, SkeletonComponent],
   templateUrl: './profile-doctor.component.html',
   styleUrls: ['./profile-doctor.component.css'],
 })
@@ -28,6 +32,47 @@ export class ProfileDoctorComponent {
 
   user!: User;
   loading = false;
+
+  isLoading = signal(true);
+  loadError = signal<string | null>(null);
+
+  private skeletonShownTime: number | null = null;
+
+  private readonly skeletonState = toSignal(
+    toObservable(this.isLoading).pipe(
+      switchMap((loading) => {
+        if (loading) {
+          this.skeletonShownTime = null;
+          return concat(
+            of({ displayLoading: true, showSkeleton: false }),
+            timer(150).pipe(
+              tap(() => {
+                this.skeletonShownTime = Date.now();
+              }),
+              map(() => ({ displayLoading: true, showSkeleton: true })),
+            ),
+          );
+        } else {
+          if (this.skeletonShownTime !== null) {
+            const elapsed = Date.now() - this.skeletonShownTime;
+            const remaining = Math.max(0, 350 - elapsed);
+            this.skeletonShownTime = null;
+            if (remaining > 0) {
+              return timer(remaining).pipe(
+                map(() => ({ displayLoading: false, showSkeleton: false })),
+              );
+            }
+          }
+          this.skeletonShownTime = null;
+          return of({ displayLoading: false, showSkeleton: false });
+        }
+      }),
+    ),
+    { initialValue: { displayLoading: true, showSkeleton: false } },
+  );
+
+  showSkeleton = computed(() => this.skeletonState().showSkeleton);
+  displayLoading = computed(() => this.skeletonState().displayLoading);
 
   weekDays = [
     { label: 'Lunes', control: 'monday' as WeekDay },
@@ -98,17 +143,28 @@ export class ProfileDoctorComponent {
   );
 
   ngOnInit() {
-    const loggedUser = this.userService.getLoggedUser();
-    if (!loggedUser) {
+    if (!this.userService.getLoggedUser()) {
       toast.warning('No hay sesión activa');
       this.router.navigate(['/login']);
       return;
     }
 
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    const loggedUser = this.userService.getLoggedUser();
+    if (!loggedUser) return;
+
+    this.isLoading.set(true);
+    this.loadError.set(null);
+
     this.userService.getUserById(loggedUser.id).subscribe({
       next: (res) => {
+        this.isLoading.set(false);
+
         if (!res) {
-          toast.error('Error al cargar usuario');
+          this.loadError.set('No pudimos cargar tu agenda.');
           return;
         }
 
@@ -131,6 +187,10 @@ export class ProfileDoctorComponent {
             }
           });
         });
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.loadError.set('No pudimos cargar tu agenda.');
       },
     });
   }

@@ -22,6 +22,73 @@
     <div class="doctor-main-layout rail-layout-96">
       <div class="content-rail-empty"></div>
       <div class="content-body-wrap">
+        @if (loadError()) {
+          <div class="empty-state-box">
+            <div class="empty-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3>No pudimos cargar tu agenda</h3>
+            <p>{{ loadError() }}</p>
+            <button type="button" (click)="loadProfile()" class="btn btn-secondary">
+              Reintentar
+            </button>
+          </div>
+        } @else if (displayLoading()) {
+          <!-- Skeleton de Carga -->
+          <div class="doctor-editor-grid" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
+            <main class="editor-main-column">
+              <div class="medical-form">
+                <section class="form-flat-section">
+                  <app-skeleton width="240px" height="17px" style="margin-bottom: 14px;"></app-skeleton>
+                  <div class="days-sunken-container">
+                    @for (row of [1, 2, 3, 4, 5]; track row) {
+                      <div class="day-slot-row">
+                        <app-skeleton width="90px" height="16px"></app-skeleton>
+                        <app-skeleton width="220px" height="32px" radius="8px"></app-skeleton>
+                      </div>
+                    }
+                  </div>
+                </section>
+                <section class="form-flat-section section-margin-top">
+                  <app-skeleton width="200px" height="17px" style="margin-bottom: 14px;"></app-skeleton>
+                  <div class="fields-grid-2">
+                    <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                    <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                  </div>
+                  <div style="margin-top: 16px;">
+                    <app-skeleton width="100%" height="72px" radius="8px"></app-skeleton>
+                  </div>
+                </section>
+                <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 32px;">
+                  <app-skeleton width="120px" height="42px" radius="8px"></app-skeleton>
+                  <app-skeleton width="140px" height="42px" radius="8px"></app-skeleton>
+                </div>
+              </div>
+            </main>
+            <aside class="preview-sidebar-column">
+              <div class="preview-outer-panel">
+                <app-skeleton width="140px" height="14px" style="margin-bottom: 8px;"></app-skeleton>
+                <app-skeleton width="200px" height="18px" style="margin-bottom: 20px;"></app-skeleton>
+                <div class="doctor-live-card">
+                  <div style="display: flex; gap: 12px; margin-bottom: 14px;">
+                    <app-skeleton circle="true" width="48px" height="48px"></app-skeleton>
+                    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
+                      <app-skeleton width="70%" height="16px"></app-skeleton>
+                      <app-skeleton width="50%" height="14px"></app-skeleton>
+                    </div>
+                  </div>
+                  <app-skeleton width="100%" height="14px" style="margin-bottom: 6px;"></app-skeleton>
+                  <app-skeleton width="80%" height="14px" style="margin-bottom: 14px;"></app-skeleton>
+                  <app-skeleton width="100%" height="32px" radius="8px"></app-skeleton>
+                </div>
+              </div>
+            </aside>
+          </div>
+        } @else {
         <div class="doctor-editor-grid">
           <!-- Columna Izquierda: Formulario de Agenda -->
           <main class="editor-main-column">
@@ -76,14 +143,14 @@
                       <div class="day-slot-controls">
                         @if (formSchedule.get(day.control)?.value) {
                           <div class="hours-inputs-group">
-                            <span class="time-label">Desde</span>
+                            <span class="time-label">De</span>
                             <input
                               type="time"
                               [formControlName]="day.control + 'Start'"
                               class="hour-input"
                               aria-label="Hora de inicio"
                             />
-                            <span class="time-divider">hasta</span>
+                            <span class="time-divider">a</span>
                             <input
                               type="time"
                               [formControlName]="day.control + 'End'"
@@ -110,14 +177,14 @@
                           </div>
                         } @else {
                           <div class="hours-inputs-group is-inactive-group">
-                            <span class="time-label">Desde</span>
+                            <span class="time-label">De</span>
                             <input
                               type="time"
                               value="08:00"
                               disabled
                               class="hour-input is-disabled"
                             />
-                            <span class="time-divider">hasta</span>
+                            <span class="time-divider">a</span>
                             <input
                               type="time"
                               value="14:00"
@@ -291,6 +358,7 @@
             </div>
           </aside>
         </div>
+        }
       </div>
     </div>
   </div>
