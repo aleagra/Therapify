@@ -28,3 +28,10 @@ export const SPECIALTY_LABELS: Record<string, string> = {
   SEXOLOGIA: 'Sexología',
   TERAPIA_HUMANISTA: 'Terapia humanista',
 };
+
+export const PLATFORM_METRICS = {
+  therapists: '500+',
+  sessions: '10.000+',
+  satisfaction: '100%',
+  weeklySlots: '100+',
+};
