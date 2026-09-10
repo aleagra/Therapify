@@ -118,7 +118,7 @@
                 </div>
               } @else {
                 <div class="reviews-rendered-list">
-                  @for (r of reviews; track r.id) {
+                  @for (r of visibleReviews; track r.id) {
                     <div class="review-row-item">
                       <!-- Rail de la reseña: 96px con avatar y fecha -->
                       <div class="review-date-rail">
@@ -178,6 +178,16 @@
                     </div>
                   }
                 </div>
+
+                @if (remainingReviewsCount > 0) {
+                  <button
+                    type="button"
+                    (click)="showMoreReviews()"
+                    class="btn-load-more-reviews"
+                  >
+                    Ver {{ remainingReviewsCount < reviewsPageSize ? remainingReviewsCount : reviewsPageSize }} reseñas más
+                  </button>
+                }
               }
             }
           </div>
@@ -248,10 +258,17 @@
                   ></textarea>
                 </div>
 
+                @if (!canSubmitReview) {
+                  <div class="review-locked-notice">
+                    Solo podés dejar reseñas a doctores con los que tuviste un turno.
+                  </div>
+                }
+
                 <!-- Acciones del Formulario -->
                 <button
                   type="submit"
-                  [disabled]="reviewForm.invalid"
+                  [disabled]="reviewForm.invalid || !canSubmitReview"
+                  [title]="!canSubmitReview ? 'Solo podés dejar reseñas a doctores con los que tuviste un turno.' : ''"
                   class="btn-submit-review"
                 >
                   {{ isEditing ? 'Actualizar reseña' : 'Publicar reseña' }}

@@ -12,6 +12,7 @@ import { concat, of, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
+import { AppointmentService } from '../services/appointments.service';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { Reviews } from '../../types/reviews';
 import { User } from '../../types/user';
@@ -33,6 +34,9 @@ export class ReviewsComponent implements OnInit {
   reviewToEditId: string | null = null;
   isLoadingReviews = signal(true);
   loadError = signal<string | null>(null);
+
+  readonly reviewsPageSize = 8;
+  visibleReviewsCount = this.reviewsPageSize;
 
   private skeletonShownTime: number | null = null;
 
@@ -77,11 +81,21 @@ export class ReviewsComponent implements OnInit {
   fb = inject(FormBuilder);
   userService = inject(UserService);
   reviewsService = inject(ReviewsService);
+  appointmentService = inject(AppointmentService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   location = inject(Location);
 
   userLogged: User | null = this.userService.getLoggedUser();
+
+  /** null = todavía no se sabe (o no aplica); true/false una vez resuelto el check. */
+  hasAppointmentWithDoctor = signal<boolean | null>(null);
+
+  get canSubmitReview(): boolean {
+    if (this.isEditing) return true;
+    if (!this.userLogged) return true;
+    return this.hasAppointmentWithDoctor() !== false;
+  }
 
   goBack(event?: Event): void {
     if (event) {
@@ -149,6 +163,18 @@ export class ReviewsComponent implements OnInit {
     return Math.round((this.getStarCount(star) / this.reviews.length) * 100);
   }
 
+  get visibleReviews(): Reviews[] {
+    return this.reviews.slice(0, this.visibleReviewsCount);
+  }
+
+  get remainingReviewsCount(): number {
+    return Math.max(0, this.reviews.length - this.visibleReviewsCount);
+  }
+
+  showMoreReviews(): void {
+    this.visibleReviewsCount += this.reviewsPageSize;
+  }
+
   ngOnInit(): void {
     if (!this.doctorId) {
       const idFromRoute = this.route.snapshot.paramMap.get('id');
@@ -160,6 +186,24 @@ export class ReviewsComponent implements OnInit {
     }
 
     this.loadReviews();
+    this.checkAppointmentEligibility();
+  }
+
+  private checkAppointmentEligibility(): void {
+    if (!this.userLogged) return;
+
+    this.appointmentService.getMyAppointments().subscribe({
+      next: (appointments) => {
+        const hadAppointment = appointments.some(
+          (a) => String(a.doctorId) === String(this.doctorId),
+        );
+        this.hasAppointmentWithDoctor.set(hadAppointment);
+      },
+      error: () => {
+        // Si no se puede verificar, no bloqueamos: el backend valida igual al enviar.
+        this.hasAppointmentWithDoctor.set(true);
+      },
+    });
   }
 
   loadReviews(): void {
@@ -168,6 +212,7 @@ export class ReviewsComponent implements OnInit {
     this.reviewsService.getReviewsByDoctor(this.doctorId).subscribe({
       next: (data) => {
         this.reviews = data;
+        this.visibleReviewsCount = this.reviewsPageSize;
         this.isLoadingReviews.set(false);
       },
       error: (err) => {
@@ -181,6 +226,11 @@ export class ReviewsComponent implements OnInit {
   onSubmitReview(): void {
     if (!this.userLogged) {
       toast.warning('Debes iniciar sesión.');
+      return;
+    }
+
+    if (!this.canSubmitReview) {
+      toast.error('Solo podés dejar reseñas a doctores con los que tuviste un turno.');
       return;
     }
 
@@ -217,6 +267,7 @@ export class ReviewsComponent implements OnInit {
     this.reviewsService.createReview(reviewData).subscribe({
       next: (review) => {
         this.reviews.push(review);
+        this.visibleReviewsCount += 1;
         toast.success('Reseña creada ✅', { position: 'top-center' });
         this.resetForm();
       },
