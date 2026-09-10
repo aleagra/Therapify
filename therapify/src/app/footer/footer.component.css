@@ -136,6 +136,14 @@
   border-color: #3b82a6;
 }
 
+@media (max-width: 1023px) and (min-width: 769px) {
+  .footer-container {
+    grid-template-columns: 1.4fr 1fr 1.2fr;
+    gap: 28px;
+    padding-inline: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-root {
     padding: 36px 16px 28px;
@@ -143,6 +151,18 @@
 
   .footer-container {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
+    padding-inline: 0;
+  }
+
+  .footer-links a {
+    display: inline-block;
+    padding: 8px 0;
+  }
+
+  .github-link {
+    min-height: 44px;
+    padding: 10px 20px;
+    box-sizing: border-box;
   }
 }
