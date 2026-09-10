@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: 56px;
+  padding: 32px 0 64px;
   background-color: var(--c-neutral-50, #f4f7fa);
   width: 100%;
   box-sizing: border-box;
@@ -448,7 +448,13 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1023px) and (min-width: 769px) {
+  .profile-container {
+    padding-inline: 20px;
+  }
+}
+
+@media (max-width: 1023px) {
   .profile-columns-grid {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -474,6 +480,30 @@
   }
   .header-body {
     padding-left: 14px;
+  }
+  .page-title {
+    font-size: 24px;
+    font-weight: 750;
+    margin-bottom: 4px;
+  }
+  /* Título y aclaración de sección dejan de compartir renglón: en 393px la
+     aclaración envolvía y quedaba pegada al título. */
+  .section-title-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .form-section-caption {
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .section-margin-top {
+    margin-top: 26px;
+  }
+  .page-subtitle {
+    font-size: 13.5px;
+    line-height: 1.5;
   }
   .profile-main-layout {
     display: block !important;
@@ -506,5 +536,7 @@
   .btn-discard-flat,
   .btn-save-primary {
     width: 100%;
+    min-height: 44px;
+    height: 44px;
   }
 }

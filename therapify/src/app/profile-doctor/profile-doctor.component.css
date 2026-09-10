@@ -91,5 +91,10 @@
   .day-slot-row{grid-template-columns:1fr;height:auto;padding:12px 14px;gap:8px}
   .fields-grid-2{grid-template-columns:1fr}
   .form-actions-bar{flex-direction:column-reverse;gap:10px}
-  .btn-discard-flat,.btn-save-primary{width:100%}
+  .btn-discard-flat,.btn-save-primary{width:100%;min-height:44px;height:44px}
+
+  .section-title-line{flex-wrap:wrap;row-gap:2px}
+  .hours-inputs-group{flex-wrap:wrap;row-gap:8px}
+  .hours-inputs-group.is-inactive-group{row-gap:6px}
+  .btn-copy-link{margin-left:0}
 }
