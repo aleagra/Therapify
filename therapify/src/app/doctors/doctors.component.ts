@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { concat, of, timer } from 'rxjs';
@@ -15,6 +15,7 @@ import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
   imports: [DoctorCardComponent, FormsModule, SkeletonComponent],
   templateUrl: './doctors.component.html',
   styleUrls: ['./doctors.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoctorsComponent implements OnInit {
   userService = inject(UserService);

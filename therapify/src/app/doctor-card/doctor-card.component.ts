@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { User } from '../../types/user';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { DAY_LABELS, SPECIALTY_LABELS } from '../../types/constants';
   imports: [CommonModule],
   templateUrl: './doctor-card.component.html',
   styleUrl: './doctor-card.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoctorCardComponent {
   doctor = input.required<User>();
