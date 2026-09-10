@@ -2,10 +2,34 @@
 <html lang="es" style="background-color: #f4f7fa;">
   <head>
     <meta charset="utf-8" />
-    <title>Therapify</title>
+    <title>Therapify | Red de Terapeutas y Psicólogos en Argentina</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
+
+    <!-- SEO Primario -->
+    <meta name="description" content="Conectá con terapeutas y psicólogos matriculados en Argentina. Encontrá especialistas con turnos disponibles, aranceles transparentes y agendá tu consulta en minutos." />
+    <meta name="keywords" content="psicología, terapeutas, turnos psicólogo argentina, terapia online, psiquiatría, salud mental, terapia cognitivo conductual, terapia familiar" />
+    <meta name="author" content="Therapify" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://therapifyy.vercel.app/" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://therapifyy.vercel.app/" />
+    <meta property="og:site_name" content="Therapify" />
+    <meta property="og:title" content="Therapify | Red de Terapeutas y Psicólogos en Argentina" />
+    <meta property="og:description" content="Conectá con terapeutas matriculados en Argentina. Encontrá el enfoque clínico que necesitás y agendá tu consulta en minutos." />
+    <meta property="og:image" content="https://therapifyy.vercel.app/assets/logo.png" />
+    <meta property="og:locale" content="es_AR" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Therapify | Terapia y Salud Mental en Argentina" />
+    <meta name="twitter:description" content="Encontrá terapeutas matriculados con turnos disponibles y aranceles transparentes." />
+    <meta name="twitter:image" content="https://therapifyy.vercel.app/assets/logo.png" />
+
+    <!-- Performance & Preconexiones -->
     <link rel="preconnect" href="https://therapify-backend.onrender.com" crossorigin />
     <link rel="dns-prefetch" href="https://therapify-backend.onrender.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,6 +39,24 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Datos Estructurados Schema.org (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "Therapify",
+      "url": "https://therapifyy.vercel.app/",
+      "logo": "https://therapifyy.vercel.app/assets/logo.png",
+      "description": "Plataforma de conexión con profesionales de la salud mental y psicólogos matriculados en Argentina.",
+      "areaServed": "AR",
+      "medicalSpecialty": [
+        "Psychology",
+        "Psychiatry",
+        "MentalHealth"
+      ]
+    }
+    </script>
   </head>
   <body style="background-color: #f4f7fa; margin: 0;">
     <app-root>

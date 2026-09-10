@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -22,6 +23,7 @@ export class DoctorDetailComponent implements OnInit {
   private doctorService = inject(UserService);
   private router = inject(Router);
   private location = inject(Location);
+  private titleService = inject(Title);
 
   id = this.route.snapshot.paramMap.get('id')!;
   doctor = signal<User | null>(null);
@@ -104,6 +106,10 @@ export class DoctorDetailComponent implements OnInit {
     this.doctorService.getUserById(this.id).subscribe({
       next: (doc) => {
         this.doctor.set(doc);
+        if (doc) {
+          const specialty = this.getSpecialtyLabel(doc.specialty);
+          this.titleService.setTitle(`Dr/a. ${doc.firstName} ${doc.lastName} (${specialty}) | Therapify`);
+        }
         this.isLoading.set(false);
       },
       error: (err) => {
