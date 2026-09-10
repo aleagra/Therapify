@@ -6,11 +6,13 @@ import { User } from '../../types/user';
 import { toast } from 'ngx-sonner';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { SPECIALTY_LABELS } from '../../types/constants';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
@@ -24,6 +26,11 @@ export class UsersComponent implements OnInit {
 
   searchText = signal('');
   selectedType = signal<'ALL' | 'ADMIN' | 'DOCTOR' | 'PACIENTE'>('ALL');
+
+  countAll = computed(() => this.users().length);
+  countDoctor = computed(() => this.users().filter((u) => u.userType === 'DOCTOR').length);
+  countPaciente = computed(() => this.users().filter((u) => u.userType === 'PACIENTE').length);
+  countAdmin = computed(() => this.users().filter((u) => u.userType === 'ADMIN').length);
 
   filteredUsers = computed(() => {
     let filtered = [...this.users()];
@@ -44,6 +51,20 @@ export class UsersComponent implements OnInit {
 
     return filtered;
   });
+
+  getInitials(user: User): string {
+    const fn = (user.firstName || '').trim();
+    const ln = (user.lastName || '').trim();
+    const i1 = fn.charAt(0) || '';
+    const i2 = ln.charAt(0) || '';
+    return (i1 + i2).toUpperCase() || 'U';
+  }
+
+  formatSpecialty(specialty?: string): string {
+    if (!specialty) return 'Especialista';
+    const norm = specialty.toUpperCase().trim();
+    return SPECIALTY_LABELS[norm] || specialty.replace(/_/g, ' ');
+  }
 
   ngOnInit(): void {
     this.loadUsers();

@@ -1,80 +1,200 @@
-<div class="page-container">
-  <div class="page-header">
-    <h1>Usuarios del Sistema</h1>
-    <p class="subtitle">Gestiona y filtra los usuarios registrados.</p>
-  </div>
+<div class="users-page-root density-work">
+  <div class="users-container">
 
-  <div class="filters-card">
-    <input
-      type="text"
-      placeholder="Buscar por nombre, apellido o email..."
-      [ngModel]="searchText()"
-      (ngModelChange)="searchText.set($event)"
-      class="search-input"
-    />
-    <div class="filter-group">
-      <span class="filter-label">Tipo de usuario</span>
-      <div class="chips">
-        <button
-          class="chip-btn"
-          [class.active]="selectedType() === 'ALL'"
-          (click)="setType('ALL')"
-        >
-          Todos
-        </button>
-        <button
-          class="chip-btn"
-          [class.active]="selectedType() === 'DOCTOR'"
-          (click)="setType('DOCTOR')"
-        >
-          Doctor
-        </button>
-        <button
-          class="chip-btn"
-          [class.active]="selectedType() === 'PACIENTE'"
-          (click)="setType('PACIENTE')"
-        >
-          Paciente
-        </button>
-        <button
-          class="chip-btn"
-          [class.active]="selectedType() === 'ADMIN'"
-          (click)="setType('ADMIN')"
-        >
-          Admin
-        </button>
+    <!-- 1. Encabezado de Página con Margen de Ficha (96px) -->
+    <header class="ficha-layout ficha-page header-block">
+      <div class="ficha-rail header-rail">
+        <div class="rail-kicker">Usuarios</div>
+        <div class="rail-number">01</div>
+      </div>
+      <div class="ficha-body header-body">
+        <h1 class="page-title">
+          Usuarios del <span class="text-accent-word">sistema</span>
+        </h1>
+        <p class="page-subtitle">
+          Gestión, filtrado y administración de cuentas registradas en la plataforma.
+        </p>
+      </div>
+    </header>
+
+    <!-- 2. Barra de Filtros con Margen de Ficha (96px) - Superficie Nivel 2 Hundida -->
+    <section class="ficha-layout ficha-page filters-ficha-section">
+      <div class="ficha-rail filters-rail">
+        <div class="rail-kicker">Filtros</div>
+        <div class="rail-number">02</div>
+      </div>
+      <div class="ficha-body filters-body">
+        <div class="users-filters-bar surface-sunken">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              placeholder="Buscar por nombre, apellido o email..."
+              [ngModel]="searchText()"
+              (ngModelChange)="searchText.set($event)"
+              class="search-input-field"
+            />
+            @if (searchText()) {
+              <button
+                type="button"
+                class="btn-clear-search"
+                (click)="searchText.set('')"
+                title="Limpiar búsqueda"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            }
+          </div>
+
+          <div class="filter-type-group">
+            <span class="filter-group-label">Tipo de usuario</span>
+            <div class="segmented-control user-type-segments">
+              <button
+                type="button"
+                class="seg-item"
+                [class.is-active]="selectedType() === 'ALL'"
+                (click)="setType('ALL')"
+              >
+                Todos <span class="seg-count">{{ countAll() }}</span>
+              </button>
+              <button
+                type="button"
+                class="seg-item"
+                [class.is-active]="selectedType() === 'DOCTOR'"
+                (click)="setType('DOCTOR')"
+              >
+                Doctores <span class="seg-count">{{ countDoctor() }}</span>
+              </button>
+              <button
+                type="button"
+                class="seg-item"
+                [class.is-active]="selectedType() === 'PACIENTE'"
+                (click)="setType('PACIENTE')"
+              >
+                Pacientes <span class="seg-count">{{ countPaciente() }}</span>
+              </button>
+              <button
+                type="button"
+                class="seg-item"
+                [class.is-active]="selectedType() === 'ADMIN'"
+                (click)="setType('ADMIN')"
+              >
+                Admins <span class="seg-count">{{ countAdmin() }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Grilla de Usuarios con Margen de Ficha (96px) - Superficie Nivel 1 Card -->
+    <div class="ficha-layout ficha-page users-grid-layout">
+      <div class="ficha-rail content-rail-empty"></div>
+      <div class="ficha-body users-grid-body">
+        @if (loading()) {
+          <div class="users-loading-state">
+            <div class="loading-spinner"></div>
+            <p>Cargando usuarios del sistema...</p>
+          </div>
+        } @else if (filteredUsers().length === 0) {
+          <div class="empty-state-box">
+            <div class="empty-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3>No se encontraron usuarios</h3>
+            <p>Probá cambiando los términos de búsqueda o el tipo de usuario seleccionado.</p>
+          </div>
+        } @else {
+          <div class="users-cards-grid">
+            @for (u of filteredUsers(); track trackById($index, u)) {
+              <article class="user-card surface-card">
+                <!-- Cabecera de la Card: Avatar, Nombre y Rol -->
+                <div class="user-card-head">
+                  <div class="user-avatar-lead">
+                    <div
+                      class="user-avatar-circle"
+                      [class.avatar-admin]="u.userType === 'ADMIN'"
+                      [class.avatar-doctor]="u.userType === 'DOCTOR'"
+                      [class.avatar-patient]="u.userType === 'PACIENTE'"
+                    >
+                      {{ getInitials(u) }}
+                    </div>
+                    <div class="user-identity">
+                      <h3 class="user-name" [title]="u.firstName + ' ' + u.lastName">
+                        {{ u.firstName }} {{ u.lastName }}
+                      </h3>
+                      <span class="user-id-badge">ID: #{{ u.id }}</span>
+                    </div>
+                  </div>
+
+                  <span
+                    class="role-badge"
+                    [class.role-admin]="u.userType === 'ADMIN'"
+                    [class.role-doctor]="u.userType === 'DOCTOR'"
+                    [class.role-patient]="u.userType === 'PACIENTE'"
+                  >
+                    {{ u.userType }}
+                  </span>
+                </div>
+
+                <!-- Detalles del usuario -->
+                <div class="user-card-details">
+                  <div class="meta-row email-row">
+                    <svg class="meta-icon" width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span class="meta-value email-text" [title]="u.email">{{ u.email }}</span>
+                  </div>
+
+                  @if (u.userType === 'DOCTOR' && u.specialty) {
+                    <div class="meta-row specialty-row">
+                      <svg class="meta-icon" width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                      </svg>
+                      <span class="meta-value">{{ formatSpecialty(u.specialty) }}</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Acciones de la Card -->
+                <div class="user-card-actions">
+                  @if (u.userType === 'DOCTOR') {
+                    <a [routerLink]="['/doctor', u.id]" class="btn-user-action btn-view-doctor" title="Ver perfil del profesional">
+                      Ver perfil
+                    </a>
+                  }
+                  @if (u.userType !== 'ADMIN') {
+                    <button
+                      type="button"
+                      class="btn-user-action btn-delete-user"
+                      (click)="deleteUser(u.id)"
+                      title="Eliminar usuario del sistema"
+                    >
+                      Eliminar
+                    </button>
+                  } @else {
+                    <span class="admin-protected-pill" title="Cuenta de administrador del sistema">
+                      Administrador principal
+                    </span>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        }
       </div>
     </div>
-  </div>
 
-  <div class="users-grid">
-    <div
-      *ngFor="let u of filteredUsers(); trackBy: trackById"
-      class="user-card"
-    >
-      <div class="user-header">
-        <h3>{{ u.firstName }} {{ u.lastName }}</h3>
-        <span
-          class="type-badge"
-          [class.doctor]="u.userType === 'DOCTOR'"
-          [class.admin]="u.userType === 'ADMIN'"
-          [class.patient]="u.userType === 'PACIENTE'"
-        >
-          {{ u.userType }}
-        </span>
-      </div>
-      <div class="user-body">
-        <p>ID: {{ u.id }}</p>
-        <p>Email: {{ u.email }}</p>
-      </div>
-      <div class="user-footer">
-        <button class="btn-primary" (click)="deleteUser(u.id)">Eliminar</button>
-      </div>
-    </div>
-
-    <div *ngIf="filteredUsers().length === 0" class="empty-state">
-      <h3>No se encontraron usuarios</h3>
-      <p>Probá cambiar los filtros o el texto de búsqueda.</p>
-    </div>
   </div>
 </div>
