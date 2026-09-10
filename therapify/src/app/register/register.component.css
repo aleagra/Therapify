@@ -14,21 +14,21 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
   gap: 0;
-  align-items: center;
+  align-items: stretch;
 }
 
 .login-brand-banner {
   grid-column: 1;
   background: #083c5c;
   border-radius: 16px;
-  padding: 48px 44px;
+  padding: 36px 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #fff;
   box-sizing: border-box;
-  min-height: 640px;
-  height: 640px;
+  height: 100%;
+  min-height: 0;
 }
 
 .banner-top-mark {
@@ -569,23 +569,476 @@
   margin-top: 8px;
 }
 
-@media (max-width: 960px) {
+/* Escritorio (>= 1024px): la card mantiene siempre el mismo tamaño,
+   1200x500 con banner de 460px, sin importar la resolución. */
+@media (min-width: 1024px) {
+  .login-split-container {
+    width: 1200px;
+    max-width: 100%;
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #dfe6ee;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(13, 35, 55, 0.05);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 460px 1fr;
+    align-items: stretch;
+  }
+
+  .login-brand-banner {
+    grid-column: 1;
+    background: #083c5c;
+    border-radius: 0;
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .banner-top-mark {
+    display: none;
+  }
+
+  .banner-illustration-box {
+    position: absolute;
+    right: -70px;
+    top: -50px;
+    width: 400px;
+    height: 400px;
+    opacity: 0.95;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .banner-ribbon-img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .banner-bottom-block {
+    position: relative;
+    z-index: 2;
+  }
+
+  .banner-ribbon-accent {
+    width: 48px;
+    height: 2px;
+    background: #2bbd9f;
+    margin: 0 0 18px;
+    border-radius: 0;
+  }
+
+  .banner-headline {
+    font-size: 27px;
+    line-height: 1.22;
+    letter-spacing: -0.025em;
+    color: #ffffff;
+    margin: 0 0 12px;
+  }
+
+  .banner-subtext {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #b6d3e8;
+    margin: 0;
+  }
+
+  .login-form-area {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 48px;
+    position: relative;
+    height: 100%;
+  }
+
+  .header-block {
+    margin-bottom: 0;
+  }
+
+  .rail-layout-96 {
+    grid-template-columns: 80px 1fr;
+  }
+
+  .header-rail {
+    border-right: 1px solid #dfe6ee;
+    padding: 6px 14px 0 0;
+    text-align: right;
+  }
+
+  .rail-kicker {
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: 0.11em;
+  }
+
+  .rail-number {
+    font-size: 10px;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  .header-body,
+  .content-body-wrap {
+    padding-left: 28px;
+  }
+
+  .page-title {
+    font-size: 30px;
+    line-height: 1.12;
+    letter-spacing: -0.028em;
+    color: #16222c;
+    margin: 0 0 6px;
+  }
+
+  .page-subtitle {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #647587;
+    margin: 0 0 20px;
+  }
+
+  .wizard-stepper-header {
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    gap: 6px;
+  }
+
+  .step-rail-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 10.5px;
+  }
+
+  .step-name-label {
+    font-size: 11px;
+  }
+
+  .step-intro-text {
+    display: none;
+  }
+
+  .wizard-form-step {
+    gap: 12px;
+  }
+
+  .fields-grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    margin-bottom: 6px;
+  }
+
+  .field-label {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #384857;
+    margin-bottom: 4px;
+  }
+
+  .wizard-input {
+    height: 44px;
+    padding: 0 13px;
+    font-size: 14.5px;
+    border-radius: 8px;
+    border: 1px solid #d2dbe5;
+  }
+
+  .btn-wizard-next,
+  .btn-wizard-finish {
+    height: 48px;
+    min-height: 48px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    background: #0b5d8e;
+  }
+
+  .btn-wizard-back {
+    height: 48px;
+    min-height: 48px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .register-footer-row {
+    margin-top: 14px;
+  }
+}
+
+/* Tablet (md: 768px - 1023px) */
+@media (max-width: 1023px) and (min-width: 640px) {
   .login-split-container {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 0;
     min-height: auto;
   }
   .login-brand-banner {
     display: none;
   }
   .login-form-area {
-    padding: 16px 0;
+    grid-column: 1;
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 24px 0;
   }
   .header-body,
   .content-body-wrap {
-    padding-left: 16px;
+    padding-left: 20px;
   }
   .fields-grid-2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile 375 (< 640px - Regla 5f / 5j) */
+@media (max-width: 639px) {
+  :host {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .login-split-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    background: #ffffff;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    flex: 0 0 auto;
+  }
+
+  /* El panel oscuro pasa a ser banda superior de altura libre, igual que en login */
+  .login-brand-banner {
+    display: flex !important;
+    flex-direction: column;
+    background: #083c5c;
+    position: relative;
+    overflow: hidden;
+    padding: 22px 20px;
+    border-radius: 0;
+    height: auto;
+    min-height: auto;
+    flex: none;
+    box-sizing: border-box;
+  }
+
+  .banner-top-mark,
+  .banner-subtext {
+    display: none;
+  }
+
+  .banner-illustration-box {
+    position: absolute;
+    right: -60px;
+    top: -40px;
+    width: 220px;
+    height: 220px;
+    opacity: 0.9;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .banner-ribbon-img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .banner-bottom-block {
+    position: relative;
+    z-index: 2;
+    max-width: 250px;
+  }
+
+  .banner-ribbon-accent {
+    width: 40px;
+    height: 2px;
+    background: #2bbd9f;
+    margin: 0 0 13px;
+    border-radius: 0;
+  }
+
+  .banner-headline {
+    font-size: 20px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .login-form-area {
+    padding: 0 0 32px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    justify-content: flex-start;
+  }
+
+  .wizard-stepper-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #eaeff5;
+    margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .wizard-step-indicator {
+    gap: 5px;
+  }
+
+  .step-rail-badge {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 999px;
+  }
+
+  .step-name-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  .wizard-step-indicator:not(.is-active) .step-name-label {
+    display: none;
+  }
+
+  .wizard-step-line {
+    min-width: 16px;
+  }
+
+  .rail-layout-96,
+  .header-block,
+  .register-main-layout {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+    margin-bottom: 0 !important;
+  }
+
+  .header-rail,
+  .rail-kicker,
+  .rail-number,
+  .register-main-layout .content-rail-empty,
+  .content-rail-empty {
+    display: none !important;
+    border: none !important;
+  }
+
+  .header-body,
+  .content-body-wrap {
+    padding-left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .page-title {
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em !important;
+    color: #16222c !important;
+    margin: 0 0 5px !important;
+  }
+
+  .page-subtitle {
+    font-size: 13.5px !important;
+    line-height: 1.55 !important;
+    color: #647587 !important;
+    margin: 0 0 18px !important;
+  }
+
+  .step-intro-text {
+    display: none;
+  }
+
+  .fields-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .field-label {
+    font-size: 12px;
+    color: #384857;
+    margin-bottom: 6px;
+  }
+
+  /* Controles mobile: campo 46px, botón 50px */
+  .wizard-input {
+    height: 46px;
+    padding: 0 13px;
+    font-size: 14.5px;
+  }
+
+  .role-select-card {
+    min-height: 48px;
+    padding: 14px;
+  }
+
+  /* CTA anclada al pie en formularios (Regla 5f / 5j) */
+  .wizard-actions-row {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    background: #ffffff;
+    border-top: 1px solid #dfe6ee;
+    padding: 12px 16px;
+    margin: 20px -16px 0;
+    width: calc(100% + 32px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .btn-wizard-back,
+  .btn-wizard-next,
+  .btn-wizard-finish,
+  .btn-goto-login {
+    width: 100% !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .register-footer-row {
+    margin-top: 18px;
+    padding-bottom: 12px;
+  }
+
+  .register-success-card {
+    padding: 32px 18px;
+  }
+}
+
