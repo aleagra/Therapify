@@ -65,7 +65,7 @@
                   <!-- 1. Header de Identidad -->
                   <div class="doctor-identity-header">
                     <div class="doctor-avatar-72">
-                      {{ getInitials(doc.firstName, doc.lastName) }}
+                      {{ doc.firstName | initials:doc.lastName }}
                     </div>
                     <div class="doctor-titles-block">
                       <h1 class="doctor-fullname">
@@ -74,7 +74,7 @@
                       <div class="doctor-badges-row">
                         @if (doc.doctorSpecialty || doc.specialty) {
                           <span class="badge-specialty">
-                            {{ getSpecialtyLabel(doc.doctorSpecialty || doc.specialty) }}
+                            {{ (doc.doctorSpecialty || doc.specialty) | specialtyLabel }}
                           </span>
                         }
                         <span class="badge-verified">
@@ -132,7 +132,7 @@
                           @if (doc.availability[day] && doc.availability[day].length) {
                             <div class="schedule-grid-row">
                               <span class="day-label-col">{{ DAY_LABELS[day] }}</span>
-                              <span class="hours-label-col">{{ formatScheduleRange(doc.availability[day]) }}</span>
+                              <span class="hours-label-col">{{ doc.availability[day] | scheduleRange }}</span>
                             </div>
                           }
                         }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, computed } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -6,6 +6,9 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { InitialsPipe } from '../pipes/initials.pipe';
+import { SpecialtyLabelPipe } from '../pipes/specialty-label.pipe';
+import { ScheduleRangePipe } from '../pipes/schedule-range.pipe';
 import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
 import { User } from '../../types/user';
 import { concat, of, timer } from 'rxjs';
@@ -14,9 +17,17 @@ import { map, switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-doctor-detail',
   standalone: true,
-  imports: [CalendarComponent, RouterLink, SkeletonComponent],
+  imports: [
+    CalendarComponent,
+    RouterLink,
+    SkeletonComponent,
+    InitialsPipe,
+    SpecialtyLabelPipe,
+    ScheduleRangePipe,
+  ],
   templateUrl: './doctor-detail.component.html',
   styleUrls: ['./doctor-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoctorDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);

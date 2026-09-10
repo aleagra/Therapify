@@ -1,9 +1,12 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
   SimpleChanges,
   inject,
+  signal,
+  computed,
 } from '@angular/core';
 import {
   ReactiveFormsModule,
@@ -16,6 +19,7 @@ import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { SlotEndPipe } from '../pipes/slot-end.pipe';
 import { toast } from 'ngx-sonner';
 
 export interface CalendarDay {
@@ -30,9 +34,16 @@ export interface CalendarDay {
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DatePipe, SkeletonComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DatePipe,
+    SkeletonComponent,
+    SlotEndPipe,
+  ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarComponent implements OnChanges {
   @Input() schedule: { [dia: string]: boolean } | undefined;
@@ -53,16 +64,31 @@ export class CalendarComponent implements OnChanges {
     return this.userLogged?.userType === 'ADMIN';
   }
 
-  diasHabilitados: number[] = [];
-  horariosDisponibles: string[] = [];
-  horariosOcupados: string[] = [];
-  isLoadingSlots = false;
-  showSlotsSkeleton = false;
-  private slotsTimer: ReturnType<typeof setTimeout> | null = null;
-  reservaConfirmada = false;
+  readonly today: Date = (() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  })();
 
-  today: Date = new Date();
-  currentMonthDate: Date = new Date();
+  currentMonthDate = signal<Date>(
+    (() => {
+      const d = new Date();
+      d.setDate(1);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    })(),
+  );
+
+  diasHabilitados = signal<number[]>([]);
+  selectedDate = signal<Date | null>(null);
+  selectedSlot = signal<string | null>(null);
+
+  horariosDisponibles = signal<string[]>([]);
+  horariosOcupados = signal<string[]>([]);
+  isLoadingSlots = signal(false);
+  showSlotsSkeleton = signal(false);
+  private slotsTimer: ReturnType<typeof setTimeout> | null = null;
+  reservaConfirmada = signal(false);
 
   readonly weekDays = ['LU', 'MA', 'MI', 'JU', 'VI', 'SÁ', 'DO'];
 
@@ -71,40 +97,19 @@ export class CalendarComponent implements OnChanges {
     hora: ['', Validators.required],
   });
 
-  constructor() {
-    this.today.setHours(0, 0, 0, 0);
-    this.currentMonthDate.setDate(1);
-    this.currentMonthDate.setHours(0, 0, 0, 0);
-  }
+  canGoPrevMonth = computed(() => {
+    const viewYear = this.currentMonthDate().getFullYear();
+    const viewMonth = this.currentMonthDate().getMonth();
+    const currentYear = this.today.getFullYear();
+    const currentMonth = this.today.getMonth();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['schedule'] && this.schedule) {
-      this.mapearDiasHabilitados();
-    }
-  }
+    return (
+      viewYear > currentYear ||
+      (viewYear === currentYear && viewMonth > currentMonth)
+    );
+  });
 
-  private mapearDiasHabilitados(): void {
-    if (!this.schedule) {
-      this.diasHabilitados = [];
-      return;
-    }
-
-    const mapaDias: Record<string, number> = {
-      sunday: 0,
-      monday: 1,
-      tuesday: 2,
-      wednesday: 3,
-      thursday: 4,
-      friday: 5,
-      saturday: 6,
-    };
-
-    this.diasHabilitados = Object.keys(this.schedule)
-      .filter((d) => this.schedule?.[d])
-      .map((d) => mapaDias[d]);
-  }
-
-  get currentMonthLabel(): string {
+  currentMonthLabel = computed(() => {
     const months = [
       'Enero',
       'Febrero',
@@ -119,38 +124,14 @@ export class CalendarComponent implements OnChanges {
       'Noviembre',
       'Diciembre',
     ];
-    return `${months[this.currentMonthDate.getMonth()]} ${this.currentMonthDate.getFullYear()}`;
-  }
+    const d = this.currentMonthDate();
+    return `${months[d.getMonth()]} ${d.getFullYear()}`;
+  });
 
-  get canGoPrevMonth(): boolean {
-    const viewYear = this.currentMonthDate.getFullYear();
-    const viewMonth = this.currentMonthDate.getMonth();
-    const currentYear = this.today.getFullYear();
-    const currentMonth = this.today.getMonth();
-
-    return viewYear > currentYear || (viewYear === currentYear && viewMonth > currentMonth);
-  }
-
-  prevMonth(): void {
-    if (!this.canGoPrevMonth) return;
-    this.currentMonthDate = new Date(
-      this.currentMonthDate.getFullYear(),
-      this.currentMonthDate.getMonth() - 1,
-      1,
-    );
-  }
-
-  nextMonth(): void {
-    this.currentMonthDate = new Date(
-      this.currentMonthDate.getFullYear(),
-      this.currentMonthDate.getMonth() + 1,
-      1,
-    );
-  }
-
-  get calendarDays(): CalendarDay[] {
-    const year = this.currentMonthDate.getFullYear();
-    const month = this.currentMonthDate.getMonth();
+  calendarDays = computed(() => {
+    const viewDate = this.currentMonthDate();
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
 
     const rawFirstDay = new Date(year, month, 1).getDay();
     const firstDayIndex = rawFirstDay === 0 ? 6 : rawFirstDay - 1;
@@ -158,7 +139,8 @@ export class CalendarComponent implements OnChanges {
     const daysInPrevMonth = new Date(year, month, 0).getDate();
 
     const days: CalendarDay[] = [];
-    const selectedDate: Date | null = this.citaForm.get('fecha')?.value;
+    const selDate = this.selectedDate();
+    const habilitados = this.diasHabilitados();
 
     // Días del mes anterior (relleno)
     for (let i = firstDayIndex - 1; i >= 0; i--) {
@@ -186,15 +168,15 @@ export class CalendarComponent implements OnChanges {
 
       const isPast = date < this.today;
       const isDayOfWeekEnabled =
-        this.diasHabilitados.length === 0 || this.diasHabilitados.includes(date.getDay());
+        habilitados.length === 0 || habilitados.includes(date.getDay());
 
       const isEnabled = !isPast && isDayOfWeekEnabled;
 
       const isSelected =
-        !!selectedDate &&
-        date.getFullYear() === selectedDate.getFullYear() &&
-        date.getMonth() === selectedDate.getMonth() &&
-        date.getDate() === selectedDate.getDate();
+        !!selDate &&
+        date.getFullYear() === selDate.getFullYear() &&
+        date.getMonth() === selDate.getMonth() &&
+        date.getDate() === selDate.getDate();
 
       days.push({
         date,
@@ -206,7 +188,7 @@ export class CalendarComponent implements OnChanges {
       });
     }
 
-    // Días del siguiente mes para completar la grilla (siempre 6 filas = 42 celdas para altura fija sin saltos)
+    // Días del siguiente mes para completar la grilla (siempre 6 filas = 42 celdas)
     const totalCells = 42;
     const remaining = totalCells - days.length;
     for (let i = 1; i <= remaining; i++) {
@@ -223,32 +205,83 @@ export class CalendarComponent implements OnChanges {
     }
 
     return days;
+  });
+
+  formattedPrice = computed(() => {
+    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A convenir';
+    return `$${this.consultationPrice.toLocaleString('es-AR')}`;
+  });
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['schedule'] && this.schedule) {
+      this.mapearDiasHabilitados();
+    }
+  }
+
+  private mapearDiasHabilitados(): void {
+    if (!this.schedule) {
+      this.diasHabilitados.set([]);
+      return;
+    }
+
+    const mapaDias: Record<string, number> = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    };
+
+    const habilitados = Object.keys(this.schedule)
+      .filter((d) => this.schedule?.[d])
+      .map((d) => mapaDias[d]);
+    this.diasHabilitados.set(habilitados);
+  }
+
+  prevMonth(): void {
+    if (!this.canGoPrevMonth()) return;
+    this.currentMonthDate.update(
+      (d) => new Date(d.getFullYear(), d.getMonth() - 1, 1),
+    );
+  }
+
+  nextMonth(): void {
+    this.currentMonthDate.update(
+      (d) => new Date(d.getFullYear(), d.getMonth() + 1, 1),
+    );
   }
 
   selectDate(day: CalendarDay): void {
     if (!day.isEnabled) return;
+    this.selectedDate.set(day.date);
     this.citaForm.get('fecha')?.setValue(day.date);
+    this.selectedSlot.set(null);
+    this.citaForm.get('hora')?.setValue('');
     this.onFechaSeleccionada(day.date);
   }
 
   selectSlot(hora: string): void {
+    this.selectedSlot.set(hora);
     this.citaForm.get('hora')?.setValue(hora);
   }
 
   onFechaSeleccionada(fecha: Date | null, forceRefresh = false): void {
     if (!fecha || !this.availability) return;
 
-    this.isLoadingSlots = true;
-    this.showSlotsSkeleton = false;
+    this.isLoadingSlots.set(true);
+    this.showSlotsSkeleton.set(false);
     if (this.slotsTimer) {
       clearTimeout(this.slotsTimer);
     }
     this.slotsTimer = setTimeout(() => {
-      if (this.isLoadingSlots) {
-        this.showSlotsSkeleton = true;
+      if (this.isLoadingSlots()) {
+        this.showSlotsSkeleton.set(true);
       }
     }, 150);
 
+    this.selectedSlot.set(null);
     this.citaForm.get('hora')?.setValue('');
 
     const dias = [
@@ -269,21 +302,22 @@ export class CalendarComponent implements OnChanges {
       .getAppointmentsByDoctorAndDate(this.doctorId, fechaISO, forceRefresh)
       .subscribe({
         next: (appointments) => {
-          this.horariosOcupados = appointments.map((a) => a.startTime);
-          this.horariosDisponibles = disponibles.filter(
-            (h) => !this.horariosOcupados.includes(h),
+          const ocupados = appointments.map((a) => a.startTime);
+          this.horariosOcupados.set(ocupados);
+          this.horariosDisponibles.set(
+            disponibles.filter((h) => !ocupados.includes(h)),
           );
-          this.isLoadingSlots = false;
-          this.showSlotsSkeleton = false;
+          this.isLoadingSlots.set(false);
+          this.showSlotsSkeleton.set(false);
           if (this.slotsTimer) {
             clearTimeout(this.slotsTimer);
             this.slotsTimer = null;
           }
         },
         error: () => {
-          this.horariosDisponibles = disponibles;
-          this.isLoadingSlots = false;
-          this.showSlotsSkeleton = false;
+          this.horariosDisponibles.set(disponibles);
+          this.isLoadingSlots.set(false);
+          this.showSlotsSkeleton.set(false);
           if (this.slotsTimer) {
             clearTimeout(this.slotsTimer);
             this.slotsTimer = null;
@@ -297,11 +331,6 @@ export class CalendarComponent implements OnChanges {
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
-  }
-
-  get formattedPrice(): string {
-    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A convenir';
-    return `$${this.consultationPrice.toLocaleString('es-AR')}`;
   }
 
   calcularFin(hora: string): string {
@@ -337,7 +366,7 @@ export class CalendarComponent implements OnChanges {
       .createAppointment(appointmentRequest)
       .subscribe({
         next: () => {
-          this.reservaConfirmada = true;
+          this.reservaConfirmada.set(true);
           this.citaForm.disable();
           this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
           toast.success('¡Turno reservado con éxito!', { position: 'top-center' });
@@ -348,6 +377,7 @@ export class CalendarComponent implements OnChanges {
               'El horario seleccionado ya no se encuentra disponible. Por favor, elegí otro turno.',
               { position: 'top-center', duration: 5000 },
             );
+            this.selectedSlot.set(null);
             this.citaForm.get('hora')?.setValue(null);
             this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
             this.onFechaSeleccionada(fecha, true);

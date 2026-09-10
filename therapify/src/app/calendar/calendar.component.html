@@ -20,7 +20,7 @@
       <button
         type="button"
         class="nav-arrow-btn"
-        [disabled]="!canGoPrevMonth"
+        [disabled]="!canGoPrevMonth()"
         (click)="prevMonth()"
         aria-label="Mes anterior"
       >
@@ -29,7 +29,7 @@
         </svg>
       </button>
 
-      <span class="current-month-label">{{ currentMonthLabel }}</span>
+      <span class="current-month-label">{{ currentMonthLabel() }}</span>
 
       <button
         type="button"
@@ -52,7 +52,7 @@
 
     <!-- Celdas del Calendario -->
     <div class="days-matrix-grid">
-      @for (day of calendarDays; track day.date.toISOString()) {
+      @for (day of calendarDays(); track day.date.toISOString()) {
         @if (day.isCurrentMonth) {
           <button
             type="button"
@@ -87,7 +87,6 @@
     </div>
   </div>
 
-
   </div>
 
   <!-- Zona B: resumen del turno y confirmación -->
@@ -96,25 +95,25 @@
   <div class="slots-section-wrapper">
     <div class="slots-header-line">
       <span class="slots-kicker">
-        @if (citaForm.get('fecha')?.value) {
-          Horarios · {{ citaForm.get('fecha')?.value | date:'EEEE d':'':'es-AR' }}
+        @if (selectedDate()) {
+          Horarios · {{ selectedDate() | date:'EEEE d':'':'es-AR' }}
         } @else {
           Horarios
         }
       </span>
-      @if (horariosDisponibles.length && !isLoadingSlots && !isInitialLoading) {
-        <span class="slots-count-caption">{{ horariosDisponibles.length }} disponibles</span>
+      @if (horariosDisponibles().length && !isLoadingSlots() && !isInitialLoading) {
+        <span class="slots-count-caption">{{ horariosDisponibles().length }} disponibles</span>
       }
     </div>
 
     <div class="slots-interactive-zone">
-      @if (isInitialLoading || (isLoadingSlots && showSlotsSkeleton)) {
+      @if (isInitialLoading || (isLoadingSlots() && showSlotsSkeleton())) {
         <div class="slots-skeleton-matrix" aria-busy="true">
           @for (s of [1, 2, 3, 4, 5, 6, 7, 8]; track s) {
             <app-skeleton height="38px" radius="8px"></app-skeleton>
           }
         </div>
-      } @else if (!citaForm.get('fecha')?.value) {
+      } @else if (!selectedDate()) {
         <div class="slot-instruction-hint">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -124,17 +123,17 @@
           </svg>
           <span>Elegí un día disponible en el calendario</span>
         </div>
-      } @else if (!horariosDisponibles || horariosDisponibles.length === 0) {
+      } @else if (!horariosDisponibles() || horariosDisponibles().length === 0) {
         <div class="slot-empty-notice">
           Sin turnos libres para esta fecha. Probá otro día habilitado.
         </div>
       } @else {
         <div class="slots-options-matrix">
-          @for (hora of horariosDisponibles; track hora) {
+          @for (hora of horariosDisponibles(); track hora) {
             <button
               type="button"
               class="slot-choice-btn"
-              [class.is-selected]="citaForm.get('hora')?.value === hora"
+              [class.is-selected]="selectedSlot() === hora"
               (click)="selectSlot(hora)"
             >
               {{ hora }}
@@ -144,6 +143,7 @@
       }
     </div>
   </div>
+
   <!-- Resumen de Reserva — Separado por divisores sin fondos anidados -->
   <div class="summary-section-zone">
     <div class="summary-kicker">Resumen</div>
@@ -151,14 +151,14 @@
       <div class="summary-item">
         <span class="summary-label">Fecha</span>
         <span class="summary-val">
-          {{ (citaForm.get('fecha')?.value | date:'EEEE d \'de\' MMMM':'':'es-AR') || '—' }}
+          {{ (selectedDate() | date:'EEEE d \'de\' MMMM':'':'es-AR') || '—' }}
         </span>
       </div>
 
       <div class="summary-item">
         <span class="summary-label">Horario</span>
         <span class="summary-val">
-          {{ citaForm.get('hora')?.value ? citaForm.get('hora')?.value + ' - ' + calcularFin(citaForm.get('hora')?.value) : '—' }}
+          {{ citaForm.get('hora')?.value | slotEnd }}
         </span>
       </div>
 
@@ -174,7 +174,7 @@
 
     <div class="summary-total-row">
       <span class="total-caption">Honorarios</span>
-      <span class="total-amount tabular-nums">{{ formattedPrice }}</span>
+      <span class="total-amount tabular-nums">{{ formattedPrice() }}</span>
     </div>
   </div>
 
@@ -198,10 +198,10 @@
       <button
         type="submit"
         class="btn-confirm-booking"
-        [disabled]="citaForm.invalid || reservaConfirmada"
-        [class.is-confirmed]="reservaConfirmada"
+        [disabled]="citaForm.invalid || reservaConfirmada()"
+        [class.is-confirmed]="reservaConfirmada()"
       >
-        @if (reservaConfirmada) {
+        @if (reservaConfirmada()) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
@@ -220,10 +220,10 @@
   <!-- Barra Sticky Inferior Mobile (Foto 1) -->
   <div class="mobile-sticky-booking-bar">
     <div class="sticky-booking-info">
-      <div class="sticky-booking-price tabular-nums">{{ formattedPrice }}</div>
+      <div class="sticky-booking-price tabular-nums">{{ formattedPrice() }}</div>
       <div class="sticky-booking-slot">
-        @if (citaForm.get('fecha')?.value && citaForm.get('hora')?.value) {
-          {{ citaForm.get('fecha')?.value | date:'EEE d':'':'es-AR' }} · {{ citaForm.get('hora')?.value }}
+        @if (selectedDate() && selectedSlot()) {
+          {{ selectedDate() | date:'EEE d':'':'es-AR' }} · {{ selectedSlot() }}
         } @else {
           Seleccioná horario
         }
@@ -241,10 +241,10 @@
       <button
         type="submit"
         class="btn-sticky-confirm"
-        [disabled]="citaForm.invalid || reservaConfirmada"
-        [class.is-confirmed]="reservaConfirmada"
+        [disabled]="citaForm.invalid || reservaConfirmada()"
+        [class.is-confirmed]="reservaConfirmada()"
       >
-        @if (reservaConfirmada) {
+        @if (reservaConfirmada()) {
           <span>Confirmada</span>
         } @else {
           <span>Confirmar reserva</span>
