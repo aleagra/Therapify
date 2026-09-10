@@ -45,3 +45,9 @@ Thumbs.db
 .agents/
 skills-lock.json
 
+# Tooling & Local Dumps
+.claude/
+dumps/
+public/*.html
+
+
