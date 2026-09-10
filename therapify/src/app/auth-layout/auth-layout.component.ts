@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-private-layout',
+  selector: 'app-auth-layout',
+  standalone: true,
   imports: [NavbarComponent, FooterComponent, RouterModule],
-  templateUrl: './private-layout.component.html',
-  styleUrl: './private-layout.component.css',
+  templateUrl: './auth-layout.component.html',
+  styleUrl: './auth-layout.component.css',
 })
-export class PrivateLayoutComponent {}
+export class AuthLayoutComponent {}

@@ -24,10 +24,22 @@ export class NavbarComponent {
     this.menuOpen = !this.menuOpen;
   }
 
+  get authButtonLabel(): string {
+    if (this.userService.isLoggedSignal()) {
+      return 'Cerrar sesión';
+    }
+    if (this.router.url.startsWith('/login')) {
+      return 'Registrate';
+    }
+    return 'Iniciar sesión';
+  }
+
   handleLoginLogout() {
     if (this.userService.isLoggedSignal()) {
       this.userService.logout();
       this.router.navigate(['/login']);
+    } else if (this.router.url.startsWith('/login')) {
+      this.router.navigate(['/register']);
     } else {
       this.router.navigate(['/login']);
     }

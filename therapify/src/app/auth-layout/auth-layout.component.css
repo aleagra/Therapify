@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.auth-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--c-neutral-50, #f4f7fa);
+}
+
+.auth-header {
+  flex-shrink: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.auth-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-content-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 64px 24px 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 960px) {
+  .auth-content-container {
+    padding: 28px 16px 48px;
+  }
+}
