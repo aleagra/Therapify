@@ -11,7 +11,7 @@
           <div class="mission-text-block">
             <span class="tag-kicker">Nuestra misión</span>
             <h1 class="mission-headline">
-              Bienestar mental <span class="highlight">accesible, humano y transparente</span>.
+              Bienestar mental accesible, humano y <span class="highlight">transparente</span>.
             </h1>
             <p class="mission-lead-text">
               Creemos que encontrar al terapeuta adecuado no debería ser un laberinto. 
@@ -44,7 +44,6 @@
 
         <div class="pillars-system-grid">
           <div class="pillar-row-card surface-card">
-            <div class="pillar-rule-accent"></div>
             <div class="pillar-icon-box">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -60,7 +59,6 @@
           </div>
 
           <div class="pillar-row-card surface-card">
-            <div class="pillar-rule-accent"></div>
             <div class="pillar-icon-box">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
@@ -76,7 +74,6 @@
           </div>
 
           <div class="pillar-row-card surface-card">
-            <div class="pillar-rule-accent"></div>
             <div class="pillar-icon-box">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -149,33 +146,38 @@
     <!-- Sección 4: Impacto 04 -->
     <section class="about-section rail-layout-96">
       <div class="section-rail">
-        <span class="rail-kicker">Impacto</span>
+        <span class="rail-kicker">IMPACTO</span>
         <span class="rail-number">04</span>
       </div>
       <div class="section-body">
-        <div class="impact-featured-block">
-          <div class="impact-inner-content">
-            <h2 class="impact-title">Construyendo bienestar colectivo</h2>
-            <p class="impact-sub">En Therapify trabajamos cada día para que la salud emocional sea un derecho al alcance de todos, con transparencia y excelencia médica.</p>
-
-            <div class="impact-metrics-row">
-              <div class="impact-metric-box">
-                <span class="impact-num tabular-nums">500+</span>
-                <span class="impact-lbl">Terapeutas matriculados en todo el país</span>
-              </div>
-              <div class="impact-divider"></div>
-              <div class="impact-metric-box">
-                <span class="impact-num tabular-nums">10.000+</span>
-                <span class="impact-lbl">Consultas y sesiones gestionadas</span>
-              </div>
-            </div>
-
-            <div class="impact-action-row">
-              <a routerLink="/doctors" class="btn-impact-cta">
-                <span>Explorar profesionales &rarr;</span>
-              </a>
-            </div>
+        <div class="stats-surface-card surface-card">
+          <div class="metric-item">
+            <span class="metric-num tabular-nums">{{ metrics.therapists }}</span>
+            <span class="metric-lbl">Terapeutas matriculados en todo el país</span>
           </div>
+
+          <div class="metric-v-divider" aria-hidden="true"></div>
+
+          <div class="metric-item">
+            <span class="metric-num tabular-nums">{{ metrics.sessions }}</span>
+            <span class="metric-lbl">Consultas y sesiones gestionadas</span>
+          </div>
+
+          <div class="metric-v-divider" aria-hidden="true"></div>
+
+          <div class="metric-item">
+            <span class="metric-num tabular-nums">{{ metrics.weeklySlots }}</span>
+            <span class="metric-lbl">Turnos semanales disponibles</span>
+          </div>
+        </div>
+
+        <div class="impact-action-block">
+          <p class="impact-action-text">
+            Trabajamos para que la salud emocional sea un derecho al alcance de todos.
+          </p>
+          <a routerLink="/doctors" class="btn-impact-primary">
+            Explorar profesionales
+          </a>
         </div>
       </div>
     </section>

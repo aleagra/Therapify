@@ -1,171 +1,150 @@
 <div class="home-page-root">
   <div class="home-container">
-    <section class="home-bento" aria-label="Portal de Therapify">
-      <!-- Celda Hero — 7 col × 2 filas -->
-      <div class="bento-cell bento-hero surface-card">
-        <div class="hero-content-wrap">
-          <div class="hero-badge">
-            <span class="badge-status-dot" aria-hidden="true"></span>
-            <span>Red activa · Profesionales con turnos disponibles</span>
-          </div>
-
-          <h1 class="hero-title">
-            Tu bienestar emocional comienza con el profesional <span class="highlight">adecuado</span>.
-          </h1>
-
-          <p class="hero-subtitle">
-            Conectá con terapeutas matriculados en Argentina, encontrá el enfoque clínico que necesitás y agendá tu consulta en minutos.
-          </p>
-
-          <div class="hero-cta-wrap">
-            <a routerLink="/doctors" class="btn-hero-primary">
-              <span>Encontrá tu terapeuta</span>
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="hero-illustration-bleed" aria-hidden="true">
-          <img
-            src="/assets/imagenLineasAbout.svg"
-            alt=""
-            class="hero-bleed-img"
-          />
-        </div>
+    <!-- Sección 1: Hero, Features y Métricas con rail de 96px -->
+    <section class="home-main-section rail-layout-96" aria-label="Portal de Therapify">
+      <div class="section-rail">
+        <span class="rail-kicker">INICIO</span>
+        <span class="rail-number">01</span>
       </div>
 
-      <!-- Celda 1: 'Sin llamadas ni esperas' — 5 col × 1 fila -->
-      <div class="bento-cell bento-feature surface-card">
-        <div class="bento-feature-content">
-          <div class="bento-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
+      <div class="section-body">
+        <div class="home-bento">
+          <!-- Celda Hero — 7 col × 1 fila alta -->
+          <div class="bento-cell bento-hero surface-card">
+            <div class="hero-content-wrap">
+              <div class="hero-badge">
+                <span class="badge-status-dot" aria-hidden="true"></span>
+                <span>Red activa · Profesionales con turnos disponibles</span>
+              </div>
+
+              <h1 class="hero-title">
+                Tu bienestar emocional comienza con el profesional <span class="highlight">adecuado</span>.
+              </h1>
+
+              <p class="hero-subtitle">
+                Conectá con terapeutas matriculados en Argentina, encontrá el enfoque clínico que necesitás y agendá tu consulta en minutos.
+              </p>
+
+              <div class="hero-cta-wrap">
+                <a routerLink="/doctors" class="btn-hero-primary">
+                  <span>Encontrá tu terapeuta</span>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="hero-illustration-col" aria-hidden="true">
+              <img
+                src="/assets/imagenLineasAbout.svg"
+                alt=""
+                class="hero-illustration-img"
+              />
+            </div>
           </div>
-          <h3 class="bento-title">Sin llamadas ni esperas</h3>
-          <p class="bento-desc">
-            Agendá tu sesión en segundos según disponibilidad real, sin intermediarios ni demoras administrativas.
-          </p>
-        </div>
-        <a routerLink="/doctors" class="bento-link">
-          <span>Ver profesionales disponibles &rarr;</span>
-        </a>
-      </div>
 
-      <!-- Celda 2: 'Aranceles transparentes' — 5 col × 1 fila -->
-      <div class="bento-cell bento-feature surface-card">
-        <div class="bento-feature-content">
-          <div class="bento-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect width="20" height="14" x="2" y="5" rx="2"/>
-              <line x1="2" y1="10" x2="22" y2="10"/>
-            </svg>
+          <!-- Columna derecha: 3 features como cards Nivel 1 -->
+          <div class="bento-features-column">
+            <div class="feature-card surface-card">
+              <h3 class="feature-card-title">Sin llamadas ni esperas</h3>
+              <p class="feature-card-desc">
+                Agendá tu sesión en segundos según disponibilidad real, sin intermediarios ni demoras administrativas.
+              </p>
+              <a routerLink="/doctors" class="feature-card-link">
+                <span>Ver profesionales disponibles &rarr;</span>
+              </a>
+            </div>
+
+            <div class="feature-card surface-card">
+              <h3 class="feature-card-title">Aranceles transparentes</h3>
+              <p class="feature-card-desc">
+                Consultá el valor publicado de cada consulta en el perfil del especialista, sin costos ocultos ni sorpresas.
+              </p>
+              <a routerLink="/doctors" class="feature-card-link">
+                <span>Explorar aranceles &rarr;</span>
+              </a>
+            </div>
+
+            <div class="feature-card surface-card">
+              <h3 class="feature-card-title">Confidencialidad garantizada</h3>
+              <p class="feature-card-desc">
+                Tus datos clínicos y el historial de tus consultas están protegidos bajo estricto secreto médico profesional.
+              </p>
+              <a routerLink="/about-us" class="feature-card-link">
+                <span>Conocé nuestra historia &rarr;</span>
+              </a>
+            </div>
           </div>
-          <h3 class="bento-title">Aranceles transparentes</h3>
-          <p class="bento-desc">
-            Consultá el valor publicado de cada consulta en el perfil del especialista, sin costos ocultos ni sorpresas.
-          </p>
-        </div>
-        <a routerLink="/doctors" class="bento-link">
-          <span>Explorar aranceles &rarr;</span>
-        </a>
-      </div>
 
-      <!-- Celda 3: 'Confidencialidad garantizada' — 5 col × 1 fila -->
-      <div class="bento-cell bento-feature surface-card">
-        <div class="bento-feature-content">
-          <div class="bento-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
+          <!-- Banda de métricas — 12 col × 1 fila baja -->
+          <div class="bento-cell bento-metrics surface-card">
+            <div class="metric-item">
+              <span class="metric-num tabular-nums">{{ metrics.weeklySlots }}</span>
+              <span class="metric-lbl">Turnos semanales disponibles</span>
+            </div>
+
+            <div class="metric-v-divider" aria-hidden="true"></div>
+
+            <div class="metric-item">
+              <span class="metric-num tabular-nums">{{ metrics.therapists }}</span>
+              <span class="metric-lbl">Terapeutas matriculados</span>
+            </div>
+
+            <div class="metric-v-divider" aria-hidden="true"></div>
+
+            <div class="metric-item">
+              <span class="metric-num tabular-nums">{{ metrics.satisfaction }}</span>
+              <span class="metric-lbl">Profesionales verificados</span>
+            </div>
           </div>
-          <h3 class="bento-title">Confidencialidad garantizada</h3>
-          <p class="bento-desc">
-            Tus datos clínicos y el historial de tus consultas están protegidos bajo estricto secreto médico profesional.
-          </p>
-        </div>
-        <a routerLink="/about-us" class="bento-link">
-          <span>Conocé nuestra historia &rarr;</span>
-        </a>
-      </div>
-
-      <!-- Banda de métricas — 12 col × 1 fila baja -->
-      <div class="bento-cell bento-metrics surface-card">
-        <div class="metric-item">
-          <span class="metric-num tabular-nums">100+</span>
-          <span class="metric-lbl">Turnos semanales disponibles</span>
-        </div>
-
-        <div class="metric-v-divider" aria-hidden="true"></div>
-
-        <div class="metric-item">
-          <span class="metric-num tabular-nums">350+</span>
-          <span class="metric-lbl">Terapeutas matriculados</span>
-        </div>
-
-        <div class="metric-v-divider" aria-hidden="true"></div>
-
-        <div class="metric-item">
-          <span class="metric-num tabular-nums">100%</span>
-          <span class="metric-lbl">Profesionales verificados</span>
         </div>
       </div>
     </section>
 
-    <!-- Pasos secuenciales 01 / 02 / 03 en flujo de lectura -->
-    <section class="how-it-works-section" id="como-funciona">
-      <div class="section-heading">
-        <span class="section-kicker">Paso a paso</span>
-        <h2 class="section-title">¿Cómo funciona Therapify?</h2>
-        <p class="section-subtitle">Diseñamos un proceso ágil y transparente para que acceder a terapia sea simple y seguro.</p>
+    <!-- Pasos secuenciales 01 / 02 / 03 con rail de página 96px y rail vertical de 64px en cards -->
+    <section class="how-it-works-section rail-layout-96" id="como-funciona">
+      <div class="section-rail">
+        <span class="rail-kicker">GUÍA</span>
+        <span class="rail-number">02</span>
       </div>
 
-      <div class="steps-grid">
-        <div class="step-card surface-card">
-          <div class="step-card-header">
-            <span class="step-big-num">01</span>
-            <div class="step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-            </div>
-          </div>
-          <h3 class="step-title">Explorá y filtrá</h3>
-          <p class="step-desc">Buscá por especialidad clínica, orientación terapéutica o días disponibles para encontrar tu especialista ideal.</p>
+      <div class="section-body">
+        <div class="section-heading">
+          <h2 class="section-title">¿Cómo funciona Therapify?</h2>
+          <p class="section-subtitle">Diseñamos un proceso ágil y transparente para que acceder a terapia sea simple y seguro.</p>
         </div>
 
-        <div class="step-card surface-card">
-          <div class="step-card-header">
-            <span class="step-big-num">02</span>
-            <div class="step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
+        <div class="steps-grid">
+          <div class="step-card surface-card">
+            <div class="step-rail">
+              <span class="step-big-num">01</span>
+            </div>
+            <div class="step-body">
+              <h3 class="step-title">Explorá y filtrá</h3>
+              <p class="step-desc">Buscá por especialidad clínica, orientación terapéutica o días disponibles para encontrar tu especialista ideal.</p>
             </div>
           </div>
-          <h3 class="step-title">Elegí fecha y hora</h3>
-          <p class="step-desc">Accedé al calendario en tiempo real del profesional y seleccioná el horario que mejor encaje en tu rutina.</p>
-        </div>
 
-        <div class="step-card surface-card">
-          <div class="step-card-header">
-            <span class="step-big-num">03</span>
-            <div class="step-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
+          <div class="step-card surface-card">
+            <div class="step-rail">
+              <span class="step-big-num">02</span>
+            </div>
+            <div class="step-body">
+              <h3 class="step-title">Elegí fecha y hora</h3>
+              <p class="step-desc">Accedé al calendario en tiempo real del profesional y seleccioná el horario que mejor encaje en tu rutina.</p>
             </div>
           </div>
-          <h3 class="step-title">Iniciá tu proceso</h3>
-          <p class="step-desc">Recibí la confirmación inmediata y gestioná tus consultas con total privacidad desde tu panel de usuario.</p>
+
+          <div class="step-card surface-card">
+            <div class="step-rail">
+              <span class="step-big-num">03</span>
+            </div>
+            <div class="step-body">
+              <h3 class="step-title">Iniciá tu proceso</h3>
+              <p class="step-desc">Recibí la confirmación inmediata y gestioná tus consultas con total privacidad desde tu panel de usuario.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

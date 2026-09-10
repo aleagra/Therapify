@@ -1,58 +1,350 @@
-:host{display:block;width:100%}
-.about-page-root{background:#f4f7fa;padding:24px 0 64px}
-.about-container{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;flex-direction:column;gap:48px}
-.about-section{display:grid;grid-template-columns:96px 1fr}
-.section-rail{padding:4px 16px 8px 0;border-right:1px solid #dfe6ee;text-align:right}
-.rail-kicker{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#5a6e85}
-.rail-number{font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:#c3cedb;margin-top:2px}
-.section-body{padding-left:28px;min-width:0}
-.mission-surface{background:#fff;border:1px solid #dfe6ee;border-radius:12px;box-shadow:0 1px 3px rgba(22,34,44,.06);padding:36px;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:32px}
-.tag-kicker{display:inline-block;padding:3px 9px;border-radius:4px;background:#e0effa;color:#0b5d8e;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-.mission-headline{margin:0 0 14px;font-size:32px;font-weight:800;line-height:1.2;color:#16222c;letter-spacing:-.02em}
-.mission-headline .highlight{color:#0b5d8e}
-.mission-lead-text{margin:0;font-size:15px;line-height:1.65;color:#5a6e85;max-width:58ch}
-.mission-lead-text strong{color:#16222c;font-weight:700}
-.mission-visual-box{display:flex;align-items:center;justify-content:center}
-.mission-illustration-img{width:100%;max-width:320px;height:auto;object-fit:contain}
-.section-title-wrap{margin-bottom:20px}
-.subhead-title{margin:0 0 4px;font-size:24px;font-weight:700;color:#16222c;letter-spacing:-.01em}
-.subhead-desc{margin:0;font-size:14px;color:#5a6e85}
-.pillars-system-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.pillar-row-card{background:#fff;border:1px solid #dfe6ee;border-radius:12px;box-shadow:0 1px 3px rgba(22,34,44,.06);padding:24px 20px;position:relative;overflow:hidden;display:flex;flex-direction:column}
-.pillar-rule-accent{position:absolute;top:0;left:0;right:0;height:2px;background:#16222c}
-.pillar-icon-box{width:40px;height:40px;border-radius:8px;background:#e0effa;color:#0b5d8e;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.pillar-title{margin:0 0 6px;font-size:16px;font-weight:700;color:#16222c}
-.pillar-desc{margin:0;font-size:13.5px;line-height:1.55;color:#5a6e85}
-.team-cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.team-member-card{background:#fff;border:1px solid #dfe6ee;border-radius:12px;box-shadow:0 1px 3px rgba(22,34,44,.06);padding:24px;display:flex;gap:18px;align-items:flex-start}
-.member-avatar-wrap{flex-shrink:0}
-.member-photo{width:64px;height:64px;border-radius:50%;border:2px solid #dfe6ee;object-fit:cover}
-.member-info-body{display:flex;flex-direction:column}
-.member-name{margin:0 0 2px;font-size:17px;font-weight:700;color:#16222c}
-.member-role-badge{font-size:12px;font-weight:600;color:#0b5d8e;margin-bottom:8px}
-.member-bio{margin:0;font-size:13px;line-height:1.55;color:#5a6e85}
-.impact-featured-block{background:linear-gradient(180deg,#083c5c 0%,#062c45 100%);border-radius:12px;box-shadow:0 1px 3px rgba(22,34,44,.06);padding:36px 32px;color:#fff}
-.impact-inner-content{max-width:680px}
-.impact-title{margin:0 0 8px;font-size:24px;font-weight:750;color:#fff}
-.impact-sub{margin:0 0 24px;font-size:14.5px;line-height:1.6;color:#a8c4db}
-.impact-metrics-row{display:flex;align-items:center;gap:32px;padding:20px 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:24px}
-.impact-metric-box{display:flex;flex-direction:column;gap:2px}
-.impact-num{font-size:28px;font-weight:800;color:#2dd4bf;line-height:1}
-.impact-lbl{font-size:12.5px;color:#e1f0fa}
-.impact-divider{width:1px;height:36px;background:rgba(255,255,255,.15)}
-.btn-impact-cta{display:inline-flex;align-items:center;height:42px;padding:0 20px;border-radius:8px;background:#2dd4bf;color:#062c45;font-size:14px;font-weight:700;text-decoration:none}
-.btn-impact-cta:hover{background:#14b8a6}
-@media (max-width:1024px){
-.mission-surface{grid-template-columns:1fr;padding:24px}
-.mission-visual-box{display:none}
-.pillars-system-grid{grid-template-columns:1fr}
-.team-cards-grid{grid-template-columns:1fr}
+:host {
+  display: block;
+  width: 100%;
 }
-@media (max-width:768px){
-.about-container{padding:0 16px;gap:32px}
-.about-section{grid-template-columns:1fr}
-.section-rail{display:none}
-.section-body{padding-left:0}
-.impact-metrics-row{flex-direction:column;align-items:flex-start;gap:16px}
-.impact-divider{display:none}
+
+.about-page-root {
+  background: var(--c-neutral-50, #f4f7fa);
+  padding: 32px 0 64px;
+}
+
+.about-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  box-sizing: border-box;
+}
+
+.about-section {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+}
+
+.section-rail {
+  padding: 4px 16px 8px 0;
+  border-right: 1px solid var(--c-neutral-150, #dfe6ee);
+  text-align: right;
+}
+
+.rail-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--c-neutral-500, #5a6e85);
+  display: block;
+}
+
+.rail-number {
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--c-neutral-300, #c3cedb);
+  margin-top: 4px;
+  display: block;
+}
+
+.section-body {
+  padding-left: 28px;
+  min-width: 0;
+}
+
+.mission-surface {
+  background: var(--c-surface, #fff);
+  border: 1px solid var(--c-line, #dfe6ee);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(22, 34, 44, 0.06);
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 560px) minmax(0, 360px);
+  align-items: center;
+  gap: 32px;
+}
+
+.tag-kicker {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--c-surface-alt, #eaeff5);
+  color: var(--c-ink-700, #384857);
+  border: 1px solid var(--c-line, #dfe6ee);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.mission-headline {
+  margin: 0 0 14px;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--c-ink-900, #16222c);
+  letter-spacing: -0.02em;
+}
+
+.mission-headline .highlight {
+  color: var(--c-primary-700, #0b5d8e);
+}
+
+.mission-lead-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--c-ink-500, #5a6e85);
+  max-width: 58ch;
+}
+
+.mission-lead-text strong {
+  color: var(--c-ink-900, #16222c);
+  font-weight: 700;
+}
+
+.mission-visual-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.mission-illustration-img {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  max-height: 260px;
+  object-fit: contain;
+}
+
+.section-title-wrap {
+  margin-bottom: 20px;
+}
+
+.subhead-title {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--c-ink-900, #16222c);
+  letter-spacing: -0.01em;
+}
+
+.subhead-desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--c-ink-500, #5a6e85);
+}
+
+.pillars-system-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.pillar-row-card {
+  background: var(--c-surface, #fff);
+  border: 1px solid var(--c-line, #dfe6ee);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(22, 34, 44, 0.06);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pillar-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #e0effa;
+  color: var(--c-primary-700, #0b5d8e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.pillar-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-ink-900, #16222c);
+}
+
+.pillar-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--c-ink-500, #5a6e85);
+}
+
+.team-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.team-member-card {
+  background: var(--c-surface, #fff);
+  border: 1px solid var(--c-line, #dfe6ee);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(22, 34, 44, 0.06);
+  padding: 24px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.member-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.member-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--c-line, #dfe6ee);
+  object-fit: cover;
+}
+
+.member-info-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-name {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-ink-900, #16222c);
+}
+
+/* Neutral role text */
+.member-role-badge {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-ink-500, #5a6e85);
+  margin-bottom: 8px;
+}
+
+.member-bio {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-ink-500, #5a6e85);
+}
+
+/* Stats Card en Sección 4 (Impacto) — Mismo componente que /home */
+.stats-surface-card {
+  background: #ffffff;
+  border: 1px solid var(--c-line, #dfe6ee);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xs);
+  padding: 28px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 24px;
+}
+
+.metric-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.metric-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--c-ink-900, #0d1a24);
+  letter-spacing: -0.02em;
+}
+
+.metric-lbl {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--c-ink-500, #6a7986);
+}
+
+.metric-v-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--c-line, #dfe6ee);
+}
+
+/* Bloque de acción / copy inferior — Nivel 0 apoyado sobre fondo */
+.impact-action-block {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.impact-action-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--c-ink-700, #3a4a57);
+  max-width: 54ch;
+}
+
+.btn-impact-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 24px;
+  background: var(--c-primary-700, #0b5d8e);
+  color: #ffffff;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(11, 93, 142, 0.2);
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-impact-primary:hover {
+  background: var(--c-primary-900, #083b58);
+}
+
+@media (max-width: 1024px) {
+  .pillars-system-grid {
+    grid-template-columns: 1fr;
+  }
+  .mission-surface {
+    grid-template-columns: 1fr;
+  }
+  .stats-surface-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+  }
+  .metric-v-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    padding: 0 16px;
+    gap: 32px;
+  }
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+  .section-rail {
+    display: none;
+  }
+  .section-body {
+    padding-left: 0;
+  }
+  .team-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
