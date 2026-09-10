@@ -312,27 +312,91 @@
   background: var(--c-primary-900, #083b58);
 }
 
-@media (max-width: 1024px) {
-  .pillars-system-grid {
-    grid-template-columns: 1fr;
+/* Altura reducida en laptops (1366x768, 1366x600 y <= 800px) */
+@media (max-height: 800px) and (min-width: 1024px) {
+  .about-page-root {
+    padding: 14px 0 32px;
+  }
+  .about-container {
+    gap: 24px;
   }
   .mission-surface {
-    grid-template-columns: 1fr;
-  }
-  .stats-surface-card {
-    flex-direction: column;
+    padding: 24px 28px;
     align-items: flex-start;
-    gap: 16px;
-    padding: 20px;
   }
-  .metric-v-divider {
-    display: none;
+  .mission-illustration-img {
+    max-height: 180px;
+  }
+  .pillar-card {
+    padding: 16px 18px;
+  }
+  .impact-action-block {
+    margin-top: 20px;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-height: 640px) and (min-width: 1024px) {
+  .about-page-root {
+    padding: 10px 0 24px;
+  }
   .about-container {
-    padding: 0 16px;
+    gap: 16px;
+  }
+  .mission-surface {
+    padding: 18px 22px;
+  }
+  .mission-illustration-img {
+    max-height: 140px;
+  }
+}
+
+
+/* lg: 1024px - 1399px */
+@media (max-width: 1399px) and (min-width: 1024px) {
+  .mission-surface {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+    padding: 32px;
+  }
+  .pillars-system-grid {
+    gap: 16px;
+  }
+}
+
+/* md: 768px - 1023px (Tablet) */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .about-container {
+    padding-inline: 20px;
+    gap: 36px;
+  }
+  .mission-surface {
+    grid-template-columns: 1fr;
+    padding: 32px 28px;
+    gap: 24px;
+  }
+  .mission-visual-box {
+    max-height: 220px;
+  }
+  .mission-illustration-img {
+    max-height: 200px;
+  }
+  .pillars-system-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .pillar-row-card {
+    padding: 20px 16px;
+  }
+  .team-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* sm: 640px - 767px */
+@media (max-width: 767px) and (min-width: 640px) {
+  .about-container {
+    padding-inline: 16px;
     gap: 32px;
   }
   .about-section {
@@ -344,7 +408,115 @@
   .section-body {
     padding-left: 0;
   }
+  .mission-surface {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+    gap: 20px;
+  }
+  .mission-illustration-img {
+    max-height: 180px;
+  }
+  .pillars-system-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
   .team-cards-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* mobile: < 640px */
+@media (max-width: 639px) {
+  .about-container {
+    padding-inline: 16px;
+    gap: 28px;
+  }
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+  .section-rail {
+    display: none;
+  }
+  .section-body {
+    padding-left: 0;
+  }
+  .mission-surface {
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+    border-radius: 12px;
+    gap: 16px;
+  }
+  .mission-headline {
+    font-size: 25px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .mission-lead-text {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .mission-visual-box {
+    max-height: 160px;
+  }
+  .mission-illustration-img {
+    max-height: 150px;
+  }
+  .pillars-system-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .pillar-row-card {
+    padding: 18px 16px;
+  }
+  .team-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .btn-impact-primary {
+    width: 100%;
+    min-height: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+}
+
+/* Estadísticas: las etiquetas son largas, así que por debajo de 768px la fila
+   pasa a lista apilada con divisor horizontal en vez de desbordar la card. */
+@media (max-width: 767px) {
+  .stats-surface-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    gap: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .metric-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  .metric-item:not(:first-child) {
+    border-top: 1px solid var(--c-line, #dfe6ee);
+  }
+  .metric-num {
+    font-size: 23px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .metric-lbl {
+    font-size: 13px;
+    line-height: 1.35;
+    min-width: 0;
+  }
+  .metric-v-divider {
+    display: none;
   }
 }
