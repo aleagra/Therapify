@@ -141,21 +141,13 @@
                       }
                     </div>
                   </section>
-
-                  <!-- 5. Enlace a Reseñas (único acceso: el header ya no lo repite) -->
-                  <div class="reviews-link-only-row">
-                    <span class="reviews-row-kicker">Reseñas</span>
-                    <a [routerLink]="['/reviews', doc.id]" class="view-all-reviews-link">
-                      Ver todas las reseñas &rarr;
-                    </a>
-                  </div>
                 }
               }
             </div>
 
-            <!-- Zona de reserva: calendario + horarios (arriba a la derecha)
-                 y banda de resumen a todo el ancho (abajo) -->
-              <app-calendar
+            <!-- Zona de reserva: el calendario se reparte en dos columnas
+                 propias (fechas | horarios + resumen + confirmacion) -->
+            <app-calendar
                 [schedule]="doctor()?.schedule"
                 [availability]="doctor()?.availability"
                 [doctorId]="doctor()?.id || ''"

@@ -400,8 +400,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    height: 38px;
-    padding: 0 12px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 14px;
     background: #ffffff;
     border: 1px solid var(--c-neutral-250);
     border-radius: var(--radius-control);
@@ -427,11 +428,19 @@
     padding: 0 4px;
   }
 
+  .filter-search-input {
+    height: 44px;
+  }
+
+  .filter-select-input {
+    height: 44px;
+  }
+
   .filters-grid-controls {
     display: none;
     grid-template-columns: 1fr;
-    gap: 8px;
-    padding-top: 8px;
+    gap: 10px;
+    padding-top: 10px;
     border-top: 1px solid var(--c-neutral-150);
   }
 
@@ -440,14 +449,14 @@
   }
 
   .filters-days-row {
-    margin-top: 4px;
+    margin-top: 6px;
   }
 
   .days-chips-scroll {
     overflow-x: auto;
     flex-wrap: nowrap;
     width: 100%;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -457,9 +466,21 @@
 
   .day-filter-chip {
     border-radius: 999px;
-    padding: 0 14px;
+    padding: 0 16px;
+    height: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    font-size: 12.5px;
+    font-size: 13px;
+  }
+
+  .clear-filters-link {
+    height: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .results-meta-bar {

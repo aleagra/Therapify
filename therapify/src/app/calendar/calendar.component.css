@@ -402,8 +402,10 @@
 }
 
 .btn-confirm-booking:disabled {
+  /* #b3c0cf sobre #eaeff5 daba ~1.9:1 y el boton se leia como un hueco;
+     el gris de texto secundario lo deja legible sin parecer habilitado */
   background: var(--c-neutral-100, #eaeff5);
-  color: var(--c-neutral-300, #c3cedb);
+  color: var(--c-neutral-500, #647587);
   cursor: not-allowed;
 }
 
@@ -461,8 +463,9 @@
 }
 
 /* =========================================================================
-   Layout 'split': la tarjeta se parte en dos piezas que el contenedor
-   ubica en su propia grilla (Zona A calendario / Zona B banda de resumen).
+   Layout 'split': la tarjeta se parte en dos piezas que el contenedor ubica
+   en columnas propias — Zona A el calendario, Zona B horarios + resumen +
+   confirmacion. Repartir en horizontal es lo que baja el alto total.
    ========================================================================= */
 .booking-panel-card.layout-split {
   display: contents;
@@ -473,97 +476,161 @@
   background: var(--c-surface, #ffffff);
   border: 1px solid var(--c-line, #dfe6ee);
   border-radius: var(--radius-card, 12px);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(16, 24, 40, 0.08));
+  /* Elevacion de la maqueta: la reserva es la superficie de accion de la
+     pantalla, se despega del lienzo mas que una card comun */
+  box-shadow: var(--shadow-md, 0 10px 24px -16px rgba(13, 35, 55, 0.3));
   box-sizing: border-box;
+  overflow: hidden;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .layout-split .booking-main-pane {
-  grid-area: booking;
-  overflow: hidden;
+  grid-area: calendar;
 }
 
-/* Banda inferior a todo el ancho: datos a la izquierda, acción a la derecha */
 .layout-split .booking-summary-pane {
-  grid-area: summary;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 280px);
-  align-items: center;
-  gap: 28px;
-  padding: 20px 26px;
+  grid-area: booking;
 }
 
-.layout-split .summary-section-zone {
-  padding: 0;
+/* Las dos piezas se estiran a la altura de la fila: el sobrante se reparte
+   dentro en vez de dejar aire muerto debajo de las tarjetas.
+   La holgura se la queda la zona de horarios, que es la unica que cambia de
+   alto segun el dia elegido (6 chips o 12): asi el resumen y el boton quedan
+   clavados en el mismo lugar y no saltan al cambiar de fecha. */
+.layout-split .slots-section-wrapper {
   border-top: 0;
+  padding: 14px 16px 4px;
+  flex: 1 1 auto;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-
-.layout-split .summary-kicker {
-  display: none;
-}
-
-.layout-split .summary-details-grid {
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 28px;
-}
-
-.layout-split .summary-item {
   flex-direction: column;
-  align-items: flex-start;
+  min-height: 0;
+}
+
+.layout-split .slots-interactive-zone {
+  flex: 1 1 auto;
+  min-height: 0;
   justify-content: flex-start;
-  gap: 3px;
 }
 
-.layout-split .summary-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--c-neutral-500, #5a6e85);
+/* La columna es mas angosta que la tarjeta original: se compacta la malla */
+.layout-split .booking-card-header {
+  padding: 14px 16px;
+  border-bottom-color: var(--c-neutral-100, #eaeff5);
 }
 
-.layout-split .summary-val {
-  text-align: left;
-  font-size: 14.5px;
+.layout-split .booking-title {
+  font-size: 17px;
 }
 
-.layout-split .summary-rule-line {
-  width: 1px;
-  height: 38px;
-  margin: 0;
-  flex: 0 0 1px;
-}
-
-.layout-split .summary-total-row {
+.layout-split .calendar-section-pad {
+  padding: 12px 16px 10px;
+  flex: 1 1 auto;
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
+}
+
+.layout-split .month-navigation-row {
+  margin-bottom: 8px;
+}
+
+.layout-split .current-month-label {
+  font-size: 14px;
+}
+
+.layout-split .weekdays-grid-row {
+  gap: 3px;
+  margin-bottom: 2px;
+}
+
+.layout-split .weekday-abbr {
+  font-size: 10px;
+  padding: 4px 0;
+}
+
+.layout-split .days-matrix-grid {
+  grid-template-rows: repeat(6, 36px);
+  gap: 3px;
+  min-height: 0;
+  flex: 1 1 auto;
+  align-content: center;
+}
+
+.layout-split .calendar-day-cell {
+  height: 36px;
   gap: 2px;
 }
 
-.layout-split .total-caption {
+.layout-split .day-cell-number {
+  font-size: 13px;
+}
+
+.layout-split .calendar-legend-line {
+  padding: 10px 2px 0;
+  gap: 12px;
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--c-neutral-500, #5a6e85);
+}
+
+.layout-split .slots-header-line {
+  margin-bottom: 10px;
+}
+
+.layout-split .slots-options-matrix,
+.layout-split .slots-skeleton-matrix {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  min-height: 0;
+}
+
+.layout-split .slot-choice-btn {
+  height: 36px;
+  font-size: 13px;
+}
+
+.layout-split .slot-instruction-hint,
+.layout-split .slot-empty-notice {
+  min-height: 72px;
+  font-size: 12.5px;
+}
+
+.layout-split .summary-section-zone {
+  margin: auto 16px 14px;
+  padding: 14px 16px;
+  border-top: 0;
+  background: var(--c-neutral-100, #eaeff5);
+  border-radius: var(--radius-sunken, 10px);
+}
+
+.layout-split .summary-kicker {
+  margin-bottom: 10px;
+}
+
+.layout-split .summary-details-grid {
+  gap: 7px;
+  font-size: 13px;
+}
+
+.layout-split .summary-rule-line {
+  margin: 10px 0;
+  background: var(--c-neutral-150, #dfe6ee);
 }
 
 .layout-split .total-amount {
-  font-size: 24px;
-  line-height: 1.1;
+  font-size: 21px;
 }
 
 .layout-split .booking-footer-submit {
-  padding: 0;
+  padding: 0 16px 16px;
+}
+
+.layout-split .btn-confirm-booking {
+  height: 44px;
 }
 
 .layout-split .cancellation-policy-note {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 11.5px;
 }
 
 .layout-split .admin-notice-card {
@@ -576,13 +643,72 @@
   line-height: 1.45;
 }
 
-@media (max-width: 1024px) {
-  .layout-split .booking-summary-pane {
-    grid-template-columns: 1fr;
-    gap: 20px;
+/* Viewport bajo (1366x600): se aprieta la malla sin cambiar la estructura */
+@media (max-height: 760px) and (min-width: 1024px) {
+  .layout-split .booking-card-header {
+    padding: 10px 14px;
+  }
+  .layout-split .booking-title {
+    font-size: 15.5px;
+  }
+  .layout-split .calendar-section-pad {
+    padding: 10px 14px 8px;
+  }
+  .layout-split .days-matrix-grid {
+    grid-template-rows: repeat(6, 30px);
+  }
+  .layout-split .calendar-day-cell {
+    height: 30px;
+  }
+  .layout-split .day-cell-number {
+    font-size: 12px;
+  }
+  .layout-split .calendar-legend-line {
+    padding: 8px 2px 0;
+  }
+  .layout-split .slots-section-wrapper {
+    padding: 10px 14px;
+  }
+  .layout-split .slot-choice-btn {
+    height: 32px;
+    font-size: 12.5px;
+  }
+  .layout-split .slot-instruction-hint,
+  .layout-split .slot-empty-notice {
+    min-height: 56px;
   }
   .layout-split .summary-section-zone {
-    gap: 20px;
+    padding: 10px 14px;
+  }
+  .layout-split .summary-details-grid {
+    gap: 5px;
+    font-size: 12.5px;
+  }
+  .layout-split .summary-rule-line {
+    margin: 8px 0;
+  }
+  .layout-split .total-amount {
+    font-size: 19px;
+  }
+  .layout-split .booking-footer-submit {
+    padding: 0 14px 12px;
+  }
+  .layout-split .btn-confirm-booking {
+    height: 40px;
+    font-size: 14px;
+  }
+  .layout-split .cancellation-policy-note {
+    margin-top: 6px;
+    font-size: 11px;
+    min-height: 0;
+  }
+}
+
+/* Tablet: las dos piezas vuelven a apilarse en una sola columna */
+@media (max-width: 1024px) {
+  .layout-split .booking-summary-pane {
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -593,8 +719,13 @@
   .summary-section-zone {
     display: none;
   }
+  /* Los horarios pasaron a vivir en esta pieza, asi que no se puede ocultar
+     entera: solo se caen el resumen y el boton, que los cubre la barra fija. */
   .layout-split .booking-summary-pane {
-    display: none;
+    display: flex;
+  }
+  .layout-split .slots-section-wrapper {
+    padding: 14px 16px 16px;
   }
   .slots-options-matrix,
   .slots-skeleton-matrix {
@@ -631,21 +762,155 @@
     text-transform: capitalize;
   }
   .btn-sticky-confirm {
-    height: 42px;
+    min-height: 44px;
+    height: 44px;
     padding: 0 22px;
     border-radius: 8px;
     background: #084c74;
     color: #fff;
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 700;
     border: none;
     cursor: pointer;
     white-space: nowrap;
     transition: background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .btn-sticky-confirm:disabled {
     background: #eaeff5;
-    color: #8ba0b5;
+    color: var(--c-neutral-500, #647587);
     cursor: not-allowed;
+  }
+}
+
+@media (max-width: 640px) {
+  .slot-choice-btn {
+    min-height: 44px;
+    height: 44px;
+    font-size: 14px;
+  }
+  .nav-arrow-btn {
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+  }
+  .calendar-day-cell {
+    min-height: 40px;
+  }
+  .slots-options-matrix,
+  .slots-skeleton-matrix {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+/* =========================================================================
+   Monitores grandes (>=1400px de ancho y >=860px de alto): el flujo de
+   reserva deja de estar comprimido. El ancho de columna sigue atado al
+   contenedor de 1200px del sitio, asi que lo que crece es el alto: celdas y
+   chips mas altos y paddings de la maqueta, para ocupar el aire que sobraba
+   entre las tarjetas y el footer.
+   ========================================================================= */
+@media (min-width: 1400px) and (min-height: 860px) {
+  .layout-split .booking-card-header {
+    padding: 18px 20px;
+  }
+
+  .layout-split .booking-title {
+    font-size: 19px;
+  }
+
+  .layout-split .calendar-section-pad {
+    padding: 16px 20px 14px;
+  }
+
+  .layout-split .month-navigation-row {
+    margin-bottom: 12px;
+  }
+
+  .layout-split .current-month-label {
+    font-size: 15px;
+  }
+
+  .layout-split .weekdays-grid-row {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .layout-split .weekday-abbr {
+    font-size: 10.5px;
+    padding: 6px 0;
+  }
+
+  /* Celda mas alta que ancha: el ancho lo fija la columna de 7, el alto es
+     lo unico que podemos estirar para llenar la pantalla */
+  .layout-split .days-matrix-grid {
+    grid-template-rows: repeat(6, 44px);
+    gap: 4px;
+  }
+
+  .layout-split .calendar-day-cell {
+    height: 44px;
+    gap: 3px;
+  }
+
+  .layout-split .day-cell-number {
+    font-size: 13.5px;
+  }
+
+  .layout-split .calendar-legend-line {
+    padding: 12px 2px 0;
+  }
+
+  .layout-split .slots-section-wrapper {
+    padding: 16px 20px 6px;
+  }
+
+  .layout-split .slots-header-line {
+    margin-bottom: 12px;
+  }
+
+  .layout-split .slots-options-matrix,
+  .layout-split .slots-skeleton-matrix {
+    gap: 8px;
+  }
+
+  .layout-split .slot-choice-btn {
+    height: 40px;
+    font-size: 13.5px;
+  }
+
+  .layout-split .summary-section-zone {
+    margin: auto 20px 16px;
+    padding: 16px 18px;
+  }
+
+  .layout-split .summary-details-grid {
+    gap: 9px;
+    font-size: 13.5px;
+  }
+
+  .layout-split .summary-rule-line {
+    margin: 12px 0;
+  }
+
+  .layout-split .total-amount {
+    font-size: 22px;
+  }
+
+  .layout-split .booking-footer-submit {
+    padding: 0 20px 20px;
+  }
+
+  .layout-split .btn-confirm-booking {
+    height: 46px;
+  }
+
+  .layout-split .cancellation-policy-note {
+    margin-top: 10px;
+    font-size: 12.5px;
   }
 }

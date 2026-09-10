@@ -78,15 +78,17 @@
   min-width: 0;
 }
 
-/* Grilla de reserva: fila 1 (ficha | calendario), fila 2 (resumen a lo ancho) */
+/* Grilla de reserva en una sola fila: ficha | calendario | horarios+resumen.
+   Repartir el flujo en horizontal es lo que evita que la pagina crezca hacia
+   abajo; el alto total pasa a ser el de la columna mas alta. */
 .booking-layout-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 440px;
-  grid-template-areas:
-    "info    booking"
-    "summary summary";
-  gap: 32px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) 300px 292px;
+  grid-template-areas: "info calendar booking";
+  gap: 24px;
+  /* stretch: las dos piezas de reserva comparten el borde inferior en vez de
+     quedar cortadas a distinta altura sobre el lienzo */
+  align-items: stretch;
 }
 
 /* El calendario se reparte solo en la grilla: cada zona toma su area */
@@ -98,7 +100,7 @@
 .specialist-info-column {
   grid-area: info;
   min-width: 0;
-  align-self: stretch;
+  align-self: start;
   display: flex;
   flex-direction: column;
 }
@@ -107,13 +109,13 @@
 .doctor-identity-header {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
-  margin-bottom: 22px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .doctor-avatar-72 {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: var(--radius-pill);
   background: var(--c-blue-100);
   color: var(--c-blue-700);
@@ -121,7 +123,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -133,9 +135,9 @@
 .doctor-fullname {
   margin: 0 0 8px;
   font-family: var(--font-sans);
-  font-size: 30px;
+  font-size: 27px;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.16;
   letter-spacing: -0.02em;
   color: var(--c-neutral-900);
 }
@@ -255,7 +257,7 @@
 }
 
 .approach-paragraph {
-  margin: 0 0 14px;
+  margin: 0;
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.65;
@@ -269,7 +271,6 @@
   background: var(--c-neutral-100);
   border-radius: var(--radius-sunken);
   padding: 18px 20px;
-  margin-bottom: 26px;
 }
 
 .schedule-sunken-header {
@@ -324,120 +325,77 @@
   padding: 8px 0;
 }
 
-/* Reseñas Recientes — Nivel 3 Lista */
-.recent-reviews-section {
-  max-width: 620px;
+/* Laptops con altura reducida (1366x768, 1366x600 y <= 800px) */
+@media (max-height: 800px) and (min-width: 1024px) {
+  .doctor-detail-root {
+    padding: 14px 0 28px;
+  }
+  .detail-top-nav-bar {
+    margin-bottom: 12px;
+  }
+  .booking-layout-grid {
+    gap: 20px;
+  }
 }
 
-.reviews-header-line {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.view-all-reviews-link {
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--c-blue-600);
-  text-decoration: none;
-}
-
-.view-all-reviews-link:hover {
-  text-decoration: underline;
-}
-
-.reviews-link-only-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 0 0;
-  border-top: 1px solid var(--c-neutral-150);
-  margin-top: auto;
-}
-
-.reviews-row-kicker {
-  font-family: var(--font-sans);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--c-neutral-500);
-}
-
-.recent-reviews-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.review-row-item {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  padding: 16px 0;
-  border-top: 1px solid var(--c-neutral-150);
-}
-
-.review-rail-mini {
-  border-right: 1px solid var(--c-neutral-150);
-  padding-right: 14px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.mini-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-pill);
-  background: var(--c-neutral-100);
-  color: var(--c-neutral-500);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.review-content-mini {
-  padding-left: 16px;
-}
-
-.review-author-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 5px;
-}
-
-.author-name {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--c-neutral-900);
-}
-
-.review-stars {
-  font-size: 12.5px;
-  color: #f59e0b;
-  letter-spacing: 1px;
-}
-
-.review-date {
-  font-size: 12.5px;
-  color: var(--c-neutral-500);
-}
-
-.review-text-mini {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--c-neutral-500);
+/* 1366x600: el alto util es ~534px, asi que la ficha se lee en modo compacto */
+@media (max-height: 700px) and (min-width: 1024px) {
+  .doctor-detail-root {
+    padding: 10px 0 20px;
+  }
+  .detail-top-nav-bar {
+    margin-bottom: 10px;
+  }
+  .doctor-identity-header {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .doctor-avatar-72 {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+  .doctor-fullname {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .doctor-meta-divider-row {
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    gap: 14px;
+  }
+  .clinical-approach-section {
+    margin-bottom: 16px;
+  }
+  .section-heading {
+    font-size: 15.5px;
+    margin-bottom: 6px;
+  }
+  .approach-paragraph {
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 0;
+  }
+  .usual-schedule-sunken {
+    padding: 12px 14px;
+  }
+  .schedule-sunken-header {
+    margin-bottom: 8px;
+  }
+  .schedule-grid-row {
+    padding: 5px 0;
+    font-size: 13px;
+  }
 }
 
 
+/* lg compacto (1025px - 1200px): mismas tres columnas, mas ajustadas */
+@media (max-width: 1200px) and (min-width: 1025px) {
+  .booking-layout-grid {
+    grid-template-columns: minmax(0, 1fr) 278px 268px;
+    gap: 18px;
+  }
+}
 
 /* Responsive */
 @media (max-width: 1024px) {
@@ -445,18 +403,15 @@
     grid-template-columns: 1fr;
     grid-template-areas:
       "info"
-      "booking"
-      "summary";
-    gap: 24px;
+      "calendar"
+      "booking";
+    gap: 20px;
   }
 
   .specialist-info-column {
     align-self: auto;
   }
 
-  .reviews-link-only-row {
-    margin-top: 24px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -532,5 +487,61 @@
   .approach-paragraph {
     font-size: 13.5px;
     line-height: 1.55;
+  }
+}
+
+/* Monitores grandes: hay alto de sobra, asi que la ficha usa la escala
+   completa de la maqueta (avatar 72, nombre 30) en vez de la version
+   comprimida que necesitan las pantallas bajas. */
+@media (min-width: 1400px) and (min-height: 860px) {
+  .detail-top-nav-bar {
+    margin-bottom: 28px;
+  }
+
+  .booking-layout-grid {
+    gap: 28px;
+  }
+
+  .doctor-identity-header {
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .doctor-avatar-72 {
+    width: 72px;
+    height: 72px;
+    font-size: 24px;
+  }
+
+  .doctor-fullname {
+    font-size: 30px;
+    line-height: 1.15;
+  }
+
+  .doctor-meta-divider-row {
+    padding-bottom: 22px;
+    margin-bottom: 26px;
+  }
+
+  .clinical-approach-section {
+    margin-bottom: 30px;
+  }
+
+  .approach-paragraph {
+    font-size: 15.5px;
+    line-height: 1.7;
+  }
+
+  .usual-schedule-sunken {
+    padding: 20px 22px;
+  }
+
+  .schedule-sunken-header {
+    margin-bottom: 14px;
+  }
+
+  .schedule-grid-row {
+    padding: 10px 0;
+    font-size: 14.5px;
   }
 }
