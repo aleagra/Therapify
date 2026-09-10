@@ -30,6 +30,10 @@ export class AppointmentService {
     this.doctorDateSlotsCache$.clear();
   }
 
+  invalidateDoctorDateSlots(doctorId: string, date: string): void {
+    this.doctorDateSlotsCache$.delete(`${doctorId}:${date}`);
+  }
+
   private getLoggedUser(): User | null {
     const data = localStorage.getItem(this.localKey);
     return data ? JSON.parse(data) : null;
@@ -52,7 +56,14 @@ export class AppointmentService {
     return this.http
       .post<Appointment>(this.APPOINTMENTS_URL, ap, this.getAuthHeaders())
       .pipe(
-        tap(() => this.invalidateCache()),
+        tap((created) => {
+          this.invalidateCache();
+          const docId = created?.doctorId?.toString() || (ap as any)?.doctorId?.toString();
+          const dDate = created?.date || (ap as any)?.date;
+          if (docId && dDate) {
+            this.invalidateDoctorDateSlots(docId, dDate);
+          }
+        }),
         catchError((err) => {
           console.error('Error al crear turno:', err);
           return throwError(() => err);
@@ -114,8 +125,12 @@ export class AppointmentService {
   getAppointmentsByDoctorAndDate(
     doctorId: string,
     date: string,
+    forceRefresh = false,
   ): Observable<Appointment[]> {
     const key = `${doctorId}:${date}`;
+    if (forceRefresh) {
+      this.doctorDateSlotsCache$.delete(key);
+    }
     if (!this.doctorDateSlotsCache$.has(key)) {
       const req$ = this.http
         .get<

@@ -235,7 +235,7 @@ export class CalendarComponent implements OnChanges {
     this.citaForm.get('hora')?.setValue(hora);
   }
 
-  onFechaSeleccionada(fecha: Date | null): void {
+  onFechaSeleccionada(fecha: Date | null, forceRefresh = false): void {
     if (!fecha || !this.availability) return;
 
     this.isLoadingSlots = true;
@@ -266,7 +266,7 @@ export class CalendarComponent implements OnChanges {
     const disponibles = [...(this.availability[diaString] || [])];
 
     this.appointmentsService
-      .getAppointmentsByDoctorAndDate(this.doctorId, fechaISO)
+      .getAppointmentsByDoctorAndDate(this.doctorId, fechaISO, forceRefresh)
       .subscribe({
         next: (appointments) => {
           this.horariosOcupados = appointments.map((a) => a.startTime);
@@ -339,6 +339,7 @@ export class CalendarComponent implements OnChanges {
         next: () => {
           this.reservaConfirmada = true;
           this.citaForm.disable();
+          this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
           toast.success('¡Turno reservado con éxito!', { position: 'top-center' });
         },
         error: (err) => {
@@ -347,7 +348,9 @@ export class CalendarComponent implements OnChanges {
               'El horario seleccionado ya no se encuentra disponible. Por favor, elegí otro turno.',
               { position: 'top-center', duration: 5000 },
             );
-            this.onFechaSeleccionada(fecha);
+            this.citaForm.get('hora')?.setValue(null);
+            this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
+            this.onFechaSeleccionada(fecha, true);
           } else {
             toast.error(
               err?.error?.message ||
