@@ -150,6 +150,8 @@ html {
   scroll-behavior: smooth;
   background-color: var(--c-neutral-50) !important;
   scrollbar-gutter: stable;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .container {
@@ -160,14 +162,27 @@ html {
   box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding-inline: 16px;
+  }
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--c-neutral-900);
   background-color: var(--c-neutral-50) !important;
   line-height: 1.55;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg, video {
+  max-width: 100%;
+  height: auto;
 }
 
 ::selection {
@@ -263,6 +278,29 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-accent-word {
   color: var(--c-blue-600);
+}
+
+@media (max-width: 768px) {
+  .text-display {
+    font-size: 32px;
+    letter-spacing: -0.02em;
+  }
+  .text-page-title {
+    font-size: 26px;
+  }
+  .text-section-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-display {
+    font-size: 28px;
+    line-height: 1.12;
+  }
+  .text-page-title {
+    font-size: 23px;
+  }
 }
 
 /* =============================================================================
