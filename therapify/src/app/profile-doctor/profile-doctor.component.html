@@ -1,23 +1,19 @@
 <div class="doctor-profile-page-root">
   <div class="doctor-profile-container">
-    <!-- Header con rail de página 96px: Agenda 04 -->
+    <!-- Header con rail de página 96px: AGENDA 01 -->
     <header class="header-block rail-layout-96">
       <div class="header-rail">
-        <span class="rail-kicker">Agenda</span>
-        <span class="rail-number">04</span>
+        <span class="rail-kicker">AGENDA</span>
+        <span class="rail-number">01</span>
       </div>
       <div class="header-body">
         <div class="header-title-flex">
           <div>
-            <h1 class="page-title">Configuración de agenda y atención</h1>
-            <p class="page-subtitle">Definí tus días disponibles, franja horaria y detalles de tus consultas.</p>
+            <h1 class="page-title">Tu <span class="title-highlight">disponibilidad</span></h1>
+            <p class="page-subtitle">Definí qué días atendés, en qué franja y con qué honorarios. Los pacientes ven esto antes de pedir un turno.</p>
           </div>
           <a routerLink="/profile" class="btn-view-personal">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-            <span>Ver datos personales</span>
+            Ver datos personales
           </a>
         </div>
       </div>
@@ -26,187 +22,275 @@
     <div class="doctor-main-layout rail-layout-96">
       <div class="content-rail-empty"></div>
       <div class="content-body-wrap">
-        <form
-          class="medical-form"
-          [formGroup]="formSchedule"
-          (ngSubmit)="onSubmitMedical()"
-        >
-          @if (doctorWithoutAddress) {
-            <div class="address-warning-banner" role="alert">
-              <div class="warning-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-                  <line x1="12" y1="9" x2="12" y2="13"/>
-                  <line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-              </div>
-              <div class="warning-content">
-                <p class="warning-title">Completá tu dirección de atención</p>
-                <p class="warning-text">Para que los pacientes puedan encontrarte y el sistema recomiende tu perfil en las búsquedas, es necesario que registres tu dirección.</p>
-              </div>
-              <a routerLink="/profile" class="warning-link">
-                <span>Completar ahora &rarr;</span>
-              </a>
-            </div>
-          }
+        <div class="doctor-editor-grid">
+          <!-- Columna Izquierda: Formulario de Agenda -->
+          <main class="editor-main-column">
+            <form
+              class="medical-form"
+              [formGroup]="formSchedule"
+              (ngSubmit)="onSubmitMedical()"
+            >
+              @if (doctorWithoutAddress) {
+                <div class="address-warning-banner" role="alert">
+                  <div class="warning-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                      <line x1="12" y1="9" x2="12" y2="13"/>
+                      <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                  </div>
+                  <div class="warning-content">
+                    <p class="warning-title">Completá tu dirección de atención</p>
+                    <p class="warning-text">Para que los pacientes puedan encontrarte y el sistema recomiende tu perfil en las búsquedas, es necesario que registres tu dirección.</p>
+                  </div>
+                  <a routerLink="/profile" class="warning-link">
+                    <span>Completar ahora &rarr;</span>
+                  </a>
+                </div>
+              }
 
-          <!-- Sección 1: Días y horarios de atención (Nivel 1 con filas Nivel 2 sunken) -->
-          <section class="form-section-card surface-card">
-            <div class="section-header-row">
-              <div>
-                <span class="section-kicker">01 Disponibilidad</span>
-                <h3 class="section-title">Días y horarios de atención</h3>
-                <p class="section-desc">Activá los días hábiles en los que brindás atención e indicá la franja horaria.</p>
-              </div>
+              <!-- Sección 1: Días y horarios de atención -->
+              <section class="form-flat-section">
+                <div class="section-title-line">
+                  <h2 class="form-section-title">Días y horarios de atención</h2>
+                  <span class="form-section-caption">
+                    {{ activeDaysCount }} {{ activeDaysCount === 1 ? 'día activo' : 'días activos' }} · {{ totalWeeklyHours }}h semanales
+                  </span>
+                </div>
 
-              <button
-                type="button"
-                class="btn-copy-schedule"
-                (click)="copyScheduleToAll()"
-                title="Copiar horario del primer día activo a todos los demás días activos"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect width="13" height="13" x="9" y="9" rx="2" ry="2"/>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                </svg>
-                <span>Copiar a los demás</span>
-              </button>
-            </div>
+                <div class="days-sunken-container">
+                  @for (day of weekDays; track day.control) {
+                    <div
+                      class="day-slot-row"
+                      [class.is-day-active]="formSchedule.get(day.control)?.value"
+                    >
+                      <label class="day-toggle-label">
+                        <input
+                          type="checkbox"
+                          [formControlName]="day.control"
+                          class="day-checkbox"
+                        />
+                        <span class="day-name">{{ day.label }}</span>
+                      </label>
 
-            <div class="days-list-container">
-              @for (day of weekDays; track day.control) {
-                <div class="day-slot-row surface-sunken" [class.is-day-active]="formSchedule.get(day.control)?.value">
-                  <label class="day-toggle-label">
-                    <input
-                      type="checkbox"
-                      [formControlName]="day.control"
-                      class="day-checkbox"
-                    />
-                    <span class="day-name">{{ day.label }}</span>
-                  </label>
+                      <div class="day-slot-controls">
+                        @if (formSchedule.get(day.control)?.value) {
+                          <div class="hours-inputs-group">
+                            <span class="time-label">Desde</span>
+                            <input
+                              type="time"
+                              [formControlName]="day.control + 'Start'"
+                              class="hour-input"
+                              aria-label="Hora de inicio"
+                            />
+                            <span class="time-divider">hasta</span>
+                            <input
+                              type="time"
+                              [formControlName]="day.control + 'End'"
+                              class="hour-input"
+                              aria-label="Hora de finalización"
+                            />
 
-                  <div class="day-slot-controls">
-                    @if (formSchedule.get(day.control)?.value) {
-                      <div class="hours-inputs-group">
-                        <div class="time-field">
-                          <span class="time-label">Desde</span>
-                          <input
-                            type="time"
-                            [formControlName]="day.control + 'Start'"
-                            class="hour-input"
-                            aria-label="Hora de inicio"
-                          />
-                        </div>
-                        <span class="time-divider">a</span>
-                        <div class="time-field">
-                          <span class="time-label">Hasta</span>
-                          <input
-                            type="time"
-                            [formControlName]="day.control + 'End'"
-                            class="hour-input"
-                            aria-label="Hora de finalización"
-                          />
-                        </div>
+                            @if (getDayHoursNum(day.control)) {
+                              <span class="duration-text">
+                                {{ getDayHoursNum(day.control) }}
+                              </span>
+                            }
 
-                        @if (getDayDurationHours(day.control)) {
-                          <span class="duration-badge">
-                            {{ getDayDurationHours(day.control) }}
-                          </span>
+                            @if (day.control === firstActiveDayControl) {
+                              <button
+                                type="button"
+                                class="btn-copy-link"
+                                (click)="copyScheduleToAll()"
+                                title="Copiar horario a los demás días activos"
+                              >
+                                Copiar a los demás
+                              </button>
+                            }
+                          </div>
+                        } @else {
+                          <div class="hours-inputs-group is-inactive-group">
+                            <span class="time-label">Desde</span>
+                            <input
+                              type="time"
+                              value="08:00"
+                              disabled
+                              class="hour-input is-disabled"
+                            />
+                            <span class="time-divider">hasta</span>
+                            <input
+                              type="time"
+                              value="14:00"
+                              disabled
+                              class="hour-input is-disabled"
+                            />
+                            <span class="day-disabled-note">Sin atención</span>
+                          </div>
                         }
                       </div>
-                    } @else {
-                      <span class="day-disabled-note">Sin atención programada</span>
-                    }
+                    </div>
+                  }
+                </div>
+              </section>
+
+              <!-- Sección 2: Especialidad y honorarios -->
+              <section class="form-flat-section section-margin-top">
+                <div class="section-title-line">
+                  <h2 class="form-section-title">Especialidad y honorarios</h2>
+                  <span class="form-section-caption">Visible para los pacientes</span>
+                </div>
+
+                <div class="fields-grid-2">
+                  <div class="form-field">
+                    <label for="specialty-select" class="field-label">Especialidad principal</label>
+                    <div class="select-wrapper">
+                      <select id="specialty-select" formControlName="specialty" class="doctor-select">
+                        <option value="">Seleccionar especialidad</option>
+                        <option value="PSICOLOGIA_CLINICA">Terapia cognitiva</option>
+                        <option value="TERAPIA_COGNITIVO_CONDUCTUAL">Terapia cognitivo conductual</option>
+                        <option value="TERAPIA_DE_PAREJA">Terapia de pareja</option>
+                        <option value="TERAPIA_FAMILIAR">Terapia familiar</option>
+                        <option value="PSIQUIATRIA">Psiquiatría</option>
+                        <option value="NEUROPSICOLOGIA">Neuropsicología</option>
+                        <option value="PSICOLOGIA_INFANTIL">Psicología infantil</option>
+                        <option value="PSICOLOGIA_LABORAL">Psicología laboral</option>
+                        <option value="SEXOLOGIA">Sexología</option>
+                        <option value="TERAPIA_HUMANISTA">Terapia humanista</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="consultation-price" class="field-label">Precio por consulta</label>
+                    <div class="price-input-wrapper">
+                      <span class="price-currency">ARS $</span>
+                      <input
+                        id="consultation-price"
+                        type="number"
+                        formControlName="consultationPrice"
+                        placeholder="25.000"
+                        class="doctor-input price-input-field"
+                        min="0"
+                        step="500"
+                      />
+                    </div>
+                    <span class="field-hint">Monto final que visualiza el paciente.</span>
                   </div>
                 </div>
-              }
-            </div>
-          </section>
 
-          <!-- Sección 2: Especialidad y honorarios -->
-          <section class="form-section-card surface-card">
-            <div class="section-header-row">
-              <div>
-                <span class="section-kicker">02 Práctica médica</span>
-                <h3 class="section-title">Especialidad y honorarios</h3>
-                <p class="section-desc">Información visible para los pacientes antes de solicitar un turno con vos.</p>
+                <div class="form-field full-width">
+                  <div class="field-label-inline-between">
+                    <label for="description" class="field-label">Descripción profesional y enfoque clínico</label>
+                    <span class="char-count-text">{{ descriptionLength }} / 400</span>
+                  </div>
+                  <textarea
+                    id="description"
+                    rows="3"
+                    maxlength="400"
+                    placeholder="Evaluación y tratamiento de trastornos emocionales y conductuales en adultos."
+                    formControlName="description"
+                    class="doctor-textarea"
+                  ></textarea>
+                </div>
+              </section>
+
+              <!-- Barra de acciones -->
+              <div class="form-actions-bar">
+                <button
+                  type="button"
+                  class="btn-discard-flat"
+                  (click)="cancelMedical()"
+                  [disabled]="loading"
+                >
+                  Descartar cambios
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn-save-primary"
+                  [disabled]="loading"
+                >
+                  {{ loading ? "Guardando..." : "Guardar cambios" }}
+                </button>
               </div>
-            </div>
+            </form>
+          </main>
 
-            <div class="fields-grid-2">
-              <div class="form-field">
-                <label for="specialty-select">Especialidad principal</label>
-                <div class="select-wrapper">
-                  <select id="specialty-select" formControlName="specialty" class="doctor-select">
-                    <option value="">Seleccionar especialidad</option>
-                    <option value="PSICOLOGIA_CLINICA">Psicología clínica</option>
-                    <option value="TERAPIA_COGNITIVO_CONDUCTUAL">Terapia cognitivo conductual</option>
-                    <option value="TERAPIA_DE_PAREJA">Terapia de pareja</option>
-                    <option value="TERAPIA_FAMILIAR">Terapia familiar</option>
-                    <option value="PSIQUIATRIA">Psiquiatría</option>
-                    <option value="NEUROPSICOLOGIA">Neuropsicología</option>
-                    <option value="PSICOLOGIA_INFANTIL">Psicología infantil</option>
-                    <option value="PSICOLOGIA_LABORAL">Psicología laboral</option>
-                    <option value="SEXOLOGIA">Sexología</option>
-                    <option value="TERAPIA_HUMANISTA">Terapia humanista</option>
-                  </select>
+          <!-- Columna Derecha: Vista Previa en Vivo (Foto 2) -->
+          <aside class="preview-sidebar-column">
+            <div class="preview-outer-panel">
+              <div class="preview-panel-header">
+                <span class="preview-kicker">VISTA PREVIA</span>
+                <h2 class="preview-sub">Así te ven en el listado</h2>
+              </div>
+
+              <!-- Tarjeta interior de doctor -->
+              <div class="doctor-live-card">
+                <div class="card-ficha-grid">
+                  <!-- Margen de Ficha (64px) -->
+                  <div class="card-rail">
+                    <div class="card-avatar">
+                      {{ userInitials }}
+                    </div>
+                    <span
+                      class="availability-dot dot-available"
+                      title="Con turnos disponibles"
+                      aria-label="Con turnos disponibles"
+                    ></span>
+                  </div>
+
+                  <!-- Cuerpo de Ficha -->
+                  <div class="card-body-content">
+                    <div class="card-header-line">
+                      <h3 class="doctor-name">
+                        {{ doctorFullName }}
+                      </h3>
+                      <div class="header-tags">
+                        <span class="specialty-tag">
+                          {{ previewSpecialtyLabel }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p class="description-text">
+                      {{ formSchedule.get('description')?.value || 'Profesional matriculado especializado en abordaje terapéutico integral y bienestar emocional.' }}
+                    </p>
+
+                    <div class="schedule-chips-row">
+                      @if (previewDayChips.length) {
+                        @for (chip of previewDayChips; track chip) {
+                          <span class="day-chip">{{ chip }}</span>
+                        }
+                      } @else {
+                        <span class="no-slots-badge">Próximamente nuevas fechas</span>
+                      }
+                    </div>
+
+                    <div class="card-actions-footer">
+                      <div class="preview-price-display">
+                        <span class="price-bold">${{ formattedPreviewPrice }}</span>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn-preview-reserve"
+                        disabled
+                        tabindex="-1"
+                        aria-hidden="true"
+                      >
+                        Reservar turno
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="form-field">
-                <label for="consultation-price">Precio por consulta</label>
-                <div class="price-input-wrapper">
-                  <span class="price-currency">ARS $</span>
-                  <input
-                    id="consultation-price"
-                    type="number"
-                    formControlName="consultationPrice"
-                    placeholder="15000"
-                    class="doctor-input price-input-field"
-                    min="0"
-                    step="500"
-                  />
-                </div>
-                <span class="field-hint">Monto final en pesos que visualizará el paciente.</span>
-              </div>
+              <!-- Pie de nota dentro del panel -->
+              <p class="preview-footnote">
+                La vista previa se actualiza mientras editás.
+              </p>
             </div>
-
-            <div class="form-field full-width">
-              <label for="description">Descripción profesional y enfoque clínico</label>
-              <textarea
-                id="description"
-                rows="4"
-                placeholder="Describí tu formación académica, orientación terapéutica y los motivos frecuentes de consulta que acompañás..."
-                formControlName="description"
-                class="doctor-textarea"
-              ></textarea>
-            </div>
-          </section>
-
-          <!-- Barra de acciones -->
-          <div class="form-actions-bar">
-            <button
-              type="button"
-              class="btn-discard"
-              (click)="cancelMedical()"
-              [disabled]="loading"
-            >
-              Descartar cambios
-            </button>
-
-            <button
-              type="submit"
-              class="btn-save-doctor"
-              [disabled]="loading"
-            >
-              @if (loading) {
-                <span>Guardando...</span>
-              } @else {
-                <span>Guardar agenda</span>
-              }
-            </button>
-          </div>
-        </form>
+          </aside>
+        </div>
       </div>
     </div>
   </div>

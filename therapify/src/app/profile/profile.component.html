@@ -1,14 +1,14 @@
 <div class="profile-page-root">
   <div class="profile-container">
-    <!-- Header con rail de página 96px: Cuenta 05 -->
+    <!-- Header con rail de página 96px: CUENTA 05 -->
     <header class="header-block rail-layout-96">
       <div class="header-rail">
-        <span class="rail-kicker">Cuenta</span>
-        <span class="rail-number">05</span>
+        <span class="rail-kicker">CUENTA</span>
+        <span class="rail-number">01</span>
       </div>
       <div class="header-body">
-        <h1 class="page-title">Configuración de perfil</h1>
-        <p class="page-subtitle">Gestioná tus datos personales, domicilio y credenciales de acceso a la plataforma.</p>
+        <h1 class="page-title">Información <span class="title-highlight">personal</span></h1>
+        <p class="page-subtitle">Gestioná tus datos, tu domicilio y las credenciales de acceso.</p>
       </div>
     </header>
 
@@ -16,9 +16,9 @@
       <div class="content-rail-empty"></div>
       <div class="content-body-wrap">
         <div class="profile-columns-grid">
-          <!-- Columna Izquierda: Tarjeta Nivel 1 de Usuario -->
+          <!-- Columna Izquierda: Tarjeta de Usuario -->
           <aside class="profile-sidebar-column">
-            <div class="user-summary-card surface-card">
+            <div class="user-summary-card">
               <div class="user-avatar-circle">
                 {{ getInitials(user?.firstName, user?.lastName) }}
               </div>
@@ -36,126 +36,120 @@
               @if (user?.userType === 'DOCTOR') {
                 <div class="doctor-quick-action">
                   <a class="btn-manage-agenda" routerLink="/profile-doctor">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-                      <line x1="16" y1="2" x2="16" y2="6"/>
-                      <line x1="8" y1="2" x2="8" y2="6"/>
-                      <line x1="3" y1="10" x2="21" y2="10"/>
-                    </svg>
-                    <span>Configurar agenda médica &rarr;</span>
+                    <span>Configurar agenda médica</span>
+                    <span class="arrow-sym">&rarr;</span>
                   </a>
                 </div>
               }
 
               <div class="security-meta-list">
                 <div class="security-meta-item">
-                  <span class="security-dot-verified"></span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
                   <span>Cuenta activa y verificada</span>
                 </div>
                 <div class="security-meta-item">
-                  <span class="security-dot-encrypted"></span>
-                  <span>Datos encriptados de punta a punta</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span>Sesión protegida por cifrado</span>
                 </div>
               </div>
             </div>
           </aside>
 
-          <!-- Columna Derecha: Formularios de Nivel 1 -->
+          <!-- Columna Derecha: Formulario Plano -->
           <main class="profile-forms-column">
             <form
               [formGroup]="formProfile"
               (ngSubmit)="onSubmitProfile()"
               class="profile-form-flow"
             >
-              <!-- Card Nivel 1: Datos básicos -->
-              <section class="form-section-card surface-card">
-                <div class="section-header-row">
-                  <div>
-                    <span class="section-kicker">01 Información</span>
-                    <h3 class="section-title">Datos básicos</h3>
-                  </div>
-                  <p class="section-desc">Información que identifica tu cuenta y tus datos de contacto.</p>
+              <!-- Sección: Datos básicos -->
+              <section class="form-flat-section">
+                <div class="section-title-line">
+                  <h2 class="form-section-title">Datos básicos</h2>
+                  <span class="form-section-caption">Identifican tu cuenta en Therapify</span>
                 </div>
 
                 <div class="fields-grid-2">
                   <div class="form-field">
-                    <label for="firstName">Nombre</label>
+                    <label for="firstName" class="field-label">Nombre</label>
                     <input
                       id="firstName"
                       type="text"
                       formControlName="firstName"
                       autocomplete="given-name"
-                      placeholder="Ej: Alejandro"
+                      placeholder="Ej: Juan"
                       class="profile-input"
                     />
                   </div>
 
                   <div class="form-field">
-                    <label for="lastName">Apellido</label>
+                    <label for="lastName" class="field-label">Apellido</label>
                     <input
                       id="lastName"
                       type="text"
                       formControlName="lastName"
                       autocomplete="family-name"
-                      placeholder="Ej: Agra"
+                      placeholder="Ej: Perez"
                       class="profile-input"
                     />
                   </div>
 
-                  <div class="form-field full-width">
+                  <div class="form-field">
                     <div class="field-label-inline">
-                      <label for="address">Dirección</label>
-                      @if (user?.userType === 'DOCTOR') {
-                        <span class="consultation-tag">Requerida para consultorio</span>
-                      }
+                      <label for="address" class="field-label">Dirección</label>
+                      <span class="address-tag">Requerida para consultorio</span>
                     </div>
                     <input
                       id="address"
                       type="text"
                       formControlName="address"
-                      placeholder="Ej: Av. Santa Fe 2450, CABA"
+                      placeholder="Ej: Rivadavia 3400"
                       class="profile-input"
                     />
                   </div>
 
-                  <div class="form-field full-width">
-                    <label class="field-label">Género</label>
-                    <div class="gender-radio-group">
-                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'male'">
-                        <input type="radio" value="male" formControlName="gender" class="sr-only" />
-                        <span class="radio-indicator"></span>
-                        <span class="radio-label">Masculino</span>
-                      </label>
+                </div>
 
-                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'female'">
-                        <input type="radio" value="female" formControlName="gender" class="sr-only" />
-                        <span class="radio-indicator"></span>
-                        <span class="radio-label">Femenino</span>
-                      </label>
+                <div class="form-field full-width" style="margin-top: 16px;">
+                  <label class="field-label">Género</label>
+                  <div class="gender-radio-group">
+                    <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'male'">
+                      <input type="radio" value="male" formControlName="gender" class="sr-only" />
+                      <span class="radio-indicator"></span>
+                      <span class="radio-label">Masculino</span>
+                    </label>
 
-                      <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'non-binary'">
-                        <input type="radio" value="non-binary" formControlName="gender" class="sr-only" />
-                        <span class="radio-indicator"></span>
-                        <span class="radio-label">No binario</span>
-                      </label>
-                    </div>
+                    <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'female'">
+                      <input type="radio" value="female" formControlName="gender" class="sr-only" />
+                      <span class="radio-indicator"></span>
+                      <span class="radio-label">Femenino</span>
+                    </label>
+
+                    <label class="gender-radio-card" [class.is-selected]="formProfile.get('gender')?.value === 'non-binary'">
+                      <input type="radio" value="non-binary" formControlName="gender" class="sr-only" />
+                      <span class="radio-indicator"></span>
+                      <span class="radio-label">No binario</span>
+                    </label>
                   </div>
                 </div>
               </section>
 
-              <!-- Card Nivel 1: Seguridad de la cuenta -->
-              <section class="form-section-card surface-card">
-                <div class="section-header-row">
-                  <div>
-                    <span class="section-kicker">02 Credenciales</span>
-                    <h3 class="section-title">Seguridad de la cuenta</h3>
-                  </div>
-                  <p class="section-desc">Completá estos campos únicamente si deseás actualizar tu contraseña actual.</p>
+              <!-- Sección: Seguridad -->
+              <section class="form-flat-section">
+                <div class="section-title-line section-margin-top">
+                  <h2 class="form-section-title">Seguridad</h2>
+                  <span class="form-section-caption">Completá sólo si querés cambiar la contraseña</span>
                 </div>
 
                 <div class="fields-grid-2">
                   <div class="form-field">
-                    <label for="password">Nueva contraseña</label>
+                    <label for="password" class="field-label">Nueva contraseña</label>
                     <div class="password-input-wrapper">
                       <input
                         id="password"
@@ -171,23 +165,16 @@
                         (click)="showPassword = !showPassword"
                         [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
                       >
-                        @if (showPassword) {
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                            <line x1="1" y1="1" x2="23" y2="23"/>
-                          </svg>
-                        } @else {
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                          </svg>
-                        }
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                          <circle cx="12" cy="12" r="3"/>
+                        </svg>
                       </button>
                     </div>
                   </div>
 
                   <div class="form-field">
-                    <label for="repeatPassword">Confirmar contraseña</label>
+                    <label for="repeatPassword" class="field-label">Confirmar nueva contraseña</label>
                     <div class="password-input-wrapper">
                       <input
                         id="repeatPassword"
@@ -203,17 +190,10 @@
                         (click)="showRepeatPassword = !showRepeatPassword"
                         [attr.aria-label]="showRepeatPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
                       >
-                        @if (showRepeatPassword) {
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                            <line x1="1" y1="1" x2="23" y2="23"/>
-                          </svg>
-                        } @else {
-                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                          </svg>
-                        }
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                          <circle cx="12" cy="12" r="3"/>
+                        </svg>
                       </button>
                     </div>
                   </div>
@@ -224,7 +204,7 @@
               <div class="form-actions-bar">
                 <button
                   type="button"
-                  class="btn-discard"
+                  class="btn-discard-flat"
                   (click)="cancel()"
                   [disabled]="loading || formProfile.pristine"
                 >
@@ -233,14 +213,10 @@
 
                 <button
                   type="submit"
-                  class="btn-save-profile"
+                  class="btn-save-primary"
                   [disabled]="loading || formProfile.pristine"
                 >
-                  @if (loading) {
-                    <span>Guardando...</span>
-                  } @else {
-                    <span>Guardar cambios</span>
-                  }
+                  {{ loading ? "Guardando..." : "Guardar cambios" }}
                 </button>
               </div>
             </form>

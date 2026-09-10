@@ -304,4 +304,91 @@ export class ProfileDoctorComponent {
     if (diff <= 0) return '';
     return `${diff} hs de atención`;
   }
+
+  getDayHoursNum(dayControl: string): string {
+    const start = this.formSchedule.get(`${dayControl}Start`)?.value;
+    const end = this.formSchedule.get(`${dayControl}End`)?.value;
+    if (!start || !end) return '';
+    const [s] = start.split(':').map(Number);
+    const [e] = end.split(':').map(Number);
+    const diff = e - s;
+    return diff > 0 ? `${diff} h` : '';
+  }
+
+  get firstActiveDayControl(): string | null {
+    const found = this.weekDays.find((d) => this.formSchedule.get(d.control)?.value);
+    return found ? found.control : null;
+  }
+
+  get activeDaysCount(): number {
+    return this.weekDays.filter((d) => this.formSchedule.get(d.control)?.value).length;
+  }
+
+  get totalWeeklyHours(): number {
+    let total = 0;
+    for (const d of this.weekDays) {
+      if (this.formSchedule.get(d.control)?.value) {
+        const start = this.formSchedule.get(`${d.control}Start`)?.value;
+        const end = this.formSchedule.get(`${d.control}End`)?.value;
+        if (start && end) {
+          const [s] = start.split(':').map(Number);
+          const [e] = end.split(':').map(Number);
+          if (e > s) total += (e - s);
+        }
+      }
+    }
+    return total;
+  }
+
+  get descriptionLength(): number {
+    return this.formSchedule.get('description')?.value?.length || 0;
+  }
+
+  get previewDayChips(): string[] {
+    const dayLabels: Record<WeekDay, string> = {
+      monday: 'Lunes',
+      tuesday: 'Martes',
+      wednesday: 'Miércoles',
+      thursday: 'Jueves',
+      friday: 'Viernes',
+    };
+    return this.weekDays
+      .filter((d) => this.formSchedule.get(d.control)?.value)
+      .map((d) => dayLabels[d.control]);
+  }
+
+  get previewSpecialtyLabel(): string {
+    const val = this.formSchedule.get('specialty')?.value;
+    const labels: Record<string, string> = {
+      PSICOLOGIA_CLINICA: 'Terapia cognitiva',
+      TERAPIA_COGNITIVO_CONDUCTUAL: 'Terapia cognitivo conductual',
+      TERAPIA_DE_PAREJA: 'Terapia de pareja',
+      TERAPIA_FAMILIAR: 'Terapia familiar',
+      PSIQUIATRIA: 'Psiquiatría',
+      NEUROPSICOLOGIA: 'Neuropsicología',
+      PSICOLOGIA_INFANTIL: 'Psicología infantil',
+      PSICOLOGIA_LABORAL: 'Psicología laboral',
+      SEXOLOGIA: 'Sexología',
+      TERAPIA_HUMANISTA: 'Terapia humanista',
+    };
+    return (val && labels[val]) ? labels[val] : 'Terapia cognitivo conductual';
+  }
+
+  get userInitials(): string {
+    const f = this.user?.firstName ? this.user.firstName.trim().charAt(0).toUpperCase() : '';
+    const l = this.user?.lastName ? this.user.lastName.trim().charAt(0).toUpperCase() : '';
+    return (f + l) || 'JP';
+  }
+
+  get doctorFullName(): string {
+    if (!this.user) return 'Juan Perez';
+    const name = `${this.user.firstName || ''} ${this.user.lastName || ''}`.trim();
+    return name || 'Juan Perez';
+  }
+
+  get formattedPreviewPrice(): string {
+    const val = this.formSchedule.get('consultationPrice')?.value;
+    const price = val ? Number(val) : 25000;
+    return new Intl.NumberFormat('es-AR').format(price);
+  }
 }
