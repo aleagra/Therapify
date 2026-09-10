@@ -113,6 +113,16 @@ export class DoctorCardComponent {
     return [];
   }
 
+  readonly MAX_VISIBLE_DAYS = 3;
+
+  get visibleAttendingDays(): string[] {
+    return this.attendingDays.slice(0, this.MAX_VISIBLE_DAYS);
+  }
+
+  get remainingAttendingDaysCount(): number {
+    return Math.max(0, this.attendingDays.length - this.MAX_VISIBLE_DAYS);
+  }
+
   get doctorRating(): number | null {
     const r = this.doctor()?.averageRating ?? (this.doctor() as any)?.rating;
     if (r !== undefined && r !== null && !isNaN(Number(r))) {

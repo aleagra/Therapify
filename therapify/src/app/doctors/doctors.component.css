@@ -158,22 +158,6 @@
   box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.16);
 }
 
-.availability-legend-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--c-neutral-500);
-  margin-left: 12px;
-}
-
-.legend-dot-teal {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--c-accent-700, #0b8672);
-}
 
 /* Fila de Chips de Días */
 .filters-days-row {

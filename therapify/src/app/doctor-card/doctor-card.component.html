@@ -66,26 +66,31 @@
 
       <!-- Indicador de disponibilidad y próximo turno -->
       <div class="availability-status" [class.is-available]="isAvailable">
-        <span class="status-indicator-dot"></span>
         @if (isAvailable) {
-          <span>Agenda disponible</span>
           @if (nextAvailableDateFormatted) {
-            <span class="next-turn-highlight">· Próximo: {{ nextAvailableDateFormatted }}</span>
+            <span class="next-turn-highlight">Próximo: {{ nextAvailableDateFormatted }}</span>
+          } @else {
+            <span class="next-turn-highlight">Turnos disponibles</span>
           }
         } @else {
-          <span>Sin turnos en los próximos 30 días</span>
+          <span class="no-turnos-text">Sin turnos en los próximos 30 días</span>
         }
       </div>
 
       <!-- Días habituales de atención -->
       <div class="schedule-chips-row">
         @if (attendingDays.length > 0) {
-          <span class="schedule-label">Atiende:</span>
-          @for (dia of attendingDays; track dia) {
+          @for (dia of visibleAttendingDays; track dia) {
             <span class="day-chip">{{ dia }}</span>
           }
-        } @else {
-          <span class="no-slots-badge">Próximamente nuevos horarios</span>
+          @if (remainingAttendingDaysCount > 0) {
+            <span
+              class="day-chip day-chip-more"
+              [title]="'Días de atención: ' + attendingDays.join(', ')"
+            >
+              +{{ remainingAttendingDaysCount }}
+            </span>
+          }
         }
       </div>
 
@@ -97,7 +102,7 @@
         >
           Ver reseñas
         </button>
-        @if (hasAvailableDays && !isUserAdmin) {
+        @if (hasAvailableDays) {
           <button
             type="button"
             (click)="onClick()"
