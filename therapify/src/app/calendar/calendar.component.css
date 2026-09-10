@@ -409,8 +409,10 @@
   cursor: not-allowed;
 }
 
-.btn-confirm-booking.is-confirmed {
+.btn-confirm-booking.is-confirmed,
+.btn-confirm-booking.is-confirmed:disabled {
   background: var(--c-teal-500, #14b8a6);
+  color: #000000;
 }
 
 .cancellation-policy-note {
@@ -782,6 +784,11 @@
     background: #eaeff5;
     color: var(--c-neutral-500, #647587);
     cursor: not-allowed;
+  }
+  .btn-sticky-confirm.is-confirmed,
+  .btn-sticky-confirm.is-confirmed:disabled {
+    background: var(--c-teal-500, #14b8a6);
+    color: #000000;
   }
 }
 
