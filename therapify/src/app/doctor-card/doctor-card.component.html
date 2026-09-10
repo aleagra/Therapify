@@ -1,6 +1,8 @@
 <div
   class="doctor-card card card-interactive"
   [class.no-slots]="!hasAvailableDays"
+  (mouseenter)="prefetchDetail()"
+  (focus)="prefetchDetail()"
 >
   <div class="card-ficha-grid">
     <!-- Margen de Ficha (64px) -->

@@ -23,8 +23,19 @@ export class DoctorCardComponent {
     return this.userService.getLoggedUser()?.userType === 'ADMIN';
   }
 
+  private static detailChunkPrefetched = false;
+
   onClick() {
     this.navigate.emit(this.doctor().id);
+  }
+
+  /** Precarga el chunk y los datos del detalle del doctor antes de navegar. */
+  prefetchDetail() {
+    this.userService.prefetchUserById(this.doctor().id);
+    if (!DoctorCardComponent.detailChunkPrefetched) {
+      DoctorCardComponent.detailChunkPrefetched = true;
+      import('../doctor-detail/doctor-detail.component');
+    }
   }
 
   goToReviews(doctorId: string) {

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { User } from '../../types/user';
 
 import { API_CONFIG } from '../config/api.config';
@@ -18,6 +18,20 @@ export class UserService {
 
   localKey = 'userLogged';
   isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
+
+  private doctoresCache$: Observable<User[]> | null = null;
+  private usersCache$: Observable<User[]> | null = null;
+  private userByIdCache = new Map<string, Observable<User | null>>();
+
+  private invalidateUserCaches(id?: string): void {
+    this.doctoresCache$ = null;
+    this.usersCache$ = null;
+    if (id) {
+      this.userByIdCache.delete(id);
+    } else {
+      this.userByIdCache.clear();
+    }
+  }
 
   public getLoggedUser(): User | null {
     const data = localStorage.getItem(this.localKey);
@@ -45,6 +59,7 @@ export class UserService {
     }
 
     return this.http.post<User>(this.USERS_URL, user).pipe(
+      tap(() => this.invalidateUserCaches()),
       catchError((err) => {
         console.error('Error al crear usuario', err);
         return throwError(() => err);
@@ -60,6 +75,7 @@ export class UserService {
           if (user?.token) {
             localStorage.setItem(this.localKey, JSON.stringify(user));
             this.isLoggedSignal.set(true);
+            this.invalidateUserCaches();
           }
         }),
         catchError((err) => {
@@ -72,6 +88,7 @@ export class UserService {
   logout(): void {
     localStorage.removeItem(this.localKey);
     this.isLoggedSignal.set(false);
+    this.invalidateUserCaches();
   }
 
   isLoggedIn(): boolean {
@@ -79,9 +96,24 @@ export class UserService {
   }
 
   getUserById(id: string): Observable<User | null> {
-    return this.http
-      .get<User>(`${this.USERS_URL}/${id}`, this.getAuthHeaders())
-      .pipe(catchError(() => of(null)));
+    if (!this.userByIdCache.has(id)) {
+      const user$ = this.http
+        .get<User>(`${this.USERS_URL}/${id}`, this.getAuthHeaders())
+        .pipe(
+          catchError(() => {
+            this.userByIdCache.delete(id);
+            return of(null);
+          }),
+          shareReplay(1),
+        );
+      this.userByIdCache.set(id, user$);
+    }
+    return this.userByIdCache.get(id)!;
+  }
+
+  /** Calienta la cache de un doctor antes de navegar (p. ej. al pasar el mouse sobre su tarjeta). */
+  prefetchUserById(id: string): void {
+    this.getUserById(id).subscribe();
   }
 
   updateUser(dto: Partial<User>): Observable<User> {
@@ -102,6 +134,7 @@ export class UserService {
 
           return updatedUser;
         }),
+        tap((updatedUser) => this.invalidateUserCaches(updatedUser.id)),
         catchError((err) => {
           console.error('Error al actualizar usuario', err);
           return throwError(() => err);
@@ -118,31 +151,46 @@ export class UserService {
   }
 
   getDoctores(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.USERS_URL}/rol/DOCTOR`).pipe(
-      catchError((err) => {
-        console.error('Error al obtener doctores', err);
-        return of([]);
-      }),
-    );
+    if (!this.doctoresCache$) {
+      this.doctoresCache$ = this.http
+        .get<User[]>(`${this.USERS_URL}/rol/DOCTOR`)
+        .pipe(
+          catchError((err) => {
+            console.error('Error al obtener doctores', err);
+            this.doctoresCache$ = null;
+            return of([]);
+          }),
+          shareReplay(1),
+        );
+    }
+    return this.doctoresCache$;
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.USERS_URL, this.getAuthHeaders()).pipe(
-      catchError((err) => {
-        console.error('Error al obtener usuarios', err);
-        return of([]);
-      }),
-    );
+    if (!this.usersCache$) {
+      this.usersCache$ = this.http
+        .get<User[]>(this.USERS_URL, this.getAuthHeaders())
+        .pipe(
+          catchError((err) => {
+            console.error('Error al obtener usuarios', err);
+            this.usersCache$ = null;
+            return of([]);
+          }),
+          shareReplay(1),
+        );
+    }
+    return this.usersCache$;
   }
 
   deleteUser(id: string) {
-    return this.http.delete(`${this.USERS_URL}/${id}`, this.getAuthHeaders());
+    return this.http
+      .delete(`${this.USERS_URL}/${id}`, this.getAuthHeaders())
+      .pipe(tap(() => this.invalidateUserCaches(id)));
   }
   deleteUserCascade(id: string) {
-    return this.http.delete(
-      `${this.USERS_URL}/${id}/cascade`,
-      this.getAuthHeaders(),
-    );
+    return this.http
+      .delete(`${this.USERS_URL}/${id}/cascade`, this.getAuthHeaders())
+      .pipe(tap(() => this.invalidateUserCaches(id)));
   }
 
   getDoctorsNear(lat: number, lng: number) {
