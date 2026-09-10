@@ -1,3 +1,30 @@
+<ng-template #turnosSkeletonRows>
+  <div class="appointments-card-list surface-card" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
+    @for (row of [1, 2]; track row) {
+      <div class="appointment-row" [class.has-divider]="row !== 1">
+        <div class="row-date-rail">
+          <app-skeleton width="28px" height="22px" style="margin-left: auto; margin-bottom: 4px;"></app-skeleton>
+          <app-skeleton width="34px" height="11px" style="margin-left: auto; margin-bottom: 4px;"></app-skeleton>
+          <app-skeleton width="42px" height="13px" style="margin-left: auto;"></app-skeleton>
+        </div>
+        <div class="row-body-info">
+          <div class="appointment-header-row">
+            <app-skeleton circle="true" width="38px" height="38px"></app-skeleton>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <app-skeleton width="140px" height="16px"></app-skeleton>
+              <app-skeleton width="100px" height="12px"></app-skeleton>
+            </div>
+          </div>
+          <div class="appointment-action-block">
+            <app-skeleton width="90px" height="24px" radius="var(--radius-chip)"></app-skeleton>
+            <app-skeleton width="110px" height="34px" radius="8px"></app-skeleton>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</ng-template>
+
 <div class="appointments-page-root density-work">
   <div class="appointments-container">
 
@@ -94,7 +121,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (misTurnos().length === 0) {
+            @if (displayLoading()) {
+              <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
+            } @else if (misTurnos().length === 0) {
               <div class="empty-state-box">
                 <div class="empty-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -222,7 +251,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (misPacientes().length === 0) {
+            @if (displayLoading()) {
+              <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
+            } @else if (misPacientes().length === 0) {
               <div class="empty-state-box">
                 <div class="empty-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -344,7 +375,9 @@
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
-            @if (turnosAdmin().length === 0) {
+            @if (displayLoading()) {
+              <ng-container *ngTemplateOutlet="turnosSkeletonRows"></ng-container>
+            } @else if (turnosAdmin().length === 0) {
               <div class="empty-state-box">
                 <div class="empty-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

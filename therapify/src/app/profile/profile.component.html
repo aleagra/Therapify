@@ -15,6 +15,49 @@
     <div class="profile-main-layout rail-layout-96">
       <div class="content-rail-empty"></div>
       <div class="content-body-wrap">
+        @if (displayLoading()) {
+          <!-- Skeleton de Carga -->
+          <div
+            class="profile-columns-grid"
+            aria-busy="true"
+            [style.visibility]="showSkeleton() ? 'visible' : 'hidden'"
+          >
+            <aside class="profile-sidebar-column">
+              <div class="user-summary-card">
+                <app-skeleton circle="true" width="64px" height="64px" style="margin-bottom: 12px;"></app-skeleton>
+                <app-skeleton width="60%" height="18px" style="margin-bottom: 8px;"></app-skeleton>
+                <app-skeleton width="80%" height="13px" style="margin-bottom: 14px;"></app-skeleton>
+                <app-skeleton width="50%" height="22px" radius="var(--r-full)" style="margin-bottom: 20px;"></app-skeleton>
+                <app-skeleton width="100%" height="14px" style="margin-bottom: 10px;"></app-skeleton>
+                <app-skeleton width="100%" height="14px"></app-skeleton>
+              </div>
+            </aside>
+            <main class="profile-forms-column">
+              <div class="form-flat-section">
+                <app-skeleton width="180px" height="17px" style="margin-bottom: 14px;"></app-skeleton>
+                <div class="fields-grid-2">
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                </div>
+                <div style="margin-top: 16px;">
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                </div>
+              </div>
+              <div class="form-flat-section section-margin-top">
+                <app-skeleton width="120px" height="17px" style="margin-bottom: 14px;"></app-skeleton>
+                <div class="fields-grid-2">
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                  <app-skeleton width="100%" height="42px" radius="8px"></app-skeleton>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 32px;">
+                <app-skeleton width="120px" height="42px" radius="8px"></app-skeleton>
+                <app-skeleton width="140px" height="42px" radius="8px"></app-skeleton>
+              </div>
+            </main>
+          </div>
+        } @else {
         <div class="profile-columns-grid">
           <!-- Columna Izquierda: Tarjeta de Usuario -->
           <aside class="profile-sidebar-column">
@@ -222,6 +265,7 @@
             </form>
           </main>
         </div>
+        }
       </div>
     </div>
   </div>

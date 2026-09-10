@@ -1,16 +1,19 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { concat, forkJoin, of, timer } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { toast } from 'ngx-sonner';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 
 @Component({
   selector: 'app-turnos',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SkeletonComponent],
   templateUrl: './turnos.component.html',
   styleUrls: ['./turnos.component.css'],
 })
@@ -20,6 +23,46 @@ export class TurnosComponent implements OnInit {
 
   userLogged = this.userService.getLoggedUser();
   mobileActiveTab = signal<'turnos' | 'pacientes'>('turnos');
+
+  isLoading = signal(true);
+
+  private skeletonShownTime: number | null = null;
+
+  private readonly skeletonState = toSignal(
+    toObservable(this.isLoading).pipe(
+      switchMap((loading) => {
+        if (loading) {
+          this.skeletonShownTime = null;
+          return concat(
+            of({ displayLoading: true, showSkeleton: false }),
+            timer(150).pipe(
+              tap(() => {
+                this.skeletonShownTime = Date.now();
+              }),
+              map(() => ({ displayLoading: true, showSkeleton: true })),
+            ),
+          );
+        } else {
+          if (this.skeletonShownTime !== null) {
+            const elapsed = Date.now() - this.skeletonShownTime;
+            const remaining = Math.max(0, 350 - elapsed);
+            this.skeletonShownTime = null;
+            if (remaining > 0) {
+              return timer(remaining).pipe(
+                map(() => ({ displayLoading: false, showSkeleton: false })),
+              );
+            }
+          }
+          this.skeletonShownTime = null;
+          return of({ displayLoading: false, showSkeleton: false });
+        }
+      }),
+    ),
+    { initialValue: { displayLoading: true, showSkeleton: false } },
+  );
+
+  showSkeleton = computed(() => this.skeletonState().showSkeleton);
+  displayLoading = computed(() => this.skeletonState().displayLoading);
 
   turnosPacienteRaw = signal<Appointment[]>([]);
   turnosDoctorRaw = signal<Appointment[]>([]);
@@ -62,22 +105,26 @@ export class TurnosComponent implements OnInit {
   }
 
   loadAppointments(): void {
-    this.appointmentService.getMyAppointments().subscribe((appointments) => {
-      const allAppointments = appointments || [];
-      const isAdmin = this.userLogged?.userType === 'ADMIN';
+    this.appointmentService.getMyAppointments().subscribe({
+      next: (appointments) => {
+        const allAppointments = appointments || [];
+        const isAdmin = this.userLogged?.userType === 'ADMIN';
 
-      if (isAdmin) {
-        this.turnosAdminRaw.set(allAppointments);
-        return;
-      }
+        if (isAdmin) {
+          this.turnosAdminRaw.set(allAppointments);
+        } else {
+          this.turnosPacienteRaw.set(
+            allAppointments.filter((a) => a.patientId === this.userLogged?.id),
+          );
 
-      this.turnosPacienteRaw.set(
-        allAppointments.filter((a) => a.patientId === this.userLogged?.id),
-      );
+          this.turnosDoctorRaw.set(
+            allAppointments.filter((a) => a.doctorId === this.userLogged?.id),
+          );
+        }
 
-      this.turnosDoctorRaw.set(
-        allAppointments.filter((a) => a.doctorId === this.userLogged?.id),
-      );
+        this.isLoading.set(false);
+      },
+      error: () => this.isLoading.set(false),
     });
   }
 
@@ -121,27 +168,33 @@ export class TurnosComponent implements OnInit {
   }
 
   private actualizarTurnosVencidos(): void {
-    this.appointmentService.getMyAppointments().subscribe((appointments) => {
-      const ahora = new Date();
-      const allAppointments = appointments || [];
+    this.appointmentService.getMyAppointments().subscribe({
+      next: (appointments) => {
+        const ahora = new Date();
+        const allAppointments = appointments || [];
 
-      const vencidos = allAppointments.filter((ap) => {
-        const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
-        return fechaCompleta < ahora && ap.status !== 'COMPLETED';
-      });
+        const vencidos = allAppointments.filter((ap) => {
+          const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
+          return fechaCompleta < ahora && ap.status !== 'COMPLETED';
+        });
 
-      if (vencidos.length === 0) {
-        this.loadAppointments();
-        return;
-      }
+        if (vencidos.length === 0) {
+          this.loadAppointments();
+          return;
+        }
 
-      const updates = vencidos.map((ap) =>
-        this.appointmentService.updateAppointment(ap.id, {
-          status: 'COMPLETED' as const,
-        }),
-      );
+        const updates = vencidos.map((ap) =>
+          this.appointmentService.updateAppointment(ap.id, {
+            status: 'COMPLETED' as const,
+          }),
+        );
 
-      forkJoin(updates).subscribe(() => this.loadAppointments());
+        forkJoin(updates).subscribe({
+          next: () => this.loadAppointments(),
+          error: () => this.loadAppointments(),
+        });
+      },
+      error: () => this.isLoading.set(false),
     });
   }
 
