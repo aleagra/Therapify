@@ -1,45 +1,40 @@
-<div class="not-found-page">
-  <div class="not-found-container">
-    <header class="header-block rail-layout-96">
-      <div class="header-rail">
-        <span class="rail-kicker">Error</span>
-        <span class="rail-number">404</span>
-      </div>
-      <div class="header-body">
-        <h1 class="page-title">Página no encontrada</h1>
-        <p class="page-subtitle">El recurso que intentás consultar no existe, cambió de dirección o no se encuentra disponible.</p>
-      </div>
-    </header>
+<app-navbar></app-navbar>
 
-    <div class="not-found-layout rail-layout-96">
-      <div class="content-rail-empty"></div>
-      <div class="content-body-wrap">
-        <div class="not-found-card surface-card">
-          <div class="not-found-illustration-wrap">
-            <div class="error-circle-cube">
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0b5d8e" stroke-width="1.8">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-            </div>
-          </div>
+<main class="not-found-main-wrapper">
+  <div class="page-container not-found-page">
+    <div class="ficha-layout ficha-page not-found-layout">
+      <!-- Rail de Ficha: 96px, ERROR / 01 apilados -->
+      <div class="ficha-rail header-rail">
+        <span class="rail-kicker">ERROR</span>
+        <span class="rail-number">01</span>
+      </div>
 
-          <h2 class="card-headline">Esta página no está disponible</h2>
-          <p class="card-message">
-            No te preocupes, a veces tomar el camino equivocado forma parte del viaje. Podés regresar a la página principal o explorar nuestra red de profesionales de salud mental.
+      <!-- Cuerpo alineado al eje del producto (Lectura) -->
+      <div class="ficha-body not-found-body">
+        <div class="not-found-content">
+          <h1 class="page-title">
+            Esta página no está <span class="text-accent-word">disponible</span>
+          </h1>
+          <p class="page-subtitle not-found-desc">
+            El enlace que buscás no existe o fue movido. Podés volver al inicio o seguir buscando un profesional de la salud mental.
           </p>
 
-          <div class="not-found-buttons-group">
-            <a routerLink="/home" class="btn-primary-action">
-              Volver al inicio
-            </a>
-            <a routerLink="/doctors" class="btn-secondary-action">
-              Buscar profesionales &rarr;
-            </a>
+          <div class="not-found-actions">
+            <a routerLink="/doctors" class="btn-primary">Buscar profesionales</a>
+            <a routerLink="/home" class="btn-secondary">Volver al inicio</a>
           </div>
+        </div>
+
+        <div class="not-found-illustration-box" aria-hidden="true">
+          <img
+            src="/assets/notFoundIllustration.svg"
+            alt=""
+            class="not-found-ribbon-img"
+          />
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
+
+<app-footer></app-footer>
