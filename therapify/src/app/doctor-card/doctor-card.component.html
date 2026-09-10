@@ -25,7 +25,8 @@
         class="availability-dot"
         [class.dot-available]="hasAvailableDays"
         [class.dot-unavailable]="!hasAvailableDays"
-        [title]="hasAvailableDays ? 'Con disponibilidad' : 'Sin turnos'"
+        [title]="hasAvailableDays ? 'Con turnos disponibles' : 'Sin turnos disponibles'"
+        [attr.aria-label]="hasAvailableDays ? 'Con turnos disponibles' : 'Sin turnos disponibles'"
       ></span>
     </div>
 
@@ -37,10 +38,12 @@
         </h3>
         <div class="header-tags">
           <span class="specialty-tag">{{ specialtyFormatted }}</span>
-          <div class="rating-inline" (click)="goToReviews(doctor().id)" title="Ver reseñas">
-            <span class="stars-icon" aria-hidden="true">★★★★★</span>
-            <span class="rating-score">4,8</span>
-          </div>
+          @if (doctorRating) {
+            <div class="rating-inline" (click)="goToReviews(doctor().id)" title="Ver reseñas">
+              <span class="stars-icon" aria-hidden="true">★★★★★</span>
+              <span class="rating-score">{{ doctorRating }}</span>
+            </div>
+          }
         </div>
       </div>
 
@@ -63,10 +66,12 @@
         {{ doctor().description || 'Profesional matriculado especializado en abordaje terapéutico integral y bienestar emocional.' }}
       </p>
 
-      <div class="availability-status" [class.is-available]="hasAvailableDays">
-        <span class="status-indicator-dot"></span>
-        <span>{{ hasAvailableDays ? 'Disponible esta semana' : 'Sin turnos disponibles' }}</span>
-      </div>
+      @if (availableSlotsCount) {
+        <div class="availability-status is-available">
+          <span class="status-indicator-dot"></span>
+          <span>{{ availableSlotsCount }} turnos esta semana</span>
+        </div>
+      }
 
       <!-- Variante degradada: chips de días de atención -->
       <div class="schedule-chips-row">
@@ -89,7 +94,7 @@
         >
           Ver reseñas
         </button>
-        @if (hasAvailableDays) {
+        @if (hasAvailableDays && !isUserAdmin) {
           <button
             type="button"
             (click)="onClick()"

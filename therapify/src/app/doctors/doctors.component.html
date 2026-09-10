@@ -9,10 +9,12 @@
       </div>
       <div class="ficha-body header-body">
         <h1 class="page-title">
-          Encontrá tu <span class="text-accent-word">terapeuta</span>
+          <span class="desktop-title-text">Encontrá tu <span class="text-accent-word">terapeuta</span></span>
+          <span class="mobile-title-text">Profesionales <span class="text-accent-word">disponibles</span></span>
         </h1>
         <p class="page-subtitle">
-          350 profesionales matriculados en Argentina. Filtrá por cercanía, especialidad o día de atención y reservá en el momento.
+          <span class="desktop-subtitle-text">{{ filteredDoctors().length }} profesionales disponibles. Filtrá por cercanía, especialidad o día de atención y reservá en el momento.</span>
+          <span class="mobile-subtitle-text">{{ filteredDoctors().length }} resultados cerca tuyo</span>
         </p>
       </div>
     </header>
@@ -22,9 +24,8 @@
       <div class="ficha-rail"></div>
       <div class="ficha-body">
         <div class="filters-panel-sunken surface-sunken">
-          <!-- Fila de Controles -->
-          <div class="filters-grid-controls">
-            <!-- Búsqueda con lupa -->
+          <!-- Barra de Búsqueda Mobile + Trigger de Filtros -->
+          <div class="search-and-trigger-row">
             <div class="search-field-wrap">
               <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -33,7 +34,7 @@
               <input
                 id="doctorSearchInput"
                 type="text"
-                placeholder="Buscar por nombre, apellido o especialidad"
+                placeholder="Buscar"
                 [ngModel]="searchText()"
                 (ngModelChange)="searchText.set($event)"
                 class="filter-search-input"
@@ -50,6 +51,20 @@
               }
             </div>
 
+            <button
+              type="button"
+              class="btn-mobile-filters-trigger"
+              (click)="toggleMobileFilters()"
+            >
+              <span>Filtros</span>
+              @if (activeFiltersCount() > 0) {
+                <span class="filters-active-badge">{{ activeFiltersCount() }}</span>
+              }
+            </button>
+          </div>
+
+          <!-- Fila de Controles Secundarios (Desktop o Mobile expandido) -->
+          <div class="filters-grid-controls" [class.is-mobile-open]="mobileFiltersOpen()">
             <!-- Especialidad -->
             <select
               id="specialtySelect"
@@ -103,7 +118,7 @@
 
           <!-- Fila de Chips de Días -->
           <div class="filters-days-row">
-            <span class="days-kicker-label">Día</span>
+            <span class="days-kicker-label desktop-only">Día</span>
             <div class="days-chips-scroll">
               @for (day of DAYS_OF_WEEK; track day) {
                 <button
@@ -144,6 +159,9 @@
                 @if (maxDistance()) {
                   , hasta {{ maxDistance() }} km
                 }
+              </span>
+              <span class="availability-legend-inline" aria-hidden="true">
+                <span class="legend-dot-teal"></span> Con turnos
               </span>
             }
           </div>

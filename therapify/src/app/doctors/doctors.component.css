@@ -10,9 +10,9 @@
 }
 
 .doctors-container {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 24px;
   box-sizing: border-box;
 }
 
@@ -71,8 +71,9 @@
 }
 
 .filters-panel-sunken {
-  background: var(--c-neutral-100);
-  border-radius: var(--radius-sunken);
+  background: var(--c-surface-alt, #eaeff5);
+  border-radius: 10px;
+  border: none;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -133,21 +134,45 @@
 
 .filter-select-input {
   height: 38px;
-  padding: 0 12px;
-  border: 1px solid var(--c-neutral-250);
-  border-radius: var(--radius-control);
-  background: #ffffff;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--c-line, #dfe6ee);
+  border-radius: 8px;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a6e85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   font-family: var(--font-sans);
   font-size: 13.5px;
   color: var(--c-neutral-900);
   outline: none;
   cursor: pointer;
-  transition: border-color var(--t-control);
+  transition: border-color var(--t-control), box-shadow var(--t-control);
 }
 
 .filter-select-input:focus {
   border-color: var(--c-blue-600);
   box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.16);
+}
+
+.availability-legend-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-neutral-500);
+  margin-left: 12px;
+}
+
+.legend-dot-teal {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-accent-700, #0b8672);
 }
 
 /* Fila de Chips de Días */
@@ -253,6 +278,18 @@
   color: var(--c-neutral-900);
 }
 
+/* Mobile Toggle & Search Controls */
+.mobile-title-text, .mobile-subtitle-text, .btn-mobile-filters-trigger {
+  display: none;
+}
+
+.search-and-trigger-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
 /* 4. Grilla de Doctores */
 .doctors-grid {
   display: grid;
@@ -299,19 +336,139 @@
     padding: 0 16px;
   }
 
+  .header-block {
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    margin-bottom: 16px;
+  }
+
+  .header-rail {
+    min-width: 52px;
+    padding-right: 12px;
+    border-right: 1px solid var(--c-neutral-150);
+  }
+
   .header-body {
-    padding-left: 16px;
+    padding-left: 14px;
+  }
+
+  .filters-block,
+  .main-doctors-layout {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .filters-block > .ficha-rail,
+  .main-doctors-layout > .ficha-rail,
+  .content-rail-empty {
+    display: none !important;
+  }
+
+  .filters-block > .ficha-body,
+  .main-doctors-layout > .ficha-body,
+  .list-body {
+    padding-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .desktop-title-text, .desktop-subtitle-text, .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-title-text, .mobile-subtitle-text {
+    display: inline !important;
   }
 
   .page-title {
-    font-size: 26px;
+    font-size: 24px;
+    font-weight: 750;
+    margin-bottom: 4px;
+  }
+
+  .page-subtitle {
+    font-size: 13.5px;
+    color: var(--c-neutral-500);
+  }
+
+  .search-and-trigger-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-mobile-filters-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 12px;
+    background: #ffffff;
+    border: 1px solid var(--c-neutral-250);
+    border-radius: var(--radius-control);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-neutral-900);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .filters-active-badge {
+    background: var(--c-blue-600);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
   }
 
   .filters-grid-controls {
+    display: none;
     grid-template-columns: 1fr;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--c-neutral-150);
+  }
+
+  .filters-grid-controls.is-mobile-open {
+    display: grid;
+  }
+
+  .filters-days-row {
+    margin-top: 4px;
+  }
+
+  .days-chips-scroll {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .days-chips-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .day-filter-chip {
+    border-radius: 999px;
+    padding: 0 14px;
+    flex-shrink: 0;
+    font-size: 12.5px;
+  }
+
+  .results-meta-bar {
+    display: none;
   }
 
   .doctors-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
+

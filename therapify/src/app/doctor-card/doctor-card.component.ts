@@ -2,6 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { User } from '../../types/user';
 import { KeyValuePipe, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 import { DAY_LABELS, SPECIALTY_LABELS } from '../../types/constants';
 
 @Component({
@@ -15,7 +16,12 @@ export class DoctorCardComponent {
   doctor = input.required<User>();
   navigate = output<string>();
   router = inject(Router);
+  userService = inject(UserService);
   DAY_LABELS = DAY_LABELS;
+
+  get isUserAdmin(): boolean {
+    return this.userService.getLoggedUser()?.userType === 'ADMIN';
+  }
 
   onClick() {
     this.navigate.emit(this.doctor().id);
@@ -30,6 +36,14 @@ export class DoctorCardComponent {
     if (!schedule) return false;
 
     return Object.values(schedule).some((v) => v);
+  }
+
+  get doctorRating(): number | undefined {
+    return (this.doctor() as any)?.rating;
+  }
+
+  get availableSlotsCount(): number | undefined {
+    return (this.doctor() as any)?.availableSlotsCount;
   }
 
   getDayLabel(day: string): string {

@@ -29,6 +29,20 @@ export class DoctorsComponent {
   selectedSpecialty = signal<string>('');
   isLoading = signal(true);
   loadError = signal<string | null>(null);
+  mobileFiltersOpen = signal(false);
+
+  activeFiltersCount = computed(() => {
+    let count = 0;
+    if (this.selectedSpecialty()) count++;
+    if (this.maxDistance()) count++;
+    if (this.selectedGender()) count++;
+    if (this.selectedDay()) count++;
+    return count;
+  });
+
+  toggleMobileFilters() {
+    this.mobileFiltersOpen.update((v) => !v);
+  }
 
   private skeletonShownTime: number | null = null;
 
