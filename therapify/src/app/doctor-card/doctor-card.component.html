@@ -9,19 +9,10 @@
     <div class="card-rail">
       <div
         class="card-avatar"
-        [style.background]="doctorPhoto ? 'var(--c-neutral-100)' : avatarPalette.bg"
+        [style.background]="avatarPalette.bg"
         [style.color]="avatarPalette.color"
       >
-        @if (doctorPhoto) {
-          <img
-            [src]="doctorPhoto"
-            [alt]="doctor().firstName + ' ' + doctor().lastName"
-            class="avatar-photo"
-            loading="lazy"
-          />
-        } @else {
-          {{ initials }}
-        }
+        {{ initials }}
       </div>
       <span
         class="availability-dot"
@@ -35,17 +26,22 @@
     <!-- Cuerpo de Ficha -->
     <div class="card-body-content">
       <div class="card-header-line">
-        <h3 class="doctor-name" (click)="onClick()">
-          {{ doctor().firstName }} {{ doctor().lastName }}
-        </h3>
-        <div class="header-tags">
-          <span class="specialty-tag">{{ specialtyFormatted }}</span>
-          @if (doctorRating) {
+        <div class="doctor-title-row">
+          <h3 class="doctor-name" (click)="onClick()">
+            {{ doctor().firstName }} {{ doctor().lastName }}
+          </h3>
+          @if (doctorRating !== null && doctorRating > 0) {
             <div class="rating-inline" (click)="goToReviews(doctor().id)" title="Ver reseñas">
-              <span class="stars-icon" aria-hidden="true">★★★★★</span>
-              <span class="rating-score">{{ doctorRating }}</span>
+              <span class="stars-icon" aria-hidden="true">★</span>
+              <span class="rating-score">{{ doctorRating.toFixed(1) }}</span>
+              @if (totalReviews > 0) {
+                <span class="reviews-count-chip">({{ totalReviews }})</span>
+              }
             </div>
           }
+        </div>
+        <div class="specialty-row">
+          <span class="specialty-tag">{{ specialtyFormatted }}</span>
         </div>
       </div>
 
@@ -68,23 +64,28 @@
         {{ doctor().description || 'Profesional matriculado especializado en abordaje terapéutico integral y bienestar emocional.' }}
       </p>
 
-      @if (availableSlotsCount) {
-        <div class="availability-status is-available">
-          <span class="status-indicator-dot"></span>
-          <span>{{ availableSlotsCount }} turnos esta semana</span>
-        </div>
-      }
-
-      <!-- Variante degradada: chips de días de atención -->
-      <div class="schedule-chips-row">
-        @if (hasAvailableDays) {
-          @for (dia of doctor().schedule | keyvalue; track dia.key) {
-            @if (dia.value) {
-              <span class="day-chip">{{ getDayLabel(dia.key) }}</span>
-            }
+      <!-- Indicador de disponibilidad y próximo turno -->
+      <div class="availability-status" [class.is-available]="isAvailable">
+        <span class="status-indicator-dot"></span>
+        @if (isAvailable) {
+          <span>Agenda disponible</span>
+          @if (nextAvailableDateFormatted) {
+            <span class="next-turn-highlight">· Próximo: {{ nextAvailableDateFormatted }}</span>
           }
         } @else {
-          <span class="no-slots-badge">Próximamente nuevas fechas</span>
+          <span>Sin turnos en los próximos 30 días</span>
+        }
+      </div>
+
+      <!-- Días habituales de atención -->
+      <div class="schedule-chips-row">
+        @if (attendingDays.length > 0) {
+          <span class="schedule-label">Atiende:</span>
+          @for (dia of attendingDays; track dia) {
+            <span class="day-chip">{{ dia }}</span>
+          }
+        } @else {
+          <span class="no-slots-badge">Próximamente nuevos horarios</span>
         }
       </div>
 

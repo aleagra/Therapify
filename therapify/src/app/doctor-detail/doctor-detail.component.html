@@ -72,9 +72,9 @@
                         {{ doc.firstName }} {{ doc.lastName }}
                       </h1>
                       <div class="doctor-badges-row">
-                        @if (doc.specialty) {
+                        @if (doc.doctorSpecialty || doc.specialty) {
                           <span class="badge-specialty">
-                            {{ specialtyLabels[doc.specialty] || doc.specialty }}
+                            {{ getSpecialtyLabel(doc.doctorSpecialty || doc.specialty) }}
                           </span>
                         }
                         <span class="badge-verified">

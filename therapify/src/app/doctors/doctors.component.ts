@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { concat, of, timer } from 'rxjs';
@@ -16,7 +16,7 @@ import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
   templateUrl: './doctors.component.html',
   styleUrls: ['./doctors.component.css'],
 })
-export class DoctorsComponent {
+export class DoctorsComponent implements OnInit {
   userService = inject(UserService);
   router = inject(Router);
   loggedUser = signal(this.userService.getLoggedUser());
@@ -92,37 +92,19 @@ export class DoctorsComponent {
     return (this.DAY_LABELS as Record<string, string>)[day] || day;
   }
 
-  constructor() {
-    this.fetchDoctors();
+  ngOnInit(): void {
+    this.initDoctors();
   }
 
-  fetchDoctors() {
+  fetchDoctors(): void {
+    this.initDoctors();
+  }
+
+  initDoctors(): void {
     this.isLoading.set(true);
     this.loadError.set(null);
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        this.userService.getDoctorsNear(lat, lng).subscribe({
-          next: (doctors) => {
-            this.mapDoctors(doctors);
-            this.isLoading.set(false);
-          },
-          error: (error) => {
-            console.error('❌ Error obteniendo doctores cercanos', error);
-            this.loadFallback();
-          },
-        });
-      },
-      (error) => {
-        console.error('❌ Error obteniendo ubicación', error);
-        this.loadFallback();
-      },
-    );
-  }
-
-  private loadFallback() {
+    // 1. Carga inmediata de la lista general de doctores
     this.userService.getDoctores().subscribe({
       next: (doctors) => {
         this.mapDoctors(doctors);
@@ -130,26 +112,73 @@ export class DoctorsComponent {
       },
       error: (err) => {
         console.error('❌ Error cargando doctores', err);
-        this.loadError.set('No pudimos cargar la lista de profesionales. Por favor, revisá tu conexión e intentá nuevamente.');
+        this.loadError.set(
+          'No pudimos cargar la lista de profesionales. Por favor, revisá tu conexión e intentá nuevamente.',
+        );
         this.isLoading.set(false);
       },
     });
+
+    // 2. Solicitud no bloqueante de geolocalización en paralelo con timeout de 4s
+    this.requestGeolocation();
+  }
+
+  private requestGeolocation(): void {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        this.userService.getDoctorsNear(lat, lng).subscribe({
+          next: (nearbyDoctors) => {
+            if (nearbyDoctors && nearbyDoctors.length > 0) {
+              this.mapDoctors(nearbyDoctors);
+            }
+          },
+          error: (err) => {
+            console.debug('No se pudieron obtener doctores cercanos:', err);
+          },
+        });
+      },
+      (error) => {
+        console.debug('Geolocalización omitida o rechazada:', error?.message);
+      },
+      {
+        timeout: 4000,
+        maximumAge: 60000,
+        enableHighAccuracy: false,
+      },
+    );
   }
 
   private mapDoctors(doctors: any[]) {
     const user = this.loggedUser();
 
-    const mappedDoctors = doctors.map((d) => ({
-      ...d,
-      firstName: d.firstName || '',
-      lastName: d.lastName || '',
-      specialty: (d.specialty ?? '').toString().trim().toUpperCase(),
-      description: d.description || '',
-      schedule: d.schedule || {},
-      availability: d.availability || {},
-      distanceKm: d.distanceKm ?? null,
-      gender: d.gender || '',
-    }));
+    const mappedDoctors = doctors.map((d) => {
+      const spec = (d.doctorSpecialty ?? d.specialty ?? '').toString().trim();
+      return {
+        ...d,
+        firstName: d.firstName || '',
+        lastName: d.lastName || '',
+        specialty: spec.toUpperCase(),
+        doctorSpecialty: d.doctorSpecialty || spec,
+        description: d.description || '',
+        schedule: d.schedule || {},
+        availability: d.availability || {},
+        distanceKm: d.distanceKm ?? null,
+        gender: d.gender || '',
+        averageRating: d.averageRating != null ? Number(d.averageRating) : null,
+        totalReviews: d.totalReviews != null ? Number(d.totalReviews) : 0,
+        availableSlotsCount:
+          d.availableSlotsCount != null ? Number(d.availableSlotsCount) : null,
+        nextAvailableDates: Array.isArray(d.nextAvailableDates)
+          ? d.nextAvailableDates
+          : [],
+      };
+    });
 
     if (user && user.userType === 'DOCTOR') {
       this.allDoctors.set(mappedDoctors.filter((doc) => doc.id !== user.id));
@@ -191,7 +220,10 @@ export class DoctorsComponent {
       .filter((doc) => {
         if (!specialtySelected) return true;
 
-        const docSpec = (doc.specialty ?? '').toString().trim().toUpperCase();
+        const docSpec = (doc.doctorSpecialty ?? doc.specialty ?? '')
+          .toString()
+          .trim()
+          .toUpperCase();
         const selectedSpec = specialtySelected.toString().trim().toUpperCase();
 
         return docSpec === selectedSpec;

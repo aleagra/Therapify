@@ -29,7 +29,10 @@ export class DoctorDetailComponent implements OnInit {
   loadError = signal<string | null>(null);
 
   get doctorRating(): number | undefined {
-    return (this.doctor() as any)?.rating;
+    const r = this.doctor()?.averageRating ?? (this.doctor() as any)?.rating;
+    return r !== undefined && r !== null && !isNaN(Number(r))
+      ? Number(r)
+      : undefined;
   }
 
   private skeletonShownTime: number | null = null;
@@ -85,6 +88,11 @@ export class DoctorDetailComponent implements OnInit {
     SEXOLOGIA: 'Sexología',
     TERAPIA_HUMANISTA: 'Terapia humanista',
   };
+
+  getSpecialtyLabel(specialty?: string): string {
+    if (!specialty) return 'Profesional';
+    return this.specialtyLabels[specialty] || specialty;
+  }
 
   ngOnInit(): void {
     this.loadDoctor();
