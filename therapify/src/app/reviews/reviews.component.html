@@ -14,7 +14,7 @@
     <header class="ficha-layout ficha-page header-block">
       <div class="ficha-rail header-rail">
         <div class="rail-kicker">Reseñas</div>
-        <div class="rail-number">06</div>
+        <div class="rail-number">01</div>
       </div>
       <div class="ficha-body header-body">
         <h1 class="page-title">
@@ -51,43 +51,45 @@
                 </button>
               </div>
             } @else {
-              <!-- Bloque de Promedio (Margen ancho de 180px) -->
-              <div class="rating-score-block">
-                <div class="rating-score-rail">
-                  <div class="big-rating-number">
-                    {{ averageRating > 0 ? averageRating.toFixed(1) : '—' }}
-                  </div>
-                  <div class="rating-stars-lead">
-                    ★★★★★
-                  </div>
-                  <div class="rating-reviews-count">
-                    {{ reviews.length ? reviews.length + ' reseñas de pacientes' : 'Sin valoraciones' }}
-                  </div>
-                </div>
-
-                <div class="rating-distribution-body">
-                  @for (star of [5, 4, 3, 2, 1]; track star) {
-                    <div class="dist-bar-row">
-                      <span class="dist-star-label">{{ star }}★</span>
-                      <div class="dist-bar-track">
-                        <span
-                          class="dist-bar-fill"
-                          [style.width.%]="getStarPercentage(star)"
-                        ></span>
-                      </div>
-                      <span class="dist-count-label">{{ getStarCount(star) }}</span>
+              @if (reviews.length > 0) {
+                <!-- Bloque de Promedio (Margen ancho de 180px) -->
+                <div class="rating-score-block">
+                  <div class="rating-score-rail">
+                    <div class="big-rating-number">
+                      {{ averageRating.toFixed(1) }}
                     </div>
-                  }
-                </div>
-              </div>
+                    <div class="rating-stars-lead">
+                      ★★★★★
+                    </div>
+                    <div class="rating-reviews-count">
+                      {{ reviews.length === 1 ? '1 reseña de paciente' : reviews.length + ' reseñas de pacientes' }}
+                    </div>
+                  </div>
 
-              <!-- Cabecera de Lista -->
-              <div class="reviews-subhead-row">
-                <span class="reviews-kicker">Todas las reseñas</span>
-                <span class="reviews-sort-text">
-                  Ordenar por <strong class="sort-bold">más recientes</strong>
-                </span>
-              </div>
+                  <div class="rating-distribution-body">
+                    @for (star of [5, 4, 3, 2, 1]; track star) {
+                      <div class="dist-bar-row">
+                        <span class="dist-star-label">{{ star }}★</span>
+                        <div class="dist-bar-track">
+                          <span
+                            class="dist-bar-fill"
+                            [style.width.%]="getStarPercentage(star)"
+                          ></span>
+                        </div>
+                        <span class="dist-count-label">{{ getStarCount(star) }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Cabecera de Lista -->
+                <div class="reviews-subhead-row">
+                  <span class="reviews-kicker">Todas las reseñas</span>
+                  <span class="reviews-sort-text">
+                    Ordenar por <strong class="sort-bold">más recientes</strong>
+                  </span>
+                </div>
+              }
 
               <!-- Lista de Reseñas Nivel 3 -->
               @if (displayLoading()) {
@@ -136,7 +138,7 @@
                           </span>
                           <span class="stars-rating-text" [attr.aria-label]="r.value + ' de 5 estrellas'">
                             @for (s of [1,2,3,4,5]; track s) {
-                              <span [style.color]="s <= r.value ? '#253340' : '#cbd6e2'">★</span>
+                              <span [style.color]="s <= r.value ? '#f59e0b' : '#cbd6e2'">★</span>
                             }
                           </span>
                           <span class="verified-session-badge">Sesión verificada</span>
@@ -159,7 +161,11 @@
                                 class="btn-action-delete"
                                 title="Eliminar reseña"
                               >
-                                Eliminar
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <polyline points="3 6 5 6 21 6"></polyline>
+                                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                <span>Eliminar</span>
                               </button>
                             </div>
                           }

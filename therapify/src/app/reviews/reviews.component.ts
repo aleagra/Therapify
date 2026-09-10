@@ -84,11 +84,14 @@ export class ReviewsComponent implements OnInit {
   userLogged: User | null = this.userService.getLoggedUser();
 
   goBack(event?: Event): void {
-    if (event) event.preventDefault();
-    if (window.history.length > 1) {
-      this.location.back();
-    } else {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (this.doctorId) {
       this.router.navigate(['/doctor', this.doctorId]);
+    } else {
+      this.router.navigate(['/doctors']);
     }
   }
 
