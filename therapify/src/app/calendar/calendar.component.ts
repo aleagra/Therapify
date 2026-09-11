@@ -15,10 +15,12 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
+import { businessClock, businessClockKey } from '../config/timezone';
+import { appointmentErrorMessage } from '../config/appointment-errors';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { SlotEndPipe } from '../pipes/slot-end.pipe';
 import { toast } from 'ngx-sonner';
@@ -65,6 +67,34 @@ export class CalendarComponent implements OnChanges {
   get isUserAdmin(): boolean {
     return this.userLogged?.userType === 'ADMIN';
   }
+
+  isDemo = computed(() => this.userService.isDemoSignal());
+
+  /** El backend manda un mail al confirmar. En las cuentas demo la casilla no
+   *  es accesible, asi que lo decimos en vez de dejar la funcionalidad muda. */
+  confirmationEmailNote = computed(() =>
+    this.isDemo()
+      ? 'Aviso enviado a la casilla demo (no accesible).'
+      : 'Te enviamos los detalles por mail.',
+  );
+
+  private route = inject(ActivatedRoute);
+
+  /** Id del turno que se esta moviendo, via ?reschedule=<id>. Null = reserva normal. */
+  rescheduleId = signal<string | null>(
+    this.route.snapshot.queryParamMap.get('reschedule'),
+  );
+  /** Fecha y hora del turno original, pasadas por /turnos que ya las tiene.
+   *  Evita un GET /appointments/{id} que ademas el backend rechaza con 403. */
+  rescheduleFrom = signal<{ date: string; startTime: string } | null>(
+    (() => {
+      const params = this.route.snapshot.queryParamMap;
+      const date = params.get('from');
+      const startTime = params.get('at');
+      return date && startTime ? { date, startTime } : null;
+    })(),
+  );
+  isRescheduling = computed(() => !!this.rescheduleId());
 
   readonly today: Date = (() => {
     const d = new Date();
@@ -311,7 +341,10 @@ export class CalendarComponent implements OnChanges {
           const ocupados = appointments.map((a) => a.startTime);
           this.horariosOcupados.set(ocupados);
           this.horariosDisponibles.set(
-            disponibles.filter((h) => !ocupados.includes(h)),
+            this.descartarHorariosPasados(
+              fecha,
+              disponibles.filter((h) => !ocupados.includes(h)),
+            ),
           );
           this.isLoadingSlots.set(false);
           this.showSlotsSkeleton.set(false);
@@ -321,7 +354,9 @@ export class CalendarComponent implements OnChanges {
           }
         },
         error: () => {
-          this.horariosDisponibles.set(disponibles);
+          this.horariosDisponibles.set(
+            this.descartarHorariosPasados(fecha, disponibles),
+          );
           this.isLoadingSlots.set(false);
           this.showSlotsSkeleton.set(false);
           if (this.slotsTimer) {
@@ -330,6 +365,67 @@ export class CalendarComponent implements OnChanges {
           }
         },
       });
+  }
+
+  private enviarReprogramacion(fecha: Date, hora: string): void {
+    const id = this.rescheduleId();
+    if (!id) return;
+
+    const fechaISO = this.formatDateISO(fecha);
+
+    this.appointmentsService
+      .rescheduleAppointment(id, {
+        date: fechaISO,
+        startTime: hora,
+        endTime: this.calcularFin(hora),
+      })
+      .subscribe({
+        next: () => {
+          this.reservaConfirmada.set(true);
+          this.citaForm.disable();
+          this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, fechaISO);
+          toast.success('¡Turno reprogramado con éxito!', {
+            description: this.confirmationEmailNote(),
+            position: 'top-center',
+            duration: 5000,
+          });
+        },
+        error: (err) => {
+          const slotTaken =
+            err?.error?.code === 'SLOT_TAKEN' ||
+            (err?.status === 409 && !err?.error?.code);
+
+          toast.error(appointmentErrorMessage(err, 'reprogramar'), {
+            position: 'top-center',
+            duration: 5000,
+          });
+
+          // Solo relimpiamos la seleccion cuando el problema es el horario:
+          // si el turno agoto sus reprogramaciones, elegir otro slot no ayuda.
+          if (slotTaken) {
+            this.selectedSlot.set(null);
+            this.citaForm.get('hora')?.setValue(null);
+            this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, fechaISO);
+            this.onFechaSeleccionada(fecha, true);
+          }
+        },
+      });
+  }
+
+  /**
+   * Descarta los horarios que ya pasaron. Los dias previos ya estan
+   * deshabilitados en la grilla, pero dentro del dia de hoy la plantilla
+   * semanal devuelve la jornada completa: sin esto se podia reservar a las
+   * 09:00 siendo las 15:00, y el turno nacia vencido.
+   */
+  private descartarHorariosPasados(fecha: Date, horarios: string[]): string[] {
+    const ahora = businessClock();
+    const fechaISO = this.formatDateISO(fecha);
+    // Solo el dia en curso necesita recorte; los anteriores ya estan
+    // deshabilitados en la grilla y los futuros no tienen horas vencidas.
+    if (fechaISO !== ahora.slice(0, 10)) return horarios;
+
+    return horarios.filter((h) => businessClockKey(fechaISO, h) > ahora);
   }
 
   private formatDateISO(d: Date): string {
@@ -368,6 +464,11 @@ export class CalendarComponent implements OnChanges {
       status: 'PENDING',
     };
 
+    if (this.isRescheduling()) {
+      this.enviarReprogramacion(fecha, hora);
+      return;
+    }
+
     this.appointmentsService
       .createAppointment(appointmentRequest)
       .subscribe({
@@ -375,7 +476,11 @@ export class CalendarComponent implements OnChanges {
           this.reservaConfirmada.set(true);
           this.citaForm.disable();
           this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
-          toast.success('¡Turno reservado con éxito!', { position: 'top-center' });
+          toast.success('¡Turno reservado con éxito!', {
+            description: this.confirmationEmailNote(),
+            position: 'top-center',
+            duration: 5000,
+          });
         },
         error: (err) => {
           if (err?.status === 409) {
@@ -388,11 +493,10 @@ export class CalendarComponent implements OnChanges {
             this.appointmentsService.invalidateDoctorDateSlots(this.doctorId, this.formatDateISO(fecha));
             this.onFechaSeleccionada(fecha, true);
           } else {
-            toast.error(
-              err?.error?.message ||
-                'No se pudo reservar el turno. Por favor, intentá nuevamente.',
-              { position: 'top-center' },
-            );
+            toast.error(appointmentErrorMessage(err, 'reservar'), {
+              position: 'top-center',
+              duration: 5000,
+            });
           }
         },
       });
