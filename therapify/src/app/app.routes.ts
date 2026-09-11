@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
+import { guestGuard } from './guards/guest.guard';
 import { PublicLayoutComponent } from './public-layout/public-layout.component';
 import { PrivateLayoutComponent } from './private-layout/private-layout.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
@@ -20,6 +21,7 @@ export const routes: Routes = [
         title: 'Iniciar Sesión | Therapify',
         loadComponent: () =>
           import('./login/login.component').then((m) => m.LoginComponent),
+        canActivate: [guestGuard],
       },
       {
         path: 'register',
@@ -28,6 +30,7 @@ export const routes: Routes = [
           import('./register/register.component').then(
             (m) => m.RegisterComponent,
           ),
+        canActivate: [guestGuard],
       },
       {
         path: 'forgot-password',
@@ -36,6 +39,7 @@ export const routes: Routes = [
           import('./forgot-password/forgot-password.component').then(
             (m) => m.ForgotPasswordComponent,
           ),
+        canActivate: [guestGuard],
       },
       {
         path: 'reset-password',

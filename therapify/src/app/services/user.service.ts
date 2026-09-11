@@ -94,9 +94,13 @@ export class UserService {
             this.invalidateUserCaches();
           }
         }),
+        // Propagamos en vez de devolver null: el backend distingue credenciales
+        // invalidas de cuenta sin verificar (ambas 403), y colapsarlas en un
+        // unico "contrasena incorrecta" manda al usuario a buscar el problema
+        // donde no esta.
         catchError((err) => {
-          console.error('Credenciales inválidas', err);
-          return of(null);
+          console.error('Error al iniciar sesión', err);
+          return throwError(() => err);
         }),
       );
   }
