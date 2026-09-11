@@ -44,6 +44,9 @@
 .status-pending{background:var(--c-blue-50);color:var(--c-blue-700)}
 .status-cancelled{background:var(--c-coral-50);color:var(--c-coral-700)}
 .status-completed{background:var(--c-teal-50);color:var(--c-teal-700)}
+/* Vencido no es error ni exito: no paso nada. Va en el neutro apagado del
+   sistema, el mismo que usa "Sin turnos", y no en coral. */
+.status-expired{background:var(--c-neutral-50);color:var(--c-neutral-500)}
 .btn-cancel-appt{height:34px;padding:0 12px;border:1px solid var(--c-coral-200);background:#fff;color:var(--c-coral-700);font-size:13px;font-weight:600;border-radius:var(--radius-control);cursor:pointer;transition:background var(--t-control),border-color var(--t-control)}
 .btn-cancel-appt:hover{background:var(--c-coral-50);border-color:var(--c-coral-400)}
 .btn-confirm-appt{height:34px;padding:0 14px;border:none;background:var(--c-blue-600);color:#fff;font-size:13px;font-weight:600;border-radius:var(--radius-control);cursor:pointer;transition:background var(--t-control)}
@@ -52,6 +55,10 @@
 /* Secundario plano: no compite con la accion de la fila */
 .btn-detail-link{border:none;background:transparent;color:var(--c-neutral-700)}
 .btn-detail-link:hover{background:var(--c-neutral-100)}
+/* Dentro de las 24 h el backend rechaza la reprogramacion: mostramos la accion
+   apagada en vez de ocultarla, para que se entienda que existe y por que no esta. */
+.btn-detail-link.is-unavailable{color:var(--c-neutral-300);cursor:not-allowed}
+.btn-detail-link.is-unavailable:hover{background:transparent}
 .btn-review-link{border:1px solid var(--c-neutral-250);background:#fff;color:var(--c-neutral-900)}
 .btn-review-link:hover{background:var(--c-neutral-50);border-color:var(--c-neutral-300)}
 

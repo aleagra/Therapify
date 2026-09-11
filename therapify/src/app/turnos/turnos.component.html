@@ -188,18 +188,37 @@
                           [class.status-confirmed]="ap.status === 'CONFIRMED'"
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
+                          [class.status-expired]="ap.status === 'EXPIRED'"
                         >
                           {{ ap.status | statusLabel }}
                         </span>
 
-                        <a
-                          [routerLink]="['/doctor', ap.doctorId]"
-                          class="btn-detail-link"
-                          title="Ir a la agenda del profesional"
-                        >
-                          {{ ap.status === 'COMPLETED' ? 'Reservar de nuevo' : 'Reprogramar' }}
-                        </a>
-                        @if (ap.status !== 'COMPLETED') {
+                        @if (estaCerrado(ap)) {
+                          <a
+                            [routerLink]="['/doctor', ap.doctorId]"
+                            class="btn-detail-link"
+                            title="Ir a la agenda del profesional"
+                          >
+                            Reservar de nuevo
+                          </a>
+                        } @else if (puedeReprogramar(ap)) {
+                          <a
+                            [routerLink]="['/doctor', ap.doctorId]"
+                            [queryParams]="{ reschedule: ap.id, from: ap.date, at: ap.startTime }"
+                            class="btn-detail-link"
+                            title="Mover este turno a otro horario"
+                          >
+                            Reprogramar
+                          </a>
+                        } @else {
+                          <span
+                            class="btn-detail-link is-unavailable"
+                            title="Solo se puede reprogramar con más de 24 h de anticipación"
+                          >
+                            Reprogramar
+                          </span>
+                        }
+                        @if (!estaCerrado(ap)) {
                           <button
                             type="button"
                             (click)="deleteAppointment(ap.id)"
@@ -207,7 +226,7 @@
                           >
                             Cancelar
                           </button>
-                        } @else {
+                        } @else if (puedeResenar(ap)) {
                           <a [routerLink]="['/reviews', ap.doctorId]" class="btn-review-link">
                             Dejar reseña
                           </a>
@@ -317,6 +336,7 @@
                           [class.status-confirmed]="ap.status === 'CONFIRMED'"
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
+                          [class.status-expired]="ap.status === 'EXPIRED'"
                         >
                           {{ ap.status | statusLabel }}
                         </span>
@@ -331,7 +351,7 @@
                           </button>
                         }
 
-                        @if (ap.status !== 'COMPLETED') {
+                        @if (!estaCerrado(ap)) {
                           <button
                             type="button"
                             (click)="deleteAppointment(ap.id)"
@@ -444,6 +464,7 @@
                           [class.status-confirmed]="ap.status === 'CONFIRMED'"
                           [class.status-pending]="ap.status === 'PENDING'"
                           [class.status-completed]="ap.status === 'COMPLETED'"
+                          [class.status-expired]="ap.status === 'EXPIRED'"
                         >
                           {{ ap.status | statusLabel }}
                         </span>
@@ -453,7 +474,7 @@
                         <a [routerLink]="['/doctor', ap.doctorId]" class="btn-detail-link" title="Ver perfil del profesional">
                           Ver doctor
                         </a>
-                        @if (ap.status !== 'COMPLETED') {
+                        @if (!estaCerrado(ap)) {
                           <button
                             type="button"
                             (click)="deleteAppointment(ap.id)"

@@ -2,10 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, signal, OnInit, computed } 
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Appointment } from '../../types/appointments';
 import { AppointmentService } from '../services/appointments.service';
+import { businessClock, businessClockKey } from '../config/timezone';
+import { appointmentErrorMessage } from '../config/appointment-errors';
 import { UserService } from '../services/user.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { concat, forkJoin, of, timer } from 'rxjs';
+import { concat, of, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { toast } from 'ngx-sonner';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
@@ -128,29 +130,10 @@ export class TurnosComponent implements OnInit {
         const allAppointments: Appointment[] =
           response?.content ?? (Array.isArray(response) ? (response as any) : []);
 
-        // Verificamos si hay turnos pasados que deban marcarse como COMPLETED
-        const ahora = new Date();
-        const vencidos = allAppointments.filter((ap) => {
-          const fechaCompleta = new Date(`${ap.date}T${ap.endTime}:00`);
-          return fechaCompleta < ahora && ap.status !== 'COMPLETED';
-        });
-
-        // Reflejamos de inmediato el estado en memoria para que la UI no espere
-        if (vencidos.length > 0) {
-          for (const ap of vencidos) {
-            ap.status = 'COMPLETED';
-          }
-          // Sincronizamos con el servidor en segundo plano sin relanzar getMyAppointments()
-          const updates = vencidos.map((ap) =>
-            this.appointmentService.updateAppointment(ap.id, {
-              status: 'COMPLETED' as const,
-            }),
-          );
-          forkJoin(updates).subscribe({
-            error: (err) =>
-              console.debug('Error sincronizando turnos vencidos en background:', err),
-          });
-        }
+        // Completar turnos vencidos es responsabilidad del job @Scheduled del
+        // backend, no del cliente: antes cada navegador que abria esta pantalla
+        // intentaba escribir en la base y se comia un 403 por turno vencido.
+        // El listado ya los trata como pasados por fecha, sin depender del status.
 
         const isAdmin = this.userLogged?.userType === 'ADMIN';
 
@@ -177,28 +160,28 @@ export class TurnosComponent implements OnInit {
 
   deleteAppointment(id: string): void {
     this.appointmentService.deleteAppointment(id).subscribe({
-      next: (success) => {
-        if (!success) {
-          toast.error('No se pudo eliminar el turno', {
-            position: 'top-center',
-          });
-          return;
-        }
-
+      next: () => {
         this.turnosPacienteRaw.update((list) =>
           list.filter((a) => a.id !== id),
         );
         this.turnosDoctorRaw.update((list) => list.filter((a) => a.id !== id));
         this.turnosAdminRaw.update((list) => list.filter((a) => a.id !== id));
 
-        toast.success('Turno eliminado correctamente 🗑️', {
+        toast.success('Turno cancelado', {
+          description: this.cancelEmailNote(),
           position: 'top-center',
+          duration: 5000,
         });
       },
-      error: () =>
-        toast.error('Error al eliminar el turno', {
+      error: (err) => {
+        toast.error(appointmentErrorMessage(err, 'cancelar'), {
           position: 'top-center',
-        }),
+          duration: 5000,
+        });
+        // El turno sigue vivo en el servidor: recargamos para no dejar la lista
+        // mostrando algo distinto de lo que hay.
+        this.loadAppointments();
+      },
     });
   }
 
@@ -274,14 +257,58 @@ export class TurnosComponent implements OnInit {
     return name.slice(0, 2).toUpperCase();
   }
 
+  /**
+   * El backend exige mas de 24 h de anticipacion para reprogramar, pero no para
+   * reservar. Sin esto, un turno sacado para dentro de 2 h muestra el boton
+   * "Reprogramar", el usuario elige horario nuevo y recien ahi come un 409.
+   */
+  /**
+   * El backend avisa por mail al cancelar, igual que al reservar y reprogramar.
+   * En las cuentas demo la casilla no es accesible, asi que lo decimos en vez
+   * de dejar la funcionalidad muda para el evaluador.
+   */
+  cancelEmailNote(): string {
+    return this.userService.isDemoSignal()
+      ? 'Aviso enviado a la casilla demo (no accesible).'
+      : 'Te enviamos la confirmación por mail.';
+  }
+
+  /** COMPLETED y EXPIRED son estados terminales: el turno ya no admite acciones. */
+  estaCerrado(ap: Appointment): boolean {
+    return ap.status === 'COMPLETED' || ap.status === 'EXPIRED';
+  }
+
+  /**
+   * Solo un turno CONFIRMED que se realizo habilita resena. Un EXPIRED nunca
+   * fue aceptado por el profesional, asi que el backend tambien lo rechaza.
+   */
+  puedeResenar(ap: Appointment): boolean {
+    return ap.status === 'COMPLETED';
+  }
+
+  puedeReprogramar(ap: Appointment): boolean {
+    if (this.estaCerrado(ap)) return false;
+    // Sumamos 24 h al instante real y recien ahi lo pasamos a reloj argentino,
+    // para que la comparacion coincida con la que hace el backend.
+    const corte = businessClock(Date.now() + 24 * 60 * 60 * 1000);
+    return businessClockKey(ap.date, ap.startTime) > corte;
+  }
+
   private procesarTurnos(
     turnos: Appointment[],
     mostrarCompletados: boolean,
     asc: boolean,
   ): Appointment[] {
-    let resultado = turnos.filter(
-      (t) => mostrarCompletados || t.status !== 'COMPLETED',
-    );
+    // Un turno cuenta como pasado si el servidor lo marco COMPLETED o si su
+    // horario de fin ya quedo atras. Lo segundo hace que el listado sea
+    // correcto aunque el status nunca haya llegado a persistirse.
+    const ahora = businessClock();
+    const yaOcurrio = (t: Appointment): boolean =>
+      t.status === 'COMPLETED' ||
+      t.status === 'EXPIRED' ||
+      businessClockKey(t.date, t.endTime) < ahora;
+
+    let resultado = turnos.filter((t) => mostrarCompletados || !yaOcurrio(t));
 
     resultado.sort((a, b) => {
       const fechaA = new Date(`${a.date}T${a.startTime}`).getTime();
