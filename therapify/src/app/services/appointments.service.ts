@@ -168,6 +168,41 @@ export class AppointmentService {
       );
   }
 
+  /**
+   * Mueve un turno existente a otro horario del mismo profesional.
+   * A diferencia de updateAppointment, propaga el error en vez de tragarlo:
+   * el backend discrimina el motivo del rechazo (slot ocupado, limite de
+   * reprogramaciones, ventana de 24 h) y el componente necesita distinguirlos.
+   */
+  rescheduleAppointment(
+    id: string,
+    payload: { date: string; startTime: string; endTime: string },
+  ): Observable<Appointment> {
+    return this.http
+      .patch<Appointment>(
+        `${this.APPOINTMENTS_URL}/${id}/reschedule`,
+        payload,
+        this.getAuthHeaders(),
+      )
+      .pipe(
+        tap((updated) => {
+          this.invalidateCache();
+          if (updated?.doctorId) {
+            this.invalidateDoctorDateSlots(updated.doctorId.toString(), updated.date);
+          }
+        }),
+        catchError((err) => {
+          console.error('Error al reprogramar turno:', err);
+          return throwError(() => err);
+        }),
+      );
+  }
+
+  /**
+   * Cancela un turno. Propaga el error en vez de devolver `false`: el backend
+   * distingue el motivo (turno ajeno, ya terminal) y el componente necesita
+   * poder mostrarlo en lugar de un generico.
+   */
   deleteAppointment(id: string): Observable<boolean> {
     return this.http
       .delete(`${this.APPOINTMENTS_URL}/${id}`, this.getAuthHeaders())
@@ -176,7 +211,7 @@ export class AppointmentService {
         map(() => true),
         catchError((err) => {
           console.error('Error al eliminar turno:', err);
-          return of(false);
+          return throwError(() => err);
         }),
       );
   }

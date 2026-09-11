@@ -4,6 +4,6 @@ export interface AppointmentRequest {
   date: string;
   startTime: string;
   endTime: string;
-  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED';
+  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'EXPIRED';
   notes?: string;
 }

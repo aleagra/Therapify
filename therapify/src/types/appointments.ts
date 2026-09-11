@@ -7,7 +7,7 @@ export interface Appointment {
   date: string;
   startTime: string;
   endTime: string;
-  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED';
+  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'EXPIRED';
   notes?: string;
   createdAt: string;
 }
@@ -26,7 +26,7 @@ export interface Page<T> {
 
 export interface AppointmentFilterParams {
   filter?: 'UPCOMING' | 'PAST';
-  status?: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | string;
+  status?: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'EXPIRED' | string;
   page?: number;
   size?: number;
 }

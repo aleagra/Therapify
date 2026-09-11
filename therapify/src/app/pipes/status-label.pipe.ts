@@ -9,8 +9,9 @@ export class StatusLabelPipe implements PipeTransform {
   private static readonly STATUS_MAP: Record<string, string> = {
     PENDING: 'Pendiente',
     CONFIRMED: 'Confirmado',
-    CANCELLED: 'Cancelado',
     COMPLETED: 'Completado',
+    // El profesional nunca lo confirmo y paso la hora: no hubo sesion.
+    EXPIRED: 'Vencido',
   };
 
   transform(status?: string | null): string {
