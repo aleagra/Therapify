@@ -325,7 +325,7 @@
 }
 
 .auth-divider-text {
-  background: var(--c-neutral-50, #f4f7fa);
+  background: #ffffff;
   padding: 0 12px;
   font-size: 12.5px;
   color: var(--c-neutral-500, #5a6e85);
@@ -356,8 +356,8 @@
   border-color: #94a3b8;
 }
 
-/* Escritorio (>= 1024px): la card mantiene siempre el mismo tamaño,
-   1200x500 con banner de 460px, sin importar la resolución. */
+/* Escritorio (>= 1024px): la card mantiene el formato arquitectónico exacto 1200x500px con banner de 460px,
+   idéntico a register y forgot-password para evitar cualquier redimensionamiento entre rutas. */
 @media (min-width: 1024px) {
   .login-split-container {
     width: 1200px;
@@ -449,6 +449,7 @@
     justify-content: center;
     padding: 0 48px;
     position: relative;
+    box-sizing: border-box;
     height: 100%;
   }
 
@@ -484,23 +485,23 @@
   }
 
   .page-title {
-    font-size: 30px;
-    line-height: 1.12;
-    letter-spacing: -0.028em;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     color: #16222c;
-    margin: 0 0 6px;
+    margin: 0 0 4px;
   }
 
   .page-subtitle {
-    font-size: 14.5px;
-    line-height: 1.55;
+    font-size: 13.5px;
+    line-height: 1.5;
     color: #647587;
-    margin: 0 0 18px;
+    margin: 0 0 12px;
   }
 
   .login-form,
   .login-form-card {
-    gap: 14px;
+    gap: 10px;
   }
 
   .form-field {
@@ -511,7 +512,7 @@
     font-size: 12px;
     line-height: 1.4;
     color: #384857;
-    margin: 0 0 6px;
+    margin: 0 0 4px;
   }
 
   .forgot-link-row {
@@ -521,31 +522,31 @@
   .login-input,
   .field-input,
   .password-input-wrapper input {
-    height: 44px;
+    height: 42px;
     padding: 0 13px;
-    font-size: 14.5px;
+    font-size: 14px;
     border-radius: 8px;
     border: 1px solid #d2dbe5;
   }
 
   .btn-submit-login {
-    height: 46px;
-    min-height: 46px;
-    font-size: 15px;
+    height: 44px;
+    min-height: 44px;
+    font-size: 14.5px;
     font-weight: 700;
     border-radius: 8px;
     background: #0b5d8e;
-    margin-top: 12px;
+    margin-top: 8px;
   }
 
   .auth-divider-wrap {
-    margin: 12px 0 0;
-    padding-top: 12px;
+    margin: 10px 0 0;
+    padding-top: 10px;
     border-top: 1px solid #dfe6ee;
   }
 
   .btn-secondary-register {
-    height: 44px;
+    height: 42px;
   }
 }
 
@@ -742,4 +743,165 @@
     border-top: 1px solid #dfe6ee !important;
   }
 }
+
+/* =============================================================================
+   Acceso Rápido para Evaluadores / Modo Demo (Integrado y Compacto)
+   ============================================================================= */
+.demo-quick-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--c-neutral-50, #f8fafc);
+  border: 1px solid var(--c-neutral-150, #dfe6ee);
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.demo-bar-info {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.demo-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--c-teal-50, #eafaf6);
+  color: var(--c-teal-700, #0b6f5f);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--c-teal-200, #9ae4d3);
+}
+
+.demo-pulse-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-teal-500, #15b096);
+  box-shadow: 0 0 0 2px rgba(21, 176, 150, 0.25);
+}
+
+.demo-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-demo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-control, 8px);
+  background: #ffffff;
+  border: 1px solid var(--c-neutral-250, #d2dbe5);
+  color: var(--c-neutral-700, #384857);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--t-control, 0.12s ease), border-color var(--t-control, 0.12s ease), color var(--t-control, 0.12s ease);
+}
+
+.btn-demo-chip svg {
+  flex-shrink: 0;
+}
+
+.btn-demo-chip.doctor {
+  color: var(--c-neutral-700, #384857);
+}
+
+.btn-demo-chip.doctor svg {
+  color: var(--c-blue-600, #0b5d8e);
+}
+
+.btn-demo-chip.patient {
+  color: var(--c-neutral-700, #384857);
+}
+
+.btn-demo-chip.patient svg {
+  color: var(--c-teal-600, #0d8e79);
+}
+
+.btn-demo-chip:hover:not(:disabled) {
+  background: var(--c-neutral-50, #f4f7fa);
+  border-color: var(--c-neutral-300, #b3c0cf);
+  color: var(--c-neutral-900, #16222c);
+}
+
+.btn-demo-chip:active:not(:disabled) {
+  background: var(--c-neutral-100, #eaeff5);
+}
+
+.btn-demo-chip:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-demo-chip:focus-visible {
+  outline: 2px solid #0b5d8e;
+  outline-offset: 1px;
+}
+
+.demo-chip-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #dfe6ee;
+  border-top-color: #0b5d8e;
+  border-radius: 50%;
+  animation: app-spin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.demo-feedback-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: #eff6fb;
+  border: 1px solid #b6d3e8;
+  color: #0b5d8e;
+  font-size: 11.5px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+  .demo-quick-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+  }
+  .demo-bar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-demo-chip {
+    justify-content: center;
+    height: 36px;
+  }
+}
+
+@keyframes app-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 

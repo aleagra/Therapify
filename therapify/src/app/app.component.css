@@ -40,3 +40,104 @@
     padding: 1rem;
   }
 }
+
+/* =============================================================================
+   Banner Superior Global de Modo Demo
+   ============================================================================= */
+.demo-global-banner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+  background: var(--c-blue-50, #eff6fb);
+  border-bottom: 1px solid var(--c-neutral-150, #dfe6ee);
+  box-shadow: 0 1px 3px rgba(13, 35, 55, 0.04);
+  color: var(--c-neutral-900, #16222c);
+  padding: 8px 24px;
+  box-sizing: border-box;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  animation: banner-slide-down 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@keyframes banner-slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.demo-global-banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.demo-global-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--c-teal-50, #eafaf6);
+  border: 1px solid var(--c-teal-200, #9ae4d3);
+  color: var(--c-teal-700, #0b6f5f);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.demo-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-teal-500, #15b096);
+  box-shadow: 0 0 0 2px rgba(21, 176, 150, 0.25);
+  display: inline-block;
+}
+
+.demo-global-text {
+  font-size: 13px;
+  color: var(--c-neutral-700, #384857);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.demo-global-text strong {
+  color: var(--c-blue-600, #0b5d8e);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-global-banner {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .demo-global-banner {
+    padding: 7px 16px;
+  }
+  .demo-global-banner-inner {
+    padding: 0;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .demo-global-text {
+    font-size: 12px;
+  }
+}
+

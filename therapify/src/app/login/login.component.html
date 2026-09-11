@@ -39,6 +39,62 @@
         <div class="login-content-layout rail-layout-96">
           <div class="content-rail-empty"></div>
           <div class="content-body-wrap">
+            <!-- Acceso Rápido para Evaluadores / Modo Demo -->
+            <div class="demo-quick-bar" aria-label="Acceso Rápido para Evaluadores">
+              <div class="demo-bar-info">
+                <span class="demo-pill-badge">
+                  <span class="demo-pulse-dot" aria-hidden="true"></span>
+                  MODO DEMO
+                </span>
+              </div>
+
+              <div class="demo-bar-actions">
+                <button
+                  type="button"
+                  id="btn-demo-terapeuta"
+                  class="btn-demo-chip doctor"
+                  [disabled]="loading"
+                  (click)="loginDemo('DOCTOR')"
+                  title="Autocompletar e ingresar como Terapeuta"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
+                    <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
+                    <circle cx="20" cy="10" r="2"/>
+                  </svg>
+                  <span>Terapeuta (Demo)</span>
+                  @if (loading && demoLoadingRole === 'DOCTOR') {
+                    <span class="demo-chip-spinner" aria-hidden="true"></span>
+                  }
+                </button>
+
+                <button
+                  type="button"
+                  id="btn-demo-paciente"
+                  class="btn-demo-chip patient"
+                  [disabled]="loading"
+                  (click)="loginDemo('PACIENTE')"
+                  title="Autocompletar e ingresar como Paciente"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <span>Paciente (Demo)</span>
+                  @if (loading && demoLoadingRole === 'PACIENTE') {
+                    <span class="demo-chip-spinner" aria-hidden="true"></span>
+                  }
+                </button>
+              </div>
+            </div>
+
+            @if (loading && demoStatusMessage) {
+              <div class="demo-feedback-notice" role="status" aria-live="polite">
+                <span class="demo-chip-spinner" aria-hidden="true"></span>
+                <span>{{ demoStatusMessage }}</span>
+              </div>
+            }
+
             <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
               <div class="form-field">
                 <label for="email" class="field-label">Correo electrónico</label>

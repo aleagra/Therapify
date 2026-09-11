@@ -5,4 +5,18 @@
   closeButton
 />
 
+@if (isDemoSession()) {
+  <aside class="demo-global-banner" role="status" aria-label="Aviso de Modo Demostración">
+    <div class="demo-global-banner-inner">
+      <span class="demo-global-chip">
+        <span class="demo-pulse-dot" aria-hidden="true"></span>
+        MODO DEMO
+      </span>
+      <span class="demo-global-text">
+        Sesión de demostración activa &bull; Rol: <strong>{{ demoRoleLabel() }}</strong>
+      </span>
+    </div>
+  </aside>
+}
+
 <router-outlet></router-outlet>

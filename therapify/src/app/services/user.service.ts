@@ -18,6 +18,16 @@ export class UserService {
 
   localKey = 'userLogged';
   isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
+  isDemoSignal = signal(this.checkIsDemoUser(this.getLoggedUser()));
+
+  private checkIsDemoUser(user: User | null): boolean {
+    if (!user) return false;
+    return (
+      user.isDemo === true ||
+      user.email === 'demo.terapeuta@therapify.com' ||
+      user.email === 'demo.paciente@therapify.com'
+    );
+  }
 
   private doctoresCache$: Observable<User[]> | null = null;
   private usersCache$: Observable<User[]> | null = null;
@@ -73,8 +83,14 @@ export class UserService {
       .pipe(
         tap((user) => {
           if (user?.token) {
-            localStorage.setItem(this.localKey, JSON.stringify(user));
+            const isDemo =
+              email === 'demo.terapeuta@therapify.com' ||
+              email === 'demo.paciente@therapify.com' ||
+              user.isDemo === true;
+            const userWithDemo: User = { ...user, isDemo };
+            localStorage.setItem(this.localKey, JSON.stringify(userWithDemo));
             this.isLoggedSignal.set(true);
+            this.isDemoSignal.set(isDemo);
             this.invalidateUserCaches();
           }
         }),
@@ -88,6 +104,7 @@ export class UserService {
   logout(): void {
     localStorage.removeItem(this.localKey);
     this.isLoggedSignal.set(false);
+    this.isDemoSignal.set(false);
     this.invalidateUserCaches();
   }
 

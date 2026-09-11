@@ -8,6 +8,7 @@ export interface User {
   confirmPassword: string;
   userType: string;
   token?: string;
+  isDemo?: boolean;
   gender?: string;
   latitude?: number;
   longitude?: number;
