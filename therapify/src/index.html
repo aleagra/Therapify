@@ -2,32 +2,40 @@
 <html lang="es" style="background-color: #f4f7fa;">
   <head>
     <meta charset="utf-8" />
-    <title>Therapify | Red de Terapeutas y Psicólogos en Argentina</title>
+    <title>Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#083c5c" />
 
     <!-- SEO Primario -->
-    <meta name="description" content="Conectá con terapeutas y psicólogos matriculados en Argentina. Encontrá especialistas con turnos disponibles, aranceles transparentes y agendá tu consulta en minutos." />
-    <meta name="keywords" content="psicología, terapeutas, turnos psicólogo argentina, terapia online, psiquiatría, salud mental, terapia cognitivo conductual, terapia familiar" />
+    <meta name="description" content="Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes. Conectá con terapeutas y psicólogos matriculados en Argentina con turnos disponibles y aranceles transparentes." />
+    <meta name="keywords" content="psicología, terapeutas, turnos psicólogo argentina, terapia online, psiquiatría, salud mental, terapia cognitivo conductual, terapia familiar, psicólogos matriculados" />
     <meta name="author" content="Therapify" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://therapifyy.vercel.app/" />
 
-    <!-- Open Graph / Facebook / WhatsApp -->
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://therapifyy.vercel.app/" />
     <meta property="og:site_name" content="Therapify" />
-    <meta property="og:title" content="Therapify | Red de Terapeutas y Psicólogos en Argentina" />
-    <meta property="og:description" content="Conectá con terapeutas matriculados en Argentina. Encontrá el enfoque clínico que necesitás y agendá tu consulta en minutos." />
-    <meta property="og:image" content="https://therapifyy.vercel.app/assets/logo.png" />
+    <meta property="og:title" content="Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes" />
+    <meta property="og:description" content="Conectá con terapeutas y profesionales de la salud mental matriculados en Argentina. Gestión integral de turnos online, aranceles transparentes y confidencialidad profesional." />
+    <meta property="og:image" content="https://therapifyy.vercel.app/assets/og-preview.png" />
+    <meta property="og:image:secure_url" content="https://therapifyy.vercel.app/assets/og-preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes" />
     <meta property="og:locale" content="es_AR" />
 
     <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Therapify | Terapia y Salud Mental en Argentina" />
-    <meta name="twitter:description" content="Encontrá terapeutas matriculados con turnos disponibles y aranceles transparentes." />
-    <meta name="twitter:image" content="https://therapifyy.vercel.app/assets/logo.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://therapifyy.vercel.app/" />
+    <meta name="twitter:title" content="Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes" />
+    <meta name="twitter:description" content="Conectá con terapeutas matriculados en Argentina. Turnos disponibles, aranceles transparentes y confidencialidad bajo secreto profesional." />
+    <meta name="twitter:image" content="https://therapifyy.vercel.app/assets/og-preview.png" />
+    <meta name="twitter:image:alt" content="Therapify - Plataforma de Gestión y Conexión para Profesionales de la Salud Mental y Pacientes" />
 
     <!-- Performance & Preconexiones -->
     <link rel="preconnect" href="https://therapify-backend.onrender.com" crossorigin />
@@ -35,10 +43,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/png" href="assets/logo.png" />
+    <!-- Fuente cargada sin bloquear el render: el navegador pinta de inmediato
+         con la fallback y cambia a Plus Jakarta Sans al llegar. El swap ya
+         ocurria igual por &display=swap, asi que esto solo saca el bloqueo.
+         Se pide unicamente la variante roman (sin italic): eso reduce a la
+         mitad el payload y el unico texto italic de la app usa faux italic. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- Datos Estructurados Schema.org (JSON-LD) -->
     <script type="application/ld+json">
@@ -48,6 +69,7 @@
       "name": "Therapify",
       "url": "https://therapifyy.vercel.app/",
       "logo": "https://therapifyy.vercel.app/assets/logo.png",
+      "image": "https://therapifyy.vercel.app/assets/og-preview.png",
       "description": "Plataforma de conexión con profesionales de la salud mental y psicólogos matriculados en Argentina.",
       "areaServed": "AR",
       "medicalSpecialty": [
@@ -60,7 +82,89 @@
   </head>
   <body style="background-color: #f4f7fa; margin: 0;">
     <app-root>
-      <div style="min-height: 100vh; width: 100%; background-color: #f4f7fa;"></div>
+      <!-- Estado de carga inicial.
+           Arranca invisible y se revela recien al segundo: por debajo de ese
+           umbral una espera se percibe como instantanea, asi que mostrarlo
+           antes solo produce un parpadeo. Si Angular bootstrapea primero,
+           este bloque se reemplaza sin haberse llegado a ver. -->
+      <div class="app-bootstrap-container">
+        <style>
+          .app-bootstrap-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f4f7fa;
+            color: #16222c;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            animation: app-bootstrap-reveal 0.25s ease-out 1s forwards;
+          }
+          @keyframes app-bootstrap-reveal {
+            to { opacity: 1; }
+          }
+          .app-bootstrap-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+          }
+          .app-bootstrap-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0b5d8e, #15b096);
+          }
+          .app-bootstrap-brand-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: #16222c;
+            letter-spacing: -0.02em;
+          }
+          .app-bootstrap-spinner {
+            width: 38px;
+            height: 38px;
+            border: 3px solid #dfe6ee;
+            border-top-color: #0b5d8e;
+            border-radius: 50%;
+            animation: app-spin 0.8s linear infinite;
+            margin-bottom: 18px;
+          }
+          @keyframes app-spin {
+            to { transform: rotate(360deg); }
+          }
+          .app-bootstrap-status {
+            font-size: 15px;
+            font-weight: 600;
+            color: #384857;
+            margin: 0 0 6px 0;
+          }
+          .app-bootstrap-subtext {
+            font-size: 13px;
+            color: #647587;
+            max-width: 460px;
+            margin: 0;
+            line-height: 1.5;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .app-bootstrap-container { animation-duration: 0.01ms; }
+            .app-bootstrap-spinner { animation-duration: 2.4s; }
+          }
+        </style>
+
+        <div class="app-bootstrap-brand">
+          <div class="app-bootstrap-mark" aria-hidden="true"></div>
+          <span class="app-bootstrap-brand-name">Therapify</span>
+        </div>
+
+        <div class="app-bootstrap-spinner" role="status" aria-label="Cargando aplicación"></div>
+        <p class="app-bootstrap-status">Cargando plataforma de salud mental...</p>
+        <p class="app-bootstrap-subtext">Conectando pacientes y profesionales de la salud mental matriculados en Argentina.</p>
+      </div>
     </app-root>
   </body>
 </html>
