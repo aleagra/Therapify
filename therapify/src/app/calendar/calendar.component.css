@@ -375,6 +375,13 @@
   color: var(--c-neutral-900, #16222c);
 }
 
+.total-amount-pending {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-neutral-500, #647587);
+}
+
 /* B1: Footer de confirmación y nota de cancelación con altura reservada */
 .booking-footer-submit {
   padding: 0 20px 20px;
@@ -398,7 +405,12 @@
 }
 
 .btn-confirm-booking:hover:not(:disabled) {
-  background: var(--c-blue-700, #084c74);
+  background: var(--c-blue-700, #094c74);
+}
+
+.btn-confirm-booking:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.28);
 }
 
 .btn-confirm-booking:disabled {
@@ -409,10 +421,110 @@
   cursor: not-allowed;
 }
 
+/* Card de Confirmación Exitosa de Turno (Superficie Tintada Teal / Nivel 2) */
+.booking-confirmed-card {
+  background: var(--c-teal-50, #eafaf6);
+  border: 1px solid var(--c-teal-200, #9ae4d3);
+  border-radius: var(--radius-sunken, 10px);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: confirmed-fade-in 0.25s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@keyframes confirmed-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmed-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirmed-badge-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--c-teal-100, #cdf2e9);
+  color: var(--c-teal-700, #0b6f5f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.confirmed-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  text-align: left;
+}
+
+.confirmed-title {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--c-neutral-900, #16222c);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.confirmed-subtitle {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--c-teal-700, #0b6f5f);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.btn-view-appointments {
+  width: 100%;
+  height: 40px;
+  padding: 0 16px;
+  background: var(--c-blue-600, #0b5d8e);
+  border: none;
+  border-radius: var(--radius-control, 8px);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background var(--t-control, 0.15s ease);
+}
+
+.btn-view-appointments:hover {
+  background: var(--c-blue-700, #094c74);
+  color: #ffffff;
+}
+
+.btn-view-appointments:active {
+  background: var(--c-blue-800, #083c5c);
+}
+
+.btn-view-appointments:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.28);
+}
+
 .btn-confirm-booking.is-confirmed,
 .btn-confirm-booking.is-confirmed:disabled {
-  background: var(--c-teal-500, #14b8a6);
-  color: #000000;
+  background: var(--c-teal-50, #eafaf6);
+  border: 1px solid var(--c-teal-200, #9ae4d3);
+  color: var(--c-teal-700, #0b6f5f);
 }
 
 .cancellation-policy-note {
@@ -438,7 +550,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--c-blue-700, #084c74);
+  color: var(--c-blue-700, #094c74);
   background: var(--c-blue-50, #e8f4fb);
   padding: 2px 8px;
   border-radius: 4px;
@@ -622,6 +734,12 @@
   font-size: 21px;
 }
 
+.layout-split .total-amount-pending {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-neutral-500, #647587);
+}
+
 .layout-split .booking-footer-submit {
   padding: 0 16px 16px;
 }
@@ -767,28 +885,59 @@
     min-height: 44px;
     height: 44px;
     padding: 0 22px;
-    border-radius: 8px;
-    background: #084c74;
+    border-radius: var(--radius-control, 8px);
+    background: var(--c-blue-600, #0b5d8e);
     color: #fff;
     font-size: 14.5px;
-    font-weight: 700;
+    font-weight: 600;
     border: none;
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.15s ease;
+    transition: background var(--t-control, 0.15s ease);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+  }
+  .btn-sticky-confirm:hover:not(:disabled) {
+    background: var(--c-blue-700, #094c74);
+  }
+  .btn-sticky-confirm:active:not(:disabled) {
+    background: var(--c-blue-800, #083c5c);
+  }
+  .btn-sticky-confirm:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.28);
   }
   .btn-sticky-confirm:disabled {
     background: #eaeff5;
     color: var(--c-neutral-500, #647587);
     cursor: not-allowed;
   }
+  .btn-sticky-confirm.is-confirmed-nav {
+    background: var(--c-blue-600, #0b5d8e);
+    border: none;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+  }
+  .btn-sticky-confirm.is-confirmed-nav:hover {
+    background: var(--c-blue-700, #094c74);
+    color: #ffffff;
+  }
+  .btn-sticky-confirm.is-confirmed-nav:active {
+    background: var(--c-blue-800, #083c5c);
+  }
   .btn-sticky-confirm.is-confirmed,
   .btn-sticky-confirm.is-confirmed:disabled {
-    background: var(--c-teal-500, #14b8a6);
-    color: #000000;
+    background: var(--c-teal-50, #eafaf6);
+    border: 1px solid var(--c-teal-200, #9ae4d3);
+    color: var(--c-teal-700, #0b6f5f);
   }
 }
 

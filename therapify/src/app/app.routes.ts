@@ -123,6 +123,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'turnos',
+        redirectTo: 'appointments',
+        pathMatch: 'full',
+      },
+      {
         path: 'reviews/:id',
         title: 'Reseñas del Profesional | Therapify',
         loadComponent: () =>

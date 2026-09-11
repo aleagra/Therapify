@@ -15,6 +15,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AppointmentService } from '../services/appointments.service';
 import { UserService } from '../services/user.service';
 import { AppointmentRequest } from '../../types/AppointmentRequest';
@@ -40,6 +41,7 @@ export interface CalendarDay {
     DatePipe,
     SkeletonComponent,
     SlotEndPipe,
+    RouterLink,
   ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
@@ -207,8 +209,12 @@ export class CalendarComponent implements OnChanges {
     return days;
   });
 
+  hasPrice = computed(() => {
+    return !!(this.consultationPrice && this.consultationPrice > 0);
+  });
+
   formattedPrice = computed(() => {
-    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A convenir';
+    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A consultar';
     return `$${this.consultationPrice.toLocaleString('es-AR')}`;
   });
 
