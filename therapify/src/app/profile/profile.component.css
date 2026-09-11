@@ -292,6 +292,45 @@
   box-shadow: 0 0 0 3px rgba(11, 93, 142, 0.18);
 }
 
+/* Estado deshabilitado del sistema: fondo de lienzo, borde apagado y texto
+   en el gris de placeholder. Se lee como "no editable", no como "vacio". */
+.profile-input:disabled {
+  background-color: var(--c-neutral-50, #f4f7fa);
+  border-color: var(--c-neutral-100, #eaeff5);
+  color: var(--c-neutral-300, #b3c0cf);
+  cursor: not-allowed;
+}
+
+.password-toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.demo-locked-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--c-neutral-500, #647587);
+}
+
+.demo-locked-hint svg {
+  flex-shrink: 0;
+  color: var(--c-neutral-300, #b3c0cf);
+}
+
+.demo-locked-hint-block {
+  align-items: flex-start;
+  margin: 0 0 14px;
+  max-width: 68ch;
+}
+
+.demo-locked-hint-block svg {
+  margin-top: 2px;
+}
+
 .password-input-wrapper {
   position: relative;
   display: flex;

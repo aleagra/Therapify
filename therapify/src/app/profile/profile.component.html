@@ -144,6 +144,9 @@
                       placeholder="Ej: Juan"
                       class="profile-input"
                     />
+                    @if (isDemo()) {
+                      <p class="demo-locked-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> No editable en modo demostración</p>
+                    }
                   </div>
 
                   <div class="form-field">
@@ -156,6 +159,9 @@
                       placeholder="Ej: Perez"
                       class="profile-input"
                     />
+                    @if (isDemo()) {
+                      <p class="demo-locked-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> No editable en modo demostración</p>
+                    }
                   </div>
 
                   <div class="form-field">
@@ -202,8 +208,16 @@
               <section class="form-flat-section">
                 <div class="section-title-line section-margin-top">
                   <h2 class="form-section-title">Seguridad</h2>
-                  <span class="form-section-caption">Completá sólo si querés cambiar la contraseña</span>
+                  @if (isDemo()) {
+                    <span class="form-section-caption">Bloqueada en modo demostración</span>
+                  } @else {
+                    <span class="form-section-caption">Completá sólo si querés cambiar la contraseña</span>
+                  }
                 </div>
+
+                @if (isDemo()) {
+                  <p class="demo-locked-hint demo-locked-hint-block"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> La contraseña de las cuentas demo no se puede cambiar: son compartidas entre evaluadores y modificarla dejaría el acceso rápido inutilizable.</p>
+                }
 
                 <div class="fields-grid-2">
                   <div class="form-field">
@@ -220,6 +234,7 @@
                       <button
                         type="button"
                         class="password-toggle-btn"
+                        [disabled]="isDemo()"
                         (click)="showPassword = !showPassword"
                         [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
                       >
@@ -245,6 +260,7 @@
                       <button
                         type="button"
                         class="password-toggle-btn"
+                        [disabled]="isDemo()"
                         (click)="showRepeatPassword = !showRepeatPassword"
                         [attr.aria-label]="showRepeatPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
                       >

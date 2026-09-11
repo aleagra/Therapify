@@ -77,6 +77,26 @@ export class ProfileComponent implements OnInit {
     repeatPassword: [''],
   });
 
+  /** Las cuentas demo son compartidas entre evaluadores: estos campos los
+   *  rechaza el backend, asi que los deshabilitamos para que se entienda que
+   *  es intencional y no un error al guardar. */
+  isDemo = computed(() => this.userService.isDemoSignal());
+
+  private readonly demoLockedFields = [
+    'firstName',
+    'lastName',
+    'password',
+    'repeatPassword',
+  ];
+
+  private applyDemoRestrictions(): void {
+    if (!this.isDemo()) return;
+
+    for (const field of this.demoLockedFields) {
+      this.formProfile.get(field)?.disable({ emitEvent: false });
+    }
+  }
+
   getInitials(first?: string, last?: string): string {
     const f = first ? first.trim().charAt(0).toUpperCase() : '';
     const l = last ? last.trim().charAt(0).toUpperCase() : '';
@@ -116,6 +136,7 @@ export class ProfileComponent implements OnInit {
           gender: res.gender,
         });
         this.formProfile.markAsPristine();
+        this.applyDemoRestrictions();
       },
       error: () => {
         this.isLoading.set(false);
