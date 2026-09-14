@@ -105,6 +105,11 @@
   flex-direction: column;
 }
 
+/* Tarjeta de Identidad (contenedor semántico) */
+.doctor-identity-card {
+  width: 100%;
+}
+
 /* Header de Identidad */
 .doctor-identity-header {
   display: flex;
@@ -453,31 +458,90 @@
     background: linear-gradient(135deg, var(--c-blue-600), var(--c-teal-500));
   }
 
+  .doctor-identity-card {
+    background: var(--c-surface, #ffffff);
+    border: 1px solid var(--c-neutral-150, #dfe6ee);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(22, 34, 44, 0.04);
+  }
+
   .doctor-identity-header {
     gap: 14px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+    align-items: center;
   }
 
   .doctor-avatar-72 {
-    width: 52px;
-    height: 52px;
-    font-size: 15px;
+    width: 54px;
+    height: 54px;
+    font-size: 16px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(11, 93, 142, 0.08);
   }
 
   .doctor-fullname {
-    font-size: 20px;
+    font-size: 19px;
+    line-height: 1.25;
     margin-bottom: 6px;
+    letter-spacing: -0.01em;
   }
 
   .doctor-badges-row {
+    display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 6px;
   }
 
+  .badge-specialty {
+    font-size: 11.5px;
+    padding: 3px 8px;
+  }
+
+  .badge-rating {
+    font-size: 11.5px;
+    padding: 3px 8px;
+  }
+
   .badge-verified {
+    font-size: 11.5px;
+    padding: 3px 8px;
     background: #eafaf6;
     color: #0b6f5f;
     font-weight: 600;
+  }
+
+  .doctor-meta-divider-row {
+    padding-top: 12px;
+    padding-bottom: 0;
+    border-top: 1px solid var(--c-neutral-100, #eaeff5);
+    border-bottom: none;
+    margin-bottom: 0;
+    gap: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .meta-separator-line {
+    display: none;
+  }
+
+  .meta-item {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--c-neutral-700, #384857);
+  }
+
+  .meta-item svg {
+    color: var(--c-neutral-500, #647587);
+    flex-shrink: 0;
+  }
+
+  .meta-item.modality-item {
+    color: var(--c-neutral-700, #384857);
   }
 
   .clinical-approach-section {

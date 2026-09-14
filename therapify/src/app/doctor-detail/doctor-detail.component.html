@@ -62,53 +62,62 @@
                 </div>
               } @else {
                 @if (doctor(); as doc) {
-                  <!-- 1. Header de Identidad -->
-                  <div class="doctor-identity-header">
-                    <div class="doctor-avatar-72">
-                      {{ doc.firstName | initials:doc.lastName }}
-                    </div>
-                    <div class="doctor-titles-block">
-                      <h1 class="doctor-fullname">
-                        {{ doc.firstName }} {{ doc.lastName }}
-                      </h1>
-                      <div class="doctor-badges-row">
-                        @if (doc.doctorSpecialty || doc.specialty) {
-                          <span class="badge-specialty">
-                            {{ (doc.doctorSpecialty || doc.specialty) | specialtyLabel }}
+                  <!-- Tarjeta de Identidad y Detalle del Doctor -->
+                  <div class="doctor-identity-card">
+                    <!-- 1. Header de Identidad -->
+                    <div class="doctor-identity-header">
+                      <div class="doctor-avatar-72">
+                        {{ doc.firstName | initials:doc.lastName }}
+                      </div>
+                      <div class="doctor-titles-block">
+                        <h1 class="doctor-fullname">
+                          {{ doc.firstName }} {{ doc.lastName }}
+                        </h1>
+                        <div class="doctor-badges-row">
+                          @if (doc.doctorSpecialty || doc.specialty) {
+                            <span class="badge-specialty">
+                              {{ (doc.doctorSpecialty || doc.specialty) | specialtyLabel }}
+                            </span>
+                          }
+                          @if (doctorRating) {
+                            <span class="badge-rating">
+                              <span class="rating-star" aria-hidden="true">★</span>
+                              <span class="rating-num">{{ doctorRating }}</span>
+                            </span>
+                          }
+                          <span class="badge-verified">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Matrícula verificada
                           </span>
-                        }
-                        <span class="badge-verified">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                          Matrícula verificada
-                        </span>
-                        @if (doctorRating) {
-                          <span class="badge-rating">
-                            <span class="rating-star" aria-hidden="true">★</span>
-                            <span class="rating-num">{{ doctorRating }}</span>
-                          </span>
-                        }
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- 2. Metadatos (Ubicación, Distancia, Modalidad) -->
-                  <div class="doctor-meta-divider-row">
-                    @if (doc.address) {
-                      <div class="meta-item">
+                    <!-- 2. Metadatos (Ubicación, Distancia, Modalidad) -->
+                    <div class="doctor-meta-divider-row">
+                      @if (doc.address) {
+                        <div class="meta-item">
+                          <svg class="meta-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                          </svg>
+                          <span class="address-val">{{ doc.address }}</span>
+                          @if (doc.distanceKm != null) {
+                            <span class="dist-val">· {{ doc.distanceKm.toFixed(1) }} km</span>
+                          }
+                        </div>
+                        <div class="meta-separator-line" aria-hidden="true"></div>
+                      }
+                      <div class="meta-item modality-item">
                         <svg class="meta-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
+                          <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z"></path>
+                          <rect x="1" y="6" width="14" height="12" rx="2" ry="2"></rect>
                         </svg>
-                        <span class="address-val">{{ doc.address }}</span>
-                        @if (doc.distanceKm != null) {
-                          <span class="dist-val">· {{ doc.distanceKm.toFixed(1) }} km</span>
-                        }
+                        <span class="modality-val">Presencial y videollamada</span>
                       </div>
-                      <div class="meta-separator-line" aria-hidden="true"></div>
-                    }
-                    <span class="modality-val">Presencial y videollamada</span>
+                    </div>
                   </div>
 
                   <!-- 3. Enfoque Clínico -->
