@@ -48,27 +48,31 @@
     <!-- Encabezado de Página con Margen de Ficha (96px) -->
     <header class="ficha-layout ficha-page header-block">
       <div class="ficha-rail header-rail">
-        <div class="rail-kicker">{{ userLogged?.userType === 'ADMIN' ? 'Administración' : 'Agenda' }}</div>
+        <div class="rail-kicker">{{ userLogged?.userType === 'ADMIN' ? 'Administración' : (userLogged?.userType === 'DOCTOR' ? 'Agenda' : 'Turnos') }}</div>
         <div class="rail-number">{{ userLogged?.userType === 'ADMIN' ? (turnosAdmin().length < 10 ? '0' + turnosAdmin().length : turnosAdmin().length) : '01' }}</div>
       </div>
       <div class="ficha-body header-body">
         <h1 class="page-title">
           @if (userLogged?.userType === 'ADMIN') {
             Gestión de <span class="text-accent-word">turnos</span>
-          } @else {
+          } @else if (userLogged?.userType === 'DOCTOR') {
             Tus <span class="text-accent-word">sesiones</span>
+          } @else {
+            Mis <span class="text-accent-word">turnos</span>
           }
         </h1>
         <p class="page-subtitle">
           @if (userLogged?.userType === 'ADMIN') {
             Supervisión y control de todas las consultas registradas en la plataforma.
-          } @else {
+          } @else if (userLogged?.userType === 'DOCTOR') {
             Turnos que reservaste como paciente y consultas que recibís como profesional.
+          } @else {
+            Consultá el estado de tus turnos reservados y gestioná tus próximas sesiones.
           }
         </p>
 
-        <!-- Selector de Tabs Mobile (Solo pacientes/doctores) -->
-        @if (userLogged?.userType !== 'ADMIN') {
+        <!-- Selector de Tabs Mobile (Solo para DOCTOR que atiende pacientes y también puede tener turnos) -->
+        @if (userLogged?.userType === 'DOCTOR') {
           <div class="mobile-turnos-tabs-bar">
             <button
               type="button"
@@ -93,7 +97,7 @@
 
     <!-- SECCIÓN PACIENTE (Para Pacientes y Doctores con turnos personales) -->
     @if (userLogged?.userType !== 'ADMIN') {
-      <section class="appointments-section" [class.mobile-hidden]="mobileActiveTab() !== 'turnos'">
+      <section class="appointments-section" [class.mobile-hidden]="userLogged?.userType === 'DOCTOR' && mobileActiveTab() !== 'turnos'">
         <!-- Encabezado de Sección con Margen (96px) -->
         <div class="ficha-layout ficha-page section-head-ficha">
           <div class="ficha-rail section-rail">
