@@ -58,8 +58,37 @@
 .price-input-field{border:none;flex:1;border-radius:0;height:40px;padding:0 12px}
 .doctor-textarea{width:100%;padding:10px 12px;font-size:14px;line-height:1.6;resize:vertical}
 .form-actions-bar{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:32px}
-.btn-discard-flat{background:transparent;border:none;font-size:13.5px;font-weight:600;color:#475569;cursor:pointer;padding:0 12px;height:42px}
-.btn-discard-flat:disabled{opacity:.4;cursor:not-allowed}
+.btn-discard-flat {
+  background: var(--c-surface, #ffffff);
+  border: 1px solid var(--c-neutral-200, #cbd6e2);
+  border-radius: var(--radius-control, 8px);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--c-neutral-700, #475569);
+  cursor: pointer;
+  padding: 0 18px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  box-sizing: border-box;
+}
+.btn-discard-flat:disabled {
+  opacity: 0.5;
+  background: var(--c-neutral-50, #f4f7fa);
+  border-color: var(--c-neutral-150, #dfe6ee);
+  color: var(--c-neutral-300, #b3c0cf);
+  cursor: not-allowed;
+}
+.btn-discard-flat:hover:not(:disabled) {
+  background: var(--c-neutral-100, #eaeff5);
+  border-color: var(--c-neutral-300, #b3c0cf);
+  color: var(--c-neutral-900, #16222c);
+}
+.btn-discard-flat:active:not(:disabled) {
+  background: var(--c-neutral-150, #dfe6ee);
+}
 .btn-save-primary{height:40px;padding:0 24px;border-radius:var(--radius-control, 8px);background:var(--c-blue-600, #0b5d8e);border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background var(--t-control, .15s ease)}
 .btn-save-primary:hover:not(:disabled){background:var(--c-blue-700, #094c74)}
 .btn-save-primary:active:not(:disabled){background:var(--c-blue-800, #083c5c)}
@@ -106,4 +135,29 @@
   .hours-inputs-group{flex-wrap:wrap;row-gap:8px}
   .hours-inputs-group.is-inactive-group{row-gap:6px}
   .btn-copy-link{margin-left:0}
+
+  .address-warning-banner {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px 14px;
+    padding: 16px;
+    align-items: start;
+  }
+  .address-warning-banner .warning-icon {
+    grid-column: 1;
+    grid-row: 1;
+    margin-top: 2px;
+  }
+  .address-warning-banner .warning-content {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .address-warning-banner .warning-link {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 42px;
+  }
 }

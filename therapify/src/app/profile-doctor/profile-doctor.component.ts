@@ -14,7 +14,7 @@ import { User } from '../../types/user';
 import { UserRequestDTO } from '../../types/UserRequestDTO';
 import { toast } from 'ngx-sonner';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
-import { concat, of, timer } from 'rxjs';
+import { concat, of, timer, finalize, timeout } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
@@ -31,7 +31,7 @@ export class ProfileDoctorComponent {
   router = inject(Router);
 
   user!: User;
-  loading = false;
+  loading = signal(false);
 
   isLoading = signal(true);
   loadError = signal<string | null>(null);
@@ -290,18 +290,33 @@ export class ProfileDoctorComponent {
       ...(f.specialty ? { specialty: f.specialty } : {}),
     };
 
-    this.loading = true;
+    if (this.loading()) return;
 
-    this.userService.updateUser(dto).subscribe({
-      next: () => {
-        this.loading = false;
-        toast.success('Agenda actualizada');
-      },
-      error: () => {
-        this.loading = false;
-        toast.error('Error al guardar agenda');
-      },
-    });
+    this.loading.set(true);
+
+    this.userService
+      .updateUser(dto)
+      .pipe(
+        timeout(15000),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe({
+        next: (res) => {
+          toast.success('Agenda actualizada');
+          if (res) {
+            this.user = res;
+          } else {
+            this.user = {
+              ...this.user,
+              ...dto,
+            };
+          }
+          this.formSchedule.markAsPristine();
+        },
+        error: () => {
+          toast.error('Error al guardar agenda');
+        },
+      });
   }
   cancelMedical() {
     if (!this.user || this.user.userType !== 'DOCTOR') return;

@@ -6,7 +6,7 @@ import { UserService } from '../services/user.service';
 import { Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
-import { concat, of, timer } from 'rxjs';
+import { concat, of, timer, finalize, timeout } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
   userService = inject(UserService);
   router = inject(Router);
 
-  loading = false;
+  loading = signal(false);
   showPassword = false;
   showRepeatPassword = false;
 
@@ -172,24 +172,30 @@ export class ProfileComponent implements OnInit {
       ...(password ? { password } : {}),
     };
 
-    this.loading = true;
+    if (this.loading()) return;
 
-    this.userService.updateUser(updatedUser).subscribe({
-      next: (res) => {
-        this.loading = false;
-        toast.success('Perfil actualizado correctamente');
-        this.user = res;
-        this.formProfile.patchValue({
-          password: '',
-          repeatPassword: '',
-        });
-        this.formProfile.markAsPristine();
-      },
-      error: () => {
-        this.loading = false;
-        toast.error('Error al actualizar el perfil');
-      },
-    });
+    this.loading.set(true);
+
+    this.userService
+      .updateUser(updatedUser)
+      .pipe(
+        timeout(15000),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe({
+        next: (res) => {
+          toast.success('Perfil actualizado correctamente');
+          this.user = res;
+          this.formProfile.patchValue({
+            password: '',
+            repeatPassword: '',
+          });
+          this.formProfile.markAsPristine();
+        },
+        error: () => {
+          toast.error('Error al actualizar el perfil');
+        },
+      });
   }
 
   cancel() {

@@ -280,7 +280,7 @@
                   type="button"
                   class="btn-discard-flat"
                   (click)="cancel()"
-                  [disabled]="loading || formProfile.pristine"
+                  [disabled]="loading() || formProfile.pristine"
                 >
                   Descartar cambios
                 </button>
@@ -288,9 +288,9 @@
                 <button
                   type="submit"
                   class="btn-save-primary"
-                  [disabled]="loading || formProfile.pristine"
+                  [disabled]="loading() || formProfile.pristine"
                 >
-                  {{ loading ? "Guardando..." : "Guardar cambios" }}
+                  {{ loading() ? "Guardando..." : "Guardar cambios" }}
                 </button>
               </div>
             </form>

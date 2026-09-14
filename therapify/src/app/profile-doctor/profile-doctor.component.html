@@ -271,7 +271,7 @@
                   type="button"
                   class="btn-discard-flat"
                   (click)="cancelMedical()"
-                  [disabled]="loading"
+                  [disabled]="loading()"
                 >
                   Descartar cambios
                 </button>
@@ -279,9 +279,9 @@
                 <button
                   type="submit"
                   class="btn-save-primary"
-                  [disabled]="loading"
+                  [disabled]="loading()"
                 >
-                  {{ loading ? "Guardando..." : "Guardar cambios" }}
+                  {{ loading() ? "Guardando..." : "Guardar cambios" }}
                 </button>
               </div>
             </form>
