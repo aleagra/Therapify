@@ -45,12 +45,9 @@
    Banner Superior Global de Modo Demo
    ============================================================================= */
 .demo-global-banner {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   width: 100%;
-  z-index: 9999;
+  z-index: 10;
   background: var(--c-blue-50, #eff6fb);
   border-bottom: 1px solid var(--c-neutral-150, #dfe6ee);
   box-shadow: 0 1px 3px rgba(13, 35, 55, 0.04);
