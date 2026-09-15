@@ -1,4 +1,4 @@
-@if (!accountCreated) {
+@if (!accountCreated()) {
   <div class="login-split-page">
     <div class="login-split-container">
       <!-- Columna Izquierda: Banner Oscuro #083c5c -->
@@ -73,7 +73,7 @@
 
               <div class="wizard-step-line" [class.is-done]="step > 2"></div>
 
-              <div class="wizard-step-indicator" [class.is-done]="accountCreated" [class.is-active]="step === 3">
+              <div class="wizard-step-indicator" [class.is-done]="accountCreated()" [class.is-active]="step === 3">
                 <div class="step-rail-badge">
                   <span>03</span>
                 </div>
@@ -266,9 +266,9 @@
                   Seleccioná un tipo de cuenta para continuar
                 </small>
 
-                @if (errorMsg) {
+                @if (errorMsg()) {
                   <div class="register-error-banner">
-                    {{ errorMsg }}
+                    {{ errorMsg() }}
                   </div>
                 }
 
@@ -276,8 +276,8 @@
                   <button type="button" class="btn-wizard-back" (click)="prevStep()">
                     &larr; Atrás
                   </button>
-                  <button type="submit" class="btn-wizard-finish" [disabled]="loading || !userType">
-                    {{ loading ? "Creando cuenta..." : "Finalizar registro" }}
+                  <button type="submit" class="btn-wizard-finish" [disabled]="loading() || !userType">
+                    {{ loading() ? "Creando cuenta..." : "Finalizar registro" }}
                   </button>
                 </div>
               </form>
@@ -296,7 +296,7 @@
 </div>
 }
 
-@if (accountCreated) {
+@if (accountCreated()) {
   <div class="register-page-root">
     <div class="register-container">
       <div class="register-success-layout">

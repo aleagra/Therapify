@@ -1,9 +1,10 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserService } from '../services/user.service';
 import { toast } from 'ngx-sonner';
+import { finalize, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -19,9 +20,13 @@ export class RegisterComponent {
 
   step = 1;
   userType = '';
-  accountCreated = false;
-  loading = false;
-  errorMsg = '';
+
+  // Signals en vez de campos planos: la respuesta HTTP a veces llega en un
+  // tick que zone.js no detecta como "inestable" y la vista no se
+  // re-renderiza con un campo comun, dejando el boton trabado.
+  loading = signal(false);
+  accountCreated = signal(false);
+  errorMsg = signal('');
 
   form = this.fb.nonNullable.group({
     firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -69,33 +74,67 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    // Guarda anti-doble clic: previene envíos simultáneos que confunden el estado
+    // y pueden provocar conflictos de registro duplicado en el backend.
+    if (this.loading()) return;
+
     if (this.form.invalid) {
       Object.values(this.form.controls).forEach((c) => c.markAsTouched());
       return;
     }
 
-    this.loading = true;
-    this.errorMsg = '';
+    this.loading.set(true);
+    this.errorMsg.set('');
 
     const user = this.form.getRawValue() as any;
 
-    this.userService.postUser(user).subscribe({
-      next: () => {
-        this.loading = false;
-        this.accountCreated = true;
-      },
-      error: (err) => {
-        this.loading = false;
-        const msg = err.error?.message || err.error || '';
+    this.userService
+      .postUser(user)
+      .pipe(
+        // Cota superior para que el botón no quede congelado si la conexión demora.
+        timeout(30000),
+        // finalize corre siempre (éxito, error o cancelación) para liberar la UI.
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.accountCreated.set(true);
+          toast.success('¡Cuenta creada con éxito! Revisá tu correo para verificarla.');
+        },
+        error: (err) => {
+          const msg = this.mensajeErrorRegistro(err);
+          this.errorMsg.set(`❌ ${msg}`);
+          toast.error(msg);
+        },
+      });
+  }
 
-        if (msg.includes('email ya está registrado')) {
-          this.errorMsg = '❌ Este email ya está registrado. Probá con otro.';
-          toast.error('El email ingresado ya está registrado');
-        } else {
-          this.errorMsg = '❌ Error al crear la cuenta.';
-        }
-      },
-    });
+  private mensajeErrorRegistro(err: any): string {
+    if (err?.name === 'TimeoutError') {
+      return 'El servidor está tardando demasiado. Intentá de nuevo.';
+    }
+    if (err?.status === 0) {
+      return 'No se pudo conectar con el servidor. Revisá tu conexión.';
+    }
+
+    const texto: string =
+      err?.error?.message ??
+      err?.error?.mensaje ??
+      (typeof err?.error === 'string' ? err.error : '') ??
+      '';
+
+    const lower = texto.toLowerCase();
+    if (
+      lower.includes('email ya está registrado') ||
+      lower.includes('ya está registrado') ||
+      lower.includes('ya existe') ||
+      lower.includes('duplicad') ||
+      err?.status === 409
+    ) {
+      return 'Este email ya está registrado. Probá con otro.';
+    }
+
+    return texto || 'Error al crear la cuenta. Intentá nuevamente.';
   }
 
   getControl(name: string) {
