@@ -250,9 +250,9 @@
         <button
           type="submit"
           class="btn-confirm-booking"
-          [disabled]="citaForm.invalid"
+          [disabled]="citaForm.invalid || isSubmitting()"
         >
-          <span>{{ isRescheduling() ? 'Confirmar reprogramación' : 'Confirmar reserva' }}</span>
+          <span>{{ isSubmitting() ? 'Confirmando...' : (isRescheduling() ? 'Confirmar reprogramación' : 'Confirmar reserva') }}</span>
         </button>
       }
       <p class="cancellation-policy-note">
@@ -298,9 +298,9 @@
         <button
           type="submit"
           class="btn-sticky-confirm"
-          [disabled]="citaForm.invalid"
+          [disabled]="citaForm.invalid || isSubmitting()"
         >
-          <span>{{ isRescheduling() ? 'Confirmar reprogramación' : 'Confirmar reserva' }}</span>
+          <span>{{ isSubmitting() ? 'Confirmando...' : (isRescheduling() ? 'Confirmar reprogramación' : 'Confirmar reserva') }}</span>
         </button>
       }
     }

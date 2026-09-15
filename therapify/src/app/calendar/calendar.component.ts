@@ -24,6 +24,7 @@ import { appointmentErrorMessage } from '../config/appointment-errors';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { SlotEndPipe } from '../pipes/slot-end.pipe';
 import { toast } from 'ngx-sonner';
+import { finalize, timeout } from 'rxjs';
 
 export interface CalendarDay {
   date: Date;
@@ -118,6 +119,7 @@ export class CalendarComponent implements OnChanges {
   horariosDisponibles = signal<string[]>([]);
   horariosOcupados = signal<string[]>([]);
   isLoadingSlots = signal(false);
+  isSubmitting = signal(false);
   showSlotsSkeleton = signal(false);
   private slotsTimer: ReturnType<typeof setTimeout> | null = null;
   reservaConfirmada = signal(false);
@@ -369,8 +371,9 @@ export class CalendarComponent implements OnChanges {
 
   private enviarReprogramacion(fecha: Date, hora: string): void {
     const id = this.rescheduleId();
-    if (!id) return;
+    if (!id || this.isSubmitting()) return;
 
+    this.isSubmitting.set(true);
     const fechaISO = this.formatDateISO(fecha);
 
     this.appointmentsService
@@ -379,6 +382,10 @@ export class CalendarComponent implements OnChanges {
         startTime: hora,
         endTime: this.calcularFin(hora),
       })
+      .pipe(
+        timeout(30000),
+        finalize(() => this.isSubmitting.set(false)),
+      )
       .subscribe({
         next: () => {
           this.reservaConfirmada.set(true);
@@ -469,8 +476,15 @@ export class CalendarComponent implements OnChanges {
       return;
     }
 
+    if (this.isSubmitting()) return;
+    this.isSubmitting.set(true);
+
     this.appointmentsService
       .createAppointment(appointmentRequest)
+      .pipe(
+        timeout(30000),
+        finalize(() => this.isSubmitting.set(false)),
+      )
       .subscribe({
         next: () => {
           this.reservaConfirmada.set(true);

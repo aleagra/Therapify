@@ -269,11 +269,11 @@
                 <!-- Acciones del Formulario -->
                 <button
                   type="submit"
-                  [disabled]="reviewForm.invalid || !canSubmitReview"
+                  [disabled]="reviewForm.invalid || !canSubmitReview || isSubmitting()"
                   [title]="!canSubmitReview ? 'Solo podés dejar reseñas a doctores con los que tuviste un turno.' : ''"
                   class="btn-submit-review"
                 >
-                  {{ isEditing() ? 'Actualizar reseña' : 'Publicar reseña' }}
+                  {{ isSubmitting() ? 'Guardando...' : (isEditing() ? 'Actualizar reseña' : 'Publicar reseña') }}
                 </button>
 
                 @if (isEditing()) {

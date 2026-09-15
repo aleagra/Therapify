@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concat, of, timer } from 'rxjs';
+import { concat, of, timer, finalize, timeout } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../services/user.service';
 import { ReviewsService } from '../services/reviews.service';
@@ -35,6 +35,7 @@ export class ReviewsComponent implements OnInit {
   isEditing = signal(false);
   reviewToEditId = signal<string | null>(null);
   isLoadingReviews = signal(true);
+  isSubmitting = signal(false);
   loadError = signal<string | null>(null);
 
   readonly reviewsPageSize = 8;
@@ -234,6 +235,8 @@ export class ReviewsComponent implements OnInit {
   }
 
   onSubmitReview(): void {
+    if (this.isSubmitting()) return;
+
     if (!this.userLogged) {
       toast.warning('Debes iniciar sesión.');
       return;
@@ -249,6 +252,8 @@ export class ReviewsComponent implements OnInit {
       return;
     }
 
+    this.isSubmitting.set(true);
+
     const rawComment = this.reviewForm.value.comment;
     const commentVal = typeof rawComment === 'string' ? rawComment.trim() : '';
 
@@ -262,6 +267,10 @@ export class ReviewsComponent implements OnInit {
       const editId = this.reviewToEditId()!;
       this.reviewsService
         .updateReview(editId, reviewData)
+        .pipe(
+          timeout(30000),
+          finalize(() => this.isSubmitting.set(false)),
+        )
         .subscribe({
           next: (review) => {
             this.reviews.update((list) =>
@@ -270,28 +279,44 @@ export class ReviewsComponent implements OnInit {
             toast.success('Reseña actualizada ✅', { position: 'top-center' });
             this.resetForm();
           },
-          error: () =>
+          error: (err) => {
+            if (err?.name === 'TimeoutError') {
+              toast.error('El servidor tardó demasiado en responder.', { position: 'top-center' });
+              return;
+            }
             toast.error('No se pudo actualizar la reseña', {
               position: 'top-center',
-            }),
+            });
+          },
         });
       return;
     }
 
-    this.reviewsService.createReview(reviewData).subscribe({
-      next: (review) => {
-        this.reviews.update((list) => [review, ...list]);
-        this.visibleReviewsCount.update((c) => c + 1);
-        toast.success('Reseña creada ✅', { position: 'top-center' });
-        this.resetForm();
-      },
-      error: (err) =>
-        toast.error(
-          err?.error?.message ||
-            'No podés dejar una reseña si no tuviste turno con este doctor.',
-          { position: 'top-center' },
-        ),
-    });
+    this.reviewsService
+      .createReview(reviewData)
+      .pipe(
+        timeout(30000),
+        finalize(() => this.isSubmitting.set(false)),
+      )
+      .subscribe({
+        next: (review) => {
+          this.reviews.update((list) => [review, ...list]);
+          this.visibleReviewsCount.update((c) => c + 1);
+          toast.success('Reseña creada ✅', { position: 'top-center' });
+          this.resetForm();
+        },
+        error: (err) => {
+          if (err?.name === 'TimeoutError') {
+            toast.error('El servidor tardó demasiado en responder.', { position: 'top-center' });
+            return;
+          }
+          toast.error(
+            err?.error?.message ||
+              'No podés dejar una reseña si no tuviste turno con este doctor.',
+            { position: 'top-center' },
+          );
+        },
+      });
   }
 
   deleteReview(id: string): void {
