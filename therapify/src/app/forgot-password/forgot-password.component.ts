@@ -1,9 +1,10 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
-
 import { RouterLink } from '@angular/router';
+import { toast } from 'ngx-sonner';
+import { finalize, timeout } from 'rxjs';
 
 const RESEND_COOLDOWN_SECONDS = 60;
 
@@ -18,8 +19,10 @@ export class ForgotPasswordComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  success = false;
-  loading = false;
+  // Signals para evitar desincronización de cambio de estado en Zone.js
+  success = signal(false);
+  loading = signal(false);
+  resending = signal(false);
   sentToEmail = '';
   resendSecondsLeft = 0;
 
@@ -30,7 +33,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   });
 
   get canResend(): boolean {
-    return this.resendSecondsLeft <= 0;
+    return this.resendSecondsLeft <= 0 && !this.resending();
   }
 
   get resendCountdownLabel(): string {
@@ -40,30 +43,72 @@ export class ForgotPasswordComponent implements OnDestroy {
   }
 
   submit() {
-    if (this.form.invalid) return;
+    if (this.loading()) return;
 
-    this.loading = true;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
     const email = this.form.value.email!;
 
-    this.authService.forgotPassword(email).subscribe({
-      next: () => {
-        this.success = true;
-        this.loading = false;
-        this.sentToEmail = email;
-        this.startResendCooldown();
-      },
-      error: () => {
-        this.loading = false;
-      },
-    });
+    this.authService
+      .forgotPassword(email)
+      .pipe(
+        timeout(30000),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.success.set(true);
+          this.sentToEmail = email;
+          this.startResendCooldown();
+          toast.success('Enlace de recuperación enviado con éxito.');
+        },
+        error: (err) => {
+          toast.error(this.mensajeError(err));
+        },
+      });
   }
 
   resend() {
-    if (!this.canResend || !this.sentToEmail) return;
+    if (!this.canResend || !this.sentToEmail || this.resending()) return;
 
-    this.authService.forgotPassword(this.sentToEmail).subscribe({
-      next: () => this.startResendCooldown(),
-    });
+    this.resending.set(true);
+
+    this.authService
+      .forgotPassword(this.sentToEmail)
+      .pipe(
+        timeout(30000),
+        finalize(() => this.resending.set(false)),
+      )
+      .subscribe({
+        next: () => {
+          this.startResendCooldown();
+          toast.success('Enlace reenviado.');
+        },
+        error: (err) => {
+          toast.error(this.mensajeError(err));
+        },
+      });
+  }
+
+  private mensajeError(err: any): string {
+    if (err?.name === 'TimeoutError') {
+      return 'El servidor está tardando demasiado. Intentá de nuevo.';
+    }
+    if (err?.status === 0) {
+      return 'No se pudo conectar con el servidor. Revisá tu conexión.';
+    }
+
+    const texto: string =
+      err?.error?.message ??
+      err?.error?.mensaje ??
+      (typeof err?.error === 'string' ? err.error : '') ??
+      '';
+
+    return texto || 'No se pudo enviar el enlace de recuperación. Intentá nuevamente.';
   }
 
   private startResendCooldown(): void {
