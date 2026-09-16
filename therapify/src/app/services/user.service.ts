@@ -17,6 +17,7 @@ export class UserService {
   private AUTH_URL = `${this.BASE_URL}/auth`;
 
   localKey = 'userLogged';
+  currentUserSignal = signal<User | null>(this.getLoggedUser());
   isLoggedSignal = signal(!!localStorage.getItem(this.localKey));
   isDemoSignal = signal(this.checkIsDemoUser(this.getLoggedUser()));
 
@@ -89,6 +90,7 @@ export class UserService {
               user.isDemo === true;
             const userWithDemo: User = { ...user, isDemo };
             localStorage.setItem(this.localKey, JSON.stringify(userWithDemo));
+            this.currentUserSignal.set(userWithDemo);
             this.isLoggedSignal.set(true);
             this.isDemoSignal.set(isDemo);
             this.invalidateUserCaches();
@@ -107,6 +109,7 @@ export class UserService {
 
   logout(): void {
     localStorage.removeItem(this.localKey);
+    this.currentUserSignal.set(null);
     this.isLoggedSignal.set(false);
     this.isDemoSignal.set(false);
     this.invalidateUserCaches();
@@ -152,6 +155,7 @@ export class UserService {
           };
 
           localStorage.setItem(this.localKey, JSON.stringify(updatedUser));
+          this.currentUserSignal.set(updatedUser);
 
           return updatedUser;
         }),
@@ -165,10 +169,12 @@ export class UserService {
 
   updateLocalUser(user: User): void {
     const current = this.getLoggedUser();
+    const updatedUser = { ...user, token: current?.token };
     localStorage.setItem(
       this.localKey,
-      JSON.stringify({ ...user, token: current?.token }),
+      JSON.stringify(updatedUser),
     );
+    this.currentUserSignal.set(updatedUser);
   }
 
   getDoctores(): Observable<User[]> {

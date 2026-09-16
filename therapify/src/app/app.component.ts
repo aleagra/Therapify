@@ -23,7 +23,7 @@ export class AppComponent {
   });
 
   demoRoleLabel = computed(() => {
-    const user = this.userService.getLoggedUser();
+    const user = this.userService.currentUserSignal();
     if (user?.userType === 'DOCTOR') {
       return 'Terapeuta';
     }

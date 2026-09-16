@@ -48,7 +48,7 @@
           Sobre nosotros
         </a>
         <a
-          *ngIf="userService.getLoggedUser()?.userType === 'ADMIN'"
+          *ngIf="userService.currentUserSignal()?.userType === 'ADMIN'"
           routerLink="/users"
           routerLinkActive="is-active"
           [routerLinkActiveOptions]="{ exact: true }"
