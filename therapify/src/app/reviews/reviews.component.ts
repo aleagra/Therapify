@@ -185,6 +185,10 @@ export class ReviewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+
     if (!this.doctorId) {
       const idFromRoute = this.route.snapshot.paramMap.get('id');
       if (!idFromRoute) {
