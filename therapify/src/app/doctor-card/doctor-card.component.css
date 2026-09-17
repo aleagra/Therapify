@@ -18,7 +18,6 @@
   box-shadow: 0 8px 20px -12px rgba(13, 35, 55, 0.3);
 }
 
-/* Gesto propio: Margen de ficha de 64px */
 .card-ficha-grid {
   display: grid;
   grid-template-columns: 64px 1fr;
@@ -69,7 +68,6 @@
   background: var(--c-neutral-300);
 }
 
-/* Cuerpo de Ficha */
 .card-body-content {
   padding: 16px;
   display: flex;
@@ -167,7 +165,6 @@
   display: inline-block;
 }
 
-/* Ubicación */
 .location-line {
   display: flex;
   align-items: center;
@@ -240,7 +237,6 @@
   font-weight: 500;
 }
 
-/* Chips de Días */
 .schedule-chips-row {
   display: flex;
   flex-wrap: nowrap;
@@ -279,7 +275,6 @@
   cursor: default;
 }
 
-/* Footer de la tarjeta */
 .card-actions-footer {
   display: flex;
   align-items: center;

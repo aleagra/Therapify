@@ -1,7 +1,6 @@
 <div class="doctor-detail-root density-work">
   <div class="detail-container">
 
-    <!-- Enlace de retorno -->
     <div class="detail-top-nav-bar">
       <a routerLink="/doctors" (click)="goBack($event)" class="back-link">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -30,22 +29,17 @@
         </button>
       </div>
     } @else {
-      <!-- Estructura con Margen de Ficha (96px) -->
       <div class="ficha-layout ficha-page detail-ficha-layout">
-        <!-- Rail Izquierdo (96px) -->
         <div class="ficha-rail detail-rail">
           <div class="rail-kicker">Perfil</div>
           <div class="rail-number">01</div>
         </div>
 
-        <!-- Cuerpo Derecho -->
         <div class="ficha-body detail-body">
           <div class="booking-layout-grid">
 
-            <!-- Columna Izquierda: Información del Profesional -->
             <div class="specialist-info-column">
               @if (displayLoading()) {
-                <!-- Skeleton de Carga -->
                 <div class="skeleton-profile-header" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
                   <div style="display: flex; gap: 18px; margin-bottom: 22px;">
                     <app-skeleton circle="true" width="72px" height="72px"></app-skeleton>
@@ -62,9 +56,7 @@
                 </div>
               } @else {
                 @if (doctor(); as doc) {
-                  <!-- Tarjeta de Identidad y Detalle del Doctor -->
                   <div class="doctor-identity-card">
-                    <!-- 1. Header de Identidad -->
                     <div class="doctor-identity-header">
                       <div class="doctor-avatar-72">
                         {{ doc.firstName | initials:doc.lastName }}
@@ -95,7 +87,6 @@
                       </div>
                     </div>
 
-                    <!-- 2. Metadatos (Ubicación, Distancia, Modalidad) -->
                     <div class="doctor-meta-divider-row">
                       @if (doc.address) {
                         <div class="meta-item">
@@ -120,7 +111,6 @@
                     </div>
                   </div>
 
-                  <!-- 3. Enfoque Clínico -->
                   <section class="clinical-approach-section">
                     <h2 class="section-heading">Enfoque clínico</h2>
                     <p class="approach-paragraph">
@@ -128,7 +118,6 @@
                     </p>
                   </section>
 
-                  <!-- 4. Horarios Habituales — Nivel 2 Hundida -->
                   <section class="usual-schedule-sunken surface-sunken">
                     <div class="schedule-sunken-header">
                       <span class="schedule-kicker">Horarios habituales</span>
@@ -154,8 +143,6 @@
               }
             </div>
 
-            <!-- Zona de reserva: el calendario se reparte en dos columnas
-                 propias (fechas | horarios + resumen + confirmacion) -->
             <app-calendar
                 [schedule]="doctor()?.schedule"
                 [availability]="doctor()?.availability"

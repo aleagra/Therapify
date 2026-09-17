@@ -1,6 +1,5 @@
 <div class="doctor-profile-page-root">
   <div class="doctor-profile-container">
-    <!-- Header con rail de página 96px: AGENDA 01 -->
     <header class="header-block rail-layout-96">
       <div class="header-rail">
         <span class="rail-kicker">AGENDA</span>
@@ -38,7 +37,6 @@
             </button>
           </div>
         } @else if (displayLoading()) {
-          <!-- Skeleton de Carga -->
           <div class="doctor-editor-grid" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
             <main class="editor-main-column">
               <div class="medical-form">
@@ -90,7 +88,6 @@
           </div>
         } @else {
         <div class="doctor-editor-grid">
-          <!-- Columna Izquierda: Formulario de Agenda -->
           <main class="editor-main-column">
             <form
               class="medical-form"
@@ -120,7 +117,6 @@
                 </div>
               }
 
-              <!-- Sección 1: Días y horarios de atención -->
               <section class="form-flat-section">
                 <div class="section-title-line">
                   <h2 class="form-section-title">Días y horarios de atención</h2>
@@ -203,8 +199,6 @@
                   }
                 </div>
               </section>
-
-              <!-- Sección 2: Especialidad y honorarios -->
               <section class="form-flat-section section-margin-top">
                 <div class="section-title-line">
                   <h2 class="form-section-title">Especialidad y honorarios</h2>
@@ -258,7 +252,6 @@
                 </div>
               </section>
 
-              <!-- Barra de acciones -->
               <div class="form-actions-bar">
                 <button
                   type="button"
@@ -280,7 +273,6 @@
             </form>
           </main>
 
-          <!-- Columna Derecha: Vista Previa en Vivo (Foto 2) -->
           <aside class="preview-sidebar-column">
             <div class="preview-outer-panel">
               <div class="preview-panel-header">
@@ -288,10 +280,8 @@
                 <h2 class="preview-sub">Así te ven en el listado</h2>
               </div>
 
-              <!-- Tarjeta interior de doctor -->
               <div class="doctor-live-card">
                 <div class="card-ficha-grid">
-                  <!-- Margen de Ficha (64px) -->
                   <div class="card-rail">
                     <div class="card-avatar">
                       {{ userInitials }}
@@ -303,7 +293,6 @@
                     ></span>
                   </div>
 
-                  <!-- Cuerpo de Ficha -->
                   <div class="card-body-content">
                     <div class="card-header-line">
                       <h3 class="doctor-name">
@@ -348,7 +337,6 @@
                 </div>
               </div>
 
-              <!-- Pie de nota dentro del panel -->
               <p class="preview-footnote">
                 La vista previa se actualiza mientras editás.
               </p>

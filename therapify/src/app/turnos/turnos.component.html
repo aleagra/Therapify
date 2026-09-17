@@ -45,7 +45,6 @@
 <div class="appointments-page-root density-work">
   <div class="appointments-container">
 
-    <!-- Encabezado de Página con Margen de Ficha (96px) -->
     <header class="ficha-layout ficha-page header-block">
       <div class="ficha-rail header-rail">
         <div class="rail-kicker">{{ userLogged?.userType === 'ADMIN' ? 'Administración' : (userLogged?.userType === 'DOCTOR' ? 'Agenda' : 'Turnos') }}</div>
@@ -71,7 +70,6 @@
           }
         </p>
 
-        <!-- Selector de Tabs Mobile (Solo para DOCTOR que atiende pacientes y también puede tener turnos) -->
         @if (userLogged?.userType === 'DOCTOR') {
           <div class="mobile-turnos-tabs-bar">
             <button
@@ -95,10 +93,8 @@
       </div>
     </header>
 
-    <!-- SECCIÓN PACIENTE (Para Pacientes y Doctores con turnos personales) -->
     @if (userLogged?.userType !== 'ADMIN') {
       <section class="appointments-section" [class.mobile-hidden]="userLogged?.userType === 'DOCTOR' && mobileActiveTab() !== 'turnos'">
-        <!-- Encabezado de Sección con Margen (96px) -->
         <div class="ficha-layout ficha-page section-head-ficha">
           <div class="ficha-rail section-rail">
             <div class="rail-kicker">Paciente</div>
@@ -138,7 +134,6 @@
           </div>
         </div>
 
-        <!-- Lista de Turnos en Card Nivel 1 con Margen Ficha -->
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
@@ -166,14 +161,12 @@
               <div class="appointments-card-list surface-card">
                 @for (ap of misTurnos(); track ap.id; let first = $first) {
                   <div class="appointment-row" [class.has-divider]="!first">
-                    <!-- Margen de fila con fecha (96px) -->
                     <div class="row-date-rail">
                       <div class="date-day-num">{{ ap.date | datePart:'day' }}</div>
                       <div class="date-month-txt">{{ ap.date | datePart:'month' }}</div>
                       <div class="date-time-txt">{{ ap.startTime }} hs</div>
                     </div>
 
-                    <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
                         <div class="row-avatar" aria-hidden="true">{{ ap.doctorName | initials }}</div>
@@ -246,10 +239,8 @@
       </section>
     }
 
-    <!-- SECCIÓN PROFESIONAL (Para usuarios DOCTOR) -->
     @if (userLogged?.userType === 'DOCTOR') {
       <section class="appointments-section doctor-patients-section" [class.mobile-hidden]="mobileActiveTab() !== 'pacientes'">
-        <!-- Encabezado de Sección con Margen (96px) -->
         <div class="ficha-layout ficha-page section-head-ficha">
           <div class="ficha-rail section-rail">
             <div class="rail-kicker">Profesional</div>
@@ -289,7 +280,6 @@
           </div>
         </div>
 
-        <!-- Lista de Pacientes -->
         <div class="ficha-layout ficha-page section-content-ficha">
           <div class="ficha-rail content-rail-empty"></div>
           <div class="ficha-body content-body-wrap">
@@ -314,14 +304,12 @@
               <div class="appointments-card-list surface-card">
                 @for (ap of misPacientes(); track ap.id; let first = $first) {
                   <div class="appointment-row" [class.has-divider]="!first">
-                    <!-- Margen con fecha (96px) -->
                     <div class="row-date-rail">
                       <div class="date-day-num">{{ ap.date | datePart:'day' }}</div>
                       <div class="date-month-txt">{{ ap.date | datePart:'month' }}</div>
                       <div class="date-time-txt">{{ ap.startTime }} hs</div>
                     </div>
 
-                    <!-- Cuerpo del Turno -->
                     <div class="row-body-info">
                       <div class="appointment-header-row">
                         <div class="row-avatar is-neutral" aria-hidden="true">{{ ap.patientName | initials }}</div>
@@ -375,7 +363,6 @@
       </section>
     }
 
-    <!-- SECCIÓN ADMIN -->
     @if (userLogged?.userType === 'ADMIN') {
       <section class="appointments-section">
         <div class="ficha-layout ficha-page section-head-ficha">

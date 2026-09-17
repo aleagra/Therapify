@@ -17,11 +17,6 @@ export class LoginComponent {
   userService = inject(UserService);
   router = inject(Router);
 
-  // Signals en vez de campos planos: la respuesta HTTP a veces llega en un
-  // tick que zone.js no detecta como "inestable" y la vista no se
-  // re-renderiza con un campo comun, dejando el boton trabado en
-  // "Iniciando sesion...". El grafo de reactividad de los signals no
-  // depende de esa deteccion de zona para programar el re-render.
   loading = signal(false);
   showPassword = false;
   demoLoadingRole = signal<'DOCTOR' | 'PACIENTE' | null>(null);
@@ -56,7 +51,6 @@ export class LoginComponent {
       },
     }[role];
 
-    // Autocompleta automáticamente los campos del formulario
     this.form.patchValue({
       email: credentials.email,
       password: credentials.password,
@@ -92,12 +86,7 @@ export class LoginComponent {
     });
   }
 
-  /**
-   * El backend usa 403 tanto para credenciales invalidas como para cuenta sin
-   * verificar, y el texto es lo unico que las separa. Colapsarlas en
-   * "contrasena incorrecta" hace que alguien con la clave correcta la cambie
-   * una y otra vez sin entender por que no entra.
-   */
+
   private mensajeErrorLogin(err: any): string {
     if (err?.name === 'TimeoutError') {
       return 'El servidor está tardando demasiado. Intentá de nuevo.';
@@ -119,8 +108,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    // Sin esta guarda cada click dispara otra request y el estado de `loading`
-    // queda a merced de cual responda ultima.
+
     if (this.loading()) return;
 
     if (this.form.invalid) {
@@ -134,12 +122,7 @@ export class LoginComponent {
     this.userService
       .login(email, password)
       .pipe(
-        // Cota superior: si la request queda colgada, el boton tiene que poder
-        // salir del estado de carga en vez de quedarse en "Iniciando sesion..."
-        // para siempre.
         timeout(30000),
-        // finalize corre pase lo que pase — exito, error o unsubscribe — asi que
-        // el boton no puede quedar trabado por un camino que no contemplamos.
         finalize(() => this.loading.set(false)),
       )
       .subscribe({

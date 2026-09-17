@@ -51,7 +51,6 @@ describe('AppointmentsService', () => {
     service.getMyAppointments({ size: 100 }).subscribe();
     httpMock.expectOne((r) => r.url === mineUrl).flush({ content: [] });
 
-    // Segunda "navegacion" del mismo usuario: no debe salir un segundo GET.
     service.getMyAppointments({ size: 100 }).subscribe();
     const pendingRequests = httpMock.match((r) => r.url === mineUrl);
     expect(pendingRequests.length).toBe(0);

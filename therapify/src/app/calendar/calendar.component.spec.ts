@@ -30,9 +30,7 @@ describe('CalendarComponent', () => {
   });
 
   it('muestra el honorario cuando el perfil tiene precio cargado, aunque llegue despues del primer render', () => {
-    // Simula el caso real: el calendario se crea antes de que el perfil del
-    // doctor termine de cargar, asi que la primera evaluacion de hasPrice()/
-    // formattedPrice() ocurre con consultationPrice todavia sin definir.
+
     expect(component.hasPrice()).toBeFalse();
     expect(component.formattedPrice()).toBe('A consultar');
 

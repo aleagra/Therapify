@@ -356,8 +356,7 @@
   border-color: #94a3b8;
 }
 
-/* Escritorio (>= 1024px): la card mantiene el formato arquitectónico exacto 1200x500px con banner de 460px,
-   idéntico a register y forgot-password para evitar cualquier redimensionamiento entre rutas. */
+
 @media (min-width: 1024px) {
   .login-split-container {
     width: 1200px;
@@ -550,7 +549,6 @@
   }
 }
 
-/* Tablet (md: 768px - 1023px) */
 @media (max-width: 1023px) and (min-width: 640px) {
   .login-split-container {
     grid-template-columns: 1fr;
@@ -571,7 +569,6 @@
   }
 }
 
-/* Mobile 375 (< 640px) */
 @media (max-width: 639px) {
   :host {
     display: flex;
@@ -601,7 +598,6 @@
     flex: 0 0 auto;
   }
 
-  /* El panel oscuro deja de ser columna y pasa a ser banda superior de altura fija (solo en login) */
   .login-brand-banner {
     display: flex !important;
     flex-direction: column;
@@ -676,7 +672,6 @@
     margin-bottom: 0 !important;
   }
 
-  /* En mobile se quitan las líneas grises de la izquierda y el kicker */
   .rail-layout-96 {
     display: block !important;
     width: 100% !important;
@@ -720,7 +715,6 @@
     margin: 0 0 6px !important;
   }
 
-  /* Controles mobile: campo 46px, botón 50px */
   .login-input,
   .field-input,
   .password-input-wrapper input {
@@ -744,9 +738,6 @@
   }
 }
 
-/* =============================================================================
-   Acceso Rápido para Evaluadores / Modo Demo (Integrado y Compacto)
-   ============================================================================= */
 .demo-quick-bar {
   display: flex;
   align-items: center;

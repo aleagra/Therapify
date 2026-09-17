@@ -29,7 +29,6 @@
   height: 100%;
 }
 
-/* Brand Logo */
 .brand-logo {
   display: flex;
   align-items: center;
@@ -54,7 +53,6 @@
   color: var(--c-neutral-900);
 }
 
-/* Nav Wrapper */
 .nav-wrapper {
   display: flex;
   align-items: center;
@@ -95,7 +93,6 @@
   box-shadow: inset 0 -2px 0 var(--c-blue-600);
 }
 
-/* Divider vertical */
 .nav-separator {
   width: 1px;
   height: 26px;
@@ -103,7 +100,6 @@
   flex-shrink: 0;
 }
 
-/* Auth Button */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -130,7 +126,6 @@
   color: var(--c-neutral-900);
 }
 
-/* Mobile Toggle */
 .mobile-toggle {
   display: none;
   flex-direction: column;
@@ -161,7 +156,6 @@
   transform: translateY(-3px) rotate(-45deg);
 }
 
-/* Desktop compacto (lg: 1024px - 1200px) */
 @media (max-width: 1200px) and (min-width: 1024px) {
   .header-container {
     padding: 0 20px;
@@ -179,7 +173,6 @@
   }
 }
 
-/* Régimen compacto por altura de viewport (< 700px, e.g. 1366x600 - Regla 5j) */
 @media (max-height: 700px) and (min-width: 1024px) {
   .header-root {
     height: 60px;
@@ -210,7 +203,6 @@
   }
 }
 
-/* Tablet & Mobile (md, sm, mobile: < 1024px) - Menú Hamburguesa */
 @media (max-width: 1023px) {
   .header-root {
     height: 56px;

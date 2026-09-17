@@ -10,7 +10,6 @@ export class StatusLabelPipe implements PipeTransform {
     PENDING: 'Pendiente',
     CONFIRMED: 'Confirmado',
     COMPLETED: 'Completado',
-    // El profesional nunca lo confirmo y paso la hora: no hubo sesion.
     EXPIRED: 'Vencido',
   };
 

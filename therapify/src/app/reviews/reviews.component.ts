@@ -91,7 +91,6 @@ export class ReviewsComponent implements OnInit {
 
   userLogged: User | null = this.userService.getLoggedUser();
 
-  /** null = todavía no se sabe (o no aplica); true/false una vez resuelto el check. */
   hasAppointmentWithDoctor = signal<boolean | null>(null);
 
   get canSubmitReview(): boolean {
@@ -215,7 +214,6 @@ export class ReviewsComponent implements OnInit {
         this.hasAppointmentWithDoctor.set(hadAppointment);
       },
       error: () => {
-        // Si no se puede verificar, no bloqueamos: el backend valida igual al enviar.
         this.hasAppointmentWithDoctor.set(true);
       },
     });

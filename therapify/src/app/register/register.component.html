@@ -1,7 +1,6 @@
 @if (!accountCreated()) {
   <div class="login-split-page">
     <div class="login-split-container">
-      <!-- Columna Izquierda: Banner Oscuro #083c5c -->
       <div class="login-brand-banner">
         <div class="banner-top-mark">
           <div class="brand-mark"></div>
@@ -23,7 +22,6 @@
         </div>
       </div>
 
-      <!-- Columna Derecha: Wizard de Registro con rail de 96px -->
       <div class="login-form-area register-form-area">
         <div class="login-form-inner register-form-inner">
           <header class="header-block rail-layout-96">
@@ -41,7 +39,6 @@
             <div class="content-rail-empty"></div>
             <div class="content-body-wrap">
           <div class="wizard-surface">
-            <!-- Stepper con riel de wizard de 76px -->
             <div class="wizard-stepper-header">
               <div class="wizard-step-indicator" [class.is-done]="step > 1" [class.is-active]="step === 1">
                 <div class="step-rail-badge">
@@ -81,7 +78,6 @@
               </div>
             </div>
 
-            <!-- Paso 1: Datos personales -->
             @if (step === 1) {
               <form [formGroup]="form" class="wizard-form-step">
                 <div class="step-intro-text">
@@ -151,7 +147,6 @@
               </form>
             }
 
-            <!-- Paso 2: Seguridad -->
             @if (step === 2) {
               <form [formGroup]="form" class="wizard-form-step">
                 <div class="step-intro-text">
@@ -208,7 +203,6 @@
               </form>
             }
 
-            <!-- Paso 3: Rol -->
             @if (step === 3) {
               <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wizard-form-step">
                 <div class="step-intro-text">

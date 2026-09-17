@@ -55,16 +55,10 @@ export class CalendarComponent implements OnChanges {
   @Input() schedule: { [dia: string]: boolean } | undefined;
   @Input() availability: { [dia: string]: string[] } | undefined;
   @Input() doctorId!: string;
-  /**
-   * Signal input a proposito: hasPrice/formattedPrice son computed() y solo
-   * reaccionan a lecturas de signals. Con un @Input comun, el calendario se
-   * crea con el precio todavia sin llegar (se muestra antes de que el padre
-   * termine de cargar al doctor) y el computed queda pegado en su primer
-   * valor para siempre, aunque el Input se actualice despues.
-   */
+
   consultationPrice = input<number | undefined>(undefined);
   @Input() isInitialLoading: boolean = false;
-  /** 'panel': tarjeta unica en columna. 'split': calendario arriba y resumen en banda aparte. */
+
   @Input() layout: 'panel' | 'split' = 'panel';
 
   fb = inject(FormBuilder);
@@ -79,8 +73,7 @@ export class CalendarComponent implements OnChanges {
 
   isDemo = computed(() => this.userService.isDemoSignal());
 
-  /** El backend manda un mail al confirmar. En las cuentas demo la casilla no
-   *  es accesible, asi que lo decimos en vez de dejar la funcionalidad muda. */
+
   confirmationEmailNote = computed(() =>
     this.isDemo()
       ? 'Aviso enviado a la casilla demo (no accesible).'
@@ -89,12 +82,11 @@ export class CalendarComponent implements OnChanges {
 
   private route = inject(ActivatedRoute);
 
-  /** Id del turno que se esta moviendo, via ?reschedule=<id>. Null = reserva normal. */
+
   rescheduleId = signal<string | null>(
     this.route.snapshot.queryParamMap.get('reschedule'),
   );
-  /** Fecha y hora del turno original, pasadas por /turnos que ya las tiene.
-   *  Evita un GET /appointments/{id} que ademas el backend rechaza con 403. */
+
   rescheduleFrom = signal<{ date: string; startTime: string } | null>(
     (() => {
       const params = this.route.snapshot.queryParamMap;
@@ -230,7 +222,7 @@ export class CalendarComponent implements OnChanges {
       });
     }
 
-    // Días del siguiente mes para completar la grilla (siempre 6 filas = 42 celdas)
+
     const totalCells = 42;
     const remaining = totalCells - days.length;
     for (let i = 1; i <= remaining; i++) {
@@ -417,8 +409,7 @@ export class CalendarComponent implements OnChanges {
             duration: 5000,
           });
 
-          // Solo relimpiamos la seleccion cuando el problema es el horario:
-          // si el turno agoto sus reprogramaciones, elegir otro slot no ayuda.
+
           if (slotTaken) {
             this.selectedSlot.set(null);
             this.citaForm.get('hora')?.setValue(null);
@@ -429,17 +420,11 @@ export class CalendarComponent implements OnChanges {
       });
   }
 
-  /**
-   * Descarta los horarios que ya pasaron. Los dias previos ya estan
-   * deshabilitados en la grilla, pero dentro del dia de hoy la plantilla
-   * semanal devuelve la jornada completa: sin esto se podia reservar a las
-   * 09:00 siendo las 15:00, y el turno nacia vencido.
-   */
+
   private descartarHorariosPasados(fecha: Date, horarios: string[]): string[] {
     const ahora = businessClock();
     const fechaISO = this.formatDateISO(fecha);
-    // Solo el dia en curso necesita recorte; los anteriores ya estan
-    // deshabilitados en la grilla y los futuros no tienen horas vencidas.
+
     if (fechaISO !== ahora.slice(0, 10)) return horarios;
 
     return horarios.filter((h) => businessClockKey(fechaISO, h) > ahora);

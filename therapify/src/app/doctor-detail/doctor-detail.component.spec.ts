@@ -51,18 +51,15 @@ describe('DoctorDetailComponent', () => {
   });
 
   it('should format dense hours as a range and sparse hours individually', () => {
-    // 12 hours (dense) -> range
+
     const denseHours = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
     expect(component.formatScheduleRange(denseHours)).toBe('10:00 a 21:00 hs');
 
-    // 2 hours -> list with bullets
     const sparseHours = ['09:00', '10:00'];
     expect(component.formatScheduleRange(sparseHours)).toBe('09:00 · 10:00 hs');
 
-    // 1 hour
     expect(component.formatScheduleRange(['15:00'])).toBe('15:00 hs');
 
-    // 0 hours
     expect(component.formatScheduleRange([])).toBe('');
   });
 });

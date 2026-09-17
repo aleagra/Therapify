@@ -47,7 +47,6 @@ export class DoctorsComponent implements OnInit {
 
   private skeletonShownTime: number | null = null;
 
-  // Pipeline reactivo: 150ms delay anti-parpadeo + 350ms de permanencia mínima si el skeleton llega a mostrarse
   private readonly skeletonState = toSignal(
     toObservable(this.isLoading).pipe(
       switchMap((loading) => {
@@ -109,7 +108,6 @@ export class DoctorsComponent implements OnInit {
     this.isLoading.set(true);
     this.loadError.set(null);
 
-    // 1. Carga inmediata de la lista general de doctores
     this.userService.getDoctores().subscribe({
       next: (doctors) => {
         this.mapDoctors(doctors);
@@ -124,7 +122,6 @@ export class DoctorsComponent implements OnInit {
       },
     });
 
-    // 2. Solicitud no bloqueante de geolocalización en paralelo con timeout de 4s
     this.requestGeolocation();
   }
 

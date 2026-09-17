@@ -16,7 +16,6 @@
   box-sizing: border-box;
 }
 
-/* Top Nav Bar */
 .detail-top-nav-bar {
   display: flex;
   align-items: center;
@@ -28,7 +27,6 @@
   display: none;
 }
 
-/* Enlace Volver */
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -45,7 +43,7 @@
   color: var(--c-neutral-900);
 }
 
-/* Margen de Ficha */
+
 .detail-ficha-layout {
   align-items: start;
 }
@@ -78,25 +76,20 @@
   min-width: 0;
 }
 
-/* Grilla de reserva en una sola fila: ficha | calendario | horarios+resumen.
-   Repartir el flujo en horizontal es lo que evita que la pagina crezca hacia
-   abajo; el alto total pasa a ser el de la columna mas alta. */
+
 .booking-layout-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px 292px;
   grid-template-areas: "info calendar booking";
   gap: 24px;
-  /* stretch: las dos piezas de reserva comparten el borde inferior en vez de
-     quedar cortadas a distinta altura sobre el lienzo */
+
   align-items: stretch;
 }
 
-/* El calendario se reparte solo en la grilla: cada zona toma su area */
 .booking-layout-grid app-calendar {
   display: contents;
 }
 
-/* Columna Izquierda */
 .specialist-info-column {
   grid-area: info;
   min-width: 0;
@@ -105,12 +98,10 @@
   flex-direction: column;
 }
 
-/* Tarjeta de Identidad (contenedor semántico) */
 .doctor-identity-card {
   width: 100%;
 }
 
-/* Header de Identidad */
 .doctor-identity-header {
   display: flex;
   align-items: flex-start;
@@ -205,7 +196,6 @@
   color: var(--c-neutral-900);
 }
 
-/* Metadatos */
 .doctor-meta-divider-row {
   display: flex;
   align-items: center;
@@ -247,7 +237,6 @@
   color: var(--c-neutral-500);
 }
 
-/* Enfoque Clínico */
 .clinical-approach-section {
   margin-bottom: 26px;
 }
@@ -271,7 +260,6 @@
   text-wrap: pretty;
 }
 
-/* Horarios Habituales — Nivel 2 Hundida */
 .usual-schedule-sunken {
   background: var(--c-neutral-100);
   border-radius: var(--radius-sunken);
@@ -330,7 +318,6 @@
   padding: 8px 0;
 }
 
-/* Laptops con altura reducida (1366x768, 1366x600 y <= 800px) */
 @media (max-height: 800px) and (min-width: 1024px) {
   .doctor-detail-root {
     padding: 14px 0 28px;
@@ -343,7 +330,6 @@
   }
 }
 
-/* 1366x600: el alto util es ~534px, asi que la ficha se lee en modo compacto */
 @media (max-height: 700px) and (min-width: 1024px) {
   .doctor-detail-root {
     padding: 10px 0 20px;
@@ -394,7 +380,6 @@
 }
 
 
-/* lg compacto (1025px - 1200px): mismas tres columnas, mas ajustadas */
 @media (max-width: 1200px) and (min-width: 1025px) {
   .booking-layout-grid {
     grid-template-columns: minmax(0, 1fr) 278px 268px;
@@ -402,7 +387,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .booking-layout-grid {
     grid-template-columns: 1fr;
@@ -554,9 +538,6 @@
   }
 }
 
-/* Monitores grandes: hay alto de sobra, asi que la ficha usa la escala
-   completa de la maqueta (avatar 72, nombre 30) en vez de la version
-   comprimida que necesitan las pantallas bajas. */
 @media (min-width: 1400px) and (min-height: 860px) {
   .detail-top-nav-bar {
     margin-bottom: 28px;

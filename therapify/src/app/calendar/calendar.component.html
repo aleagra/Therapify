@@ -4,9 +4,9 @@
   [formGroup]="citaForm"
   (ngSubmit)="confirmarReserva()"
 >
-  <!-- Zona A: elección de fecha y horario -->
+
   <div class="booking-main-pane">
-  <!-- Top Header con Kicker -->
+
   <div class="booking-card-header">
     <div class="header-text-block">
       <span class="booking-kicker">Reservar</span>
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <!-- Calendario Mensual -->
+
   <div class="calendar-section-pad">
     <div class="month-navigation-row">
       <button
@@ -43,14 +43,12 @@
       </button>
     </div>
 
-    <!-- Días de la Semana -->
     <div class="weekdays-grid-row">
       @for (d of weekDays; track $index) {
         <span class="weekday-abbr">{{ d }}</span>
       }
     </div>
 
-    <!-- Celdas del Calendario -->
     <div class="days-matrix-grid">
       @for (day of calendarDays(); track day.date.toISOString()) {
         @if (day.isCurrentMonth) {
@@ -74,7 +72,6 @@
       }
     </div>
 
-    <!-- Leyenda de colores -->
     <div class="calendar-legend-line">
       <span class="legend-item">
         <span class="legend-dot-teal"></span>
@@ -89,9 +86,7 @@
 
   </div>
 
-  <!-- Zona B: resumen del turno y confirmación -->
   <div class="booking-summary-pane">
-  <!-- Horarios Disponibles -->
   <div class="slots-section-wrapper">
     <div class="slots-header-line">
       <span class="slots-kicker">
@@ -144,7 +139,6 @@
     </div>
   </div>
 
-  <!-- Resumen de Reserva — Separado por divisores sin fondos anidados -->
   <div class="summary-section-zone">
     <div class="summary-kicker">Resumen</div>
     <div class="summary-details-grid">
@@ -182,7 +176,6 @@
     </div>
   </div>
 
-  <!-- Botón de Confirmación y Nota -->
   <div class="booking-footer-submit">
     @if (isUserAdmin) {
       <div class="admin-notice-card surface-sunken">
@@ -262,7 +255,6 @@
   </div>
   </div>
 
-  <!-- Barra Sticky Inferior Mobile (Foto 1) -->
   <div class="mobile-sticky-booking-bar">
     <div class="sticky-booking-info">
       <div class="sticky-booking-price tabular-nums">{{ formattedPrice() }}</div>

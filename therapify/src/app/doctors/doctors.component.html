@@ -1,7 +1,6 @@
 <div class="doctors-page-root density-work">
   <div class="doctors-container">
 
-    <!-- Encabezado con Margen de Ficha (96px) -->
     <header class="ficha-layout ficha-page header-block">
       <div class="ficha-rail header-rail">
         <div class="rail-kicker">Buscar</div>
@@ -19,12 +18,10 @@
       </div>
     </header>
 
-    <!-- Barra de Filtros — Nivel 2 Hundida -->
     <section class="ficha-layout ficha-page filters-block">
       <div class="ficha-rail"></div>
       <div class="ficha-body">
         <div class="filters-panel-sunken surface-sunken">
-          <!-- Barra de Búsqueda Mobile + Trigger de Filtros -->
           <div class="search-and-trigger-row">
             <div class="search-field-wrap">
               <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -63,9 +60,7 @@
             </button>
           </div>
 
-          <!-- Fila de Controles Secundarios (Desktop o Mobile expandido) -->
           <div class="filters-grid-controls" [class.is-mobile-open]="mobileFiltersOpen()">
-            <!-- Especialidad -->
             <select
               id="specialtySelect"
               class="filter-select-input"
@@ -79,7 +74,6 @@
               }
             </select>
 
-            <!-- Distancia -->
             <select
               id="distanceSelect"
               class="filter-select-input"
@@ -94,7 +88,6 @@
               <option value="20">Hasta 20 km</option>
             </select>
 
-            <!-- Género -->
             <select
               id="genderSelect"
               class="filter-select-input"
@@ -109,7 +102,6 @@
             </select>
           </div>
 
-          <!-- Fila de Chips de Días -->
           <div class="filters-days-row">
             <span class="days-kicker-label desktop-only">Día</span>
             <div class="days-chips-scroll">
@@ -137,7 +129,6 @@
           </div>
         </div>
 
-        <!-- Barra de Estado / Conteo de Resultados -->
         <div class="results-meta-bar">
           <div class="results-count-text">
             @if (displayLoading()) {
@@ -162,7 +153,6 @@
           </div>
         </div>
 
-        <!-- Área de Contenido Principal -->
         @if (loadError()) {
           <div class="empty-state-box">
             <div class="empty-icon">
@@ -179,7 +169,6 @@
             </button>
           </div>
         } @else if (displayLoading()) {
-          <!-- Skeleton Loading con Gesto de Ficha -->
           <div class="doctors-grid" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
             @for (item of skeletonCards; track item) {
               <div class="skeleton-doctor-card surface-card">
@@ -201,7 +190,6 @@
             }
           </div>
         } @else if (filteredDoctors().length > 0) {
-          <!-- Grilla de Doctores (Cards Nivel 1) -->
           <div class="doctors-grid">
             @for (doctor of filteredDoctors(); track doctor.id) {
               <app-doctor-card
@@ -211,7 +199,6 @@
             }
           </div>
         } @else {
-          <!-- Estado Vacío -->
           <div class="empty-state-box">
             <div class="empty-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

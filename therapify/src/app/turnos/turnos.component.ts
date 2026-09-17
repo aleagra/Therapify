@@ -130,11 +130,6 @@ export class TurnosComponent implements OnInit {
         const allAppointments: Appointment[] =
           response?.content ?? (Array.isArray(response) ? (response as any) : []);
 
-        // Completar turnos vencidos es responsabilidad del job @Scheduled del
-        // backend, no del cliente: antes cada navegador que abria esta pantalla
-        // intentaba escribir en la base y se comia un 403 por turno vencido.
-        // El listado ya los trata como pasados por fecha, sin depender del status.
-
         const isAdmin = this.userLogged?.userType === 'ADMIN';
 
         if (isAdmin) {
@@ -178,8 +173,6 @@ export class TurnosComponent implements OnInit {
           position: 'top-center',
           duration: 5000,
         });
-        // El turno sigue vivo en el servidor: recargamos para no dejar la lista
-        // mostrando algo distinto de lo que hay.
         this.loadAppointments();
       },
     });
@@ -257,39 +250,22 @@ export class TurnosComponent implements OnInit {
     return name.slice(0, 2).toUpperCase();
   }
 
-  /**
-   * El backend exige mas de 24 h de anticipacion para reprogramar, pero no para
-   * reservar. Sin esto, un turno sacado para dentro de 2 h muestra el boton
-   * "Reprogramar", el usuario elige horario nuevo y recien ahi come un 409.
-   */
-  /**
-   * El backend avisa por mail al cancelar, igual que al reservar y reprogramar.
-   * En las cuentas demo la casilla no es accesible, asi que lo decimos en vez
-   * de dejar la funcionalidad muda para el evaluador.
-   */
   cancelEmailNote(): string {
     return this.userService.isDemoSignal()
       ? 'Aviso enviado a la casilla demo (no accesible).'
       : 'Te enviamos la confirmación por mail.';
   }
 
-  /** COMPLETED y EXPIRED son estados terminales: el turno ya no admite acciones. */
   estaCerrado(ap: Appointment): boolean {
     return ap.status === 'COMPLETED' || ap.status === 'EXPIRED';
   }
 
-  /**
-   * Solo un turno CONFIRMED que se realizo habilita resena. Un EXPIRED nunca
-   * fue aceptado por el profesional, asi que el backend tambien lo rechaza.
-   */
   puedeResenar(ap: Appointment): boolean {
     return ap.status === 'COMPLETED';
   }
 
   puedeReprogramar(ap: Appointment): boolean {
     if (this.estaCerrado(ap)) return false;
-    // Sumamos 24 h al instante real y recien ahi lo pasamos a reloj argentino,
-    // para que la comparacion coincida con la que hace el backend.
     const corte = businessClock(Date.now() + 24 * 60 * 60 * 1000);
     return businessClockKey(ap.date, ap.startTime) > corte;
   }
@@ -299,9 +275,6 @@ export class TurnosComponent implements OnInit {
     mostrarCompletados: boolean,
     asc: boolean,
   ): Appointment[] {
-    // Un turno cuenta como pasado si el servidor lo marco COMPLETED o si su
-    // horario de fin ya quedo atras. Lo segundo hace que el listado sea
-    // correcto aunque el status nunca haya llegado a persistirse.
     const ahora = businessClock();
     const yaOcurrio = (t: Appointment): boolean =>
       t.status === 'COMPLETED' ||

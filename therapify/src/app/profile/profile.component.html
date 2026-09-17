@@ -1,6 +1,5 @@
 <div class="profile-page-root">
   <div class="profile-container">
-    <!-- Header con rail de página 96px: CUENTA 05 -->
     <header class="header-block rail-layout-96">
       <div class="header-rail">
         <span class="rail-kicker">CUENTA</span>
@@ -31,7 +30,6 @@
             </button>
           </div>
         } @else if (displayLoading()) {
-          <!-- Skeleton de Carga -->
           <div
             class="profile-columns-grid"
             aria-busy="true"
@@ -74,7 +72,6 @@
           </div>
         } @else {
         <div class="profile-columns-grid">
-          <!-- Columna Izquierda: Tarjeta de Usuario -->
           <aside class="profile-sidebar-column">
             <div class="user-summary-card">
               <div class="user-avatar-circle">
@@ -119,14 +116,12 @@
             </div>
           </aside>
 
-          <!-- Columna Derecha: Formulario Plano -->
           <main class="profile-forms-column">
             <form
               [formGroup]="formProfile"
               (ngSubmit)="onSubmitProfile()"
               class="profile-form-flow"
             >
-              <!-- Sección: Datos básicos -->
               <section class="form-flat-section">
                 <div class="section-title-line">
                   <h2 class="form-section-title">Datos básicos</h2>
@@ -204,7 +199,6 @@
                 </div>
               </section>
 
-              <!-- Sección: Seguridad -->
               <section class="form-flat-section">
                 <div class="section-title-line section-margin-top">
                   <h2 class="form-section-title">Seguridad</h2>
@@ -274,7 +268,6 @@
                 </div>
               </section>
 
-              <!-- Barra de acciones -->
               <div class="form-actions-bar">
                 <button
                   type="button"

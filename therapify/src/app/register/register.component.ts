@@ -21,9 +21,6 @@ export class RegisterComponent {
   step = 1;
   userType = '';
 
-  // Signals en vez de campos planos: la respuesta HTTP a veces llega en un
-  // tick que zone.js no detecta como "inestable" y la vista no se
-  // re-renderiza con un campo comun, dejando el boton trabado.
   loading = signal(false);
   accountCreated = signal(false);
   errorMsg = signal('');
@@ -74,8 +71,6 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    // Guarda anti-doble clic: previene envíos simultáneos que confunden el estado
-    // y pueden provocar conflictos de registro duplicado en el backend.
     if (this.loading()) return;
 
     if (this.form.invalid) {
@@ -91,9 +86,8 @@ export class RegisterComponent {
     this.userService
       .postUser(user)
       .pipe(
-        // Cota superior para que el botón no quede congelado si la conexión demora.
         timeout(30000),
-        // finalize corre siempre (éxito, error o cancelación) para liberar la UI.
+
         finalize(() => this.loading.set(false)),
       )
       .subscribe({

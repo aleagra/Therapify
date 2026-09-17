@@ -7,9 +7,6 @@ import { PrivateLayoutComponent } from './private-layout/private-layout.componen
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 export const routes: Routes = [
-  // Debe ir primero: si no, el router hace match con el primer layout de la
-  // lista (AuthLayoutComponent) para la URL raíz "/" y deja su router-outlet
-  // vacío, en vez de retroceder a buscar el layout correcto.
   { path: '', pathMatch: 'full', redirectTo: 'home' },
 
   {

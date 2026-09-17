@@ -580,8 +580,7 @@
   margin-top: 8px;
 }
 
-/* Escritorio (>= 1024px): la card mantiene siempre el mismo tamaño,
-   1200x500 con banner de 460px, sin importar la resolución. */
+
 @media (min-width: 1024px) {
   .login-split-container {
     width: 1200px;
@@ -816,7 +815,6 @@
   }
 }
 
-/* Mobile 375 (< 640px - Regla 5f / 5j) */
 @media (max-width: 639px) {
   :host {
     display: flex;
@@ -838,7 +836,6 @@
     flex: 0 0 auto;
   }
 
-  /* El panel oscuro pasa a ser banda superior de altura libre, igual que en login */
   .login-brand-banner {
     display: flex !important;
     flex-direction: column;
@@ -1004,7 +1001,6 @@
     margin-bottom: 6px;
   }
 
-  /* Controles mobile: campo 46px, botón 50px */
   .wizard-input {
     background-color: #ffffff !important;
     color: #16222c !important;
@@ -1018,7 +1014,6 @@
     padding: 14px;
   }
 
-  /* CTA anclada al pie en formularios (Regla 5f / 5j) */
   .wizard-actions-row {
     position: sticky;
     bottom: 0;

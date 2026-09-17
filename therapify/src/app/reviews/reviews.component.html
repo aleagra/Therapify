@@ -1,7 +1,6 @@
 <div class="reviews-page-root density-work">
   <div class="reviews-container">
 
-    <!-- Enlace de Retorno -->
     <a (click)="goBack($event)" class="back-link" style="cursor: pointer;">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -10,7 +9,6 @@
       <span>Volver</span>
     </a>
 
-    <!-- Encabezado con Margen de Ficha (96px) -->
     <header class="ficha-layout ficha-page header-block">
       <div class="ficha-rail header-rail">
         <div class="rail-kicker">Reseñas</div>
@@ -26,13 +24,11 @@
       </div>
     </header>
 
-    <!-- Layout Principal de 2 Columnas -->
     <div class="ficha-layout ficha-page reviews-main-layout">
       <div class="ficha-rail content-rail-empty"></div>
       <div class="ficha-body content-body-wrap">
         <div class="reviews-columns-grid">
 
-          <!-- Columna Izquierda: Bloque de Promedio + Lista de Reseñas -->
           <div class="reviews-list-column">
 
             @if (loadError()) {
@@ -52,7 +48,6 @@
               </div>
             } @else {
               @if (reviews().length > 0) {
-                <!-- Bloque de Promedio (Margen ancho de 180px) -->
                 <div class="rating-score-block">
                   <div class="rating-score-rail">
                     <div class="big-rating-number">
@@ -82,7 +77,6 @@
                   </div>
                 </div>
 
-                <!-- Cabecera de Lista -->
                 <div class="reviews-subhead-row">
                   <span class="reviews-kicker">Todas las reseñas</span>
                   <span class="reviews-sort-text">
@@ -91,7 +85,6 @@
                 </div>
               }
 
-              <!-- Lista de Reseñas Nivel 3 -->
               @if (displayLoading()) {
                 <div class="reviews-loading-list" aria-busy="true" [style.visibility]="showSkeleton() ? 'visible' : 'hidden'">
                   @for (c of skeletonCards; track c) {
@@ -109,7 +102,6 @@
                   }
                 </div>
               } @else if (reviews().length === 0) {
-                <!-- Estado Vacío respetando la estructura -->
                 <div class="empty-reviews-notice">
                   <h3 class="notice-title">Todavía no hay reseñas de este profesional</h3>
                   <p class="notice-desc">
@@ -120,7 +112,6 @@
                 <div class="reviews-rendered-list">
                   @for (r of visibleReviews(); track r.id) {
                     <div class="review-row-item">
-                      <!-- Rail de la reseña: 96px con avatar y fecha -->
                       <div class="review-date-rail">
                         <div class="review-author-avatar">
                           {{ r.patientName | initials:r.patientLastName }}
@@ -129,8 +120,6 @@
                           {{ r.date | date:'d MMM yyyy':'':'es-AR' }}
                         </div>
                       </div>
-
-                      <!-- Cuerpo de la reseña -->
                       <div class="review-text-body">
                         <div class="review-header-meta">
                           <span class="author-fullname">
@@ -194,7 +183,6 @@
             }
           </div>
 
-          <!-- Columna Derecha: Card Nivel 1 "Dejá tu reseña" -->
           <aside class="review-form-column">
             <div class="review-entry-card surface-card">
               <div class="form-header-pad">
@@ -208,7 +196,6 @@
               </div>
 
               <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="review-form-content">
-                <!-- Selector de Estrellas -->
                 <div class="form-rating-group">
                   <label class="rating-subhead-kicker">Valoración</label>
                   <div
@@ -239,7 +226,6 @@
                   <input type="hidden" formControlName="value" />
                 </div>
 
-                <!-- Textarea de Comentario -->
                 <div class="form-comment-group">
                   <div class="comment-label-row">
                     <label for="comment" class="comment-field-label">
@@ -266,7 +252,6 @@
                   </div>
                 }
 
-                <!-- Acciones del Formulario -->
                 <button
                   type="submit"
                   [disabled]="reviewForm.invalid || !canSubmitReview || isSubmitting()"

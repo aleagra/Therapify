@@ -30,7 +30,6 @@ export class DoctorCardComponent {
     this.navigate.emit(this.doctor().id);
   }
 
-  /** Precarga el chunk y los datos del detalle del doctor antes de navegar. */
   prefetchDetail() {
     this.userService.prefetchUserById(this.doctor().id);
     if (!DoctorCardComponent.detailChunkPrefetched) {

@@ -19,7 +19,6 @@ export class ForgotPasswordComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
 
-  // Signals para evitar desincronización de cambio de estado en Zone.js
   success = signal(false);
   loading = signal(false);
   resending = signal(false);

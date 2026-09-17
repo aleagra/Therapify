@@ -121,7 +121,6 @@
   padding: 6px 0;
 }
 
-/* B1: Calendario siempre reservado en 6 filas (272px) */
 .days-matrix-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -231,7 +230,7 @@
   background: var(--c-blue-600, #0b5d8e);
 }
 
-/* B1 & B2: Horarios separados por divisor, min-height 2 filas de chips (84px) */
+
 .slots-section-wrapper {
   padding: 16px 20px 18px;
   border-top: 1px solid var(--c-line, #dfe6ee);
@@ -251,7 +250,7 @@
   justify-content: center;
 }
 
-/* B5: Grid fija de 4 columnas */
+
 .slots-options-matrix,
 .slots-skeleton-matrix {
   display: grid;
@@ -313,7 +312,7 @@
   text-align: center;
 }
 
-/* B2: Resumen sin fondo tintado propio, solo divisor 1px */
+
 .summary-section-zone {
   padding: 16px 20px 18px;
   border-top: 1px solid var(--c-line, #dfe6ee);
@@ -382,7 +381,6 @@
   color: var(--c-neutral-500, #647587);
 }
 
-/* B1: Footer de confirmación y nota de cancelación con altura reservada */
 .booking-footer-submit {
   padding: 0 20px 20px;
 }
@@ -414,15 +412,12 @@
 }
 
 .btn-confirm-booking:disabled {
-  /* #b3c0cf sobre #eaeff5 daba ~1.9:1 y el boton se leia como un hueco;
-     el gris de texto secundario lo deja legible sin parecer habilitado */
-  background: var(--c-neutral-100, #eaeff5);
+
   color: var(--c-neutral-500, #647587);
   cursor: not-allowed;
 }
 
-/* Contexto de reprogramacion: azul-50 es el rol "pendiente" del sistema, no
-   coral — mover un turno no es una alerta, es una operacion en curso. */
+
 .reschedule-context-note {
   display: flex;
   align-items: flex-start;
@@ -451,7 +446,6 @@
   text-transform: capitalize;
 }
 
-/* Card de Confirmación Exitosa de Turno (Superficie Tintada Teal / Nivel 2) */
 .booking-confirmed-card {
   background: var(--c-teal-50, #eafaf6);
   border: 1px solid var(--c-teal-200, #9ae4d3);
@@ -517,8 +511,7 @@
   white-space: nowrap;
 }
 
-/* Nota de aviso por mail: informacion de apoyo, va por debajo del subtitulo
-   en jerarquia. La regla superior la separa del encabezado sin sumar una card. */
+
 .confirmed-email-note {
   display: flex;
   align-items: flex-start;
@@ -628,11 +621,7 @@
   display: none;
 }
 
-/* =========================================================================
-   Layout 'split': la tarjeta se parte en dos piezas que el contenedor ubica
-   en columnas propias — Zona A el calendario, Zona B horarios + resumen +
-   confirmacion. Repartir en horizontal es lo que baja el alto total.
-   ========================================================================= */
+
 .booking-panel-card.layout-split {
   display: contents;
 }
@@ -642,8 +631,7 @@
   background: var(--c-surface, #ffffff);
   border: 1px solid var(--c-line, #dfe6ee);
   border-radius: var(--radius-card, 12px);
-  /* Elevacion de la maqueta: la reserva es la superficie de accion de la
-     pantalla, se despega del lienzo mas que una card comun */
+
   box-shadow: var(--shadow-md, 0 10px 24px -16px rgba(13, 35, 55, 0.3));
   box-sizing: border-box;
   overflow: hidden;
@@ -660,11 +648,6 @@
   grid-area: booking;
 }
 
-/* Las dos piezas se estiran a la altura de la fila: el sobrante se reparte
-   dentro en vez de dejar aire muerto debajo de las tarjetas.
-   La holgura se la queda la zona de horarios, que es la unica que cambia de
-   alto segun el dia elegido (6 chips o 12): asi el resumen y el boton quedan
-   clavados en el mismo lugar y no saltan al cambiar de fecha. */
 .layout-split .slots-section-wrapper {
   border-top: 0;
   padding: 14px 16px 4px;
@@ -680,7 +663,6 @@
   justify-content: flex-start;
 }
 
-/* La columna es mas angosta que la tarjeta original: se compacta la malla */
 .layout-split .booking-card-header {
   padding: 14px 16px;
   border-bottom-color: var(--c-neutral-100, #eaeff5);
@@ -815,7 +797,7 @@
   line-height: 1.45;
 }
 
-/* Viewport bajo (1366x600): se aprieta la malla sin cambiar la estructura */
+
 @media (max-height: 760px) and (min-width: 1024px) {
   .layout-split .booking-card-header {
     padding: 10px 14px;
@@ -876,7 +858,7 @@
   }
 }
 
-/* Tablet: las dos piezas vuelven a apilarse en una sola columna */
+
 @media (max-width: 1024px) {
   .layout-split .booking-summary-pane {
     display: flex;
@@ -891,8 +873,7 @@
   .summary-section-zone {
     display: none;
   }
-  /* Los horarios pasaron a vivir en esta pieza, asi que no se puede ocultar
-     entera: solo se caen el resumen y el boton, que los cubre la barra fija. */
+
   .layout-split .booking-summary-pane {
     display: flex;
   }
@@ -1015,13 +996,7 @@
   }
 }
 
-/* =========================================================================
-   Monitores grandes (>=1400px de ancho y >=860px de alto): el flujo de
-   reserva deja de estar comprimido. El ancho de columna sigue atado al
-   contenedor de 1200px del sitio, asi que lo que crece es el alto: celdas y
-   chips mas altos y paddings de la maqueta, para ocupar el aire que sobraba
-   entre las tarjetas y el footer.
-   ========================================================================= */
+
 @media (min-width: 1400px) and (min-height: 860px) {
   .layout-split .booking-card-header {
     padding: 18px 20px;
@@ -1053,8 +1028,6 @@
     padding: 6px 0;
   }
 
-  /* Celda mas alta que ancha: el ancho lo fija la columna de 7, el alto es
-     lo unico que podemos estirar para llenar la pantalla */
   .layout-split .days-matrix-grid {
     grid-template-rows: repeat(6, 44px);
     gap: 4px;

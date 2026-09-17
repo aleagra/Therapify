@@ -96,10 +96,6 @@ export class UserService {
             this.invalidateUserCaches();
           }
         }),
-        // Propagamos en vez de devolver null: el backend distingue credenciales
-        // invalidas de cuenta sin verificar (ambas 403), y colapsarlas en un
-        // unico "contrasena incorrecta" manda al usuario a buscar el problema
-        // donde no esta.
         catchError((err) => {
           console.error('Error al iniciar sesión', err);
           return throwError(() => err);
@@ -135,7 +131,6 @@ export class UserService {
     return this.userByIdCache.get(id)!;
   }
 
-  /** Calienta la cache de un doctor antes de navegar (p. ej. al pasar el mouse sobre su tarjeta). */
   prefetchUserById(id: string): void {
     this.getUserById(id).subscribe();
   }

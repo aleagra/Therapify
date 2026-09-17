@@ -139,7 +139,6 @@
   margin-top: 2px;
 }
 
-/* Neutral role chips */
 .role-chip,
 .role-chip.is-doctor {
   display: inline-block;
@@ -233,7 +232,6 @@
   color: var(--c-neutral-900, #16222c);
 }
 
-/* Captions and tags in neutral ink-500 */
 .form-section-caption {
   font-size: 13.5px;
   color: var(--c-ink-500, #5a6e85);
@@ -364,7 +362,6 @@
   color: var(--c-neutral-900, #16222c);
 }
 
-/* Gender radios: 42px height matching input */
 .gender-radio-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -500,7 +497,6 @@
   background: var(--c-blue-700, #063957);
 }
 
-/* Guardar cambios deshabilitado */
 .btn-save-primary:disabled {
   background: var(--c-surface-alt, #eaeff5);
   color: var(--c-ink-500, #647587);
@@ -547,8 +543,7 @@
     font-weight: 750;
     margin-bottom: 4px;
   }
-  /* Título y aclaración de sección dejan de compartir renglón: en 393px la
-     aclaración envolvía y quedaba pegada al título. */
+
   .section-title-line {
     flex-direction: column;
     align-items: flex-start;

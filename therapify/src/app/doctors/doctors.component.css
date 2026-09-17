@@ -16,7 +16,6 @@
   box-sizing: border-box;
 }
 
-/* 1. Header con Margen de Ficha */
 .header-block {
   margin-bottom: 26px;
 }
@@ -65,7 +64,6 @@
   max-width: 60ch;
 }
 
-/* 2. Filtros — Nivel 2 Hundida */
 .filters-block {
   margin-bottom: 32px;
 }
@@ -159,7 +157,6 @@
 }
 
 
-/* Fila de Chips de Días */
 .filters-days-row {
   display: flex;
   align-items: center;
@@ -229,7 +226,6 @@
   color: var(--c-neutral-900);
 }
 
-/* 3. Barra de Metadatos y Orden */
 .results-meta-bar {
   display: flex;
   align-items: baseline;
@@ -262,7 +258,6 @@
   color: var(--c-neutral-900);
 }
 
-/* Mobile Toggle & Search Controls */
 .mobile-title-text, .mobile-subtitle-text, .btn-mobile-filters-trigger {
   display: none;
 }
@@ -274,14 +269,12 @@
   width: 100%;
 }
 
-/* 4. Grilla de Doctores */
 .doctors-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
-/* Skeleton Doctor Card */
 .skeleton-doctor-card {
   display: grid;
   grid-template-columns: 64px 1fr;
@@ -304,7 +297,6 @@
   gap: 8px;
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
   .doctors-grid {
     grid-template-columns: repeat(2, 1fr);

@@ -77,9 +77,6 @@ export class ProfileComponent implements OnInit {
     repeatPassword: [''],
   });
 
-  /** Las cuentas demo son compartidas entre evaluadores: estos campos los
-   *  rechaza el backend, asi que los deshabilitamos para que se entienda que
-   *  es intencional y no un error al guardar. */
   isDemo = computed(() => this.userService.isDemoSignal());
 
   private readonly demoLockedFields = [

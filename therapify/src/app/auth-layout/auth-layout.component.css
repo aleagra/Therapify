@@ -39,8 +39,7 @@
   align-items: center;
 }
 
-/* Escritorio: la card de auth mide siempre lo mismo, así que el contenedor
-   solo aporta el aire de alrededor y deja lugar para el footer. */
+
 @media (min-width: 1024px) {
   .auth-content-container {
     padding: 40px 24px;
@@ -48,8 +47,6 @@
   }
 }
 
-/* Altura ajustada (< 700px, e.g. 1366x600): no entra el footer, así que la
-   sección ocupa la pantalla y la card queda centrada en lo que queda. */
 @media (max-height: 700px) and (min-width: 1024px) {
   .auth-viewport {
     min-height: calc(100vh - 60px);

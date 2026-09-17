@@ -1,12 +1,4 @@
-/**
- * Traduccion de los errores de turnos que devuelve el backend.
- *
- * El motivo viaja en `code` (enum AppointmentErrorCode). El texto plano viene
- * en `mensaje` para InvalidAppointmentException/AppointmentConflictException,
- * pero en `message` para AccessDeniedException: hay que mirar los dos, y leer
- * la clave equivocada fue justamente lo que tapo errores reales detras de
- * mensajes genericos.
- */
+
 export type AppointmentAction = 'reservar' | 'reprogramar' | 'cancelar';
 
 const CODE_MESSAGES: Record<string, string> = {

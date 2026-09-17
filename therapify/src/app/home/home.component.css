@@ -158,7 +158,6 @@
   background: var(--c-primary-900, #083b58);
 }
 
-/* Ilustración: columna derecha en el hero */
 .hero-illustration-col {
   position: static;
   width: 100%;
@@ -185,7 +184,6 @@
   display: block;
 }
 
-/* Features cards: Nivel 1 cards equilibrando el hero */
 .bento-features-column {
   display: flex;
   flex-direction: column;
@@ -241,7 +239,6 @@
   text-decoration: underline;
 }
 
-/* Metrics banner: 3 columnas siempre en una sola fila */
 .bento-metrics {
   grid-column: 1 / -1;
   background: #ffffff;
@@ -289,7 +286,6 @@
   display: none !important;
 }
 
-/* Paso a paso section */
 .how-it-works-section {
   width: 100%;
 }
@@ -331,7 +327,6 @@
   gap: 20px;
 }
 
-/* Step cards with vertical rail of 64px */
 .step-card {
   background: #fff;
   border: 1px solid var(--c-line, #dfe6ee);
@@ -381,7 +376,6 @@
   margin: 0;
 }
 
-/* Régimen compacto por altura de viewport (< 700px, e.g. 1366x600 - Regla 5d / 5j) */
 @media (max-height: 700px) and (min-width: 1024px) {
   .home-page-root {
     padding: 20px 0 40px;
@@ -524,7 +518,6 @@
   }
 }
 
-/* lg: 1024px - 1399px con altura estándar (> 700px) */
 @media (max-width: 1399px) and (min-width: 1024px) and (min-height: 701px) {
   .home-bento {
     grid-template-columns: minmax(0, 1fr) 400px;
@@ -566,7 +559,6 @@
   }
 }
 
-/* md: 768px - 1023px (Tablet) */
 @media (max-width: 1023px) and (min-width: 768px) {
   .home-container {
     padding-inline: 20px;
@@ -633,7 +625,6 @@
   }
 }
 
-/* sm: 640px - 767px */
 @media (max-width: 767px) and (min-width: 640px) {
   .home-container {
     padding-inline: 16px;
@@ -697,7 +688,6 @@
   }
 }
 
-/* mobile: < 640px - Regla 5g / 5j */
 @media (max-width: 639px) {
   .home-container {
     padding-inline: 16px;
@@ -785,7 +775,7 @@
     justify-content: center !important;
     box-sizing: border-box !important;
   }
-  /* La ilustración se saca de la card del hero y pasa a ser una banda propia debajo del CTA (Regla 5g) */
+ 
   .hero-illustration-col {
     display: flex !important;
     position: static !important;
@@ -804,7 +794,7 @@
     width: auto !important;
     object-fit: contain !important;
   }
-  /* Las métricas se apilan como lista con divisor — no como tres cards (Regla 5g) */
+
   .bento-metrics {
     display: flex !important;
     flex-direction: column !important;

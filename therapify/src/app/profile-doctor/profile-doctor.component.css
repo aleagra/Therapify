@@ -14,8 +14,6 @@
 .btn-view-personal:hover{background:#f8fafc;border-color:#c3cedb}
 .doctor-main-layout .content-rail-empty{border-right:1px solid #dfe6ee}
 .doctor-editor-grid{display:grid;grid-template-columns:1fr 340px;gap:36px;align-items:start}
-/* Aviso: coral tintado (el rol de alerta del sistema). El CTA baja a
-   secundario porque el primario de la vista es "Guardar cambios". */
 .address-warning-banner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 20px;background:var(--c-coral-50, #fdf2f1);border:1px solid var(--c-coral-200, #f5bdb8);border-radius:var(--radius-sunken, 10px);margin-bottom:24px}
 .warning-icon{color:var(--c-coral-500, #c9483f);flex-shrink:0;display:flex;align-items:center}
 .warning-content{flex:1;min-width:0}

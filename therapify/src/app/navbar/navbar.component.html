@@ -1,12 +1,9 @@
 <header class="header-root">
   <div class="header-container">
-    <!-- Brand Logo -->
     <a routerLink="/home" class="brand-logo" aria-label="Therapify Inicio">
       <div class="brand-mark"></div>
       <span class="brand-text">Therapify</span>
     </a>
-
-    <!-- Botón Hamburguesa Mobile -->
     <button
       class="mobile-toggle"
       (click)="toggleMenu()"
@@ -17,7 +14,6 @@
       <span class="hamburger-bar" [class.open-bar-2]="menuOpen()"></span>
     </button>
 
-    <!-- Navegación Desktop & Menú Mobile -->
     <nav class="nav-wrapper" [class.is-open]="menuOpen()">
       <div class="nav-links">
         <a

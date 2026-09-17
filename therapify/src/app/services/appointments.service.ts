@@ -101,9 +101,6 @@ export class AppointmentService {
       }
     }
 
-    // El cache key incluye el usuario logueado: sin esto, cambiar de cuenta
-    // demo (paciente <-> terapeuta) reusaba la respuesta cacheada de la
-    // sesion anterior en vez de pedir "mine" de nuevo para el usuario nuevo.
     const userId = this.getLoggedUser()?.id ?? 'anon';
     const cacheKey = `${userId}:${httpParams.toString()}`;
     if (!this.myAppointmentsCache$.has(cacheKey)) {
@@ -172,12 +169,7 @@ export class AppointmentService {
       );
   }
 
-  /**
-   * Mueve un turno existente a otro horario del mismo profesional.
-   * A diferencia de updateAppointment, propaga el error en vez de tragarlo:
-   * el backend discrimina el motivo del rechazo (slot ocupado, limite de
-   * reprogramaciones, ventana de 24 h) y el componente necesita distinguirlos.
-   */
+ 
   rescheduleAppointment(
     id: string,
     payload: { date: string; startTime: string; endTime: string },
@@ -202,11 +194,6 @@ export class AppointmentService {
       );
   }
 
-  /**
-   * Cancela un turno. Propaga el error en vez de devolver `false`: el backend
-   * distingue el motivo (turno ajeno, ya terminal) y el componente necesita
-   * poder mostrarlo en lugar de un generico.
-   */
   deleteAppointment(id: string): Observable<boolean> {
     return this.http
       .delete(`${this.APPOINTMENTS_URL}/${id}`, this.getAuthHeaders())

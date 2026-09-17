@@ -5,7 +5,6 @@
   (focus)="prefetchDetail()"
 >
   <div class="card-ficha-grid">
-    <!-- Margen de Ficha (64px) -->
     <div class="card-rail">
       <div
         class="card-avatar"
@@ -23,7 +22,6 @@
       ></span>
     </div>
 
-    <!-- Cuerpo de Ficha -->
     <div class="card-body-content">
       <div class="card-header-line">
         <div class="doctor-title-row">
@@ -64,7 +62,6 @@
         {{ doctor().description || 'Profesional matriculado especializado en abordaje terapéutico integral y bienestar emocional.' }}
       </p>
 
-      <!-- Indicador de disponibilidad y próximo turno -->
       <div class="availability-status" [class.is-available]="isAvailable">
         @if (isAvailable) {
           @if (nextAvailableDateFormatted) {
@@ -77,7 +74,6 @@
         }
       </div>
 
-      <!-- Días habituales de atención -->
       <div class="schedule-chips-row">
         @if (attendingDays.length > 0) {
           @for (dia of visibleAttendingDays; track dia) {
