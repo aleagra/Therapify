@@ -16,6 +16,7 @@ import { toast } from 'ngx-sonner';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { concat, of, timer, finalize, timeout } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { SPECIALTY_OPTIONS, SPECIALTY_LABELS } from '../../types/constants';
 
 type WeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday';
 
@@ -31,6 +32,7 @@ export class ProfileDoctorComponent {
   router = inject(Router);
 
   user!: User;
+  SPECIALTY_OPTIONS = SPECIALTY_OPTIONS;
   loading = signal(false);
 
   isLoading = signal(true);
@@ -434,19 +436,7 @@ export class ProfileDoctorComponent {
 
   get previewSpecialtyLabel(): string {
     const val = this.formSchedule.get('specialty')?.value;
-    const labels: Record<string, string> = {
-      PSICOLOGIA_CLINICA: 'Terapia cognitiva',
-      TERAPIA_COGNITIVO_CONDUCTUAL: 'Terapia cognitivo conductual',
-      TERAPIA_DE_PAREJA: 'Terapia de pareja',
-      TERAPIA_FAMILIAR: 'Terapia familiar',
-      PSIQUIATRIA: 'Psiquiatría',
-      NEUROPSICOLOGIA: 'Neuropsicología',
-      PSICOLOGIA_INFANTIL: 'Psicología infantil',
-      PSICOLOGIA_LABORAL: 'Psicología laboral',
-      SEXOLOGIA: 'Sexología',
-      TERAPIA_HUMANISTA: 'Terapia humanista',
-    };
-    return (val && labels[val]) ? labels[val] : 'Terapia cognitivo conductual';
+    return (val && SPECIALTY_LABELS[val]) ? SPECIALTY_LABELS[val] : 'Terapia cognitivo-conductual';
   }
 
   get userInitials(): string {

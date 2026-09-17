@@ -7,7 +7,7 @@ import { UserService } from '../services/user.service';
 import { DoctorCardComponent } from '../doctor-card/doctor-card.component';
 import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { FormsModule } from '@angular/forms';
-import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
+import { DAY_LABELS, DAYS_OF_WEEK, SPECIALTY_OPTIONS } from '../../types/constants';
 
 @Component({
   selector: 'app-doctors',
@@ -88,6 +88,7 @@ export class DoctorsComponent implements OnInit {
 
   DAYS_OF_WEEK = DAYS_OF_WEEK;
   DAY_LABELS = DAY_LABELS;
+  SPECIALTY_OPTIONS = SPECIALTY_OPTIONS;
 
   getDayLabel(day: string): string {
     return (this.DAY_LABELS as Record<string, string>)[day] || day;

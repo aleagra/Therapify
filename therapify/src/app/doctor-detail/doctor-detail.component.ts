@@ -9,7 +9,7 @@ import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { InitialsPipe } from '../pipes/initials.pipe';
 import { SpecialtyLabelPipe } from '../pipes/specialty-label.pipe';
 import { ScheduleRangePipe } from '../pipes/schedule-range.pipe';
-import { DAY_LABELS, DAYS_OF_WEEK } from '../../types/constants';
+import { DAY_LABELS, DAYS_OF_WEEK, SPECIALTY_LABELS } from '../../types/constants';
 import { User } from '../../types/user';
 import { concat, of, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -89,22 +89,9 @@ export class DoctorDetailComponent implements OnInit {
   DAYS_OF_WEEK = DAYS_OF_WEEK;
   DAY_LABELS = DAY_LABELS;
 
-  specialtyLabels: Record<string, string> = {
-    PSICOLOGIA_CLINICA: 'Psicología clínica',
-    TERAPIA_COGNITIVO_CONDUCTUAL: 'Terapia cognitivo conductual',
-    TERAPIA_DE_PAREJA: 'Terapia de pareja',
-    TERAPIA_FAMILIAR: 'Terapia familiar',
-    PSIQUIATRIA: 'Psiquiatría',
-    NEUROPSICOLOGIA: 'Neuropsicología',
-    PSICOLOGIA_INFANTIL: 'Psicología infantil',
-    PSICOLOGIA_LABORAL: 'Psicología laboral',
-    SEXOLOGIA: 'Sexología',
-    TERAPIA_HUMANISTA: 'Terapia humanista',
-  };
-
   getSpecialtyLabel(specialty?: string): string {
     if (!specialty) return 'Profesional';
-    return this.specialtyLabels[specialty] || specialty;
+    return SPECIALTY_LABELS[specialty] || specialty;
   }
 
   ngOnInit(): void {
