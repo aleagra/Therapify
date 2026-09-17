@@ -1,0 +1,25 @@
+# Therapify
+
+> Plataforma integral de salud mental y bienestar que conecta a pacientes con psicólogos y terapeutas matriculados en Argentina.
+
+Therapify es una aplicación web diseñada para facilitar el acceso a la atención psicológica y optimizar la gestión clínica y de turnos de profesionales de la salud mental. Permite explorar especialistas, filtrar por modalidad (online o presencial), ver perfiles profesionales detallados y agendar consultas de manera ágil y segura.
+
+## Páginas Principales y Navegación
+
+- [Inicio](https://therapifyy.vercel.app/): Página principal de Therapify con información general del servicio y acceso a la plataforma.
+- [Directorio de Profesionales](https://therapifyy.vercel.app/doctors): Catálogo interactivo de psicólogos y terapeutas con filtros por especialidad, ubicación, modalidad y ordenamiento por aranceles o valoraciones.
+- [Sobre Nosotros](https://therapifyy.vercel.app/about-us): Misión, visión institucional y valores de Therapify.
+- [Iniciar Sesión](https://therapifyy.vercel.app/login): Acceso seguro a cuentas de pacientes y profesionales.
+- [Registro de Usuarios](https://therapifyy.vercel.app/register): Registro para nuevos pacientes y solicitud de alta para profesionales de la salud mental.
+- [Recuperar Contraseña](https://therapifyy.vercel.app/forgot-password): Formulario de recuperación de cuenta y contraseña.
+
+## Funcionalidades y Servicios
+
+- [Búsqueda y Filtros de Terapeutas](https://therapifyy.vercel.app/doctors): Búsqueda avanzada por especialidades (psicología clínica, psicoanálisis, terapia cognitivo conductual, etc.), enfoque de atención y rango de aranceles.
+- [Gestión de Turnos y Calendario](https://therapifyy.vercel.app/turnos): Módulo de reserva, confirmación y seguimiento de citas para pacientes autenticados.
+- [Perfiles Profesionales](https://therapifyy.vercel.app/doctors): Información de formación académica, matrícula habilitante, tarifas transparentes y reseñas de pacientes.
+
+## Información Técnica y de Rastreo
+
+- [Sitemap XML](https://therapifyy.vercel.app/sitemap.xml): Mapa del sitio web con todas las URLs públicas e indexables.
+- [Robots.txt](https://therapifyy.vercel.app/robots.txt): Directivas de rastreo e indexación para motores de búsqueda y agentes automatizados.
