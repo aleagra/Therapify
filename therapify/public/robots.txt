@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /doctors
+Allow: /about-us
+Allow: /doctor/*
+Allow: /login
+Allow: /register
+
+# Rutas autenticadas y de gestion privada no indexables
+Disallow: /profile
+Disallow: /profile-doctor
+Disallow: /turnos
+Disallow: /admin
+Disallow: /users
+Disallow: /reset-password
+Disallow: /verify-email
+
+Sitemap: https://therapifyy.vercel.app/sitemap.xml

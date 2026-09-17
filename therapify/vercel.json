@@ -33,8 +33,12 @@
           "value": "application/xml; charset=utf-8"
         },
         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400"
         }
       ]
     },
@@ -46,8 +50,12 @@
           "value": "text/plain; charset=utf-8"
         },
         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400"
         }
       ]
     },
@@ -59,8 +67,12 @@
           "value": "text/markdown; charset=utf-8"
         },
         {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=86400, s-maxage=86400, stale-while-revalidate=86400"
         }
       ]
     },
