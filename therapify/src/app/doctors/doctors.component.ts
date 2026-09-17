@@ -94,6 +94,9 @@ export class DoctorsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
     this.initDoctors();
   }
 

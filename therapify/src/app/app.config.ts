@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withPreloading(SelectivePreloadStrategy),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'enabled',
+        scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled',
       }),
     ),
