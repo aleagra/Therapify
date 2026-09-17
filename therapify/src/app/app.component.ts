@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 
 import { toast, NgxSonnerToaster } from 'ngx-sonner';
 import { UserService } from './services/user.service';
+import { CanonicalService } from './services/canonical.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,11 @@ export class AppComponent {
   title = 'therapify';
   userService = inject(UserService);
   router = inject(Router);
+  canonicalService = inject(CanonicalService);
+
+  constructor() {
+    this.canonicalService.init();
+  }
 
   protected readonly toast = toast;
 
