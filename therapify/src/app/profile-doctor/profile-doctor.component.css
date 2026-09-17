@@ -1,5 +1,5 @@
 :host{display:block;width:100%}
-.doctor-profile-page-root{background:#f4f7fa;padding:24px 0 64px}
+.doctor-profile-page-root{background:#f4f7fa;padding:32px 0 64px}
 .doctor-profile-container{max-width:1200px;margin:0 auto;padding:0 24px}
 .header-block{margin-bottom:28px}
 .header-rail{padding:4px 16px 8px 0;border-right:1px solid #dfe6ee;text-align:right}
@@ -25,13 +25,13 @@
 .warning-link:hover{background:var(--c-blue-700, #094c74);color:#ffffff}
 .warning-link:active{background:var(--c-blue-800, #083c5c)}
 .warning-link:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(11,93,142,.28)}
-.section-title-line{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.section-title-line{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
 .form-section-title{margin:0;font-size:17px;font-weight:700;color:#16222c}
 .form-section-caption,.char-count-text,.field-hint,.time-label,.time-divider,.duration-text,.day-disabled-note{font-size:12px;color:#8ba0b5}
 .duration-text,.day-disabled-note{margin-left:4px}
-.section-margin-top{margin-top:32px}
-.days-sunken-container{background:#eaeff5;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
-.day-slot-row{height:56px;border-radius:8px;padding:0 16px;display:grid;grid-template-columns:140px 1fr;align-items:center;box-sizing:border-box}
+.section-margin-top{margin-top:20px}
+.days-sunken-container{background:#eaeff5;border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:4px}
+.day-slot-row{height:48px;border-radius:8px;padding:0 16px;display:grid;grid-template-columns:140px 1fr;align-items:center;box-sizing:border-box}
 .day-slot-row.is-day-active{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .day-toggle-label{display:inline-flex;align-items:center;gap:10px;cursor:pointer}
 .day-checkbox{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid #cbd6e2;border-radius:4px;background-color:#ffffff !important;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0;flex-shrink:0;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
@@ -49,15 +49,15 @@
 .btn-copy-link{background:none;border:none;color:#0b5d8e;font-size:12px;font-weight:600;cursor:pointer;padding:2px 6px;margin-left:10px}
 .fields-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
 .form-field{display:flex;flex-direction:column;gap:6px}
-.form-field.full-width{grid-column:1 / -1;margin-top:16px}
+.form-field.full-width{grid-column:1 / -1;margin-top:10px}
 .field-label{font-size:13px;font-weight:600;color:#334155}
 .field-label-inline-between{display:flex;align-items:baseline;justify-content:space-between}
 .doctor-select{height:40px;padding:0 32px 0 12px;font-size:13.5px;width:100%;border:1px solid var(--c-line-strong, #cfdae5);border-radius:8px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235a6e85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center/14px;-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer}
 .price-input-wrapper{display:flex;align-items:center;border:1px solid var(--c-line-strong, #cfdae5);border-radius:8px;overflow:hidden;background:#fff;height:40px}
 .price-currency{padding:0 12px;font-size:13px;font-weight:600;color:#5a6e85;background:#f4f7fa;border-right:1px solid var(--c-line-strong, #cfdae5);height:40px;display:flex;align-items:center}
 .price-input-field{border:none;flex:1;border-radius:0;height:40px;padding:0 12px}
-.doctor-textarea{width:100%;padding:10px 12px;font-size:14px;line-height:1.6;resize:vertical}
-.form-actions-bar{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:32px}
+.doctor-textarea{width:100%;padding:10px 12px;font-size:14px;line-height:1.6;resize:none}
+.form-actions-bar{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:18px}
 .btn-discard-flat {
   background: var(--c-surface, #ffffff);
   border: 1px solid var(--c-neutral-200, #cbd6e2);
