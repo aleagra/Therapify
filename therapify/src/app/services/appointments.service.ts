@@ -101,7 +101,11 @@ export class AppointmentService {
       }
     }
 
-    const cacheKey = httpParams.toString();
+    // El cache key incluye el usuario logueado: sin esto, cambiar de cuenta
+    // demo (paciente <-> terapeuta) reusaba la respuesta cacheada de la
+    // sesion anterior en vez de pedir "mine" de nuevo para el usuario nuevo.
+    const userId = this.getLoggedUser()?.id ?? 'anon';
+    const cacheKey = `${userId}:${httpParams.toString()}`;
     if (!this.myAppointmentsCache$.has(cacheKey)) {
       const authHeaders = this.getAuthHeaders();
       const req$ = this.http

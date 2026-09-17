@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 import { CalendarComponent } from './calendar.component';
 
@@ -8,7 +10,13 @@ describe('CalendarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CalendarComponent]
+      imports: [CalendarComponent, HttpClientTestingModule],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { queryParamMap: convertToParamMap({}) } },
+        },
+      ],
     })
     .compileComponents();
 
@@ -19,5 +27,19 @@ describe('CalendarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('muestra el honorario cuando el perfil tiene precio cargado, aunque llegue despues del primer render', () => {
+    // Simula el caso real: el calendario se crea antes de que el perfil del
+    // doctor termine de cargar, asi que la primera evaluacion de hasPrice()/
+    // formattedPrice() ocurre con consultationPrice todavia sin definir.
+    expect(component.hasPrice()).toBeFalse();
+    expect(component.formattedPrice()).toBe('A consultar');
+
+    fixture.componentRef.setInput('consultationPrice', 100000);
+    fixture.detectChanges();
+
+    expect(component.hasPrice()).toBeTrue();
+    expect(component.formattedPrice()).toBe('$100.000');
   });
 });

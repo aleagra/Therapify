@@ -5,6 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
   inject,
+  input,
   signal,
   computed,
 } from '@angular/core';
@@ -54,7 +55,14 @@ export class CalendarComponent implements OnChanges {
   @Input() schedule: { [dia: string]: boolean } | undefined;
   @Input() availability: { [dia: string]: string[] } | undefined;
   @Input() doctorId!: string;
-  @Input() consultationPrice?: number;
+  /**
+   * Signal input a proposito: hasPrice/formattedPrice son computed() y solo
+   * reaccionan a lecturas de signals. Con un @Input comun, el calendario se
+   * crea con el precio todavia sin llegar (se muestra antes de que el padre
+   * termine de cargar al doctor) y el computed queda pegado en su primer
+   * valor para siempre, aunque el Input se actualice despues.
+   */
+  consultationPrice = input<number | undefined>(undefined);
   @Input() isInitialLoading: boolean = false;
   /** 'panel': tarjeta unica en columna. 'split': calendario arriba y resumen en banda aparte. */
   @Input() layout: 'panel' | 'split' = 'panel';
@@ -242,12 +250,14 @@ export class CalendarComponent implements OnChanges {
   });
 
   hasPrice = computed(() => {
-    return !!(this.consultationPrice && this.consultationPrice > 0);
+    const price = this.consultationPrice();
+    return !!(price && price > 0);
   });
 
   formattedPrice = computed(() => {
-    if (!this.consultationPrice || this.consultationPrice <= 0) return 'A consultar';
-    return `$${this.consultationPrice.toLocaleString('es-AR')}`;
+    const price = this.consultationPrice();
+    if (!price || price <= 0) return 'A consultar';
+    return `$${price.toLocaleString('es-AR')}`;
   });
 
   ngOnChanges(changes: SimpleChanges): void {
